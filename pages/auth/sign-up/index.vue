@@ -168,7 +168,7 @@ export default {
         async signUp(data) {
             this.loading = true
             const url = this.$config.baseURL + "/users/create-user/";
-            const token = "Token ed29b443441e2de9e5507a3a2124628ecb4750ee";
+            const token = "Token " + process.env.TOKEN;
             const headers = {
                 Authorization: token,
             };

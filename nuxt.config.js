@@ -46,6 +46,7 @@ export default {
     // https://go.nuxtjs.dev/eslint
     // '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
+    '@nuxtjs/dotenv',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts'
   ],
