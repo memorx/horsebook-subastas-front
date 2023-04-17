@@ -198,10 +198,13 @@ export default {
                 })
                 .catch((error) => {
                     this.loading = false
-                    if (error.response.data.email) {
+                    if (error.response && error.response.data &&  error.response.data.email && error.response.data.email[0] == 'An account with this email already exists.') {
                         this.$toast.error("Una cuenta con este mail ya existe");
                     }
-                    console.log(error.message);
+                    else {
+                        this.$toast.error("Lo sentimos, ha ocurrido un error");
+                    }
+                    console.log(error);
                 });
         }
     }
