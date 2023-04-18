@@ -10,7 +10,7 @@
                 <div class="flex flex-col items-center w-full mt-8 title">
                     <h1 class="sesion font-medium text-4xl text-black">Verifica tu cuenta</h1>
                     <p class="mt-4 text-center font-normal text-base text-neutral-600">
-                        Ingresa el código que llego a tu correo,<br>correo@gmail.com para verificar tu cuenta
+                        Ingresa el código que llego a tu correo,<br>{{singUpData.email ||'correo@gmail.com'}} para verificar tu cuenta
                     </p>
                 </div>
                 <form class="w-full mt-12 space-y-6" @submit.prevent=handleSubmit>
@@ -95,8 +95,32 @@ export default {
                 }
             }
         },
-        reSendCode(){
-            console.log('re-send-code')
+        async reSendCode(){
+            this.loading = true
+            const url = this.$config.baseURL + "/users/re-send-email/";
+            const token = "Token " + process.env.TOKEN;
+            const headers = {
+                Authorization: token,
+            };
+            const body = {
+                "email": this.singUpData.email
+            }
+            await this.$axios.$post(url, body, { headers })
+                .then((response) => {
+                    // console.log(response);
+                    this.$toast.success("El codigo ha sido enviado nuevamente, porfavor revise su correo");
+                    this.loading = false
+                })
+                .catch((error) => {
+                    this.loading = false
+                    if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'The User is already activated') {
+                            this.$toast.error("El usuario ya se encuentra activado");
+                            this.$router.push('/auth/login/')
+                    } else {
+                        this.$toast.error("Lo sentimos, ha ocurrido un error");
+                    }
+                    console.log(error);
+                });
         },
         handleSubmit() {
             // Check the data
@@ -125,10 +149,12 @@ export default {
                 })
                 .catch((error) => {
                     this.loading = false
-                    if (error.response.data.error) {
+                    if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'Verification code is not correct.') {
                         this.$toast.error("Lo sentimos, el codigo de verificación no es correcto");
+                    } else {
+                        this.$toast.error("Lo sentimos, ha ocurrido un error");
                     }
-                    console.log(error.message);
+                    console.log(error);
                 });
         }
     }
