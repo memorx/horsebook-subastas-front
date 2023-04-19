@@ -247,7 +247,7 @@ export default {
                 })
                 .catch((error) => {
                     this.loading = false
-                    if (error.response && error.response.data &&  error.response.data.email && error.response.data.email[0] == 'An account with this email already exists.') {
+                    if (error.response && error.response.data &&  error.response.data.email) {
                         this.$toast.error("Una cuenta con este mail ya existe");
                     }
                     else {

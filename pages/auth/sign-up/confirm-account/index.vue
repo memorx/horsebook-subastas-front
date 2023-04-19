@@ -113,13 +113,13 @@ export default {
                 })
                 .catch((error) => {
                     this.loading = false
-                    if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'The User is already activated') {
+                    if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'El usuario ya ha sido activado') {
                             this.$toast.error("El usuario ya se encuentra activado");
                             this.$router.push('/auth/login/')
                     } else {
                         this.$toast.error("Lo sentimos, ha ocurrido un error");
                     }
-                    console.log(error);
+                    console.log(error.response.data);
                 });
         },
         handleSubmit() {
@@ -149,12 +149,13 @@ export default {
                 })
                 .catch((error) => {
                     this.loading = false
-                    if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'Verification code is not correct.') {
-                        this.$toast.error("Lo sentimos, el codigo de verificación no es correcto");
+                    if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'El usuario ya ha sido activado') {
+                            this.$toast.error("El usuario ya se encuentra activado");
+                            this.$router.push('/auth/login/')
                     } else {
                         this.$toast.error("Lo sentimos, ha ocurrido un error");
                     }
-                    console.log(error);
+                    console.log(error.response.data);
                 });
         }
     }
