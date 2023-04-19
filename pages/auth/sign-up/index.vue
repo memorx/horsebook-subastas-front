@@ -44,29 +44,44 @@
                         </div>
                         <div class="flex flex-col w-full ">
                             <label for="country" class="titleInput font-medium text-base text-black">País</label>
-                            <input v-model="form.country" required
+                            <input
+                                v-model="form.country"
+                                @input="autocompleteCountry"
+                                @keydown.delete="clearInputOnDelete"
+                                @keydown="onCountryKeyDown"
+                                required
                                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                                placeholder="Ingresar país" />
+                                placeholder="Ingresar país"
+                            />
                         </div>
                         <div class="flex flex-col w-full ">
                             <label for="state" class="titleInput font-medium text-base text-black">Estado</label>
-                            <input v-model="form.state" required
+                            <input v-if="normalizeString(form.country) !== 'mexico'" v-model.lazy="form.state" required
                                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
                                 placeholder="Ingresar estado" />
+                            <select v-else v-model="form.state" required
+                                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg">
+                                <option value="" disabled>Seleccionar estado</option>
+                                <option v-for="estado in estadosMunicipios" :key="estado.id" :value="estado.nombre">
+                                    {{ estado.nombre }}
+                                </option>
+                            </select>
                         </div>
                         <div class="flex flex-col w-full ">
                             <label for="municipalitie" required
                                 class="titleInput font-medium text-base text-black">Ciudad</label>
-                            <input v-model="form.municipalitie" required
+                            <input v-if="normalizeString(form.country) !== 'mexico'" v-model.lazy="form.municipalitie" required
                                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
                                 placeholder="Ingresar ciudad" />
+                            <select v-else v-model="form.municipalitie" required
+                                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg">
+                                <option value="" disabled>Seleccionar ciudad</option>
+                                <option v-for="municipio in selectedStateMunicipios" :key="municipio.id" :value="municipio.nombre">
+                                    {{ municipio.nombre }}
+                                </option>
+                            </select>
                         </div>
-                        <!-- <div class="flex flex-col w-full ">
-                <label for="ciudad" class="titleInput font-medium text-base text-black">Ciudad</label>
-                <select class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg" id="ciudad">
-                  <option value="">Seleccionar ciudad</option>
-                </select>
-              </div> -->
+
                         <div class="flex flex-col w-full ">
                             <label for="phone" class="titleInput font-medium text-base text-black">Teléfono</label>
                             <input v-model="form.phone" required
@@ -116,15 +131,27 @@
 import Loading from '../../../components/shared/Loading.vue';
 export default {
     components: { Loading },
+    computed: {
+        selectedStateMunicipios() {
+            const selectedState = this.estadosMunicipios.find(
+                (estado) => estado.nombre === this.form.state
+            );
+            return selectedState ? selectedState.municipios : [];
+        },
+    },
+    async created () {
+        await this.fetchEstadosMunicipios();
+    },
     data() {
         return {
             loading: false,
+            estadosMunicipios: [],
             form: {
                 name: "",
                 fathers_surname: "",
                 mothers_maiden_name: "",
                 identification_document: "",
-                country: "",
+                country: "México",
                 state: "",
                 // municipalitie means city to the back-end
                 municipalitie: "",
@@ -164,6 +191,28 @@ export default {
             // console.log('Form submitted', this.form)
             // call the request to create App User
             this.signUp(this.form);
+        },
+        normalizeString(input) {
+            return input
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "");
+        },
+        autocompleteCountry() {
+            const normalizedCountry = this.normalizeString(this.form.country);
+            if (normalizedCountry === "mexico" || normalizedCountry === "mex" || normalizedCountry === "méxico") {
+                this.form.country = "México";
+            }
+        },
+        onCountryKeyDown(event) {
+            if (this.form.country === "México" && event.key !== "Backspace" && event.key !== "Delete") {
+                event.preventDefault();
+            }
+        },
+        clearInputOnDelete(event) {
+            if (event.key === 'Delete' || event.key === 'Backspace') {
+                this.form.country = '';
+            }
         },
         async signUp(data) {
             this.loading = true
@@ -206,7 +255,26 @@ export default {
                     }
                     console.log(error);
                 });
+        },
+        async fetchEstadosMunicipios() {
+        this.loading = true
+        try {
+            const url = this.$config.baseURL + "/estado-municipios-list/";
+            const token = "Token " + process.env.TOKEN;
+            const response = await this.$axios.get(url, {
+                headers: {
+                    Authorization: token,
+                },
+            });
+            console.log('success-fetchEstadosMunicipios');
+            this.estadosMunicipios = response.data;
+            this.loading = false
+        } catch (error) {
+            console.error("Error fetching estados and municipios:", error);
+            this.$toast.error("Hubo un problema al cargarla lista de estados y ciudades");
+            this.loading = false
         }
+        },
     }
 }
 </script>
