@@ -1,8 +1,3 @@
-<head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    integrity="sha512-TXDC6Tq3O+jvU23BLItivShamC+lIVLsI6fDeU6R4Of4SDa9zLv+Z8sbvZzFhLwSxfsM0nk0Q/MvSSg1cF+TUQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
 <template>
   <div class="container">
     <div class="sideBar bg-gray-200 border-r border-gray-300">
