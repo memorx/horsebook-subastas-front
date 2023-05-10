@@ -1,58 +1,57 @@
+<!--  -->
 <template>
-  <div class="containerGeneral">
-    <!-- <div class="content"> -->
-    <div class="rightSide">
-      <div class="limiter">
-        <div class="logo">
-          <img src="../../public/image_la_silla.png" alt="logo" width="90" height="92" />
+  <div class="flex containerGeneral h-full bg-white">
+    <div class="flex items-center justify-center flex-1 rightSide">
+      <div class="flex flex-col items-center w-4/5 limiter">
+        <div class="text-center">
+          <img src="../../public/image_la_silla.png" alt="logo"
+            class="w-20 h-20 mt-4 ml-4 lg:ml-0 lg:mr-4 float-right lg:float-none lg:inline-block">
+          <h1 class="text-3xl font-medium text-black mt-4">Iniciar sesión</h1>
+          <p class="text-gray-600 mt-2">Ingresa tus datos para entrar a HorseBook</p>
         </div>
-        <div class="title">
-          <h1 class="sesion">Iniciar sesión</h1>
-          <p class="horsebook">Ingresa tus datos para entrar a HorseBook</p>
-        </div>
-        <form class='space-y-6' @submit.prevent='userLogin'>
-          <div>
-            <p v-for='error in errorMsg' :key='error' class='text-red-600 text-sm leading-tight text-center'>
+        <form class="w-full space-y-6" @submit.prevent="userLogin">
+          <div class="space-y-2">
+            <p v-for="error in errorMsg" :key="error" class="text-red-600 text-sm leading-tight text-center">
               {{ error }}
             </p>
           </div>
-          <div class="wrapperInputs">
-            <div class="containerInput">
-              <label for="email" class="titleInput">Email</label>
-              <input class="styleInput" placeholder="Ingresar email" id='email' name='email' type='email'
-                autocomplete='email' required v-model='login.email' @focus='errorMsg = ""' />
+          <div class="w-full space-y-4">
+            <div class="flex flex-col">
+              <label for="email" class="text-black-600 font-medium">Email</label>
+              <input
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar email" id="email" name="email" type="email" autocomplete="email" required
+                v-model="login.email" @focus="errorMsg = ''">
             </div>
-            <div class="containerInput">
-              <label for="password" class="titleInput">Contraseña</label>
-              <input class="styleInput" placeholder="Ingresar contraseña" id='password' name='password' type='password'
-                autocomplete='current-password' required v-model='login.password' @focus='errorMsg = ""' />
-            </div>
-          </div>
-          <div class="containerButton">
-            <button type='submit' class="buttonCta">Ingresar</button>
-            <div class="helps">
-              <div class="Recordarme">
-                <input type="checkbox" id="remember-me" name="remember-me">
-                <label for="remember-me">Recordarme</label>
-              </div>
-              <a @click="resetPassword"><span class="OlvideMiContra">Olvide
-                  mi contraseña</span></a>
-              <!-- <a href="password/forgot-password" @click="resetPassword"><span class="OlvideMiContra">Olvide
-                  mi contraseña</span></a> -->
+            <div class="flex flex-col">
+              <label for="password" class="text-black-600 font-medium">Contraseña</label>
+              <input
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar contraseña" id="password" name="password" type="password"
+                autocomplete="current-password" required v-model="login.password" @focus="errorMsg = ''">
             </div>
           </div>
-          <div class="signUp">
-            <div class="signUpp">
-              <h1 class="signUppp">¿No tienes cuenta? <a href="/auth/sign-up">Registrate ahora</a></h1>
+          <div class="flex justify-between items-center">
+            <div class="flex items-center">
+              <input type="checkbox" id="remember-me" name="remember-me" class="mr-2">
+              <label for="remember-me" class="text-gray-600">Recordarme</label>
             </div>
+            <nuxt-link to="/auth/password/send-email" class="text-gray-600 cursor-pointer">Olvidé
+              mi
+              contraseña</nuxt-link>
+          </div>
+          <button type="submit"
+            class="w-full py-3 rounded-md bg-black text-white font-medium hover:bg-black-600 focus:outline-none focus:bg-black-600 transition duration-150 ease-in-out">Ingresar</button>
+          <div class="text-center mt-4">
+            <span class="text-gray-600">¿No tienes cuenta?</span>
+            <nuxt-link to="/auth/sign-up" class="font-medium text-base text-black">Resgístrate ahora</nuxt-link>
           </div>
         </form>
       </div>
     </div>
-    <div class="leftSide">
-      <img src="../../public/image_horsebook_login.png" alt="logo-login" width="820" height="822" />
+    <div class="lg:flex hidden flex-1 leftSide ">
+      <img src="../../public/image_horsebook_login.png" alt="logo-login" class="w-full h-full object-cover" />
     </div>
-    <!-- </div> -->
   </div>
 </template>
 <style scoped>
@@ -145,10 +144,10 @@
   background: #FFFFFF;
   border: 1.5px solid #E0E0E0;
   border-radius: 8px;
-  flex: none;
+  /* flex: none;
   order: 1;
   align-self: stretch;
-  flex-grow: 0;
+  flex-grow: 0; */
 }
 
 
@@ -309,7 +308,7 @@ export default {
       const url = this.$config.baseURL + '/users/login-app/'
       const token = "Token 4fd2e979427a259cc56c18cad449cec5aefaed0d"
       const headers = {
-        Authorization: token,
+        Authorization: "Token " + process.env.TOKEN,
       };
       const formData = new FormData()
       formData.append('email', this.login.email)
@@ -336,8 +335,13 @@ export default {
             const jwt = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
             // Set JWT to the cookie
             Cookie.set("access_token", jwt)
-            // Set the user locally
-            this.$router.push('/inicio')
+
+            // Set the user information in the store
+            this.$store.commit('setUser', { email: this.login.email, token: response.token })
+            console.log(this.$store, "STORE")
+
+            // Redirect to the home page
+            this.$router.push('/user/inicioo')
           }
         })
         .catch((error) => {
@@ -350,20 +354,7 @@ export default {
           }
         })
     },
-    async resetPassword() {
-      const url = this.$config.baseURL + "/users/send-code-reset-password/"
-      const data = {
-        email: this.login.email,
-        resend: false
-      }
-      console.log(data)
-      try {
-        const response = await axios.post(url, data)
-        console.log(response.data, "AXIOS")
-      } catch (error) {
-        console.log(error.response.data)
-      }
-    }
+
   }
 }
 </script>

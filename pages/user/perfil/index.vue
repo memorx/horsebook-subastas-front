@@ -1,0 +1,667 @@
+<template>
+  <div class="container">
+    <div class="sideBar bg-gray-200 border-r border-gray-300">
+
+      <div class="content">
+        <div class="nav">
+          <div class="frame1">
+            <img src="../../../public/image_la_silla.png" alt="logo" width="90" height="92">
+          </div>
+          <div class="navigation">
+            <!-- <div class="navItemBase bg-gray-800 rounded-lg"> -->
+            <!-- <div class="contentt flex items-center gap-2"> -->
+            <div class="gavel w-5 h-5"></div>
+            <!-- <p class="font-montserrat font-medium text-base text-white">Tus subastas</p> -->
+            <p class="font-montserrat font-medium text-base leading-6 text-gray-900 pl-4">Tus subastas</p>
+            <!-- </div> -->
+            <!-- </div> -->
+            <div class="framee1">
+              <div class="divider"></div>
+            </div>
+
+            <div class="navItemBasee">
+              <div class="contenttt flex items-center gap-2">
+                <div class="description"></div>
+                <div class="navItemBase bg-gray-800 rounded-lg">
+                  <div class="contentt flex items-center gap-2">
+                    <p class="font-montserrat font-medium text-base text-white pl-2">Tus datos</p>
+                  </div>
+                </div>
+                <!-- <p class="font-montserrat font-medium text-base leading-6 text-gray-900">Tus datos</p> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"></div>
+      </div>
+    </div>
+    <div class="containerAll">
+      <div class="mainn">
+        <div class="mainTitle">
+          <p class="title">Matías Koziupa</p>
+          <p class="titleEmail">mkoziupa@fi.uba.ar</p>
+        </div>
+        <!-- <p>Editar perfil</p> -->
+      </div>
+      <div class="main">
+        <p class="generalDates">Datos generales</p>
+        <div v-if="1 > 0" class="containerGeneralDates">
+          <p class="name">Nombre (s)</p>
+          <p class="nameStyle">{{ email.name }}</p>
+          <p class="lastNameMother">Apellido materno</p>
+          <p class="nameStyle">Del valle</p>
+          <p class="celphone">Teléfono</p>
+          <p class="nameStyle">{{ email.phone }}</p>
+          <p class="date">Fecha de nacimiento</p>
+          <p class="nameStyle">{{ email.birth_date }}</p>
+        </div>
+        <div class="containerGeneralDatess">
+          <p class="lastNameFather">Apellido paterno</p>
+          <p class="lastNameFatherStyle">{{ email.fathers_surname
+          }}</p>
+          <p class="country">Nacionalidad</p>
+          <p class="lastNameFatherStyle">{{ email.nationality }}</p>
+          <p class="email">Email</p>
+          <p class="lastNameFatherStyle">{{ email.email }}</p>
+          <p class="id">Pasaporte / ID</p>
+          <p class="lastNameFatherStyle">{{ email.identification_document }}</p>
+        </div>
+      </div>
+      <!-- <div class="framee1">
+        <div class="dividerr"></div>
+      </div> -->
+      <div class="main2">
+        <p class="generalDates">Datos de domicilio</p>
+        <div class="containerGeneralDatesHouse">
+          <p class="name">Pais</p>
+          <p class="nameStyle">{{ email.country }}</p>
+          <p class="lastNameMother">Ciudad</p>
+          <p class="nameStyle">{{ email.state }}</p>
+          <p class="celphone">Número exterior</p>
+          <p class="nameStyle">{{ email.outdoor_number }}</p>
+          <p class="date">CP</p>
+          <p class="nameStyle">{{ email.zip_code }}</p>
+        </div>
+        <div class="containerGeneralDatessHouse">
+          <p class="lastNameFather">Estado</p>
+          <p class="lastNameFatherStyle">{{ email.municipalitie }}</p>
+          <p class="country">Calle</p>
+          <p class="lastNameFatherStyle">{{ email.street }}</p>
+          <p class="email">Número interior</p>
+          <p class="lastNameFatherStyle">{{ email.interior_number }}</p>
+        </div>
+      </div>
+      <div class="main3">
+        <p class="generalDates">Seguridad</p>
+        <div class="containerGeneralDatesSecurity">
+          <p class="name">Contraseña</p>
+          <p class="nameStyle">******</p>
+        </div>
+      </div>
+      <div class="main4">
+        <p class="generalDates">Histórico</p>
+        <div class="containerGeneralDatesHistory">
+          <p class="name">Historial de subastas</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<style>
+.lastNameFatherStyle {
+  padding-left: 90px;
+  font-family: 'Montserrat' "sans serif";
+  font-style: normal;
+  font-size: 16px;
+  font-weight: 500px;
+  line-height: 24px;
+  color: #344054;
+}
+
+.nameStyle {
+  font-family: 'Montserrat' "sans serif";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  padding-left: 90px;
+  /* identical to box height, or 150% */
+
+
+  /* Gray/700 */
+
+  color: #344054;
+}
+
+.mainTitle {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  background: #F9F9F9;
+}
+
+.titleEmail {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #475467;
+  padding-left: 30px;
+  padding-top: 10px;
+}
+
+.title {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 38px;
+  padding-left: 30px;
+  padding-top: 10px;
+}
+
+.mainn {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #F9F9F9;
+}
+
+.containerGeneralDatesHistory {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-left: 68px;
+}
+
+.containerGeneralDatesSecurity {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-left: 60px;
+}
+
+.containerGeneralDatesHouse {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.containerGeneralDatessHouse {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  align-items: flex-start;
+  padding-left: 185px;
+}
+
+.main4 {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.main3 {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.containerAll {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main2 {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.framee1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 0px 0px;
+  gap: 8px;
+  width: 100vh;
+  height: 9px;
+}
+
+.dividerr {
+  padding-top: 100%;
+  width: 100;
+  height: 1px;
+  background: #EAECF0;
+}
+
+.id {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #667085;
+  padding-top: 52px;
+  padding-left: 90px;
+}
+
+.email {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #667085;
+  padding-top: 52px;
+  padding-left: 90px;
+}
+
+.country {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #667085;
+  padding-top: 52px;
+  padding-left: 90px;
+}
+
+.lastNameFather {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #667085;
+  padding-top: 142px;
+  padding-left: 90px;
+}
+
+.containerGeneralDatess {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  align-items: flex-start;
+  padding-left: 158px;
+}
+
+.date {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #667085;
+  padding-top: 52px;
+  padding-left: 90px;
+}
+
+.celphone {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #667085;
+  padding-top: 52px;
+  padding-left: 90px;
+}
+
+.lastNameMother {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #667085;
+  padding-top: 52px;
+  padding-left: 90px;
+}
+
+.name {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  color: #667085;
+  padding-top: 142px;
+  padding-left: 90px;
+}
+
+.containerGeneralDates {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-left: 15px;
+  /* padding: 0px; */
+}
+
+.generalDates {
+  font-family: 'Montserrat' "sans-serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #101828;
+  padding-top: 140px;
+  padding-left: 30px;
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  padding-top: 35px;
+  gap: 48px;
+
+  width: 100%;
+  height: 100%;
+}
+
+.containerRegister {
+  width: 100vh;
+  height: 100vh;
+}
+
+.containerRegisterTitle {
+  width: 100vh;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  padding: 0px;
+  width: 100%;
+  height: 100%
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+
+  position: absolute;
+  width: 1440px;
+  height: 2538px;
+  left: 0px;
+  top: 78px;
+
+  background: #FCFCFD;
+}
+
+.sideBar {
+  box-sizing: border-box;
+
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+
+  width: 280px;
+  height: 70vh;
+
+
+
+  background: #F9FAFB;
+
+
+  border-right: 1px solid #EAECF0;
+
+
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0px;
+  width: 280px;
+  height: 822px;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32px 0px 0px;
+  gap: 84px;
+  width: 280px;
+  height: 505px;
+}
+
+.frame1 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px 20px;
+  gap: 8px;
+  width: 280px;
+  height: 92px;
+}
+
+.logo {
+  width: 90px;
+  height: 92px;
+
+  /* background: url(logo.png); */
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 24px;
+
+  display: none;
+  width: 279px;
+  height: 44px;
+
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 16px;
+  gap: 16px;
+  width: 280px;
+  height: 297px;
+}
+
+.navItemBase {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 8px;
+  width: 248px;
+  height: 48px;
+  background: #141313;
+  border-radius: 10px;
+}
+
+.contentt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 12px;
+  width: 224px;
+  height: 24px;
+}
+
+.gavel {
+  width: 20px;
+  height: 20px;
+}
+
+.text {
+  width: 104px;
+  height: 24px;
+
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
+
+
+  color: #FFFFFF;
+
+
+  /* Inside auto layout */
+
+  /* flex: none;
+  order: 2;
+  flex-grow: 0; */
+}
+
+.framee1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 0px 0px;
+  gap: 8px;
+  width: 100vh;
+  height: 9px;
+}
+
+.divider {
+  width: 248px;
+  height: 1px;
+  background: #EAECF0;
+}
+
+.navItemBasee {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 8px;
+  width: 248px;
+  height: 40px;
+  border-radius: 6px;
+}
+
+.contenttt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  margin: -25px;
+  padding-right: 20px;
+  gap: 12px;
+  width: 224px;
+  height: 24px;
+}
+
+.description {
+  width: 24px;
+  height: 24px;
+
+}
+
+.textt {
+  width: 24px;
+  height: 24px;
+
+
+  /* Inside auto layout */
+
+  /* flex: none;
+  order: 1;
+  flex-grow: 0; */
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 16px 32px;
+  gap: 24px;
+
+  width: 280px;
+  height: 72px;
+}
+</style>
+<script>
+import JWTDecode from 'jwt-decode';
+import Loading from '../../../components/shared/Loading.vue';
+export default {
+  data() {
+    return {
+      loading: false,
+      loggedInUser: null,
+      email: []
+    }
+  },
+  mounted() {
+    this.getInfo()
+  },
+  computed: {
+    setUser() {
+      return this.$store.state.user;
+    },
+  },
+  methods: {
+    async getInfo() {
+      this.email = [];
+      const url = `${this.$config.baseURL}/users/list-app-users/?pre_register=true&email=${this.$store.state.user.email}`;
+      console.log(url.response, "coimollega");
+      const decoded = JWTDecode(this.$cookies.get('access_token'))
+      console.log(decoded)
+      //I want to stop to make a hardcode and do it using logic
+      if (decoded) {
+        const token = "7992136a01a768227f14718e20efe5fa077a0db9"; // Replace with your token value
+        const headers = {
+          Authorization: `Token ${decoded.token}`,
+        };
+        this.loading = true;
+        await this.$axios
+          .get(url, { headers })
+          .then((response) => {
+            console.log(response, "USERS");
+            return (this.email = response.data.app_user_profile), (this.loading = false);
+          })
+          .catch((error) => {
+            console.log(error);
+            this.loading = false;
+          });
+      }
+    },
+  }
+}
+
+</script>

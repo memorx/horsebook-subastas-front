@@ -25,6 +25,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    '~main.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -34,7 +35,7 @@ export default {
 
   // router middleware
   router: {
-    middleware: ['authenticated']
+    middleware: ['authenticated', 'loadLocalStorage']
   },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -45,6 +46,7 @@ export default {
     // https://go.nuxtjs.dev/eslint
     // '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
+    '@nuxtjs/dotenv',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts'
   ],
@@ -86,7 +88,7 @@ export default {
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     // baseURL: 'http://localhost:8000/api'
-    baseURL: 'http://localhost:8000/api'
+    baseURL: 'https://subastas-api-stage.alluxi.com/api'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -94,7 +96,7 @@ export default {
   },
   publicRuntimeConfig: {
     // baseURL: 'http://localhost:8000/api'
-    baseURL: 'http://localhost:8000/api'
+    baseURL: 'https://subastas-api-stage.alluxi.com/api'
   },
 
   //config i18n
