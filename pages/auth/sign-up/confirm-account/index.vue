@@ -42,11 +42,13 @@
             <img src="../../../../public/image_horsebook_login.png" alt="logo-login" class="w-full h-full object-cover" />
         </div>
     </div>
+
 </template>
 
 <script>
 import Loading from '../../../../components/shared/Loading.vue';
 export default {
+
     components: { Loading },
     computed: {
         singUpData() {
@@ -161,3 +163,4 @@ export default {
     }
 }
 </script>
+

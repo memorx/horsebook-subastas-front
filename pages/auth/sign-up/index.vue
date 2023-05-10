@@ -125,6 +125,7 @@
             <img src="../../../public/image_horsebook_login.png" alt="logo-login" class="w-full h-full object-cover" />
         </div>
     </div>
+
 </template>
 
 <script>
@@ -278,3 +279,4 @@ export default {
     }
 }
 </script>
+

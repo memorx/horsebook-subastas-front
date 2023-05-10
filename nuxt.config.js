@@ -88,7 +88,7 @@ export default {
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     // baseURL: 'http://localhost:8000/api'
-    baseURL: 'http://localhost:8000/api'
+    baseURL: 'https://subastas-api-stage.alluxi.com/api'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -96,7 +96,7 @@ export default {
   },
   publicRuntimeConfig: {
     // baseURL: 'http://localhost:8000/api'
-    baseURL: 'http://localhost:8000/api'
+    baseURL: 'https://subastas-api-stage.alluxi.com/api'
   },
 
   //config i18n
