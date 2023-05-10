@@ -1,3 +1,4 @@
+
 export default function ({ store }) {
   if (process.client) {
       const storedSingUpData = localStorage.getItem('singUpData');
@@ -27,4 +28,5 @@ export default function ({ store }) {
         store.commit("setUserInformation", parsedUserInformation);
       }
   }
+
 }
