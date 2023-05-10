@@ -38,8 +38,8 @@
     <div class="containerAll">
       <div class="mainn">
         <div class="mainTitle">
-          <p class="title">Matías Koziupa</p>
-          <p class="titleEmail">mkoziupa@fi.uba.ar</p>
+          <p class="title">{{ email.name }}</p>
+          <p class="titleEmail">{{ email.email }}</p>
         </div>
         <!-- <p>Editar perfil</p> -->
       </div>
