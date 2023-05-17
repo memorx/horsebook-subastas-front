@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <Loading v-if="loading"
+      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
     <div class="sideBar bg-gray-200 border-r border-gray-300">
 
       <div class="content">
@@ -8,13 +10,12 @@
             <img src="../../../public/image_la_silla.png" alt="logo" width="90" height="92">
           </div>
           <div class="navigation">
-            <!-- <div class="navItemBase bg-gray-800 rounded-lg"> -->
-            <!-- <div class="contentt flex items-center gap-2"> -->
             <div class="gavel w-5 h-5"></div>
-            <!-- <p class="font-montserrat font-medium text-base text-white">Tus subastas</p> -->
-            <p class="font-montserrat font-medium text-base leading-6 text-gray-900 pl-4">Tus subastas</p>
-            <!-- </div> -->
-            <!-- </div> -->
+            <button>
+              <a href="/user/inicioo">
+                <p class="font-montserrat font-medium text-base leading-6 text-gray-900 pl-4">Tus subastas</p>
+              </a>
+            </button>
             <div class="framee1">
               <div class="divider"></div>
             </div>
@@ -40,6 +41,13 @@
         <div class="mainTitle">
           <p class="title">{{ email.name }}</p>
           <p class="titleEmail">{{ email.email }}</p>
+        </div>
+        <div class="buttonAcomodate">
+          <button class="buttonEditContainer">
+            <a href="/user/perfil/editar">
+              <p class="buttonEdit">Editar perfil</p>
+            </a>
+          </button>
         </div>
         <!-- <p>Editar perfil</p> -->
       </div>
@@ -108,14 +116,43 @@
   </div>
 </template>
 <style>
+.buttonAcomodate {
+  padding-top: 40px;
+}
+
+.buttonEditContainer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0px;
+  gap: 8px;
+  width: 117px;
+  height: 40px;
+  background: #171618;
+  border: 1px solid #171618;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.buttonEdit {
+  font-family: 'Montserrat' "sans serif";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #FFFFFF;
+}
+
 .lastNameFatherStyle {
-  padding-left: 90px;
+
   font-family: 'Montserrat' "sans serif";
   font-style: normal;
   font-size: 16px;
   font-weight: 500px;
   line-height: 24px;
   color: #344054;
+  padding-left: 90px;
 }
 
 .nameStyle {
@@ -535,17 +572,7 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  /* identical to box height, or 150% */
-
-
   color: #FFFFFF;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 2;
-  flex-grow: 0; */
 }
 
 .framee1 {
@@ -597,12 +624,6 @@
   width: 24px;
   height: 24px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  flex-grow: 0; */
 }
 
 .footer {
@@ -620,6 +641,7 @@
 import JWTDecode from 'jwt-decode';
 import Loading from '../../../components/shared/Loading.vue';
 export default {
+  components: { Loading },
   data() {
     return {
       loading: false,
