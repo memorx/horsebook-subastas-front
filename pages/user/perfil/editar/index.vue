@@ -38,45 +38,45 @@
           <p class="editProfileSubtitle">Edita tu perfil y tus datos personales</p>
         </div>
         <div class="buttonAcomodatee">
-          <button class="buttonEditContainerr">
+          <a href="/user/perfil" class="buttonEditContainerr">
             <p class="buttonEditt">Cancelar</p>
-          </button>
+          </a>
         </div>
         <div class="buttonAcomodate">
-          <button class="buttonEditContainer" @click=updateProfile>
+          <a href="/user/perfil" class="buttonEditContainer" @click=updateProfile>
             <p class="buttonEdit">Guardar</p>
-          </button>
+          </a>
         </div>
       </div>
       <div class="main">
         <p class="generalDates">Nombre (s)</p>
-        <input class="inputs" placeholder="Nombre (s)" />
+        <input class="inputs" placeholder="Nombre (s)" v-model="name" />
         <p class="generalDates">Apellido paterno</p>
-        <input class="inputs" placeholder="Apellido paterno" />
+        <input class="inputs" placeholder="Apellido paterno" v-model="fathers_surname" />
         <p class="generalDates">Apellido materno</p>
-        <input class="inputs" placeholder="Apellido materno" />
+        <input class="inputs" placeholder="Apellido materno" v-model="mothers_maiden_name" />
         <p class="generalDates">Fecha de nacimiento</p>
-        <input class="inputs" placeholder="Fecha de nacimiento" />
+        <input class="inputs" placeholder="Fecha de nacimiento" v-model="birth_date" />
         <p class="generalDates">Nacionalidad</p>
-        <input class="inputs" placeholder="Nacionalidad" />
+        <input class="inputs" placeholder="Nacionalidad" v-model="nationality" />
         <p class="generalDates">Teléfono</p>
-        <input class="inputs" placeholder="Teléfono" />
+        <input class="inputs" placeholder="Teléfono" v-model="phone" />
         <p class="generalDates"># de pasaporte o ID</p>
-        <input class="inputs" placeholder="# de pasaporte o ID" />
+        <input class="inputs" placeholder="# de pasaporte o ID" v-model="identification_document" />
         <p class="generalDates">Pais</p>
-        <input class="inputs" placeholder="Pais" />
+        <input class="inputs" placeholder="Pais" v-model="country" />
         <p class="generalDates">Estado</p>
-        <input class="inputs" placeholder="Estado" />
+        <input class="inputs" placeholder="Estado" v-model="state" />
         <p class="generalDates">Ciudad</p>
-        <input class="inputs" placeholder="Ciudad" />
+        <input class="inputs" placeholder="Ciudad" v-model="municipalitie" />
         <p class="generalDates">Calle</p>
-        <input class="inputs" placeholder="Calle" />
+        <input class="inputs" placeholder="Calle" v-model="street" />
         <p class="generalDates">Número exterior</p>
-        <input class="inputs" placeholder="Número exterior" />
+        <input class="inputs" placeholder="Número exterior" v-model="outdoor_number" />
         <p class="generalDates">Número interior</p>
-        <input class="inputs" placeholder="Número interior" />
+        <input class="inputs" placeholder="Número interior" v-model="interior_number" />
         <p class="generalDates">C.P</p>
-        <input class="inputs" placeholder="C.P" />
+        <input class="inputs" placeholder="C.P" v-model="zip_code" />
       </div>
     </div>
   </div>
@@ -414,15 +414,30 @@
 }
 </style>
 <script>
-import { env } from 'process';
 import JWTDecode from 'jwt-decode';
 import Loading from '../../../../components/shared/Loading.vue';
+
 export default {
   data() {
     return {
       loading: false,
       loggedInUser: null,
-      email: []
+      email: [],
+      profile: null,
+      name: '',
+      fathers_surname: '',
+      mothers_maiden_name: '',
+      identification_document: '',
+      country: '',
+      state: '',
+      municipalitie: '',
+      phone: '',
+      birth_date: '',
+      nationality: '',
+      street: '',
+      outdoor_number: '',
+      interior_number: '',
+      zip_code: '',
     }
   },
   computed: {
@@ -434,62 +449,90 @@ export default {
     async updateProfile() {
       this.email = [];
       const url = `${this.$config.baseURL}/users/update-user-profile/?pre_register=true&email=${this.$store.state.user.email}`;
-      console.log(url, "coimollega");
-      const decoded = JWTDecode(this.$cookies.get('access_token'))
-      console.log(decoded, "decoded")
+      const decoded = JWTDecode(this.$cookies.get('access_token'));
+
       if (decoded) {
         const headers = {
           Authorization: `Token ${decoded.token}`,
         };
-        console.log(headers, "Headers")
-        const email = this.$store.state.user.email
-        const name = document.querySelector('input[placeholder="Nombre (s)"]').value;
-        const fathers_surname = document.querySelector('input[placeholder="Apellido paterno"]').value;
-        const mothers_maiden_name = document.querySelector('input[placeholder="Apellido materno"]').value;
-        const identification_document = document.querySelector('input[placeholder="# de pasaporte o ID"]').value;
-        const country = document.querySelector('input[placeholder="Pais"]').value;
-        const state = document.querySelector('input[placeholder="Estado"]').value;
-        const municipalitie = document.querySelector('input[placeholder="Ciudad"]').value;
-        const phone = document.querySelector('input[placeholder="Teléfono"]').value;
-        const birth_date = document.querySelector('input[placeholder="Fecha de nacimiento"]').value;
-        const nationality = document.querySelector('input[placeholder="Nacionalidad"]').value;
-        const street = document.querySelector('input[placeholder="Calle"]').value;
-        const outdoor_number = document.querySelector('input[placeholder="Número exterior"]').value;
-        const interior_number = document.querySelector('input[placeholder="Número interior"]').value;
-        const zip_code = document.querySelector('input[placeholder="C.P"]').value;
-        const body = {
-          email,
-          name,
-          fathers_surname,
-          mothers_maiden_name,
-          identification_document,
-          country,
-          state,
-          municipalitie,
-          phone,
-          birth_date,
-          nationality,
-          street,
-          outdoor_number,
-          interior_number,
-          zip_code
-        };
-        console.log(body, "BODY")
-        await this.$axios
-          .put(url, body, { headers })
-          .then((response) => {
-            console.log(response, "USERS");
-            this.$router.push('/user/perfil')
 
-          },
-          )
-          .catch((error) => {
-            console.log(error, "ERROR");
-            this.loading = false;
-          });
+        const email = this.$store.state.user.email;
+        const profileData = {
+          email,
+          name: this.name || this.profile.name,
+          fathers_surname: this.fathers_surname || this.profile.fathers_surname,
+          mothers_maiden_name: this.mothers_maiden_name || this.profile.mothers_maiden_name,
+          identification_document: this.identification_document || this.profile.identification_document,
+          country: this.country || this.profile.country,
+          state: this.state || this.profile.state,
+          municipalitie: this.municipalitie || this.profile.municipalitie,
+          phone: this.phone || this.profile.phone,
+          birth_date: this.birth_date || this.profile.birth_date,
+          nationality: this.nationality || this.profile.nationality,
+          street: this.street || this.profile.street,
+          outdoor_number: this.outdoor_number || this.profile.outdoor_number,
+          interior_number: this.interior_number || this.profile.interior_number,
+          zip_code: this.zip_code || this.profile.zip_code
+        };
+
+        console.log(profileData, "BODY");
+
+        try {
+          const response = await this.$axios.put(url, profileData, { headers });
+          console.log(response, "USERS");
+          this.$router.push('/user/perfil');
+        } catch (error) {
+          console.log(error, "ERROR");
+          this.loading = false;
+        }
       }
     },
-  }
-}
+  },
+  mounted() {
+    const decoded = JWTDecode(this.$cookies.get('access_token'));
 
+    if (decoded) {
+      const token = "7992136a01a768227f14718e20efe5fa077a0db9"; // Replace with your token value
+      const headers = {
+        Authorization: `Token ${decoded.token}`,
+      };
+
+      const email = this.$store.state.user.email;
+      const url = `${this.$config.baseURL}/users/list-app-users/?pre_register=true&email=${email}`;
+
+      this.loading = true;
+
+      this.$axios.get(url, { headers })
+        .then(response => {
+          console.log(response, "USERS");
+          this.email = response.data.app_user_profile;
+          this.profile = response.data.app_user_profile; // Almacenar los datos del perfil en la variable "profile"
+          this.loading = false;
+
+          // Asignar los valores actuales del perfil a las variables del componente
+          this.name = this.profile.name;
+          this.fathers_surname = this.profile.fathers_surname;
+          this.mothers_maiden_name = this.profile.mothers_maiden_name;
+          this.identification_document = this.profile.identification_document;
+          this.country = this.profile.country;
+          this.state = this.profile.state;
+          this.municipalitie = this.profile.municipalitie;
+          this.phone = this.profile.phone;
+          this.birth_date = this.profile.birth_date;
+          this.nationality = this.profile.nationality;
+          this.street = this.profile.street;
+          this.outdoor_number = this.profile.outdoor_number;
+          this.interior_number = this.profile.interior_number;
+          this.zip_code = this.profile.zip_code;
+        })
+        .catch(error => {
+          console.log(error, "ERROR");
+          this.loading = false;
+        });
+    }
+  },
+  components: {
+    Loading,
+  },
+}
 </script>

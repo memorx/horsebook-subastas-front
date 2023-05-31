@@ -48,7 +48,7 @@
         <div class="auctions">
           <li class="li" v-for="horse in item.horses" :key="horse.id">
             <img src="../../../public/horse_example.png">
-            <p class="nameHorse">{{ horse.external_data.alt_name }}</p>
+            <p class="nameHorse">{{ horse.external_data.name }}</p>
             <p class="prizeHorse">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
             <!-- <button class="buttonDetails" v-on:click="showHorseDetails(horse)"> -->
             <button class="buttonDetails">

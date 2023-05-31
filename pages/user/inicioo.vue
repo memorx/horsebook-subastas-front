@@ -53,10 +53,11 @@
           </div>
         </div>
       </div>
+      <!--  WAITING FOR AN ENDPOINT -->
       <!-- <div class="framee1">
         <div class="dividerr"></div>
       </div> -->
-      <div class="sectionheaderr">
+      <!-- <div class="sectionheaderr">
         <p class="textSub">Subastas en las que estas registrado</p>
         <div class="contentttttt" v-for="item in email" :key="item.id">
           <img src="../../public/image_subasta.png" alt="logo" width="90%" height="100%">
@@ -68,7 +69,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div></template>
