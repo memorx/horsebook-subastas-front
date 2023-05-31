@@ -21,14 +21,18 @@ module.exports = {
         1: '1px'
       },
       fontFamily: {
-        futura: ['Arial','sans-serif'],
-        arial: ['Arial','sans-serif']
+        futura: ['Arial', 'sans-serif'],
+        arial: ['Arial', 'sans-serif'],
+        monserrat: ["Monserrat", "sans-serif"]
       },
       screens: {
         xs: '540px'
       },
       backgroundImage: {
         // 'plane-2': "url('~/public/background-plane-2.png')"
+      },
+      spacing: {
+        '20': '5rem', // Ajusta este valor según sea necesario
       }
     }
   },

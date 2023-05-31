@@ -640,17 +640,19 @@
 <script>
 import JWTDecode from 'jwt-decode';
 import Loading from '../../../components/shared/Loading.vue';
+
 export default {
   components: { Loading },
   data() {
     return {
       loading: false,
       loggedInUser: null,
-      email: []
+      email: [],
+      profile: null
     }
   },
   mounted() {
-    this.getInfo()
+    this.getInfo();
   },
   computed: {
     setUser() {
@@ -661,29 +663,28 @@ export default {
     async getInfo() {
       this.email = [];
       const url = `${this.$config.baseURL}/users/list-app-users/?pre_register=true&email=${this.$store.state.user.email}`;
-      console.log(url.response, "coimollega");
-      const decoded = JWTDecode(this.$cookies.get('access_token'))
-      console.log(decoded)
-      //I want to stop to make a hardcode and do it using logic
+      const decoded = JWTDecode(this.$cookies.get('access_token'));
+
       if (decoded) {
         const token = "7992136a01a768227f14718e20efe5fa077a0db9"; // Replace with your token value
         const headers = {
           Authorization: `Token ${decoded.token}`,
         };
+
         this.loading = true;
-        await this.$axios
-          .get(url, { headers })
-          .then((response) => {
-            console.log(response, "USERS");
-            return (this.email = response.data.app_user_profile), (this.loading = false);
-          })
-          .catch((error) => {
-            console.log(error);
-            this.loading = false;
-          });
+
+        try {
+          const response = await this.$axios.get(url, { headers });
+          console.log(response, "USERS");
+          this.email = response.data.app_user_profile;
+          this.profile = response.data.app_user_profile; // Almacenar los datos del perfil en la variable "profile"
+          this.loading = false;
+        } catch (error) {
+          console.log(error);
+          this.loading = false;
+        }
       }
     },
   }
 }
-
 </script>
