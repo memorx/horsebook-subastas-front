@@ -96,7 +96,6 @@
           </a>
         </button>
       </div>
-      <img src="../public/image_landing_4.png" alt="logo" class="pt-12 pl-16" />
       <p class="not-italic font-normal text-[80px] leading-[98px] text-center pt-24 ">¿Como pujar?</p>
       <p class="pt-8 not-italic font-normal text-[25px] leading-[30px] text-center">Nuestro proceso</p>
 

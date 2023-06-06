@@ -106,6 +106,44 @@
           <p class="nameStyle">******</p>
         </div>
       </div>
+      <div class="w-full h-full flex">
+        <p class="not-italic font-semibold text-base leading-6 text-gray-900 pt-32 pl-8">Histórico</p>
+        <div class="pt-[180px]">
+          <table class="bg-white p-2 p-12">
+            <thead class="space-x-20">
+              <tr class="space-x-20">
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] letterMonserrat px-4 py-2">id
+                </th>
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] letterMonserrat px-4 py-2">
+                  highest_bid
+                </th>
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] letterMonserrat px-4 py-2">
+                  bid_date
+                </th>
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] letterMonserrat px-4 py-2">
+                  status
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="record in info.records" :key="record.bid_date" class="space-x-20">
+                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] letterMonserrat align-top">
+                  Subasta {{ record.horse.id }}
+                </td>
+                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] letterMonserrat align-top">
+                  {{ record.highest_bid }}
+                </td>
+                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] letterMonserrat align-top">
+                  {{ new Date(record.bid_date).toLocaleString() }}
+                </td>
+                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] letterMonserrat align-top">
+                  {{ record.status }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -647,11 +685,13 @@ export default {
       loading: false,
       loggedInUser: null,
       email: [],
+      info: [],
       profile: null
     }
   },
   mounted() {
     this.getInfo();
+    this.getAuctionsRecord();
   },
   computed: {
     setUser() {
@@ -674,12 +714,37 @@ export default {
 
         try {
           const response = await this.$axios.get(url, { headers });
+          console.log(response, "USERS");
           this.email = response.data.app_user_profile;
           this.profile = response.data.app_user_profile; // Almacenar los datos del perfil en la variable "profile"
           this.loading = false;
         } catch (error) {
           console.log(error);
           this.loading = false;
+        }
+      }
+    },
+    async getAuctionsRecord() {
+      this.info = [];
+      const url = `${this.$config.baseURL}/subastas/get-auction-records?email=${this.$store.state.user.email}`
+      const decoded = JWTDecode(this.$cookies.get("access_token"));
+      if (decoded) {
+        const headers = {
+          Authorization: `Token ${decoded.token}`,
+        }
+        this.loading = true;
+        try {
+          const info = await this.$axios.get(url, { headers });
+          console.log(info, "RESPONSE AUCTIONS RECORDS")
+          console.log(info.data, "RESPONSE.DATA AUCTIONS RECORDS")
+          console.log(info.data.records, "RESPONSE.DATA.RECORDS AUCTIONS RECORDS")
+          this.info = info.data
+          console.log(info, "INFO")
+          this.loading = false;
+
+        } catch (error) {
+          this.loading = false;
+          console.log(error, "ERROR AUCTIONS RECORDS")
         }
       }
     }
