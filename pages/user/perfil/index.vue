@@ -106,16 +106,14 @@
           <p class="nameStyle">******</p>
         </div>
       </div>
-      <div class="main4">
-        <p class="generalDates">Histórico</p>
-        <div class="containerGeneralDatesHistory">
-          <p class="name">Historial de subastas</p>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 <style>
+.letterMonserrat {
+  font-family: "Montserrat" "sans serif";
+}
+
 .buttonAcomodate {
   padding-top: 40px;
 }
@@ -640,6 +638,7 @@
 <script>
 import JWTDecode from 'jwt-decode';
 import Loading from '../../../components/shared/Loading.vue';
+import moment from 'moment';
 
 export default {
   components: { Loading },
@@ -675,7 +674,6 @@ export default {
 
         try {
           const response = await this.$axios.get(url, { headers });
-          console.log(response, "USERS");
           this.email = response.data.app_user_profile;
           this.profile = response.data.app_user_profile; // Almacenar los datos del perfil en la variable "profile"
           this.loading = false;
@@ -684,7 +682,7 @@ export default {
           this.loading = false;
         }
       }
-    },
+    }
   }
 }
 </script>

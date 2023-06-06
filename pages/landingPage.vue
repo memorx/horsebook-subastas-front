@@ -61,14 +61,14 @@
           </button>
         </div>
       </div>
-      <img src="../../public/image_la_silla.png" alt="logo" class="absolute top-2 left-2 flex " />
+      <img src="../public/image_la_silla.png" alt="logo" class="absolute top-2 left-2 flex " />
     </div>
     <div class="w-full h-full containerBackground relative mb-12">
       <p class="not-italic font-normal text-[80px] leading-[98px] text-center">Subasta Online</p>
       <p class="mt-12 not-italic font-normal text-xl leading-[30px] text-center letterMonserrat">COLECCIÓN 2023 / DATE
         COMING
         SOON</p>
-      <img class="mt-12 mx-auto my-auto" src="../../public/image_landing_2.png" alt="logo" />
+      <img class="mt-12 mx-auto my-auto" src="../public/image_landing_2.png" alt="logo" />
       <div class="flex justify-center items-center mt-12">
         <button class="flex flex-row justify-center items-center gap-2.5 w-[183px] h-[62px] bg-black">
           <p class="not-italic font-medium text-lg leading-[22px] text-white">CONOCER MÁS</p>
@@ -96,7 +96,7 @@
           </a>
         </button>
       </div>
-      <img src="../../public/image_landing_4.png" alt="logo" class="pt-12 pl-16" />
+      <img src="../public/image_landing_4.png" alt="logo" class="pt-12 pl-16" />
       <p class="not-italic font-normal text-[80px] leading-[98px] text-center pt-24 ">¿Como pujar?</p>
       <p class="pt-8 not-italic font-normal text-[25px] leading-[30px] text-center">Nuestro proceso</p>
 
