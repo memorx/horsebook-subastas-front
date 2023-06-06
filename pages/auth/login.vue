@@ -308,7 +308,8 @@ export default {
       const url = this.$config.baseURL + '/users/login-app/'
       const token = "Token 4fd2e979427a259cc56c18cad449cec5aefaed0d"
       const headers = {
-        Authorization: "Token " + process.env.TOKEN,
+        // Authorization: "Token " + process.env.TOKEN,
+        Authorization: "Token 0119158e9e647cc58e9c895fa08316b2a5b03df4",
       };
       const formData = new FormData()
       formData.append('email', this.login.email)

@@ -1,8 +1,3 @@
-<head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    integrity="sha512-TXDC6Tq3O+jvU23BLItivShamC+lIVLsI6fDeU6R4Of4SDa9zLv+Z8sbvZzFhLwSxfsM0nk0Q/MvSSg1cF+TUQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
 <template>
   <div class="container">
     <div class="sideBar bg-gray-200 border-r border-gray-300">
@@ -53,7 +48,7 @@
         <div class="auctions">
           <li class="li" v-for="horse in item.horses" :key="horse.id">
             <img src="../../../public/horse_example.png">
-            <p class="nameHorse">{{ horse.external_data.alt_name }}</p>
+            <p class="nameHorse">{{ horse.external_data.name }}</p>
             <p class="prizeHorse">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
             <!-- <button class="buttonDetails" v-on:click="showHorseDetails(horse)"> -->
             <button class="buttonDetails">
@@ -168,24 +163,11 @@
 
   width: 280px;
   height: 92px;
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .logo {
   width: 90px;
   height: 92px;
-
-  /* background: url(logo.png); */
-
-  /* Inside auto layout */
-
   flex: none;
   order: 0;
   flex-grow: 0;
@@ -200,10 +182,6 @@
   display: none;
   width: 279px;
   height: 44px;
-
-
-  /* Inside auto layout */
-
   flex: none;
   order: 1;
   flex-grow: 0;
@@ -218,10 +196,6 @@
 
   width: 280px;
   height: 297px;
-
-
-  /* Inside auto layout */
-
   flex: none;
   order: 2;
   align-self: stretch;
@@ -234,15 +208,10 @@
   align-items: center;
   padding: 8px 12px;
   gap: 8px;
-
   width: 248px;
   height: 48px;
-
   background: #141313;
   border-radius: 10px;
-
-  /* Inside auto layout */
-
   flex: none;
   order: 0;
   align-self: stretch;
@@ -259,24 +228,11 @@
   width: 224px;
   height: 24px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 1; */
 }
 
 .gavel {
   width: 20px;
   height: 20px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  flex-grow: 0; */
 
 }
 
@@ -289,17 +245,8 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  /* identical to box height, or 150% */
-
-
   color: #FFFFFF;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 2;
-  flex-grow: 0; */
 }
 
 .framee1 {
@@ -311,26 +258,12 @@
 
   width: 248px;
   height: 9px;
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .divider {
   width: 248px;
   height: 1px;
-
-  /* Gray/200 */
-
   background: #EAECF0;
-
-  /* Inside auto layout */
-
   flex: none;
   order: 0;
   align-self: stretch;
@@ -349,12 +282,6 @@
 
   border-radius: 6px;
 
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 2;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .contenttt {
@@ -366,37 +293,16 @@
 
   width: 224px;
   height: 24px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 1; */
 }
 
 .description {
   width: 24px;
   height: 24px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  flex-grow: 0; */
 }
 
 .textt {
   width: 24px;
   height: 24px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  flex-grow: 0; */
 }
 
 .footer {
@@ -408,14 +314,6 @@
 
   width: 280px;
   height: 72px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .main {
@@ -424,18 +322,7 @@
   align-items: center;
   padding: 32px 0px 48px;
   gap: 48px;
-
-  /* width: 100%;
-  height: 100%; */
-  /* overflow-y: scroll; */
-
   background: #FCFCFD;
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 1;
-  flex-grow: 1; */
 }
 
 .breadcumbs {
@@ -447,14 +334,6 @@
 
   width: 100%;
   height: 100%;
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .breadcumbsTitle {
@@ -464,32 +343,14 @@
   align-items: center;
   padding: 0px;
 
-  /* width: 90px;
-height: 20px; */
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-order: 0;
-flex-grow: 0; */
 }
 
 .textBreadcumbs {
-
-  /* width: 90px; */
-  /* height: 20px; */
-
   font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  /* identical to box height, or 143% */
-
-
-  /* Gray/600 */
-
   color: #475467;
 }
 
@@ -503,12 +364,6 @@ flex-grow: 0; */
   width: 67px;
   height: 20px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 8;
-  flex-grow: 0; */
 }
 
 .main2 {
@@ -517,20 +372,7 @@ flex-grow: 0; */
   align-items: flex-start;
   padding: 0px 0px 48px;
   gap: 48px;
-
-  /* width: 100vh;
-  height: 100vh; */
-
-  /* Gray/25 */
-
   background: #FCFCFD;
-
-  /* Inside auto layout */
-
-  /* flex: none;
-order: 1;
-align-self: stretch;
-flex-grow: 0; */
 }
 
 .title {
@@ -539,10 +381,6 @@ flex-grow: 0; */
   align-items: flex-start;
   padding: 0px;
   gap: 16px;
-
-  /* width: 1096px;
-  height: 52px; */
-
 }
 
 .styleTitle {
@@ -554,11 +392,6 @@ flex-grow: 0; */
   font-weight: 500;
   font-size: 30px;
   line-height: 38px;
-  /* identical to box height, or 127% */
-
-
-  /* Gray/900 */
-
   color: #101828;
 }
 
@@ -571,11 +404,6 @@ flex-grow: 0; */
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
-  /* identical to box height, or 143% */
-
-
-  /* Gray/500 */
-
   color: #667085;
 }
 
@@ -589,35 +417,13 @@ flex-grow: 0; */
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  /* identical to box height, or 150% */
-
-
-  /* Gray/700 */
-
   color: #344054;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 0; */
 }
 
 .dividerr {
   width: 1096px;
   height: 1px;
-
-  /* Gray/200 */
-
   background: #EAECF0;
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .auctions {
@@ -639,11 +445,6 @@ flex-grow: 0; */
   font-weight: 500;
   font-size: 20px;
   line-height: 30px;
-  /* identical to box height, or 150% */
-
-
-  /* Gray/900 */
-
   color: #101828;
 }
 
@@ -655,10 +456,6 @@ flex-grow: 0; */
   font-weight: 400;
   font-size: 18px;
   line-height: 28px;
-  /* identical to box height, or 156% */
-
-
-  /* Gray/900 */
 
   color: #101828;
 }
@@ -666,7 +463,6 @@ flex-grow: 0; */
 .buttonDetails {
   box-sizing: border-box;
 
-  /* Auto layout */
   margin-top: 30px;
   /* margin-left: 17px; */
   display: flex;
@@ -675,13 +471,9 @@ flex-grow: 0; */
   align-items: center;
   padding: 10px 16px;
   gap: 8px;
-
   width: 322.67px;
   height: 40px;
-
   background: #171618;
-  /* Shadow/xs */
-
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
 
 }
@@ -692,11 +484,6 @@ flex-grow: 0; */
   font-weight: 600;
   font-size: 16px;
   line-height: 20px;
-  /* identical to box height, or 125% */
-
-
-  /* Base/White */
-
   color: #FFFFFF;
 
 }

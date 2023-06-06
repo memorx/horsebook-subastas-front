@@ -2,13 +2,13 @@ export const state = () => ({
   singUpData: {},
   setUser: {},
   horseDetails: {},
-  userInformation:{}
+  userInformation: {}
 });
 
 export const mutations = {
   setSingUpData(state, value) {
-      state.singUpData = value;
-      localStorage.setItem('singUpData', JSON.stringify(value));
+    state.singUpData = value;
+    localStorage.setItem('singUpData', JSON.stringify(value));
   },
   setHorseDetails(state, data) {
     state.horseDetails = data
@@ -17,8 +17,8 @@ export const mutations = {
     state.user = user;
     localStorage.setItem('setUser', JSON.stringify(user));
   },
-  setInformation(state, info){
-    state.info=info;
+  setInformation(state, info) {
+    state.info = info;
     localStorage.setItem("setInfo", JSON.stringify(info))
   }
 };

@@ -23,8 +23,8 @@
               <div class="contenttt flex items-center gap-2">
                 <div class="description"></div>
                 <button class="font-montserrat font-medium text-base leading-6 text-gray-900">
-                  <NuxtLink to="perfil">Tus datos
-                  </NuxtLink>
+                  <a href="perfil">Tus datos
+                  </a>
                 </button>
               </div>
             </div>
@@ -35,7 +35,6 @@
     </div>
     <div class="main">
       <div class="title">
-        <img class="avatarr" src="../../public/image_profile.png">
         <p class="textttt">Bienvenido a HorseBook, {{ setUser.email || 'Matíass' }}</p>
 
       </div>
@@ -54,10 +53,11 @@
           </div>
         </div>
       </div>
+      <!--  WAITING FOR AN ENDPOINT -->
       <!-- <div class="framee1">
         <div class="dividerr"></div>
       </div> -->
-      <div class="sectionheaderr">
+      <!-- <div class="sectionheaderr">
         <p class="textSub">Subastas en las que estas registrado</p>
         <div class="contentttttt" v-for="item in email" :key="item.id">
           <img src="../../public/image_subasta.png" alt="logo" width="90%" height="100%">
@@ -69,7 +69,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div></template>
@@ -79,7 +79,7 @@
   align-items: center;
   padding-top: 35px;
   gap: 48px;
-
+  margin-left: 75px;
   width: 100%;
   height: 100%;
 }
@@ -106,36 +106,24 @@
   flex-direction: row;
   align-items: flex-start;
   padding: 0px;
-
   position: absolute;
   width: 1440px;
   height: 2538px;
   left: 0px;
   top: 78px;
-
   background: #FCFCFD;
 }
 
 .sideBar {
   box-sizing: border-box;
-
-
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   padding: 0px;
-
   width: 280px;
   height: 70vh;
-
-
-
   background: #F9FAFB;
-
-
   border-right: 1px solid #EAECF0;
-
-
 }
 
 .content {
@@ -171,11 +159,6 @@
 .logo {
   width: 90px;
   height: 92px;
-
-  /* background: url(logo.png); */
-
-  /* Inside auto layout */
-
   flex: none;
   order: 0;
   flex-grow: 0;
@@ -245,17 +228,8 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  /* identical to box height, or 150% */
-
-
   color: #FFFFFF;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 2;
-  flex-grow: 0; */
 }
 
 .framee1 {
@@ -305,12 +279,6 @@
   width: 24px;
   height: 24px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  flex-grow: 0; */
 }
 
 .footer {
@@ -328,20 +296,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* padding: 32px 0px 48px; */
   gap: 48px;
 
   width: 100%;
   height: 100%;
-  /* overflow-y: scroll; */
-
   background: #FCFCFD;
 
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 1;
-  flex-grow: 1; */
 }
 
 .sectionheader {
@@ -352,16 +312,6 @@
   padding: 0px;
   gap: 24px;
 
-  /* width: 1160px; */
-  /* height: 64px; */
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .containerr {
@@ -371,17 +321,6 @@
   align-items: flex-start;
   padding: 0px 32px;
   gap: 24px;
-
-  /* width: 1160px; */
-  /* height: 64px; */
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .pageHeader {
@@ -395,13 +334,6 @@
   width: 1096px;
   height: 64px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .contentttt {
@@ -414,13 +346,6 @@
   width: 1096px;
   height: 64px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .avatar {
@@ -433,12 +358,6 @@
   width: 1096px;
   height: 64px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 1; */
 }
 
 .avatarr {
@@ -452,16 +371,8 @@
   width: 64px;
   height: 64px;
 
-  /* Avatar user square/Olivia Rhye */
-
-  /* background: url(olivia-rhye); */
   border-radius: 200px;
 
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 0; */
 }
 
 .texttt {
@@ -474,41 +385,20 @@
   width: 1012px;
   height: 38px;
 
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 1;
-  flex-grow: 1; */
 }
 
 .textttt {
   width: 100%;
   height: 100%;
-  /* margin-right: 530px; */
-  /* padding-right: 30px; */
-  /* position: relative; */
-  /* right: 30px; */
 
   font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 30px;
   line-height: 38px;
-  /* identical to box height, or 127% */
-
-
-  /* Gray/900 */
 
   color: #101828;
 
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .sectionn {
@@ -518,16 +408,8 @@
   padding: 0px;
   gap: 24px;
 
-  /* width: 90vh; */
   height: 90vh;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .containerrr {
@@ -537,16 +419,6 @@
   padding: 0px 32px;
   gap: 24px;
 
-  /* width: 1160px; */
-  /* height: 940px; */
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .sectionheaderr {
@@ -558,16 +430,7 @@
 
   width: 100%;
   height: 100%;
-  /* width: 1096px; */
-  /* height: 28px; */
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .contenttttt {
@@ -580,13 +443,6 @@
   width: 1096px;
   height: 28px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .textNextSub {
@@ -600,39 +456,16 @@
   width: 1096px;
   height: 28px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 1; */
 }
 
 .textSub {
-  /* width: 1096px; */
-  /* height: 28px; */
-
   font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   padding-left: 40px;
   line-height: 28px;
-  /* identical to box height, or 117% */
-
-
-  /* Gray/900 */
-
   color: #101828;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .contentttttt {
@@ -642,16 +475,6 @@
   margin-left: 40px;
   gap: 32px;
 
-  /* width: 100%; */
-  /* height: 100%; */
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .sectionnnn {
@@ -660,18 +483,8 @@
   align-items: flex-start;
   padding: 0px;
   gap: 20px;
-
   width: 1096px;
   height: 28px;
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
-
 }
 
 .posts {
@@ -680,17 +493,8 @@
   align-items: flex-start;
   padding: 0px;
   gap: 24px;
-
   width: 1096px;
   height: 432px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .contenttttttt {
@@ -699,17 +503,6 @@
   align-items: flex-start;
   padding: 0px;
   gap: 24px;
-
-  /* width: 1096px; */
-  /* height: 432px; */
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .blog {
@@ -718,30 +511,13 @@
   align-items: flex-start;
   padding: 0px;
   gap: 18px;
-
   width: 1096px;
   height: 432px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 1; */
 }
 
 .imagee {
   width: 1096px;
   height: 302px;
-
-  /* background: url(.jpg); */
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 1; */
 }
 
 .contentttttttt {
@@ -750,17 +526,8 @@
   align-items: flex-start;
   padding: 0px;
   gap: 24px;
-
   width: 1096px;
   height: 112px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .headingText {
@@ -769,41 +536,19 @@
   align-items: flex-start;
   padding: 0px;
   gap: 8px;
-
   width: 1096px;
   height: 112px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .author {
   width: 1096px;
   height: 20px;
-
   font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  /* identical to box height, or 143% */
-
-
   color: #A8A8A8;
-
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .headingIcon {
@@ -812,41 +557,19 @@
   align-items: flex-start;
   padding: 0px;
   gap: 16px;
-
   width: 1096px;
   height: 28px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .headingg {
   width: 189px;
   height: 28px;
-
   font-family: 'Aeonik';
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
   line-height: 28px;
-  /* identical to box height, or 156% */
-
-
-  /* Gray/900 */
-
   color: #101828;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 0; */
 }
 
 .iconWrap {
@@ -854,28 +577,13 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 4px 0px 0px;
-
   width: 24px;
   height: 28px;
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 1;
-  flex-grow: 0; */
 }
 
 .arrow {
   width: 24px;
   height: 24px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 0; */
 }
 
 .iconn {
@@ -884,35 +592,18 @@
   right: 29.17%;
   top: 29.17%;
   bottom: 29.17%;
-
-  /* Gray/900 */
-
   border: 2px solid #101828;
 }
 
 .supportingText {
   width: 100vh;
   height: 100vh;
-
   font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  /* or 150% */
-
-
-  /* Gray/600 */
-
   color: #475467;
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 2;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .frameee1 {
@@ -921,33 +612,14 @@
   align-items: flex-start;
   padding: 8px 0px 0px;
   gap: 8px;
-
   width: 1160px;
   height: 9px;
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 2;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .dividerr {
   width: 1160px;
   height: 1px;
-
-  /* Gray/200 */
-
   background: #EAECF0;
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .sectionRegister {
@@ -956,18 +628,9 @@
   align-items: flex-start;
   padding: 0px;
   gap: 24px;
-
   width: 1160px;
   height: 940px;
-
   background: #FCFCFD;
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 3;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .sectionHeaderRegister {
@@ -976,17 +639,8 @@
   align-items: flex-start;
   padding: 0px;
   gap: 20px;
-
   width: 1096px;
   height: 28px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .contentRegister {
@@ -995,17 +649,8 @@
   align-items: flex-start;
   padding: 0px;
   gap: 16px;
-
   width: 1096px;
   height: 28px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .textRegister {
@@ -1015,42 +660,19 @@
   align-items: flex-start;
   padding: 0px;
   gap: 4px;
-
   width: 1096px;
   height: 28px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 1; */
 }
 
 .texttRegister {
   width: 1096px;
   height: 28px;
-
   font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
   line-height: 28px;
-  /* identical to box height, or 117% */
-
-
-  /* Gray/900 */
-
   color: #101828;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .contentRegisterr {
@@ -1059,17 +681,8 @@
   align-items: flex-start;
   padding: 0px;
   gap: 32px;
-
   width: 1096px;
   height: 432px;
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .sectionRegisterr {
@@ -1078,16 +691,8 @@
   align-items: flex-start;
   padding: 0px;
   gap: 32px;
-
   width: 1096px;
   height: 432px;
-
-
-  /* Inside auto layout */
-  /*
-  flex: none;
-  order: 0;
-  flex-grow: 1; */
 }
 
 .postsRegister {
@@ -1096,17 +701,8 @@
   align-items: flex-start;
   padding: 0px;
   gap: 24px;
-
   width: 1096px;
   height: 432px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .contentRegisterrr {
@@ -1115,17 +711,8 @@
   align-items: flex-start;
   padding: 0px;
   gap: 24px;
-
   width: 1096px;
   height: 432px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .blogRegister {
@@ -1134,30 +721,13 @@
   align-items: flex-start;
   padding: 0px;
   gap: 32px;
-
   width: 1096px;
   height: 432px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 1; */
 }
 
 .imageRegister {
   width: 1096px;
   height: 288px;
-
-  /* background: url(.jpg); */
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 1; */
 }
 
 .contentRegisterrrr {
@@ -1166,17 +736,9 @@
   align-items: flex-start;
   padding: 0px;
   gap: 24px;
-
   width: 1096px;
   height: 112px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .headingTextRegister {
@@ -1185,40 +747,19 @@
   align-items: flex-start;
   padding: 0px;
   gap: 8px;
-
   width: 1096px;
   height: 112px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .authorRegister {
   width: 1096px;
   height: 20px;
-
   font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  /* identical to box height, or 143% */
-
-
   color: #A8A8A8;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .headingIconRegister {
@@ -1227,74 +768,36 @@
   align-items: flex-start;
   padding: 0px;
   gap: 16px;
-
   width: 1096px;
   height: 28px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 
 .headingRegister {
-
   width: 129px;
   height: 28px;
-
   font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
   line-height: 28px;
-  /* identical to box height, or 156% */
-
-
-  /* Gray/900 */
-
   color: #101828;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 0; */
 }
 
 .iconWrapRegister {
-  /* Auto layout */
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 4px 0px 0px;
-
   width: 24px;
   height: 28px;
 
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 1;
-  flex-grow: 0; */
 }
 
 .arrowRegister {
   width: 24px;
   height: 24px;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 0; */
-
 }
 
 .iconRegister {
@@ -1303,9 +806,6 @@
   right: 29.17%;
   top: 29.17%;
   bottom: 29.17%;
-
-  /* Gray/900 */
-
   border: 2px solid #101828;
 }
 
@@ -1318,20 +818,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  /* or 150% */
-
-
-  /* Gray/600 */
-
   color: #475467;
-
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 2;
-  align-self: stretch;
-  flex-grow: 0; */
 }
 </style>
 <script>

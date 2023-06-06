@@ -18,7 +18,7 @@
           </div>
           <div class="containerInput">
             <span class="titleInput">Contraseña</span>
-            <input class= "styleInput" type="email" placeholder="Ingresar contraseña" />
+            <input class="styleInput" type="email" placeholder="Ingresar contraseña" />
           </div>
         </div>
         <div class="containerButton">
@@ -46,6 +46,7 @@
   height: 100%;
   background: white;
 }
+
 /* @font-face {
   font-family: 'Aeonik';
   src: url('/fonts/Aeonik-Regular.ttf') format('truetype');
@@ -80,30 +81,30 @@
 
   margin: 0;
   font-family: 'Aeonik', sans-serif;
-font-style: normal;
-font-weight: 500;
-font-size: 34px;
-line-height: 42px;
-/* identical to box height, or 124% */
+  font-style: normal;
+  font-weight: 500;
+  font-size: 34px;
+  line-height: 42px;
+  /* identical to box height, or 124% */
 
 
-color: #000000;
+  color: #000000;
 }
 
 .horsebook {
   margin: 0;
   font-family: 'Aeonik', sans-serif;
-font-style: normal;
-font-weight: 400;
-font-size: 18px;
-line-height: 21px;
-/* identical to box height */
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+  /* identical to box height */
 
-text-align: center;
+  text-align: center;
 
-/* Neutral / 60 */
+  /* Neutral / 60 */
 
-color: #939094;
+  color: #939094;
 }
 
 .wrapperInputs {
@@ -114,23 +115,23 @@ color: #939094;
 }
 
 
-  .styleInput {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 15px 22px;
-    gap: 8px;
-    width: 398px;
-    height: 54px;
-    background: #FFFFFF;
-    border: 1.5px solid #E0E0E0;
-    border-radius: 8px;
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
-  }
+.styleInput {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 15px 22px;
+  gap: 8px;
+  width: 398px;
+  height: 54px;
+  background: #FFFFFF;
+  border: 1.5px solid #E0E0E0;
+  border-radius: 8px;
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
 
 
 .containerInput {
@@ -150,11 +151,11 @@ color: #939094;
 
 .containerInput input {
   width: 398px;
-height: 54px;
+  height: 54px;
 
-background: #FFFFFF;
-border: 1.5px solid #E0E0E0;
-border-radius: 8px;
+  background: #FFFFFF;
+  border: 1.5px solid #E0E0E0;
+  border-radius: 8px;
 }
 
 
@@ -164,6 +165,7 @@ border-radius: 8px;
   width: 100%;
   gap: 10px;
 }
+
 .buttonCta {
   background-color: black;
   height: 40px;

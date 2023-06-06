@@ -111,7 +111,8 @@ export default {
     async reSendCode() {
       this.loading = true
       const url = this.$config.baseURL + "/users/re-send-email/";
-      const token = "Token " + process.env.TOKEN;
+      // const token = "Token " + process.env.TOKEN;
+      const token = "Token 0119158e9e647cc58e9c895fa08316b2a5b03df4"
       // this.$store.commit('setUser', { email: this.setUser.email })
       const headers = {
         Authorization: token,
@@ -151,7 +152,8 @@ export default {
     async verificationCode(data) {
       this.loading = true
       const url = this.$config.baseURL + "/users/password-code-verification/";
-      const token = "Token " + process.env.TOKEN;
+      const token = "Token 0119158e9e647cc58e9c895fa08316b2a5b03df4"
+      // const token = "Token " + process.env.TOKEN;
 
       const body = data
       await this.$axios.$post(url, body)
@@ -176,7 +178,3 @@ export default {
   }
 }
 </script>
-
-
-
-
