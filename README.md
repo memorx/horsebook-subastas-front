@@ -3,7 +3,8 @@
 ## Build Setup
 
 ```bash
-# install dependencies
+# install dependencies (node 18 is required)
+$ nvm use 18
 $ npm install
 
 # serve with hot reload at localhost:3000
