@@ -99,6 +99,10 @@
         <div class="transmision">
           <p class="titleTransmision">Transmision</p>
           <p class="subtitleTransmision">Mira en vivo la subasta</p>
+          <div class="videoContainer">
+            <iframe width="560" height="315" :src="videoUrl" frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
         </div>
       </div>
       <div class="modal modal-lg" v-if="showModal">
@@ -1026,6 +1030,12 @@ flex-grow: 0; */
   color: #FFFFFF;
 
 }
+
+.videoContainer {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+}
 </style>
 <script>
 import Loading from '../../components/shared/Loading.vue';
@@ -1033,6 +1043,7 @@ export default {
   data() {
     return {
       showModal: false,
+      videoUrl: 'https://www.youtube.com/embed/oqIIVOvuak0',
       // otros datos
     }
   },
