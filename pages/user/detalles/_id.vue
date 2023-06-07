@@ -32,14 +32,16 @@
     </div>
     <div class="main">
       <div class="breadcumbs">
-        <p class="textBreadcumbs">Tus subastas / Subasta {{ item.id }} </p>
+        <p class="textBreadcumbs font-montserrat">Tus subastas / Subasta {{ item.id }} </p>
       </div>
       <div class="main2">
         <img src="../../../public/image_detail_horse.png" width="100%" height="100%">
         <div class="title">
-          <p class="styleTitle">Subasta</p>
-          <p class="datesAuction">Fecha de pre-oferta: {{ new Date(item.start_pre_bid).toLocaleString() }}</p>
-          <p class="datesAuction">Fecha de subasta: {{ new Date(item.start_pre_bid).toLocaleString() }}</p>
+          <p class="styleTitle font-montserrat">Subasta</p>
+          <p class="datesAuction font-montserrat">Fecha de pre-oferta: {{ new Date(item.start_pre_bid).toLocaleString() }}
+          </p>
+          <p class="datesAuction font-montserrat">Fecha de subasta: {{ new Date(item.start_pre_bid).toLocaleString() }}
+          </p>
           <!-- <p class="dateAuction">DD/MM/YY</p>
                                                                                                                                                                                                                                                                                                     <p class="dateAuction">DD/MM/YY</p> -->
 
@@ -48,16 +50,16 @@
         <div class="auctions">
           <li class="li" v-for="horse in item.horses" :key="horse.id">
             <img src="../../../public/horse_example.png">
-            <p class="nameHorse">{{ horse.external_data.name }}</p>
-            <p class="prizeHorse">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
+            <p class="nameHorse font-montserrat">{{ horse.external_data.name }}</p>
+            <p class="prizeHorse font-montserrat">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
             <!-- <button class="buttonDetails" v-on:click="showHorseDetails(horse)"> -->
             <button class="buttonDetails">
               <NuxtLink to="../detalleCaballo">
-                <p class="seeDetails">Ver detalles</p>
+                <p class="seeDetails font-montserrat">Ver detalles</p>
               </NuxtLink>
             </button>
             <div v-if="horse.showDetails">
-              <p>Details: {{ horse.external_data.alt_name }}</p>
+              <p class="font-montserrat">Details: {{ horse.external_data.alt_name }}</p>
               <!-- Add more details here -->
             </div>
           </li>

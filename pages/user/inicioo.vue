@@ -23,7 +23,7 @@
               <div class="contenttt flex items-center gap-2">
                 <div class="description"></div>
                 <button class="font-montserrat font-medium text-base leading-6 text-gray-900">
-                  <a href="perfil">Tus datos
+                  <a href="/user/perfil">Tus datos
                   </a>
                 </button>
               </div>
@@ -35,20 +35,20 @@
     </div>
     <div class="main">
       <div class="title">
-        <p class="textttt">Bienvenido a HorseBook, {{ setUser.email || 'Matíass' }}</p>
+        <p class="textttt font-montserrat">Bienvenido a HorseBook, {{ setUser.email || 'Matíass' }}</p>
 
       </div>
       <div class="sectionheaderr">
-        <p class="textSub">Próximas subastas disponibles</p>
+        <p class="textSub font-montserrat">Próximas subastas disponibles</p>
         <div class="contentttttt" v-for="item in email" :key="item.id">
           <img src="../../public/image_subasta.png" alt="logo" width="90%" height="100%">
           <div class="contentttttttt">
             <div class="headingText">
-              <p class="author">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}</p>
+              <p class="author font-montserrat">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}</p>
               <NuxtLink :to="'/user/detalles/' + item.id" @click.prevent="goToDetails(item.id)">
-                <p class="headingRegister">Coleccion 2023</p>
+                <p class="headingRegister font-montserrat">Coleccion 2023</p>
               </NuxtLink>
-              <p class="supportingText">{{ item.notes }}</p>
+              <p class="supportingText font-monserrat">{{ item.notes }}</p>
             </div>
           </div>
         </div>
