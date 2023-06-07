@@ -33,72 +33,72 @@
     <div class="main">
       <div class="breadcumbs">
         <!-- <p class="textBreadcumbs">Tus subastas / Subasta {{ item.id }} </p> -->
-        <p class="textBreadcumbs">Tus subastas / Subasta 3 / Caballo</p>
+        <p class="textBreadcumbs font-montserrat">Tus subastas / Subasta 3 / Caballo</p>
       </div>
       <div class="main2">
         <img src="../../public/image_horse_details.png" width="100%" height="100%">
         <div class="title">
-          <p class="styleTitle">Subasta</p>
+          <p class="styleTitle font-montserrat">Subasta</p>
 
           <!-- <p class="datesAuction">Fecha de subasta: {{ new Date(item.start_pre_bid).toLocaleString() }}</p> -->
-          <p class="datesAuction">Fecha de subasta:</p>
+          <p class="datesAuction font-montserrat">Fecha de subasta:</p>
           <div class="containerButton">
-            <button class="button" @click="showModal = true">Hacer oferta</button>
+            <button class="button font-montserrat" @click="showModal = true">Hacer oferta</button>
           </div>
         </div>
         <!-- <div class="framee1">
           <div class="dividerr"></div>
         </div> -->
         <div class="pujas">
-          <p class="titlePujas">Pujas</p>
-          <p class="subtitlePujasStyle">Últimas pujas</p>
+          <p class="titlePujas font-montserrat">Pujas</p>
+          <p class="subtitlePujasStyle font-montserrat">Últimas pujas</p>
           <div class="cuadroPujas">
             <div class="tableHeaderCellName">
-              <p class="titleName">Nombre</p>
+              <p class="titleName font-montserrat">Nombre</p>
               <div class="nameList">
-                <p class="textNamePuja">Carlos Montes</p>
-                <p class="textNamePuja">Matías Koziupa</p>
-                <p class="textNamePuja">Alejandro Lopez</p>
-                <p class="textNamePuja">Daniel Santiago</p>
-                <p class="textNamePuja">Diana Mendez</p>
+                <p class="textNamePuja font-montserrat">Carlos Montes</p>
+                <p class="textNamePuja font-montserrat">Matías Koziupa</p>
+                <p class="textNamePuja font-montserrat">Alejandro Lopez</p>
+                <p class="textNamePuja font-montserrat">Daniel Santiago</p>
+                <p class="textNamePuja font-montserrat">Diana Mendez</p>
                 <!-- <hr class="nameListSeparator"> -->
               </div>
             </div>
             <div class="tableHeaderCellPuja">
               <p class="titleName">Puja</p>
               <div class="pujaList">
-                <p class="textPuja">$30000</p>
-                <p class="textPuja">$20000</p>
-                <p class="textPuja">$10050</p>
-                <p class="textPuja">$10000</p>
-                <p class="textPuja">$10000</p>
+                <p class="textPuja font-montserrat">$30000</p>
+                <p class="textPuja font-montserrat">$20000</p>
+                <p class="textPuja font-montserrat">$10050</p>
+                <p class="textPuja font-montserrat">$10000</p>
+                <p class="textPuja font-montserrat">$10000</p>
                 <!-- <hr class="nameListSeparator"> -->
               </div>
             </div>
             <div class="tableHeaderCellDate">
               <p class="titleName">Fecha</p>
               <div class="pujaList">
-                <p class="textPuja">20/4/2023</p>
-                <p class="textPuja">21/4/2023</p>
-                <p class="textPuja">5/3/2023</p>
-                <p class="textPuja">10/3/2023</p>
-                <p class="textPuja">20/3/2023</p>
+                <p class="textPuja font-montserrat">20/4/2023</p>
+                <p class="textPuja font-montserrat">21/4/2023</p>
+                <p class="textPuja font-montserrat">5/3/2023</p>
+                <p class="textPuja font-montserrat">10/3/2023</p>
+                <p class="textPuja font-montserrat">20/3/2023</p>
                 <!-- <hr class="nameListSeparator"> -->
               </div>
             </div>
           </div>
         </div>
         <div class="gallery">
-          <p class="titleGallery">Galeria</p>
-          <p class="subtitleGallery">Fotos y videos del caballo</p>
+          <p class="titleGallery font-montserrat">Galeria</p>
+          <p class="subtitleGallery font-montserrat">Fotos y videos del caballo</p>
           <div class="imageDetails">
             <img src="../../public/horse_white.png" width="45%" height="45%" style="margin-right: 10px;">
             <img src="../../public/horse_black.png" width="45%" height="45%">
           </div>
         </div>
         <div class="transmision">
-          <p class="titleTransmision">Transmision</p>
-          <p class="subtitleTransmision">Mira en vivo la subasta</p>
+          <p class="titleTransmision font-montserrat">Transmision</p>
+          <p class="subtitleTransmision font-montserrat">Mira en vivo la subasta</p>
           <div class="videoContainer">
             <iframe width="560" height="315" :src="videoUrl" frameborder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -107,16 +107,16 @@
       </div>
       <div class="modal modal-lg" v-if="showModal">
         <div class="modal-content">
-          <h3 class="sendPuja">Enviar puja</h3>
-          <p class="valorPuja">Ingresa el valor de tu puja aquí</p>
-          <p class="pujar">Puja</p>
+          <h3 class="sendPuja font-montserrat">Enviar puja</h3>
+          <p class="valorPuja font-montserrat">Ingresa el valor de tu puja aquí</p>
+          <p class="pujar font-montserrat">Puja</p>
           <input class="inputPuja" placeholder="Ingrese valor" id="price" name="price" type="price">
           <div class="containerPujarButton">
             <div class="containerButtonCancelar">
-              <button class="buttonCancelar" @click="showModal = false">Cancelar</button>
+              <button class="buttonCancelar font-montserrat" @click="showModal = false">Cancelar</button>
             </div>
             <div class="containerButtonn">
-              <button class="button">Pujar</button>
+              <button class="button font-montserrat">Pujar</button>
             </div>
           </div>
         </div>

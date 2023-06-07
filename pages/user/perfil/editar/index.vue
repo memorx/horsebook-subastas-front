@@ -34,48 +34,48 @@
     <div class="containerEdit">
       <div class="mainn">
         <div class="mainTitle">
-          <p class="editProfile">Editar perfil</p>
-          <p class="editProfileSubtitle">Edita tu perfil y tus datos personales</p>
+          <p class="editProfile font-montserrat">Editar perfil</p>
+          <p class="editProfileSubtitle font-montserrat">Edita tu perfil y tus datos personales</p>
         </div>
         <div class="buttonAcomodatee">
           <a href="/user/perfil" class="buttonEditContainerr">
-            <p class="buttonEditt">Cancelar</p>
+            <p class="buttonEditt font-montserrat">Cancelar</p>
           </a>
         </div>
         <div class="buttonAcomodate">
           <a href="/user/perfil" class="buttonEditContainer" @click=updateProfile>
-            <p class="buttonEdit">Guardar</p>
+            <p class="buttonEdit font-montserrat">Guardar</p>
           </a>
         </div>
       </div>
       <div class="main">
-        <p class="generalDates">Nombre (s)</p>
+        <p class="generalDates font-montserrat">Nombre (s)</p>
         <input class="inputs" placeholder="Nombre (s)" v-model="name" />
-        <p class="generalDates">Apellido paterno</p>
+        <p class="generalDates font-montserrat">Apellido paterno</p>
         <input class="inputs" placeholder="Apellido paterno" v-model="fathers_surname" />
-        <p class="generalDates">Apellido materno</p>
+        <p class="generalDates font-montserrat">Apellido materno</p>
         <input class="inputs" placeholder="Apellido materno" v-model="mothers_maiden_name" />
-        <p class="generalDates">Fecha de nacimiento</p>
+        <p class="generalDates font-montserrat">Fecha de nacimiento</p>
         <input class="inputs" placeholder="Fecha de nacimiento" v-model="birth_date" />
-        <p class="generalDates">Nacionalidad</p>
+        <p class="generalDates font-montserrat">Nacionalidad</p>
         <input class="inputs" placeholder="Nacionalidad" v-model="nationality" />
-        <p class="generalDates">Teléfono</p>
+        <p class="generalDates font-montserrat">Teléfono</p>
         <input class="inputs" placeholder="Teléfono" v-model="phone" />
-        <p class="generalDates"># de pasaporte o ID</p>
+        <p class="generalDates font-montserrat"># de pasaporte o ID</p>
         <input class="inputs" placeholder="# de pasaporte o ID" v-model="identification_document" />
-        <p class="generalDates">Pais</p>
+        <p class="generalDates font-montserrat">Pais</p>
         <input class="inputs" placeholder="Pais" v-model="country" />
-        <p class="generalDates">Estado</p>
+        <p class="generalDates font-montserrat">Estado</p>
         <input class="inputs" placeholder="Estado" v-model="state" />
-        <p class="generalDates">Ciudad</p>
+        <p class="generalDates font-montserrat">Ciudad</p>
         <input class="inputs" placeholder="Ciudad" v-model="municipalitie" />
-        <p class="generalDates">Calle</p>
+        <p class="generalDates font-montserrat">Calle</p>
         <input class="inputs" placeholder="Calle" v-model="street" />
-        <p class="generalDates">Número exterior</p>
+        <p class="generalDates font-montserrat">Número exterior</p>
         <input class="inputs" placeholder="Número exterior" v-model="outdoor_number" />
-        <p class="generalDates">Número interior</p>
+        <p class="generalDates font-montserrat">Número interior</p>
         <input class="inputs" placeholder="Número interior" v-model="interior_number" />
-        <p class="generalDates">C.P</p>
+        <p class="generalDates font-montserrat">C.P</p>
         <input class="inputs" placeholder="C.P" v-model="zip_code" />
       </div>
     </div>

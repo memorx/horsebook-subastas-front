@@ -39,104 +39,104 @@
     <div class="containerAll">
       <div class="mainn">
         <div class="mainTitle">
-          <p class="title">{{ email.name }}</p>
-          <p class="titleEmail">{{ email.email }}</p>
+          <p class="title font-montserrat">{{ email.name }}</p>
+          <p class="titleEmail font-montserrat">{{ email.email }}</p>
         </div>
         <div class="buttonAcomodate">
           <button class="buttonEditContainer">
             <a href="/user/perfil/editar">
-              <p class="buttonEdit">Editar perfil</p>
+              <p class="buttonEdit font-montserrat">Editar perfil</p>
             </a>
           </button>
         </div>
         <!-- <p>Editar perfil</p> -->
       </div>
       <div class="main">
-        <p class="generalDates">Datos generales</p>
+        <p class="generalDates font-montserrat">Datos generales</p>
         <div v-if="1 > 0" class="containerGeneralDates">
-          <p class="name">Nombre (s)</p>
-          <p class="nameStyle">{{ email.name }}</p>
-          <p class="lastNameMother">Apellido materno</p>
-          <p class="nameStyle">Del valle</p>
-          <p class="celphone">Teléfono</p>
-          <p class="nameStyle">{{ email.phone }}</p>
-          <p class="date">Fecha de nacimiento</p>
-          <p class="nameStyle">{{ email.birth_date }}</p>
+          <p class="name font-montserrat">Nombre (s)</p>
+          <p class="nameStyle font-montserrat">{{ email.name }}</p>
+          <p class="lastNameMother font-montserrat">Apellido materno</p>
+          <p class="nameStyle font-montserrat">Del valle</p>
+          <p class="celphone font-montserrat">Teléfono</p>
+          <p class="nameStyle font-montserrat">{{ email.phone }}</p>
+          <p class="date font-montserrat">Fecha de nacimiento</p>
+          <p class="nameStyle font-montserrat">{{ email.birth_date }}</p>
         </div>
         <div class="containerGeneralDatess">
-          <p class="lastNameFather">Apellido paterno</p>
-          <p class="lastNameFatherStyle">{{ email.fathers_surname
+          <p class="lastNameFather font-montserrat">Apellido paterno</p>
+          <p class="lastNameFatherStyle font-montserrat">{{ email.fathers_surname
           }}</p>
-          <p class="country">Nacionalidad</p>
-          <p class="lastNameFatherStyle">{{ email.nationality }}</p>
-          <p class="email">Email</p>
-          <p class="lastNameFatherStyle">{{ email.email }}</p>
-          <p class="id">Pasaporte / ID</p>
-          <p class="lastNameFatherStyle">{{ email.identification_document }}</p>
+          <p class="country font-montserrat">Nacionalidad</p>
+          <p class="lastNameFatherStyle font-montserrat">{{ email.nationality }}</p>
+          <p class="email font-montserrat">Email</p>
+          <p class="lastNameFatherStyle font-montserrat">{{ email.email }}</p>
+          <p class="id font-montserrat">Pasaporte / ID</p>
+          <p class="lastNameFatherStyle font-montserrat">{{ email.identification_document }}</p>
         </div>
       </div>
       <!-- <div class="framee1">
         <div class="dividerr"></div>
       </div> -->
       <div class="main2">
-        <p class="generalDates">Datos de domicilio</p>
+        <p class="generalDates font-montserrat">Datos de domicilio</p>
         <div class="containerGeneralDatesHouse">
-          <p class="name">Pais</p>
-          <p class="nameStyle">{{ email.country }}</p>
-          <p class="lastNameMother">Ciudad</p>
-          <p class="nameStyle">{{ email.state }}</p>
-          <p class="celphone">Número exterior</p>
-          <p class="nameStyle">{{ email.outdoor_number }}</p>
-          <p class="date">CP</p>
-          <p class="nameStyle">{{ email.zip_code }}</p>
+          <p class="name font-montserrat">Pais</p>
+          <p class="nameStyle font-montserrat">{{ email.country }}</p>
+          <p class="lastNameMother font-montserrat">Ciudad</p>
+          <p class="nameStyle font-montserrat">{{ email.state }}</p>
+          <p class="celphone font-montserrat">Número exterior</p>
+          <p class="nameStyle font-montserrat">{{ email.outdoor_number }}</p>
+          <p class="date font-montserrat">CP</p>
+          <p class="nameStyle font-montserrat">{{ email.zip_code }}</p>
         </div>
         <div class="containerGeneralDatessHouse">
-          <p class="lastNameFather">Estado</p>
-          <p class="lastNameFatherStyle">{{ email.municipalitie }}</p>
-          <p class="country">Calle</p>
-          <p class="lastNameFatherStyle">{{ email.street }}</p>
-          <p class="email">Número interior</p>
-          <p class="lastNameFatherStyle">{{ email.interior_number }}</p>
+          <p class="lastNameFather font-montserrat">Estado</p>
+          <p class="lastNameFatherStyle font-montserrat">{{ email.municipalitie }}</p>
+          <p class="country font-montserrat">Calle</p>
+          <p class="lastNameFatherStyle font-montserrat">{{ email.street }}</p>
+          <p class="email font-montserrat">Número interior</p>
+          <p class="lastNameFatherStyle font-montserrat">{{ email.interior_number }}</p>
         </div>
       </div>
       <div class="main3">
-        <p class="generalDates">Seguridad</p>
+        <p class="generalDates font-montserrat">Seguridad</p>
         <div class="containerGeneralDatesSecurity">
-          <p class="name">Contraseña</p>
-          <p class="nameStyle">******</p>
+          <p class="name font-montserrat">Contraseña</p>
+          <p class="nameStyle font-montserrat">******</p>
         </div>
       </div>
       <div class="w-full h-full flex">
-        <p class="not-italic font-semibold text-base leading-6 text-gray-900 pt-32 pl-8">Histórico</p>
+        <p class="not-italic font-semibold text-base leading-6 text-gray-900 pt-32 pl-8 font-montserrat">Histórico</p>
         <div class="pt-[180px]">
           <table class="bg-white p-2 p-12">
             <thead class="space-x-20">
               <tr class="space-x-20">
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] letterMonserrat px-4 py-2">id
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-4 py-2">id
                 </th>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] letterMonserrat px-4 py-2">
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-4 py-2">
                   highest_bid
                 </th>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] letterMonserrat px-4 py-2">
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-4 py-2">
                   bid_date
                 </th>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] letterMonserrat px-4 py-2">
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-4 py-2">
                   status
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="record in info.records" :key="record.bid_date" class="space-x-20">
-                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] letterMonserrat align-top">
+                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top">
                   Subasta {{ record.horse.id }}
                 </td>
-                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] letterMonserrat align-top">
+                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top">
                   {{ record.highest_bid }}
                 </td>
-                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] letterMonserrat align-top">
+                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top">
                   {{ new Date(record.bid_date).toLocaleString() }}
                 </td>
-                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] letterMonserrat align-top">
+                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top">
                   {{ record.status }}
                 </td>
               </tr>
