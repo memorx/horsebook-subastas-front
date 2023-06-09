@@ -760,12 +760,10 @@ export default {
 
         try {
           const response = await this.$axios.get(url, { headers });
-          console.log(response, "USERS");
           this.email = response.data.app_user_profile;
           this.profile = response.data.app_user_profile; // Almacenar los datos del perfil en la variable "profile"
           this.loading = false;
         } catch (error) {
-          console.log(error);
           this.loading = false;
         }
       }
@@ -781,16 +779,11 @@ export default {
         this.loading = true;
         try {
           const info = await this.$axios.get(url, { headers });
-          console.log(info, "RESPONSE AUCTIONS RECORDS")
-          console.log(info.data, "RESPONSE.DATA AUCTIONS RECORDS")
-          console.log(info.data.records, "RESPONSE.DATA.RECORDS AUCTIONS RECORDS")
           this.info = info.data
-          console.log(info, "INFO")
           this.loading = false;
 
         } catch (error) {
           this.loading = false;
-          console.log(error, "ERROR AUCTIONS RECORDS")
         }
       }
     }
