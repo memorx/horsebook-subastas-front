@@ -108,36 +108,68 @@
       </div>
       <div class="w-full h-full flex">
         <p class="not-italic font-semibold text-base leading-6 text-gray-900 pt-32 pl-8 font-montserrat">Histórico</p>
-        <div class="pt-[180px]">
-          <table class="bg-white p-2 p-12">
-            <thead class="space-x-20">
-              <tr class="space-x-20">
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-4 py-2">id
-                </th>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-4 py-2">
-                  highest_bid
-                </th>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-4 py-2">
-                  bid_date
-                </th>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-4 py-2">
-                  status
-                </th>
-              </tr>
+        <div class="pt-[180px] pl-[180px]">
+          <p class="font-montserrat not-italic font-semibold leading-7 text-[#101828]">Historial de subastas
+          </p>
+          <div class="pt-[40px] w-full flex flex-row">
+            <div class="box-border flex flex-row items-start isolate border p-0 rounded-lg border-[#D0D5DD] filterr">
+              <button
+                :class="['flex flex-row justify-center items-center gap-2 w-[100px] h-10 text-[#1D2939] px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'all', 'bg-[#D0D5DD]': selectedStatus === 'all' }]"
+                @click="selectedStatus = 'all'">
+                <p class="not-italic font-semibold text-sm leading-5 text-[#1D2939] font-montserrat">Todas</p>
+              </button>
+              <button
+                :class="['flex flex-row justify-center items-center gap-2 w-[95px] h-10 px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'won', 'bg-[#D0D5DD]': selectedStatus === 'won' }]"
+                @click="selectedStatus = 'won'">
+                <p :class="['not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat', { 'text-[#1D2939] font-semibold': selectedStatus === 'won' }]"
+                  @click="selectedStatus = 'won'">Ganadas</p>
+              </button>
+              <button
+                :class="['flex flex-row justify-center items-center gap-2 w-[95px] h-10 px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'lost', 'bg-[#D0D5DD]': selectedStatus === 'lost' }]"
+                @click="selectedStatus = 'lost'">
+                <p class="not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat">Perdidas</p>
+              </button>
+            </div>
+          </div>
+          <table class="bg-white mt-12  ">
+            <thead>
+              <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat py-4">
+                <div class="flex">Subasta</div>
+              </th>
+              <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
+                <div class="flex">Total</div>
+              </th>
+              <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
+                <div class="flex">Fecha</div>
+              </th>
+              <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
+                <div class="flex">Estado</div>
+              </th>
             </thead>
             <tbody>
-              <tr v-for="record in info.records" :key="record.bid_date" class="space-x-20">
-                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top">
-                  Subasta {{ record.horse.id }}
+              <tr v-for="    record     in     filteredRecords    " :key="record.bid_date">
+                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top  py-4">
+                  <div class="flex">
+                    Subasta {{ record.subasta.id }}
+                  </div>
                 </td>
-                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top">
-                  {{ record.highest_bid }}
+                <td
+                  class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
+                  <div class="flex">
+                    {{ record.highest_bid }}
+                  </div>
                 </td>
-                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top">
-                  {{ new Date(record.bid_date).toLocaleString() }}
+                <td
+                  class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
+                  <div class="flex">
+                    {{ new Date(record.bid_date).toLocaleString() }}
+                  </div>
                 </td>
-                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top">
-                  {{ record.status }}
+                <td class="not-italic font-semibold text-sm leading-5 font-montserrat align-top px-16 py-4"
+                  :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }">
+                  <div class="flex">
+                    {{ record.status === 'won' ? 'Ganada' : (record.status === 'lost' ? 'Perdida' : '') }}
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -148,6 +180,10 @@
   </div>
 </template>
 <style>
+.filterr {
+  filter: drop-shadow(0px 1px 2px rgba(16, 24, 40, 0.05));
+}
+
 .letterMonserrat {
   font-family: "Montserrat" "sans serif";
 }
@@ -686,7 +722,8 @@ export default {
       loggedInUser: null,
       email: [],
       info: [],
-      profile: null
+      profile: null,
+      selectedStatus: "all"
     }
   },
   mounted() {
@@ -697,6 +734,15 @@ export default {
     setUser() {
       return this.$store.state.user;
     },
+    filteredRecords() {
+      if (this.selectedStatus === 'all') {
+        return this.info.records; // Mostrar todas las subastas
+      } else if (this.selectedStatus === 'won') {
+        return this.info.records.filter(record => record.status === 'won'); // Mostrar subastas ganadas
+      } else if (this.selectedStatus === 'lost') {
+        return this.info.records.filter(record => record.status === 'lost'); // Mostrar subastas perdidas
+      }
+    }
   },
   methods: {
     async getInfo() {
@@ -714,12 +760,10 @@ export default {
 
         try {
           const response = await this.$axios.get(url, { headers });
-          console.log(response, "USERS");
           this.email = response.data.app_user_profile;
           this.profile = response.data.app_user_profile; // Almacenar los datos del perfil en la variable "profile"
           this.loading = false;
         } catch (error) {
-          console.log(error);
           this.loading = false;
         }
       }
@@ -735,16 +779,11 @@ export default {
         this.loading = true;
         try {
           const info = await this.$axios.get(url, { headers });
-          console.log(info, "RESPONSE AUCTIONS RECORDS")
-          console.log(info.data, "RESPONSE.DATA AUCTIONS RECORDS")
-          console.log(info.data.records, "RESPONSE.DATA.RECORDS AUCTIONS RECORDS")
           this.info = info.data
-          console.log(info, "INFO")
           this.loading = false;
 
         } catch (error) {
           this.loading = false;
-          console.log(error, "ERROR AUCTIONS RECORDS")
         }
       }
     }
