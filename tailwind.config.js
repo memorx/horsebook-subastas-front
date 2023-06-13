@@ -21,8 +21,10 @@ module.exports = {
         1: '1px'
       },
       fontFamily: {
-        futura: ['Arial','sans-serif'],
-        arial: ['Arial','sans-serif']
+        futura: ['Arial', 'sans-serif'],
+        arial: ['Arial', 'sans-serif'],
+        aeonik: ['Aeonik', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif']
       },
       screens: {
         xs: '540px'
