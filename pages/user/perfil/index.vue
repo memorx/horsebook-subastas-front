@@ -2,40 +2,7 @@
   <div class="container">
     <Loading v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
-    <div class="sideBar bg-gray-200 border-r border-gray-300">
-
-      <div class="content">
-        <div class="nav">
-          <div class="frame1">
-            <img src="../../../public/image_la_silla.png" alt="logo" width="90" height="92">
-          </div>
-          <div class="navigation">
-            <div class="gavel w-5 h-5"></div>
-            <button>
-              <a href="/user/inicioo">
-                <p class="font-montserrat font-medium text-base leading-6 text-gray-900 pl-4">Tus subastas</p>
-              </a>
-            </button>
-            <div class="framee1">
-              <div class="divider"></div>
-            </div>
-
-            <div class="navItemBasee">
-              <div class="contenttt flex items-center gap-2">
-                <div class="description"></div>
-                <div class="navItemBase bg-gray-800 rounded-lg">
-                  <div class="contentt flex items-center gap-2">
-                    <p class="font-montserrat font-medium text-base text-white pl-2">Tus datos</p>
-                  </div>
-                </div>
-                <!-- <p class="font-montserrat font-medium text-base leading-6 text-gray-900">Tus datos</p> -->
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="footer"></div>
-      </div>
-    </div>
+    <NavBarProfile />
     <div class="containerAll">
       <div class="mainn">
         <div class="mainTitle">
@@ -78,6 +45,9 @@
       <!-- <div class="framee1">
         <div class="dividerr"></div>
       </div> -->
+      <div class="pt-20">
+        <div class="w-full h-[1px] bg-[#EAECF0]"></div>
+      </div>
       <div class="main2">
         <p class="generalDates font-montserrat">Datos de domicilio</p>
         <div class="containerGeneralDatesHouse">
@@ -99,6 +69,9 @@
           <p class="lastNameFatherStyle font-montserrat">{{ email.interior_number }}</p>
         </div>
       </div>
+      <div class="pt-20">
+        <div class="w-full h-[1px] bg-[#EAECF0]"></div>
+      </div>
       <div class="main3">
         <p class="generalDates font-montserrat">Seguridad</p>
         <div class="containerGeneralDatesSecurity">
@@ -106,74 +79,82 @@
           <p class="nameStyle font-montserrat">******</p>
         </div>
       </div>
+      <div class="pt-20">
+        <div class="w-full h-[1px] bg-[#EAECF0]"></div>
+      </div>
       <div class="w-full h-full flex">
         <p class="not-italic font-semibold text-base leading-6 text-gray-900 pt-32 pl-8 font-montserrat">Histórico</p>
-        <div class="pt-[180px] pl-[180px]">
-          <p class="font-montserrat not-italic font-semibold leading-7 text-[#101828]">Historial de subastas
-          </p>
-          <div class="pt-[40px] w-full flex flex-row">
-            <div class="box-border flex flex-row items-start isolate border p-0 rounded-lg border-[#D0D5DD] filterr">
-              <button
-                :class="['flex flex-row justify-center items-center gap-2 w-[100px] h-10 text-[#1D2939] px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'all', 'bg-[#D0D5DD]': selectedStatus === 'all' }]"
-                @click="selectedStatus = 'all'">
-                <p class="not-italic font-semibold text-sm leading-5 text-[#1D2939] font-montserrat">Todas</p>
-              </button>
-              <button
-                :class="['flex flex-row justify-center items-center gap-2 w-[95px] h-10 px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'won', 'bg-[#D0D5DD]': selectedStatus === 'won' }]"
-                @click="selectedStatus = 'won'">
-                <p :class="['not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat', { 'text-[#1D2939] font-semibold': selectedStatus === 'won' }]"
-                  @click="selectedStatus = 'won'">Ganadas</p>
-              </button>
-              <button
-                :class="['flex flex-row justify-center items-center gap-2 w-[95px] h-10 px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'lost', 'bg-[#D0D5DD]': selectedStatus === 'lost' }]"
-                @click="selectedStatus = 'lost'">
-                <p class="not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat">Perdidas</p>
-              </button>
+        <div class="pt-[180px] pl-[180px] ">
+          <div class="border border-[#EAECF0]">
+            <p class="ml-6 font-montserrat not-italic font-semibold leading-7 text-[#101828]">Historial de subastas
+            </p>
+            <div class="pt-4">
+              <div class="w-full h-[1px] bg-[#EAECF0]"></div>
             </div>
+            <div class="pt-[40px] ml-6 w-full flex flex-row">
+              <div class="box-border flex flex-row items-start isolate border p-0 rounded-lg border-[#D0D5DD] filterr">
+                <button
+                  :class="['flex flex-row justify-center items-center gap-2 w-[100px] h-10 text-[#1D2939] px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'all', 'bg-[#D0D5DD]': selectedStatus === 'all' }]"
+                  @click="selectedStatus = 'all'">
+                  <p class="not-italic font-semibold text-sm leading-5 text-[#1D2939] font-montserrat">Todas</p>
+                </button>
+                <button
+                  :class="['flex flex-row justify-center items-center gap-2 w-[95px] h-10 px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'won', 'bg-[#D0D5DD]': selectedStatus === 'won' }]"
+                  @click="selectedStatus = 'won'">
+                  <p :class="['not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat', { 'text-[#1D2939] font-semibold': selectedStatus === 'won' }]"
+                    @click="selectedStatus = 'won'">Ganadas</p>
+                </button>
+                <button
+                  :class="['flex flex-row justify-center items-center gap-2 w-[95px] h-10 px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'lost', 'bg-[#D0D5DD]': selectedStatus === 'lost' }]"
+                  @click="selectedStatus = 'lost'">
+                  <p class="not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat">Perdidas</p>
+                </button>
+              </div>
+            </div>
+            <table class="bg-white mt-12 ml-6  ">
+              <thead>
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat py-4">
+                  <div class="flex">Subasta</div>
+                </th>
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
+                  <div class="flex">Total</div>
+                </th>
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
+                  <div class="flex">Fecha</div>
+                </th>
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
+                  <div class="flex">Estado</div>
+                </th>
+              </thead>
+              <tbody>
+                <tr v-for="    record     in     filteredRecords    " :key="record.bid_date">
+                  <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top  py-4">
+                    <div class="flex">
+                      Subasta {{ record.subasta.id }}
+                    </div>
+                  </td>
+                  <td
+                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
+                    <div class="flex">
+                      {{ record.highest_bid }}
+                    </div>
+                  </td>
+                  <td
+                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
+                    <div class="flex">
+                      {{ new Date(record.bid_date).toLocaleString() }}
+                    </div>
+                  </td>
+                  <td class="not-italic font-semibold text-sm leading-5 font-montserrat align-top px-16 py-4"
+                    :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }">
+                    <div class="flex">
+                      {{ record.status === 'won' ? 'Ganada' : (record.status === 'lost' ? 'Perdida' : '') }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <table class="bg-white mt-12  ">
-            <thead>
-              <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat py-4">
-                <div class="flex">Subasta</div>
-              </th>
-              <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
-                <div class="flex">Total</div>
-              </th>
-              <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
-                <div class="flex">Fecha</div>
-              </th>
-              <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
-                <div class="flex">Estado</div>
-              </th>
-            </thead>
-            <tbody>
-              <tr v-for="    record     in     filteredRecords    " :key="record.bid_date">
-                <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top  py-4">
-                  <div class="flex">
-                    Subasta {{ record.subasta.id }}
-                  </div>
-                </td>
-                <td
-                  class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
-                  <div class="flex">
-                    {{ record.highest_bid }}
-                  </div>
-                </td>
-                <td
-                  class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
-                  <div class="flex">
-                    {{ new Date(record.bid_date).toLocaleString() }}
-                  </div>
-                </td>
-                <td class="not-italic font-semibold text-sm leading-5 font-montserrat align-top px-16 py-4"
-                  :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }">
-                  <div class="flex">
-                    {{ record.status === 'won' ? 'Ganada' : (record.status === 'lost' ? 'Perdida' : '') }}
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
@@ -184,9 +165,7 @@
   filter: drop-shadow(0px 1px 2px rgba(16, 24, 40, 0.05));
 }
 
-.letterMonserrat {
-  font-family: "Montserrat" "sans serif";
-}
+
 
 .buttonAcomodate {
   padding-top: 40px;
@@ -208,7 +187,6 @@
 }
 
 .buttonEdit {
-  font-family: 'Montserrat' "sans serif";
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -218,7 +196,6 @@
 
 .lastNameFatherStyle {
 
-  font-family: 'Montserrat' "sans serif";
   font-style: normal;
   font-size: 16px;
   font-weight: 500px;
@@ -228,7 +205,6 @@
 }
 
 .nameStyle {
-  font-family: 'Montserrat' "sans serif";
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -251,7 +227,6 @@
 }
 
 .titleEmail {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -262,7 +237,6 @@
 }
 
 .title {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 600;
   font-size: 30px;
@@ -352,7 +326,6 @@
 }
 
 .id {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -363,7 +336,6 @@
 }
 
 .email {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -374,7 +346,6 @@
 }
 
 .country {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -385,7 +356,6 @@
 }
 
 .lastNameFather {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -404,7 +374,6 @@
 }
 
 .date {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -415,7 +384,7 @@
 }
 
 .celphone {
-  font-family: 'Montserrat' "sans-serif";
+
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -426,7 +395,7 @@
 }
 
 .lastNameMother {
-  font-family: 'Montserrat' "sans-serif";
+
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -437,7 +406,6 @@
 }
 
 .name {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -457,7 +425,6 @@
 }
 
 .generalDates {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -536,186 +503,15 @@
 
 
 }
-
-.content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0px;
-  width: 280px;
-  height: 822px;
-}
-
-.nav {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 32px 0px 0px;
-  gap: 84px;
-  width: 280px;
-  height: 505px;
-}
-
-.frame1 {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0px 20px;
-  gap: 8px;
-  width: 280px;
-  height: 92px;
-}
-
-.logo {
-  width: 90px;
-  height: 92px;
-
-  /* background: url(logo.png); */
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-}
-
-.search {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px 24px;
-
-  display: none;
-  width: 279px;
-  height: 44px;
-
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-}
-
-.navigation {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px 16px;
-  gap: 16px;
-  width: 280px;
-  height: 297px;
-}
-
-.navItemBase {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 8px 12px;
-  gap: 8px;
-  width: 248px;
-  height: 48px;
-  background: #141313;
-  border-radius: 10px;
-}
-
-.contentt {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0px;
-  gap: 12px;
-  width: 224px;
-  height: 24px;
-}
-
-.gavel {
-  width: 20px;
-  height: 20px;
-}
-
-.text {
-  width: 104px;
-  height: 24px;
-
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  color: #FFFFFF;
-}
-
-.framee1 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 8px 0px 0px;
-  gap: 8px;
-  width: 100vh;
-  height: 9px;
-}
-
-.divider {
-  width: 248px;
-  height: 1px;
-  background: #EAECF0;
-}
-
-.navItemBasee {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 8px 12px;
-  gap: 8px;
-  width: 248px;
-  height: 40px;
-  border-radius: 6px;
-}
-
-.contenttt {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0px;
-  margin: -25px;
-  padding-right: 20px;
-  gap: 12px;
-  width: 224px;
-  height: 24px;
-}
-
-.description {
-  width: 24px;
-  height: 24px;
-
-}
-
-.textt {
-  width: 24px;
-  height: 24px;
-
-}
-
-.footer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px 16px 32px;
-  gap: 24px;
-
-  width: 280px;
-  height: 72px;
-}
 </style>
 <script>
 import JWTDecode from 'jwt-decode';
 import Loading from '../../../components/shared/Loading.vue';
 import moment from 'moment';
+import NavBarProfile from "../../../components/NavBar/NavBarProfile"
 
 export default {
-  components: { Loading },
+  components: { Loading, NavBarProfile },
   data() {
     return {
       loading: false,
