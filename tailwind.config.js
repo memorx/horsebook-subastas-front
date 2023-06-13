@@ -25,12 +25,16 @@ module.exports = {
         arial: ['Arial', 'sans-serif'],
         aeonik: ['Aeonik', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif']
+
       },
       screens: {
         xs: '540px'
       },
       backgroundImage: {
         // 'plane-2': "url('~/public/background-plane-2.png')"
+      },
+      spacing: {
+        '20': '5rem', // Ajusta este valor según sea necesario
       }
     }
   },
