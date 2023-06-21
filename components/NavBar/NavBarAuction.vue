@@ -45,7 +45,7 @@ export default {
   align-items: flex-start;
   padding: 0px;
   width: 280px;
-  height: 70vh;
+  height: 100vh;
   background: #F9FAFB;
   border-right: 1px solid #EAECF0;
 }
