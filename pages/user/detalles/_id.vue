@@ -15,7 +15,7 @@
           <p class="styleTitle font-montserrat">Subasta</p>
           <p class="datesAuction font-montserrat">Fecha de pre-oferta: {{ new Date(item.start_pre_bid).toLocaleString() }}
           </p>
-          <p class="datesAuction font-montserrat">Fecha de subasta: {{ new Date(item.start_pre_bid).toLocaleString() }}
+          <p class="datesAuction font-montserrat">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}
           </p>
           <!-- <p class="dateAuction">DD/MM/YY</p>
                                                                                                                                                                                                                                                                                                     <p class="dateAuction">DD/MM/YY</p> -->
@@ -23,14 +23,14 @@
         </div>
         <!-- <div class="dividerr"></div> -->
         <div class="auctions">
-          <li class="li" v-for="horse in item.horses" :key="horse.id">
+          <li class="li" v-for="(horse, index,) in item.horses" :key="horse.id">
             <img src="../../../public/horse_example.png">
             <p class="nameHorse font-montserrat">{{ horse.external_data.name }}</p>
             <p class="prizeHorse font-montserrat">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
             <!-- <button class="buttonDetails" v-on:click="showHorseDetails(horse)"> -->
             <button class="buttonDetails">
-              <NuxtLink to="../detalleCaballo">
-                <p class="seeDetails font-montserrat">Ver detalles</p>
+              <NuxtLink :to="`/bids/bid?id=${id}&horseid=${index}`" >
+                <p class="seeDetails font-montserrat">Ver detalles  </p>
               </NuxtLink>
             </button>
             <div v-if="horse.showDetails">
@@ -279,12 +279,14 @@ export default {
   data() {
     return {
       item: {},
+      id:'',
       loading: false,
       moment: moment
     }
   },
   async created() {
     const itemId = this.$route.params.id
+    this.id=itemId
     await this.getDetailsAuction(itemId)
     console.log(itemId)
   },
