@@ -417,7 +417,7 @@ export default {
   methods: {
     async updateProfile() {
       this.email = [];
-      const url = `${this.$config.baseURL}/users/update-user-profile/?pre_register=true&email=${this.$store.state.user.email}`;
+      const url = `${this.$config.baseURL}/users/update-user-profile/?email=${this.$store.state.user.email}`;
       const decoded = JWTDecode(this.$cookies.get('access_token'));
 
       if (decoded) {
@@ -467,7 +467,7 @@ export default {
       };
 
       const email = this.$store.state.user.email;
-      const url = `${this.$config.baseURL}/users/list-app-users/?pre_register=true&email=${email}`;
+      const url = `${this.$config.baseURL}/users/list-app-users/?email=${email}`;
 
       this.loading = true;
 

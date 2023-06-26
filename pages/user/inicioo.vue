@@ -2,45 +2,42 @@
   <div class="container">
     <Loading v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
-
     <NavBarAuction />
     <div class="main">
       <div class="title">
-        <p class="textttt font-montserrat">Bienvenido a HorseBook, {{ setUser.email || 'Matíass' }}</p>
-
+        <p class="textttt font-aeonik">Bienvenido a HorseBook, {{ setUser.email }}</p>
       </div>
       <div class="sectionheaderr">
-        <p class="textSub font-montserrat">Próximas subastas disponibles</p>
+        <p class="textSub font-aeonik">Próximas subastas disponibles</p>
         <div class="contentttttt" v-for="item in email" :key="item.id">
           <img src="../../public/image_subasta.png" alt="logo" width="90%" height="100%">
           <div class="contentttttttt">
             <div class="headingText">
-              <p class="author font-montserrat">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}</p>
+              <p class="author font-aeonik">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}</p>
               <NuxtLink :to="'/user/detalles/' + item.id" @click.prevent="goToDetails(item.id)">
-                <p class="headingRegister font-montserrat">Coleccion 2023</p>
+                <p class="headingRegister font-aeonik">Coleccion 2023</p>
               </NuxtLink>
-              <p class="supportingText font-monserrat">{{ item.notes }}</p>
+              <p class="supportingText font-aeonik">{{ item.notes }}</p>
             </div>
           </div>
         </div>
       </div>
-      <!--  WAITING FOR AN ENDPOINT -->
-      <!-- <div class="framee1">
+      <div class="framee1">
         <div class="dividerr"></div>
-      </div> -->
-      <!-- <div class="sectionheaderr">
-        <p class="textSub">Subastas en las que estas registrado</p>
-        <div class="contentttttt" v-for="item in email" :key="item.id">
+      </div>
+      <div class="sectionheaderr">
+        <p class="textSub font-aeonik">Subastas en las que estas registrado</p>
+        <div class="contentttttt" v-for="item in register" :key="item.id">
           <img src="../../public/image_subasta.png" alt="logo" width="90%" height="100%">
           <div class="contentttttttt">
             <div class="headingText">
-              <p class="author">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}</p>
-              <p class="headingRegister">Coleccion 2023</p>
-              <p class="supportingText">{{ item.notes }}</p>
+              <p class="author font-aeonik">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}</p>
+              <p class="headingRegister font-aeonik">Coleccion 2023</p>
+              <p class="supportingText font-aeonik">{{ item.notes }}</p>
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </div></template>
@@ -196,7 +193,6 @@
   width: 100%;
   height: 100%;
 
-  font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 30px;
@@ -264,7 +260,6 @@
 }
 
 .textSub {
-  font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
@@ -348,7 +343,6 @@
 .author {
   width: 1096px;
   height: 20px;
-  font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -403,7 +397,6 @@
 .supportingText {
   width: 100vh;
   height: 100vh;
-  font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -559,7 +552,6 @@
 .authorRegister {
   width: 1096px;
   height: 20px;
-  font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -580,7 +572,6 @@
 .headingRegister {
   width: 129px;
   height: 28px;
-  font-family: 'Aeonik' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -613,18 +604,6 @@
   bottom: 29.17%;
   border: 2px solid #101828;
 }
-
-.supportingTextRegister {
-  width: 100vh;
-  height: 48vh;
-
-  font-family: 'Aeonik' "sans-serif";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #475467;
-}
 </style>
 <script>
 import Cookie from 'js-cookie'
@@ -645,11 +624,13 @@ export default {
   data() {
     return {
       email: [],
+      register: [],
       moment: moment
     }
   },
   mounted() {
     this.getAuctions()
+    this.registerAuctions()
   },
   methods: {
     async getAuctions() {
@@ -685,11 +666,41 @@ export default {
           });
       }
     },
+    async registerAuctions() {
+      this.register = []
+      const url = `${this.$config.baseURL}/subastas/get-registered-subastas/?email=${this.$store.state.user.email}`;
+      console.log(url, "URL")
+      const decoded = JWTDecode(this.$cookies.get("access_token"))
+      console.log(decoded)
+      //I want to stop to make a hardcode and do it using logic
+      if (decoded) {
+        console.log(decoded.token, "decoded.token")
+        const token = "4fd2e979427a259cc56c18cad449cec5aefaed0d"; // Replace with your token value
+        const headers = {
+          Authorization: `Token ${decoded.token}`,
+        };
+        console.log(headers, "headers")
+        this.loading = true;
+        await this.$axios
+          .get(url, { headers })
+          .then((response) => {
+            console.log(response, "USERS REGISTER");
+            for (let i = 0; i < response.data.length; i++) {
+              console.log(response.data[i].start_bid);
+            }
+            this.register = response.data.subastas;
+            this.loading = false;
+          })
+          .catch((error) => {
+            console.log(error, "ERRORR");
+            this.loading = false;
+          });
+      }
+    },
     goToDetails(id) {
       this.$router.push(`/user/detalles/${id}`);
     }
   },
-
 }
 
 </script>

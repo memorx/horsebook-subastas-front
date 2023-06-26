@@ -16,7 +16,6 @@
             </a>
           </button>
         </div>
-        <!-- <p>Editar perfil</p> -->
       </div>
       <div class="main">
         <p class="generalDates font-montserrat">Datos generales</p>
@@ -42,9 +41,7 @@
           <p class="lastNameFatherStyle font-montserrat">{{ email.identification_document }}</p>
         </div>
       </div>
-      <!-- <div class="framee1">
-        <div class="dividerr"></div>
-      </div> -->
+
       <div class="pt-20">
         <div class="w-full h-[1px] bg-[#EAECF0]"></div>
       </div>
@@ -78,13 +75,19 @@
           <p class="name font-montserrat">Contraseña</p>
           <p class="nameStyle font-montserrat">******</p>
         </div>
+        <div class="pl-[350px] pt-[140px]">
+          <button @click="clearUserData"
+            class="box-border flex flex-row justify-center items-center gap-2 w-[178px] h-10 border shadow-[0px_1px_2px_rgba(16,24,40,0.05)] px-0 py-2.5 border-solid border-[#171618] bg-[#171618]">
+            <p class="not-italic font-semibold text-sm leading-5 text-white font-montserrat">Cambiar contraseña</p>
+          </button>
+        </div>
       </div>
       <div class="pt-20">
         <div class="w-full h-[1px] bg-[#EAECF0]"></div>
       </div>
       <div class="w-full h-full flex">
         <p class="not-italic font-semibold text-base leading-6 text-gray-900 pt-32 pl-8 font-montserrat">Histórico</p>
-        <div class="pt-[180px] pl-[180px] ">
+        <div class="pt-[180px] pl-[40px] ">
           <div class="border border-[#EAECF0]">
             <p class="ml-6 font-montserrat not-italic font-semibold leading-7 text-[#101828]">Historial de subastas
             </p>
@@ -113,14 +116,17 @@
             </div>
             <table class="bg-white mt-12 ml-6  ">
               <thead>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat py-4">
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat py-4 px-8">
                   <div class="flex">Subasta</div>
                 </th>
                 <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
-                  <div class="flex">Total</div>
+                  <div class="flex">Caballo</div>
                 </th>
                 <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
                   <div class="flex">Fecha</div>
+                </th>
+                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
+                  <div class="flex">Total</div>
                 </th>
                 <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
                   <div class="flex">Estado</div>
@@ -128,7 +134,8 @@
               </thead>
               <tbody>
                 <tr v-for="    record     in     filteredRecords    " :key="record.bid_date">
-                  <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top  py-4">
+                  <td
+                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-8 py-4">
                     <div class="flex">
                       Subasta {{ record.subasta.id }}
                     </div>
@@ -136,13 +143,19 @@
                   <td
                     class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
                     <div class="flex">
-                      {{ record.highest_bid }}
+                      {{ record.horse.external_data.name }}
                     </div>
                   </td>
                   <td
                     class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
                     <div class="flex">
                       {{ new Date(record.bid_date).toLocaleString() }}
+                    </div>
+                  </td>
+                  <td
+                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
+                    <div class="flex">
+                      ${{ record.highest_bid }}
                     </div>
                   </td>
                   <td class="not-italic font-semibold text-sm leading-5 font-montserrat align-top px-16 py-4"
@@ -509,6 +522,8 @@ import JWTDecode from 'jwt-decode';
 import Loading from '../../../components/shared/Loading.vue';
 import moment from 'moment';
 import NavBarProfile from "../../../components/NavBar/NavBarProfile"
+import Swal from 'sweetalert2';
+
 
 export default {
   components: { Loading, NavBarProfile },
@@ -543,7 +558,7 @@ export default {
   methods: {
     async getInfo() {
       this.email = [];
-      const url = `${this.$config.baseURL}/users/list-app-users/?pre_register=true&email=${this.$store.state.user.email}`;
+      const url = `${this.$config.baseURL}/users/list-app-users/?email=${this.$store.state.user.email}`;
       const decoded = JWTDecode(this.$cookies.get('access_token'));
 
       if (decoded) {
@@ -557,6 +572,7 @@ export default {
         try {
           const response = await this.$axios.get(url, { headers });
           this.email = response.data.app_user_profile;
+          console.log(email)
           this.profile = response.data.app_user_profile; // Almacenar los datos del perfil en la variable "profile"
           this.loading = false;
         } catch (error) {
@@ -576,12 +592,28 @@ export default {
         try {
           const info = await this.$axios.get(url, { headers });
           this.info = info.data
+          console.log(info.data)
           this.loading = false;
 
         } catch (error) {
           this.loading = false;
         }
       }
+    },
+    clearUserData() {
+      Swal.fire({
+        title: '¿Estás seguro que deseas cambiar tu contraseña?',
+        text: 'Se te redirigirá hacia el inicio',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$store.commit("clearUserData");
+          window.location.href = '/auth/password/send-email';
+        }
+      });
     }
   }
 }
