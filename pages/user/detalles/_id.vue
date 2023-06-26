@@ -29,8 +29,8 @@
             <p class="prizeHorse font-montserrat">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
             <!-- <button class="buttonDetails" v-on:click="showHorseDetails(horse)"> -->
             <button class="buttonDetails">
-              <NuxtLink :to="`/bids/bid?id=${id}&horseid=${index}`" >
-                <p class="seeDetails font-montserrat">Ver detalles  </p>
+              <NuxtLink :to="`/bids/bid?id=${id}&horseid=${index}`">
+                <p class="seeDetails font-montserrat">Ver detalles </p>
               </NuxtLink>
             </button>
             <div v-if="horse.showDetails">
@@ -56,43 +56,25 @@
   flex-direction: row;
   align-items: flex-start;
   padding: 0px;
-
   position: absolute;
   width: 1440px;
   height: 2538px;
   left: 0px;
   top: 78px;
-
   background: #FCFCFD;
 }
 
 .sideBar {
   box-sizing: border-box;
-
-  /* Auto layout */
-
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   padding: 0px;
-
   width: 280px;
   height: 70vh;
-
-  /* Gray/50 */
-
   background: #F9FAFB;
-  /* Gray/200 */
-
   border-right: 1px solid #EAECF0;
-
-  /* Inside auto layout */
-
-  /* flex: none;
-  order: 0;
-  flex-grow: 0; */
 }
-
 
 .main {
   display: flex;
@@ -109,7 +91,6 @@
   align-items: center;
   padding: 0px 32px;
   gap: 12px;
-
   width: 100%;
   height: 100%;
 }
@@ -120,7 +101,6 @@
   justify-content: center;
   align-items: center;
   padding: 0px;
-
 }
 
 .textBreadcumbs {
@@ -138,10 +118,8 @@
   justify-content: center;
   align-items: center;
   padding: 0px;
-
   width: 67px;
   height: 20px;
-
 }
 
 .main2 {
@@ -176,7 +154,6 @@
 .datesAuction {
   width: 197px;
   height: 20px;
-
   font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 500;
@@ -234,15 +211,12 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 28px;
-
   color: #101828;
 }
 
 .buttonDetails {
   box-sizing: border-box;
-
   margin-top: 30px;
-  /* margin-left: 17px; */
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -263,7 +237,6 @@
   font-size: 16px;
   line-height: 20px;
   color: #FFFFFF;
-
 }
 </style>
 
@@ -279,14 +252,14 @@ export default {
   data() {
     return {
       item: {},
-      id:'',
+      id: '',
       loading: false,
       moment: moment
     }
   },
   async created() {
     const itemId = this.$route.params.id
-    this.id=itemId
+    this.id = itemId
     await this.getDetailsAuction(itemId)
     console.log(itemId)
   },

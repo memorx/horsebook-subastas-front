@@ -20,5 +20,9 @@ export const mutations = {
   setInformation(state, info) {
     state.info = info;
     localStorage.setItem("setInfo", JSON.stringify(info))
+  },
+  clearUserData(state) {
+    state.setUser = {};
+    localStorage.removeItem("setUser")
   }
 };
