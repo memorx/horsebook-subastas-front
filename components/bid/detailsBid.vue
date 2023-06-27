@@ -13,130 +13,176 @@
             </div>
         </div>
         <div class="cont-tableBid">
-            <table class="table-bid ">
-                <thead>
+            <table class="table-bid " :key="tableKey">
+                <thead class="th-tableBid">
                     <th class="columns-8">Nombre</th>
-                    <th class="columns-1">Puja</th>
+                    <th class="columns-1">Oferta</th>
                     <th class="columns-1">Fecha</th>
                 </thead>
-                <tr>
-                    <td class="p-3">Carlos Montes</td>
-                    <td>$3000</td>
-                    <td>02/03/2023 5:06PM</td>
-                </tr>
-                <tr>
-                    <td>Sandra Gómez</td>
-                    <td>$1045</td>
-                    <td>02/03/2023 5:06PM</td>
-                </tr>
-                <tr>
-                    <td>Alejandro López</td>
-                    <td>$1025</td>
-                    <td>02/03/2023 5:05PM</td>
+
+                <tr v-for="(bid, index,) in detailsBid" :key="bid.id">
+                    <td>{{ bid.user_profile.name
+                        + ' ' + bid.user_profile.fathers_surname
+                        + ' ' + bid.user_profile.mothers_maiden_name }} </td>
+                    <td>${{ formatAmount(bid.amount) }}</td>
+                    <td>{{ formatDate(bid.bid_date) }}</td>
                 </tr>
             </table>
-            <div class="paginator">
-                <button>Anterior</button>
-                <p>1</p>
-                <p>2</p>
-                <p>3</p>
-                <button>Siguiente</button>
-            </div>
         </div>
     </div>
 </template>
 
 <script>
+//import Loading from '../../../components/shared/Loading.vue';
+import JWTDecode from "jwt-decode"
+import axios from 'axios'
+import moment from 'moment'
+
+
 
 export default {
-  name: 'Bids',
-  props: {
-    bidId: {
-      type: String,
-      required: true
+    name: 'Bids',
+    components: {
     },
-    horseId:{
-        type:String,
-        required: true
-    }
-  },
-  data() {
-    return {
-        HorsenName:'',
-        BidDate:'',
-        BidDateFormat:'',
-        PreBidDate:'',
-    }
-  },
-  computed: {
-    
-  },
+    props: {
+        bidId: {
+            type: String,
+            required: true
+        },
+        horseID: {
+            type: [String, Number],
+            required: true
+        }
+    },
+    data() {
+        return {
+            name: '',
+            amount: null,
+            bidDate: '',
+            lastOffer: '',
+            detailsBid: {},
+            parameters: {
+                subasta_id: '',
+                horse_id: '',
+            },
+            loading: false,
+            tableKey: 0,
+            test: 3,
+        }
+    },
+    computed: {
+        setUser() {
+            return this.$store.state.user;
+        },
+    },
+    watch: {
+        horseID(newValue) {
+            this.getDetailsBid(this.bidId, newValue);
+        },
+        statusProps(newValue) {
+            if (newValue) {
+                this.getDetailsBid(this.bidId, this.horseID);
+            }
+        },
+    },
+    methods: {
+        formatAmount(amount) {
+            return parseFloat(amount).toLocaleString('es-ES');
+        },
+        formatDate(date) {
+            return moment(date).format('YY/MM/DD HH:mm');
+        },
+        async getDetailsBid(bid, horse) {
+            const getLastBidsEndpoint = `/subastas/get-last-bids/`
+            const url = `${this.$config.baseURL}${getLastBidsEndpoint}`
+            const decoded = JWTDecode(this.$cookies.get("access_token"))
+            this.parameters.subasta_id = bid
+            this.parameters.horse_id = horse
+            this.tableKey++;
+            //this.loading = true
+            await axios.get(url, {
+                params: this.parameters,
+                headers: {
+                    Authorization: `Token ${decoded.token}`
+                }
+            })
+                .then(response => {
+                    this.detailsBid = response.data
+                    this.lastOffer = this.detailsBid[0].amount
+                    const formattedLastOffer = parseFloat(this.lastOffer).toLocaleString('es-ES');
+                    this.$emit('last-offer-updated', formattedLastOffer);
+                    //this.loading = false
+                })
+                .catch(error => {
+                    console.error(error);
+
+                    //this.loading = false
+                });
+        },
+    },
 
 }
 </script>
 
 <style scoped>
-    .cont-detailsBid{
+.cont-detailsBid {
     padding-left: 25px;
-    }
-    .details-bid{
-        padding-top: 45px;
-    }
-    .cont-titleBid{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .winner{
-        display: flex;
-        flex-direction: row;
-        gap: 25px;
-        padding-right: 25px;
-        padding-top: 35px;
-    }
-    #win-flag{
-        color:#027A48; 
-        border:solid #027A48; 
-        border-radius: 18px; 
-        font-size:15px; 
-        padding:5px 5px; 
-        text-align:center;
-        font-weight: 600;
-    }
-    .cont-tableBid{
-        border-radius: 15px;
-        box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.2);
-        margin-top: 15px;
-        margin-right:25px;
-        margin-bottom: 45px;
-        padding: 15px;
-        
-    }
-    .table-bid {
-        width: 100%;
-    }
-    .table-bid th,
-    .table-bid td {
-      border-bottom: 1px solid #ccc;
-      text-align: left;
-      padding: 8px;
-    }
-    .paginator{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        padding-top: 15px;
+}
 
-    }
-    .paginator p,
-    .paginator button{
-        padding: 5px;
-    }
-    .paginator p:hover, 
-    .paginator button:hover{
-        background-color: #ccc;
-        border-radius: 10px;
-    }
-    
+.details-bid {
+    padding-top: 45px;
+}
 
+.cont-titleBid {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.winner {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    padding-right: 25px;
+    padding-top: 35px;
+}
+
+#win-flag {
+    color: #027A48;
+    border: solid #027A48;
+    border-radius: 18px;
+    font-size: 15px;
+    padding: 5px 5px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.cont-tableBid {
+    border-radius: 15px;
+    box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.2);
+    margin-top: 15px;
+    margin-right: 25px;
+    margin-bottom: 45px;
+    padding: 15px;
+    height: 400px;
+    overflow: auto;
+
+}
+
+.table-bid {
+    width: 100%;
+}
+.th-tableBid {
+    position: sticky;
+    top: 0;
+    background-color: black;
+    color: white;
+    z-index: 1;
+  }
+.table-bid th,
+.table-bid td {
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+    padding: 8px;
+}
 </style>
