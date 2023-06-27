@@ -106,9 +106,6 @@ export default {
             const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
             const url = `${this.$config.baseURL}${listSubastasEndpoint}`
             const decoded = JWTDecode(this.$cookies.get("access_token"))
-
-            console.log("--->")
-            console.log(this.divWidth)
             axios.get(url, {
                 headers: {
                     Authorization: `Token ${decoded.token}`
@@ -116,7 +113,6 @@ export default {
             })
                 .then(response => {
                     const horse = response.data
-                    console.log(horse)
                     //name
                     this.HorsenName = horse.horses[this.horsePositionList].external_data.name
                     //horse ID

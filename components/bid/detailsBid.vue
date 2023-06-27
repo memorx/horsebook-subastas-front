@@ -6,17 +6,14 @@
                     <p style="font-size: 30px; font-weight:600">Ofertas</p>
                     <p style="color: #667085;">Últimas ofertas</p>
                 </div>
-                <div class="winner">
-                    <p style="font-size:20px; font-weight:500 ">Carlos Montes</p>
-                    <p id="win-flag">GANADOR</p>
-                </div>
+                <Winner :bidId="bidId" :horseID="horseID"/>
             </div>
         </div>
         <div class="cont-tableBid">
             <table class="table-bid " :key="tableKey">
                 <thead class="th-tableBid">
                     <th class="columns-8">Nombre</th>
-                    <th class="columns-1">Oferta</th>
+                    <th class="columns-1">Oferta (USD)</th>
                     <th class="columns-1">Fecha</th>
                 </thead>
 
@@ -34,6 +31,7 @@
 
 <script>
 //import Loading from '../../../components/shared/Loading.vue';
+import Winner from '../../components/bid/winner.vue'
 import JWTDecode from "jwt-decode"
 import axios from 'axios'
 import moment from 'moment'
@@ -43,6 +41,7 @@ import moment from 'moment'
 export default {
     name: 'Bids',
     components: {
+        Winner,
     },
     props: {
         bidId: {

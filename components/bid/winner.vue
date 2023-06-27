@@ -7,6 +7,8 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+import JWTDecode from "jwt-decode"
 export default {
     name: 'Winner',
     data() {
@@ -14,8 +16,21 @@ export default {
             winnerBid: "",
         }
     },
+    props: {
+        bidId: {
+            type: String,
+            required: true
+        },
+        horseID: {
+            type: [String, Number],
+            required: true
+        },
+    },
     mounted() {
-        //this.fetchWinner();
+        
+        setInterval(() => {
+            this.fetchWinner();
+        }, 1000);
     },
     computed: {
         textStyle() {
@@ -26,23 +41,25 @@ export default {
             }
         },
     },
-    fetchWinner() {
-        const subastasEndpointWin = `/subastas/prebid-winner/?subasta_id=${this.bidId}&horse_id=${this.horseId}&pre_bid="True"`
-        const urlWinner = `${this.$config.baseURL}${subastasEndpointWin}`
-        const decoded = JWTDecode(this.$cookies.get("access_token"))
-        axios.get(urlWinner, {
-            headers: {
-                Authorization: `Token ${decoded.token}`
-            }
-        })
-            .then(response => {
-                const winner = response.data
-                this.winnerBid = winner.user_profile.name
-                console.log(winner, "WINNER")
+    methods: {
+
+        fetchWinner() {
+            const subastasEndpointWin = `/subastas/prebid-winner/?subasta_id=${this.bidId}&horse_id=${this.horseID}&pre_bid="True"`
+            const urlWinner = `${this.$config.baseURL}${subastasEndpointWin}`
+            const decoded = JWTDecode(this.$cookies.get("access_token"))
+            axios.get(urlWinner, {
+                headers: {
+                    Authorization: `Token ${decoded.token}`
+                }
             })
-            .catch(error => {
-                console.error(error);
-            });
+                .then(response => {
+                    const winner = response.data
+                    this.winnerBid = winner.user_profile.name
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
     }
 
 }
@@ -54,8 +71,8 @@ export default {
     gap: 25px;
     padding-right: 25px;
     padding-top: 35px;
-  }
-  
+}
+
 #win-flag {
     color: #027A48;
     border: solid #027A48;
@@ -64,5 +81,5 @@ export default {
     padding: 5px 5px;
     text-align: center;
     font-weight: 600;
-  }
+}
 </style>
