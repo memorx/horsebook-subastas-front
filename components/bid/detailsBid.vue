@@ -11,7 +11,6 @@
     </div>
     <div class="cont-tableBid">
       <table class="table-bid ">
-        
       </table>
     </div>
   </div>
