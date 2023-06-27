@@ -29,8 +29,8 @@
             <p class="prizeHorse font-montserrat">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
             <!-- <button class="buttonDetails" v-on:click="showHorseDetails(horse)"> -->
             <button class="buttonDetails">
-              <NuxtLink :to="`/bids/bid?id=${id}&horseid=${index}`">
-                <p class="seeDetails font-montserrat">Ver detalles </p>
+              <NuxtLink :to="`/bids/bid?id=${id}&horsePositionList=${index}`" >
+                <p class="seeDetails font-montserrat">Ver detalles  </p>
               </NuxtLink>
             </button>
             <div v-if="horse.showDetails">
@@ -264,7 +264,6 @@ export default {
     console.log(itemId)
   },
   methods: {
-
     async getDetailsAuction(itemId) {
       const url = this.$config.baseURL + `/subastas/list-subastas/?id=${itemId}`
       const decoded = jwt_decode(this.$cookies.get("access_token"))
