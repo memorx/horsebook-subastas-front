@@ -247,7 +247,7 @@ export default {
     color: #039855;
     border: #039855 solid 3px;
     padding: 5px;
-    width: 240px;
+    width: 200px;
     border-radius: 45px;
 }
 

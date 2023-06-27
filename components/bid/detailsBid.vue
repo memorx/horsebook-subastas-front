@@ -75,6 +75,12 @@ export default {
             return this.$store.state.user;
         },
     },
+    mounted() {
+
+        setInterval(() => {
+            this.getDetailsBid(this.bidId, this.horseID);
+        }, 1000);
+    },
     watch: {
         horseID(newValue) {
             this.getDetailsBid(this.bidId, newValue);
@@ -172,13 +178,15 @@ export default {
 .table-bid {
     width: 100%;
 }
+
 .th-tableBid {
     position: sticky;
     top: 0;
     background-color: black;
     color: white;
     z-index: 1;
-  }
+}
+
 .table-bid th,
 .table-bid td {
     border-bottom: 1px solid #ccc;
