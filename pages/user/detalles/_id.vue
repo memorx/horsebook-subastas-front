@@ -34,7 +34,7 @@
               </NuxtLink>
             </button>
             <div v-if="horse.showDetails">
-              <p class="font-montserrat">Details: {{ horse.external_data.alt_name }}</p>
+              <p class="font-montserrat">Detalles: {{ horse.external_data.alt_name }}</p>
               <!-- Add more details here -->
             </div>
           </li>
@@ -104,7 +104,7 @@
 }
 
 .textBreadcumbs {
-  font-family: 'Montserrat' "sans-serif";
+
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -143,7 +143,6 @@
   width: 632px;
   height: 38px;
   padding-left: 20px;
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 30px;
@@ -154,7 +153,6 @@
 .datesAuction {
   width: 197px;
   height: 20px;
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -195,7 +193,6 @@
 .nameHorse {
   margin-top: 5px;
   padding-left: 10px;
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -206,7 +203,6 @@
 .prizeHorse {
   margin-top: 5px;
   padding-left: 10px;
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -231,7 +227,6 @@
 }
 
 .seeDetails {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

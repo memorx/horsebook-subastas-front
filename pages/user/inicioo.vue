@@ -5,17 +5,18 @@
     <NavBarAuction />
     <div class="main">
       <div class="title">
-        <p class="textttt font-aeonik">Bienvenido a HorseBook, {{ setUser.email }}</p>
+        <p class="textttt font-aeonik">Bienvenido a HorseBook, {{ setUser?.email || "Invitado" }}</p>
       </div>
       <div class="sectionheaderr">
         <p class="textSub font-aeonik">Próximas subastas disponibles</p>
         <div class="contentttttt" v-for="item in email" :key="item.id">
-          <img src="../../public/image_subasta.png" alt="logo" width="90%" height="100%">
+          <img v-if="item.image" :src="item.image" alt="logo" class="auction-image">
+          <img v-else src="../../public/image_subasta.png" alt="logo" class="auction-image">
           <div class="contentttttttt">
             <div class="headingText">
               <p class="author font-aeonik">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}</p>
               <NuxtLink :to="'/user/detalles/' + item.id" @click.prevent="goToDetails(item.id)">
-                <p class="headingRegister font-aeonik">Coleccion 2023</p>
+                <p class="headingRegister font-aeonik">Colección 2023</p>
               </NuxtLink>
               <p class="supportingText font-aeonik">{{ item.notes }}</p>
             </div>
@@ -25,14 +26,14 @@
       <div class="framee1">
         <div class="dividerr"></div>
       </div>
-      <div class="sectionheaderr">
+      <div v-if="setUser" class="sectionheaderr">
         <p class="textSub font-aeonik">Subastas en las que estas registrado</p>
         <div class="contentttttt" v-for="item in register" :key="item.id">
           <img src="../../public/image_subasta.png" alt="logo" width="90%" height="100%">
           <div class="contentttttttt">
             <div class="headingText">
               <p class="author font-aeonik">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}</p>
-              <p class="headingRegister font-aeonik">Coleccion 2023</p>
+              <p class="headingRegister font-aeonik">Colección 2023</p>
               <p class="supportingText font-aeonik">{{ item.notes }}</p>
             </div>
           </div>
@@ -42,6 +43,15 @@
   </div>
 </div></template>
 <style>
+.auction-image {
+  width: 986px;
+  /* Increase the width */
+  height: 272px;
+  /* Increase the height */
+  object-fit: cover;
+  /* Crop or scale the image to fit the dimensions */
+}
+
 .title {
   display: flex;
   align-items: center;
@@ -628,9 +638,13 @@ export default {
       moment: moment
     }
   },
+  async created() {
+    if (this.setUser) {
+      await this.registerAuctions()
+    }
+  },
   mounted() {
     this.getAuctions()
-    this.registerAuctions()
   },
   methods: {
     async getAuctions() {
@@ -657,6 +671,7 @@ export default {
             for (let i = 0; i < response.data.length; i++) {
               console.log(response.data[i].start_bid);
             }
+            console.log(response.data, "RESPONSE.DATA")
             this.email = response.data;
             this.loading = false;
           })

@@ -17,7 +17,7 @@
             <div class="divider"></div>
           </div>
 
-          <div class="navItemBasee">
+          <div v-if=setUser class="navItemBasee">
             <div class="contenttt flex items-center gap-2">
               <div class="description"></div>
               <button class="font-montserrat font-medium text-base leading-6 text-gray-900">
@@ -34,7 +34,12 @@
 </template>
 <script>
 export default {
-  name: 'NavBarAuction'
+  name: 'NavBarAuction',
+  computed: {
+    setUser() {
+      return this.$store.state.user;
+    },
+  },
 }
 </script>
 <style>
