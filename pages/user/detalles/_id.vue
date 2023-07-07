@@ -28,11 +28,11 @@
             <p class="nameHorse font-montserrat">{{ horse.external_data.name }}</p>
             <p class="prizeHorse font-montserrat">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
             <!-- <button class="buttonDetails" v-on:click="showHorseDetails(horse)"> -->
-            <button class="buttonDetails">
-              <NuxtLink :to="`/bids/bid?id=${id}&horsePositionList=${index}`" >
-                <p class="seeDetails font-montserrat">Ver detalles  </p>
+
+              <NuxtLink class="buttonDetails seeDetails font-montserrat" :to="`/bids/bid?id=${id}&horsePositionList=${index}`" >
+                Ver detalles
               </NuxtLink>
-            </button>
+
             <div v-if="horse.showDetails">
               <p class="font-montserrat">Details: {{ horse.external_data.alt_name }}</p>
               <!-- Add more details here -->
