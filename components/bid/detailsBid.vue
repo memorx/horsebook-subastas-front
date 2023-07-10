@@ -66,7 +66,6 @@ export default {
             },
             loading: false,
             tableKey: 0,
-            test: 3,
         }
     },
     computed: {

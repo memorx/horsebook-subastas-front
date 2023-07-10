@@ -50,7 +50,7 @@ export default {
                 horse_id: '',
                 amount: null,
                 email: '',
-                pre_bid: false
+                pre_bid: true
             },
             successMessage: '',
             errorMessage: '',
@@ -70,6 +70,10 @@ export default {
             type: String,
             required: true
         },
+        BidDate:{
+            type:String,
+            required:true
+        },
         lastOffer: {
             type: String,
             required: true
@@ -87,10 +91,11 @@ export default {
         closeModal() {
             this.modalVisible = false;
         },
-        statusOffer(EndPreBidDate) {
+        statusOffer(EndPreBidDate,BidDate) {
             const CurrentDate = new Date()
             const EndPrebid = new Date(EndPreBidDate)
-            return this.OfferStatus = CurrentDate < EndPrebid
+            const StartBid= new Date(BidDate)
+            return  CurrentDate < EndPrebid && CurrentDate < StartBid
         },
         submitForm(event) {
             event.preventDefault();
@@ -101,7 +106,7 @@ export default {
             this.formData.subasta_id = this.bidId
             this.formData.email = this.setUser.email
             //status offer
-            this.formData.pre_bid = this.statusOffer(this.EndPreBidDate)
+            this.formData.pre_bid = this.statusOffer(this.EndPreBidDate, this.BidDate)
 
             axios.post(url, this.formData, {
                 headers: {

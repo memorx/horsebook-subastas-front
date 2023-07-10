@@ -6,8 +6,9 @@
             </div>
             <div class="data-bid">
                 <p style="font-size: 30px; font-weight: 400;">{{ HorsenName }}</p>
-                <p v-if="isCurrentDate" style="color: green; font-weight: 600; padding-top: 16px;">OFERTA ABIERTA</p>
-                <p v-else style="color: red; font-weight: 600; padding-top: 16px;">OFERTA CERRADA</p>
+                <p class="statusOffer" v-if="isCurrentDate === 1" style="color: green; font-weight: 600;">PRE OFERTA ABIERTA</p>
+                <p class="statusOffer" v-else-if="isCurrentDate === 2" style="color: green; font-weight: 600;">OFERTA ABIERTA</p>
+                <p class="statusOfferClose" v-else-if="isCurrentDate === 0" style="color: red; font-weight: 600;">OFERTA CERRADA</p>
                 <div class="preOffer-date">
                     <div v-if="this.statusPreBid" style="color: #667085;">
                         <p id="">Termino de Pre-Oferta:</p>
@@ -28,7 +29,7 @@
                         <p id="date" style="font-family: 16px; font-weight: bold;">{{ BidDateFormat }}</p>
                     </div>
                 </div>
-                <MakeOffer :bidId="bidId" :horseID="horseID" :EndPreBidDate="EndPreBidDate" :lastOffer="lastOffer"
+                <MakeOffer :bidId="bidId" :horseID="horseID" :EndPreBidDate="EndPreBidDate" :BidDate="BidDate" :lastOffer="lastOffer"
                     @form-submitted="handleFormSubmitted" />
             </div>
             <hr>
@@ -81,10 +82,14 @@ export default {
             const endBidDate = new Date(this.EndBidDate)
             const preBidDate = new Date(this.PreBidDate)
             const EndPreBidDate = new Date(this.EndPreBidDate)
-            this.statusPreBid = CurrentDate >= preBidDate && CurrentDate <= EndPreBidDate
-            this.statusBid = CurrentDate >= bidDate && CurrentDate <= endBidDate
-            let statusFinal = this.statusPreBid || this.statusBid
-            return statusFinal
+            if (CurrentDate >= preBidDate && CurrentDate <= EndPreBidDate){
+                return 1
+            }
+            if (CurrentDate >= bidDate && CurrentDate <= endBidDate){
+                return 2
+            }
+            //let statusFinal = this.statusPreBid || this.statusBid
+            return 0
         },
     },
     mounted() {
@@ -166,7 +171,16 @@ export default {
     width: 100%;
     height: auto;
 }
-
+.statusOffer{
+    border: 3px solid green;
+    border-radius: 45px;
+    padding:10px
+}
+.statusOfferClose{
+    border: 3px solid red;
+    border-radius: 45px;
+    padding:10px
+}
 /*-- BID DATA --*/
 
 .data-bid {
