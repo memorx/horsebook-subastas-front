@@ -45,49 +45,48 @@ export default {
   name: 'MakeOffer',
 
 
-    data() {
-        return {
-            modalVisible: false,
-            formData: {
-                subasta_id: '',
-                horse_id: '',
-                amount: null,
-                email: '',
-                pre_bid: true
-            },
-            successMessage: '',
-            errorMessage: '',
-            OfferStatus: null,
-        };
+  data() {
+    return {
+      modalVisible: false,
+      formData: {
+        subasta_id: '',
+        horse_id: '',
+        amount: null,
+        email: '',
+        pre_bid: true
+      },
+      successMessage: '',
+      errorMessage: '',
+      OfferStatus: null,
+    };
+  },
+  props: {
+    bidId: {
+      type: String,
+      required: true
     },
-    props: {
-        bidId: {
-            type: String,
-            required: true
-        },
-        horseID: {
-            type: [String, Number],
-            required: true
-        },
-        EndPreBidDate: {
-            type: String,
-            required: true
-        },
-        BidDate:{
-            type:String,
-            required:true
-        },
-        lastOffer: {
-            type: String,
-            required: true
-        },
+    horseID: {
+      type: [String, Number],
+      required: true
+    },
+    EndPreBidDate: {
+      type: String,
+      required: true
+    },
+    BidDate: {
+      type: String,
+      required: true
     },
     lastOffer: {
       type: String,
       required: true
     },
-
   },
+  lastOffer: {
+    type: String,
+    required: true
+  },
+
   computed: {
     setUser() {
       return this.$store.state.user;
@@ -118,12 +117,12 @@ export default {
     closeModal() {
       this.modalVisible = false;
     },
-    statusOffer(EndPreBidDate,BidDate) {
-            const CurrentDate = new Date()
-            const EndPrebid = new Date(EndPreBidDate)
-            const StartBid= new Date(BidDate)
-            return  CurrentDate < EndPrebid && CurrentDate < StartBid
-        },
+    statusOffer(EndPreBidDate, BidDate) {
+      const CurrentDate = new Date()
+      const EndPrebid = new Date(EndPreBidDate)
+      const StartBid = new Date(BidDate)
+      return CurrentDate < EndPrebid && CurrentDate < StartBid
+    },
     submitForm(event) {
       event.preventDefault();
       const PostBidEndpoint = '/subastas/bid/'
