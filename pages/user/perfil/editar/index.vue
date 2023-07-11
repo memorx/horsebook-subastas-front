@@ -29,7 +29,7 @@
         <p class="generalDates font-montserrat">Apellido materno</p>
         <input class="inputs" placeholder="Apellido materno" v-model="mothers_maiden_name" />
         <p class="generalDates font-montserrat">Fecha de nacimiento</p>
-        <input class="inputs" placeholder="Fecha de nacimiento" v-model="birth_date" />
+        <input class="inputs" placeholder="Fecha de nacimiento" type="date" v-model="birth_date" />
         <p class="generalDates font-montserrat">Nacionalidad</p>
         <input class="inputs" placeholder="Nacionalidad" v-model="nationality" />
         <p class="generalDates font-montserrat">Teléfono</p>
@@ -383,7 +383,8 @@
 <script>
 import JWTDecode from 'jwt-decode';
 import Loading from '../../../../components/shared/Loading.vue';
-import NavBarProfile from "../../../../components/NavBar/NavBarProfile.vue"
+import NavBarProfile from "../../../../components/NavBar/NavBarProfile.vue";
+import Swal from 'sweetalert2';
 
 export default {
   components: { Loading, NavBarProfile },
@@ -419,7 +420,7 @@ export default {
       this.email = [];
       const url = `${this.$config.baseURL}/users/update-user-profile/?email=${this.$store.state.user.email}`;
       const decoded = JWTDecode(this.$cookies.get('access_token'));
-
+      const formattedBirthDate = new Date(this.birth_date).toISOString().split('T')[0];
       if (decoded) {
         const headers = {
           Authorization: `Token ${decoded.token}`,
@@ -436,7 +437,7 @@ export default {
           state: this.state || this.profile.state,
           municipalitie: this.municipalitie || this.profile.municipalitie,
           phone: this.phone || this.profile.phone,
-          birth_date: this.birth_date || this.profile.birth_date,
+          birth_date: formattedBirthDate || this.profile.birth_date,
           nationality: this.nationality || this.profile.nationality,
           street: this.street || this.profile.street,
           outdoor_number: this.outdoor_number || this.profile.outdoor_number,
@@ -456,8 +457,20 @@ export default {
         }
       }
     },
+    validateUser() {
+      if (!this.$store.state.user) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Debes iniciar sesión para poder ver tus datos, se te redirigirá al inicio'
+        }).then(() => {
+          window.location.href = '/auth/login';
+        });
+      }
+    },
   },
   mounted() {
+    this.validateUser();
     const decoded = JWTDecode(this.$cookies.get('access_token'));
 
     if (decoded) {

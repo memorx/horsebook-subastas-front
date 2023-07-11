@@ -28,13 +28,14 @@
             <p class="nameHorse font-montserrat">{{ horse.external_data.name }}</p>
             <p class="prizeHorse font-montserrat">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
             <!-- <button class="buttonDetails" v-on:click="showHorseDetails(horse)"> -->
+            <button class="buttonDetails">
+              <NuxtLink :to="`/bids/bid?id=${id}&horsePositionList=${index}`">
+                <p class="seeDetails font-montserrat">Ver detalles </p>
 
-              <NuxtLink class="buttonDetails seeDetails font-montserrat" :to="`/bids/bid?id=${id}&horsePositionList=${index}`" >
-                Ver detalles
               </NuxtLink>
-
+            </button>
             <div v-if="horse.showDetails">
-              <p class="font-montserrat">Details: {{ horse.external_data.alt_name }}</p>
+              <p class="font-montserrat">Detalles: {{ horse.external_data.alt_name }}</p>
               <!-- Add more details here -->
             </div>
           </li>
@@ -104,7 +105,7 @@
 }
 
 .textBreadcumbs {
-  font-family: 'Montserrat' "sans-serif";
+
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -143,7 +144,6 @@
   width: 632px;
   height: 38px;
   padding-left: 20px;
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 30px;
@@ -154,7 +154,6 @@
 .datesAuction {
   width: 197px;
   height: 20px;
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -195,7 +194,6 @@
 .nameHorse {
   margin-top: 5px;
   padding-left: 10px;
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -206,7 +204,6 @@
 .prizeHorse {
   margin-top: 5px;
   padding-left: 10px;
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -231,7 +228,6 @@
 }
 
 .seeDetails {
-  font-family: 'Montserrat' "sans-serif";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -268,6 +264,7 @@ export default {
       const url = this.$config.baseURL + `/subastas/list-subastas/?id=${itemId}`
       const decoded = jwt_decode(this.$cookies.get("access_token"))
       console.log(decoded, "decoded")
+      console.log(this.$store.state.user, "ESTADO DETALLE/ID")
       let headers = {}
       if (decoded) {
         headers = {
