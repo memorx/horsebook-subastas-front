@@ -5,7 +5,7 @@
     <NavBarAuction />
     <div class="main">
       <div class="title">
-        <p class="textttt font-aeonik">Bienvenido a HorseBook, {{ setUser?.email || "Invitado" }}</p>
+        <p class="textttt font-aeonik">Bienvenido a HorseBook {{ setUser?.email || " " }}</p>
       </div>
       <div class="sectionheaderr">
         <p class="textSub font-aeonik">Próximas subastas disponibles</p>
