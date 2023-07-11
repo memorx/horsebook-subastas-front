@@ -31,8 +31,9 @@
             <button class="buttonDetails">
               <NuxtLink :to="`/bids/bid?id=${id}&horsePositionList=${index}`">
                 <p class="seeDetails font-montserrat">Ver detalles </p>
+
               </NuxtLink>
-            </button>
+
             <div v-if="horse.showDetails">
               <p class="font-montserrat">Detalles: {{ horse.external_data.alt_name }}</p>
               <!-- Add more details here -->

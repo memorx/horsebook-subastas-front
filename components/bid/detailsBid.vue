@@ -83,6 +83,7 @@ export default {
     setUser() {
       return this.$store.state.user;
     },
+
   },
   mounted() {
 
@@ -93,6 +94,7 @@ export default {
   watch: {
     horseID(newValue) {
       this.getDetailsBid(this.bidId, newValue);
+
     },
     statusProps(newValue) {
       if (newValue) {

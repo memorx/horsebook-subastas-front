@@ -33,6 +33,7 @@
       </div>
       <hr>
       <Bids ref="detailsBid" :bidId="bidId" :horseID="horseID" @last-offer-updated="updateLastOffer" />
+
     </div>
   </div>
 </template>
@@ -79,16 +80,20 @@ export default {
       return this.$route.query.horsePositionList;
     },
     isCurrentDate() {
-      const CurrentDate = new Date()
-      const bidDate = new Date(this.BidDate)
-      const endBidDate = new Date(this.EndBidDate)
-      const preBidDate = new Date(this.PreBidDate)
-      const EndPreBidDate = new Date(this.EndPreBidDate)
-      this.statusPreBid = CurrentDate >= preBidDate && CurrentDate <= EndPreBidDate
-      this.statusBid = CurrentDate >= bidDate && CurrentDate <= endBidDate
-      let statusFinal = this.statusPreBid || this.statusBid
-      return statusFinal
-    },
+            const CurrentDate = new Date()
+            const bidDate = new Date(this.BidDate)
+            const endBidDate = new Date(this.EndBidDate)
+            const preBidDate = new Date(this.PreBidDate)
+            const EndPreBidDate = new Date(this.EndPreBidDate)
+            if (CurrentDate >= preBidDate && CurrentDate <= EndPreBidDate){
+                return 1
+            }
+            if (CurrentDate >= bidDate && CurrentDate <= endBidDate){
+                return 2
+            }
+            //let statusFinal = this.statusPreBid || this.statusBid
+            return 0
+        },
   },
   mounted() {
     this.fetchData();
@@ -97,6 +102,7 @@ export default {
     formatted(date) {
       const dateformat = moment(date).format('DD/MM/YYYY')
       return dateformat
+
     },
     handleFormSubmitted() {
       this.$refs.detailsBid.getDetailsBid(this.bidId, this.horseID);
@@ -169,7 +175,16 @@ export default {
   width: 100%;
   height: auto;
 }
-
+.statusOffer{
+    border: 3px solid green;
+    border-radius: 45px;
+    padding:10px
+}
+.statusOfferClose{
+    border: 3px solid red;
+    border-radius: 45px;
+    padding:10px
+}
 /*-- BID DATA --*/
 
 .data-bid {

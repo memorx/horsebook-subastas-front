@@ -44,38 +44,49 @@ import Swal from 'sweetalert2';
 export default {
   name: 'MakeOffer',
 
-  data() {
-    return {
-      modalVisible: false,
-      formData: {
-        subasta_id: '',
-        horse_id: '',
-        amount: null,
-        email: '',
-        pre_bid: false
-      },
-      successMessage: '',
-      errorMessage: '',
-      OfferStatus: null,
-    };
-  },
-  props: {
-    bidId: {
-      type: String,
-      required: true
+
+    data() {
+        return {
+            modalVisible: false,
+            formData: {
+                subasta_id: '',
+                horse_id: '',
+                amount: null,
+                email: '',
+                pre_bid: true
+            },
+            successMessage: '',
+            errorMessage: '',
+            OfferStatus: null,
+        };
     },
-    horseID: {
-      type: [String, Number],
-      required: true
-    },
-    EndPreBidDate: {
-      type: String,
-      required: true
+    props: {
+        bidId: {
+            type: String,
+            required: true
+        },
+        horseID: {
+            type: [String, Number],
+            required: true
+        },
+        EndPreBidDate: {
+            type: String,
+            required: true
+        },
+        BidDate:{
+            type:String,
+            required:true
+        },
+        lastOffer: {
+            type: String,
+            required: true
+        },
     },
     lastOffer: {
       type: String,
       required: true
     },
+
   },
   computed: {
     setUser() {
@@ -107,11 +118,12 @@ export default {
     closeModal() {
       this.modalVisible = false;
     },
-    statusOffer(EndPreBidDate) {
-      const CurrentDate = new Date()
-      const EndPrebid = new Date(EndPreBidDate)
-      return this.OfferStatus = CurrentDate < EndPrebid
-    },
+    statusOffer(EndPreBidDate,BidDate) {
+            const CurrentDate = new Date()
+            const EndPrebid = new Date(EndPreBidDate)
+            const StartBid= new Date(BidDate)
+            return  CurrentDate < EndPrebid && CurrentDate < StartBid
+        },
     submitForm(event) {
       event.preventDefault();
       const PostBidEndpoint = '/subastas/bid/'
@@ -122,6 +134,7 @@ export default {
       this.formData.email = this.setUser.email
       //status offer
       this.formData.pre_bid = this.statusOffer(this.EndPreBidDate)
+
 
       axios.post(url, this.formData, {
         headers: {
