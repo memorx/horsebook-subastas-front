@@ -8,9 +8,9 @@
                 <p style="font-size: 30px; font-weight: 400;">{{ HorsenName }}</p>
                 <p class="statusOffer" v-if="isCurrentDate === 1" style="color: green; font-weight: 600;">PRE OFERTA ABIERTA</p>
                 <p class="statusOffer" v-else-if="isCurrentDate === 2" style="color: green; font-weight: 600;">OFERTA ABIERTA</p>
-                <p class="statusOfferClose" v-else-if="isCurrentDate === 0" style="color: red; font-weight: 600;">OFERTA CERRADA</p>
+                <p class="statusOfferClose" v-else style="color: red; font-weight: 600;">OFERTA CERRADA</p>
                 <div class="preOffer-date">
-                    <div v-if="this.statusPreBid" style="color: #667085;">
+                    <div v-if="isCurrentDate === 1 || isCurrentDate > 1 " style="color: #667085;">
                         <p id="">Termino de Pre-Oferta:</p>
                         <p id="date" style="font-family: 16px; font-weight: bold;">{{ EndPreBidDateFormat }}</p>
                     </div>
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="offer-date">
-                    <div v-if="this.statusBid" style="color: #667085;">
+                    <div v-if=" isCurrentDate === 2 || isCurrentDate > 2" style="color: #667085;">
                         <p id="">Termino de subasta:</p>
                         <p id="date" style="font-family: 16px; font-weight: bold;">{{ EndBidDateFormat }}</p>
                     </div>
@@ -88,14 +88,17 @@ export default {
             if (CurrentDate >= bidDate && CurrentDate <= endBidDate){
                 return 2
             }
-            //let statusFinal = this.statusPreBid || this.statusBid
+            if (CurrentDate >= bidDate){
+                return 3
+            }
             return 0
         },
     },
     mounted() {
-        this.fetchData();
+        this.fetchData()
     },
     methods: {
+        
         formatted(date) {
             const dateformat = moment(date).format('DD/MM/YYYY')
             return dateformat

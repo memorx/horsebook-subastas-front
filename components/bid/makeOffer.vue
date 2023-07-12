@@ -13,7 +13,7 @@
                 </div>
                 <div class="cont-OfferImg">
                 </div>
-                <h3 class="title-makeOffer font-montserrat">Enviar puja</h3>
+                <h3 class="title-makeOffer font-montserrat">Enviar Oferta</h3>
                 <div class="cont-titleCurrenOffer">
                     <h4 class="currentOffer">Oferta Actual: ${{ lastOffer }}</h4>
                 </div>
@@ -105,6 +105,7 @@ export default {
             this.formData.horse_id = this.horseID
             this.formData.subasta_id = this.bidId
             this.formData.email = this.setUser.email
+            this.formData.amount = parseInt(this.formData.amount) 
             //status offer
             this.formData.pre_bid = this.statusOffer(this.EndPreBidDate, this.BidDate)
 
