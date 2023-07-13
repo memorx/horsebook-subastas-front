@@ -19,7 +19,7 @@
         </div>
         <form class="form-makeOffer" @submit="submitForm">
           <div>
-            <label class="valorPuja font-montserrat" for="amount">Ingresa el valor de tu puja aquí:</label>
+            <label class="valorPuja font-montserrat" for="amount">Ingresa el valor de tu oferta aquí:</label>
             <input type="number" id="amount" class="inputPuja" placeholder="Ingrese valor" v-model="formData.amount"
               required>
           </div>
@@ -82,10 +82,6 @@ export default {
       required: true
     },
   },
-  lastOffer: {
-    type: String,
-    required: true
-  },
 
   computed: {
     setUser() {
@@ -93,7 +89,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$store.state.user)
   },
   methods: {
     openModal() {
@@ -117,22 +112,22 @@ export default {
     closeModal() {
       this.modalVisible = false;
     },
-    statusOffer(EndPreBidDate, BidDate) {
+    statusOffer(BidDate) {
       const CurrentDate = new Date()
-      const EndPrebid = new Date(EndPreBidDate)
       const StartBid = new Date(BidDate)
-      return CurrentDate < EndPrebid && CurrentDate < StartBid
+      return CurrentDate <= StartBid
     },
     submitForm(event) {
       event.preventDefault();
       const PostBidEndpoint = '/subastas/bid/'
       const url = `${this.$config.baseURL}${PostBidEndpoint}`
       const decoded = JWTDecode(this.$cookies.get("access_token"))
-      this.formData.horse_id = this.horseID
+      this.formData.horse_id = String( this.horseID)
+      this.formData.amount = parseInt( this.formData.amount)
       this.formData.subasta_id = this.bidId
       this.formData.email = this.setUser.email
       //status offer
-      this.formData.pre_bid = this.statusOffer(this.EndPreBidDate)
+      this.formData.pre_bid = this.statusOffer(this.BidDate)
 
 
       axios.post(url, this.formData, {

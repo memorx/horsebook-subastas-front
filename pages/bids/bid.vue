@@ -1,41 +1,43 @@
 <template>
-  <div class="cont-bid">
-    <NavBarAuction />
-    <div class="cont-context">
-      <div class="cont-horseImg">
-      </div>
-      <div class="data-bid">
-        <p style="font-size: 30px; font-weight: 400;">{{ HorsenName }}</p>
-        <p v-if="isCurrentDate" style="color: green; font-weight: 600; padding-top: 16px;">OFERTA ABIERTA</p>
-        <p v-else style="color: red; font-weight: 600; padding-top: 16px;">OFERTA CERRADA</p>
-        <div class="preOffer-date">
-          <div v-if="this.statusPreBid" style="color: #667085;">
-            <p id="">Termino de Pre-Oferta:</p>
-            <p id="date" style="font-family: 16px; font-weight: bold;">{{ EndPreBidDateFormat }}</p>
+      <div class="cont-bid">
+        <NavBarAuction />
+        <div class="cont-context">
+          <div class="cont-horseImg">
           </div>
-          <div v-else style="color: #667085;">
-            <p id="">Fecha de Pre-Oferta:</p>
-            <p id="date" style="font-family: 16px; font-weight: bold;">{{ PreBidDateFormat }}</p>
+          <div class="data-bid">
+            <p style="font-size: 30px; font-weight: 400;">{{ HorsenName }}</p>
+            <p class="statusOffer" v-if="isCurrentDate === 1" style="color: green; font-weight: 600;">PRE OFERTA ABIERTA
+            </p>
+            <p class="statusOffer" v-else-if="isCurrentDate === 2" style="color: green; font-weight: 600;">OFERTA ABIERTA
+            </p>
+            <p class="statusOfferClose" v-else style="color: red; font-weight: 600;">OFERTA CERRADA</p>
+            <div class="preOffer-date">
+              <div v-if="isCurrentDate === 1 || isCurrentDate > 1" style="color: #667085;">
+                <p id="">Termino de Pre-Oferta:</p>
+                <p id="date" style="font-family: 16px; font-weight: bold;">{{ EndPreBidDateFormat }}</p>
+              </div>
+              <div v-else style="color: #667085;">
+                <p id="">Fecha de Pre-Oferta:</p>
+                <p id="date" style="font-family: 16px; font-weight: bold;">{{ PreBidDateFormat }}</p>
+              </div>
+            </div>
+            <div class="offer-date">
+              <div v-if="isCurrentDate === 2 || isCurrentDate > 2" style="color: #667085;">
+                <p id="">Termino de subasta:</p>
+                <p id="date" style="font-family: 16px; font-weight: bold;">{{ EndBidDateFormat }}</p>
+              </div>
+              <div v-else style="color: #667085;">
+                <p id="">Fecha de subasta:</p>
+                <p id="date" style="font-family: 16px; font-weight: bold;">{{ BidDateFormat }}</p>
+              </div>
+            </div>
+            <MakeOffer :bidId="bidId" :horseID="horseID" :EndPreBidDate="EndPreBidDate" :BidDate="BidDate"
+              :lastOffer="lastOffer" @form-submitted="handleFormSubmitted" />
           </div>
+          <hr>
+          <Bids ref="detailsBid" :bidId="bidId" :horseID="horseID" @last-offer-updated="updateLastOffer" />
         </div>
-        <div class="offer-date">
-          <div v-if="this.statusBid" style="color: #667085;">
-            <p id="">Termino de subasta:</p>
-            <p id="date" style="font-family: 16px; font-weight: bold;">{{ EndBidDateFormat }}</p>
-          </div>
-          <div v-else style="color: #667085;">
-            <p id="">Fecha de subasta:</p>
-            <p id="date" style="font-family: 16px; font-weight: bold;">{{ BidDateFormat }}</p>
-          </div>
-        </div>
-        <MakeOffer :bidId="bidId" :horseID="horseID" :EndPreBidDate="EndPreBidDate" :lastOffer="lastOffer"
-          @form-submitted="handleFormSubmitted" />
       </div>
-      <hr>
-      <Bids ref="detailsBid" :bidId="bidId" :horseID="horseID" @last-offer-updated="updateLastOffer" />
-
-    </div>
-  </div>
 </template>
 <script>
 
@@ -80,25 +82,28 @@ export default {
       return this.$route.query.horsePositionList;
     },
     isCurrentDate() {
-            const CurrentDate = new Date()
-            const bidDate = new Date(this.BidDate)
-            const endBidDate = new Date(this.EndBidDate)
-            const preBidDate = new Date(this.PreBidDate)
-            const EndPreBidDate = new Date(this.EndPreBidDate)
-            if (CurrentDate >= preBidDate && CurrentDate <= EndPreBidDate){
-                return 1
-            }
-            if (CurrentDate >= bidDate && CurrentDate <= endBidDate){
-                return 2
-            }
-            //let statusFinal = this.statusPreBid || this.statusBid
-            return 0
-        },
+      const CurrentDate = new Date()
+      const bidDate = new Date(this.BidDate)
+      const endBidDate = new Date(this.EndBidDate)
+      const preBidDate = new Date(this.PreBidDate)
+      const EndPreBidDate = new Date(this.EndPreBidDate)
+      if (CurrentDate >= preBidDate && CurrentDate <= EndPreBidDate) {
+        return 1
+      }
+      if (CurrentDate >= bidDate && CurrentDate <= endBidDate) {
+        return 2
+      }
+      if (CurrentDate >= bidDate) {
+        return 3
+      }
+      return 0
+    },
   },
   mounted() {
-    this.fetchData();
+    this.fetchData()
   },
   methods: {
+
     formatted(date) {
       const dateformat = moment(date).format('DD/MM/YYYY')
       return dateformat
@@ -175,16 +180,19 @@ export default {
   width: 100%;
   height: auto;
 }
-.statusOffer{
-    border: 3px solid green;
-    border-radius: 45px;
-    padding:10px
+
+.statusOffer {
+  border: 3px solid green;
+  border-radius: 45px;
+  padding: 10px
 }
-.statusOfferClose{
-    border: 3px solid red;
-    border-radius: 45px;
-    padding:10px
+
+.statusOfferClose {
+  border: 3px solid red;
+  border-radius: 45px;
+  padding: 10px
 }
+
 /*-- BID DATA --*/
 
 .data-bid {
@@ -194,5 +202,4 @@ export default {
   font-size: 14px;
   padding-top: 15px;
   padding-bottom: 75px;
-}
-</style>
+}</style>

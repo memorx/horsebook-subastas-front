@@ -28,12 +28,9 @@
             <p class="nameHorse font-montserrat">{{ horse.external_data.name }}</p>
             <p class="prizeHorse font-montserrat">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
             <!-- <button class="buttonDetails" v-on:click="showHorseDetails(horse)"> -->
-            <button class="buttonDetails">
-              <NuxtLink :to="`/bids/bid?id=${id}&horsePositionList=${index}`">
-                <p class="seeDetails font-montserrat">Ver detalles </p>
-
-              </NuxtLink>
-            </button>
+            <NuxtLink class="buttonDetails" :to="`/bids/bid?id=${id}&horsePositionList=${index}`">
+              <p class="seeDetails font-montserrat">Ver detalles </p>
+            </NuxtLink>
             <div v-if="horse.showDetails">
               <p class="font-montserrat">Detalles: {{ horse.external_data.alt_name }}</p>
               <!-- Add more details here -->
@@ -44,6 +41,63 @@
     </div>
   </div>
 </template>
+<script>
+import goToDetails from '@/pages/user/inicioo.vue';
+import jwt_decode from 'jwt-decode';
+import Loading from '../../../components/shared/Loading.vue';
+import moment from 'moment';
+import NavBarAuction from "../../../components/NavBar/NavBarAuction.vue"
+
+export default {
+  components: { Loading, NavBarAuction },
+  data() {
+    return {
+      item: {},
+      id: '',
+      loading: false,
+      moment: moment
+    }
+  },
+  async created() {
+    const itemId = this.$route.params.id
+    this.id = itemId
+    await this.getDetailsAuction(itemId)
+    console.log(itemId)
+  },
+  methods: {
+    async getDetailsAuction(itemId) {
+      const url = this.$config.baseURL + `/subastas/list-subastas/?id=${itemId}`
+      const decoded = jwt_decode(this.$cookies.get("access_token"))
+      console.log(decoded, "decoded")
+      console.log(this.$store.state.user, "ESTADO DETALLE/ID")
+      let headers = {}
+      if (decoded) {
+        headers = {
+          Authorization: `Token ${decoded.token}`,
+        };
+        this.loading = true
+      }
+      await this.$axios
+        .get(url, { headers })
+        .then((response) => {
+          console.log(response.data, "RESPONSE.DATA")
+          this.item = response.data
+          this.loading = false
+        })
+        .catch((error) => {
+          console.log(error)
+          this.loading = false
+        })
+    },
+    showHorseDetails(horse) {
+      console.log("showHorseDetails method called");
+      console.log(horse.external_data.alt_name);
+      this.$set(horse, 'showDetails', !horse.showDetails);
+    }
+  }
+}
+</script>
+
 <style>
 .container {
   display: flex;
@@ -236,59 +290,3 @@
 }
 </style>
 
-<script>
-import goToDetails from '@/pages/user/inicioo.vue';
-import jwt_decode from 'jwt-decode';
-import Loading from '../../../components/shared/Loading.vue';
-import moment from 'moment';
-import NavBarAuction from "../../../components/NavBar/NavBarAuction.vue"
-
-export default {
-  components: { Loading, NavBarAuction },
-  data() {
-    return {
-      item: {},
-      id: '',
-      loading: false,
-      moment: moment
-    }
-  },
-  async created() {
-    const itemId = this.$route.params.id
-    this.id = itemId
-    await this.getDetailsAuction(itemId)
-    console.log(itemId)
-  },
-  methods: {
-    async getDetailsAuction(itemId) {
-      const url = this.$config.baseURL + `/subastas/list-subastas/?id=${itemId}`
-      const decoded = jwt_decode(this.$cookies.get("access_token"))
-      console.log(decoded, "decoded")
-      console.log(this.$store.state.user, "ESTADO DETALLE/ID")
-      let headers = {}
-      if (decoded) {
-        headers = {
-          Authorization: `Token ${decoded.token}`,
-        };
-        this.loading = true
-      }
-      await this.$axios
-        .get(url, { headers })
-        .then((response) => {
-          console.log(response.data, "RESPONSE.DATA")
-          this.item = response.data
-          this.loading = false
-        })
-        .catch((error) => {
-          console.log(error)
-          this.loading = false
-        })
-    },
-    showHorseDetails(horse) {
-      console.log("showHorseDetails method called");
-      console.log(horse.external_data.alt_name);
-      this.$set(horse, 'showDetails', !horse.showDetails);
-    }
-  }
-}
-</script>

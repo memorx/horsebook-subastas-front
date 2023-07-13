@@ -10,7 +10,11 @@
           <div class="navItemBase bg-gray-800 rounded-lg">
             <div class="contentt flex items-center gap-2">
               <div class="gavel w-5 h-5"></div>
-              <p class="font-montserrat font-medium text-base text-white">Tus subastas</p>
+              <button class="font-montserrat font-medium text-base leading-6 text-white">
+                <a href="/user/inicioo" class="pl-6">
+                  Tus subastas
+                </a>
+              </button>
             </div>
           </div>
           <div class="framee1">
