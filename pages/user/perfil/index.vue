@@ -23,7 +23,7 @@
           <p class="name font-montserrat">Nombre (s)</p>
           <p class="nameStyle font-montserrat">{{ email.name }}</p>
           <p class="lastNameMother font-montserrat">Apellido materno</p>
-          <p class="nameStyle font-montserrat">Del valle</p>
+          <p class="nameStyle font-montserrat">{{ email.mothers_maiden_name }}</p>
           <p class="celphone font-montserrat">Teléfono</p>
           <p class="nameStyle font-montserrat">{{ email.phone }}</p>
           <p class="date font-montserrat">Fecha de nacimiento</p>
@@ -538,6 +538,7 @@ export default {
     }
   },
   mounted() {
+    this.validateUser();
     this.getInfo();
     this.getAuctionsRecord();
   },
@@ -555,7 +556,19 @@ export default {
       }
     }
   },
+
   methods: {
+    validateUser() {
+      if (!this.$store.state.user) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Debes iniciar sesión para poder ver tus datos, se te redirigirá al inicio'
+        }).then(() => {
+          window.location.href = '/auth/login';
+        });
+      }
+    },
     async getInfo() {
       this.email = [];
       const url = `${this.$config.baseURL}/users/list-app-users/?email=${this.$store.state.user.email}`;
@@ -566,6 +579,7 @@ export default {
         const headers = {
           Authorization: `Token ${decoded.token}`,
         };
+
 
         this.loading = true;
 
@@ -589,6 +603,7 @@ export default {
           Authorization: `Token ${decoded.token}`,
         }
         this.loading = true;
+        console.log(this.$store.state.user.email, "ESTADO")
         try {
           const info = await this.$axios.get(url, { headers });
           this.info = info.data
@@ -611,7 +626,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.$store.commit("clearUserData");
-          window.location.href = '/auth/password/send-email';
+          window.location.href = '/auth/login';
         }
       });
     }
