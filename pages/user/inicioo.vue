@@ -652,7 +652,6 @@ export default {
       const listSubastasEndpoint = "/subastas/list-subastas/";
       const currentDate = new Date().toISOString().slice(0, 10);
       const url = `${this.$config.baseURL}${listSubastasEndpoint}?start_date=${currentDate}&only_subasta_data=true`;
-      console.log(url, "URL")
       const decoded = JWTDecode(this.$cookies.get("access_token"))
       console.log(decoded)
       //I want to stop to make a hardcode and do it using logic
@@ -662,12 +661,10 @@ export default {
         const headers = {
           Authorization: `Token ${decoded.token}`,
         };
-        console.log(headers, "headers")
         this.loading = true;
         await this.$axios
           .get(url, { headers })
           .then((response) => {
-            console.log(response, "USERS");
             for (let i = 0; i < response.data.length; i++) {
               console.log(response.data[i].start_bid);
             }
@@ -683,23 +680,21 @@ export default {
     },
     async registerAuctions() {
       this.register = []
-      const url = `${this.$config.baseURL}/subastas/get-registered-subastas/?email=${this.$store.state.user.email}`;
+      const currentDate = new Date().toISOString().slice(0, 10);
+      const url = `${this.$config.baseURL}/subastas/get-registered-subastas/?email=${this.$store.state.user.email}&start_date=${currentDate}`;
       console.log(url, "URL")
       const decoded = JWTDecode(this.$cookies.get("access_token"))
       console.log(decoded)
       //I want to stop to make a hardcode and do it using logic
       if (decoded) {
-        console.log(decoded.token, "decoded.token")
         const token = "4fd2e979427a259cc56c18cad449cec5aefaed0d"; // Replace with your token value
         const headers = {
           Authorization: `Token ${decoded.token}`,
         };
-        console.log(headers, "headers")
         this.loading = true;
         await this.$axios
           .get(url, { headers })
           .then((response) => {
-            console.log(response, "USERS REGISTER");
             for (let i = 0; i < response.data.length; i++) {
               console.log(response.data[i].start_bid);
             }
