@@ -19,21 +19,25 @@
             <th class="columns-1">Oferta (USD)</th>
             <th class="columns-1">Fecha</th>
           </thead>
-
-          <tr v-for="(bid, index) in detailsBid" :key="bid.id">
-            <td>
-              {{
-                bid.user_profile.name +
-                ' ' +
-                bid.user_profile.fathers_surname +
-                ' ' +
-                bid.user_profile.mothers_maiden_name
-              }}
-            </td>
-            <td>${{ formatAmount(bid.amount) }}</td>
-            <td>{{ formatDate(bid.bid_date) }}</td>
-          </tr>
+          <tbody>
+            <tr v-for="(bid, index) in visibleBids" :key="bid.id">
+              <td>
+                {{
+                  bid.user_profile.name +
+                  ' ' +
+                  bid.user_profile.fathers_surname +
+                  ' ' +
+                  bid.user_profile.mothers_maiden_name
+                }}
+              </td>
+              <td>${{ formatAmount(bid.amount) }}</td>
+              <td>{{ formatDate(bid.bid_date) }}</td>
+            </tr>
+          </tbody>
         </table>
+        <button @click="toggleNextBids">
+          {{ showNextBids ? 'Hide Next Bids' : 'Show Next Bids' }}
+        </button>
       </div>
     </template>
   </div>
@@ -69,7 +73,7 @@ export default {
       amount: null,
       bidDate: '',
       lastOffer: '',
-      detailsBid: {},
+      detailsBid: [],
       parameters: {
         subasta_id: '',
         horse_id: '',
@@ -77,30 +81,25 @@ export default {
       loading: false,
       tableKey: 0,
       test: 3,
+      showNextBids: false,
+      nextBidIndex: 1,
     }
   },
   computed: {
     setUser() {
       return this.$store.state.user;
     },
-
+    visibleBids() {
+      if (this.showNextBids) {
+        return this.detailsBid.slice(0, this.nextBidIndex + 1);
+      }
+      return this.detailsBid.slice(0, 1); // Only display the first bid
+    },
   },
   mounted() {
-
     setInterval(() => {
       this.getDetailsBid(this.bidId, this.horseID);
     }, 1000);
-  },
-  watch: {
-    horseID(newValue) {
-      this.getDetailsBid(this.bidId, newValue);
-
-    },
-    statusProps(newValue) {
-      if (newValue) {
-        this.getDetailsBid(this.bidId, this.horseID);
-      }
-    },
   },
   methods: {
     formatAmount(amount) {
@@ -116,7 +115,6 @@ export default {
       this.parameters.subasta_id = bid
       this.parameters.horse_id = horse
       this.tableKey++;
-      //this.loading = true
       await axios.get(url, {
         params: this.parameters,
         headers: {
@@ -124,20 +122,25 @@ export default {
         }
       })
         .then(response => {
+          console.log(response, "RESPONSE GET DETAILS BID")
           this.detailsBid = response.data
           this.lastOffer = this.detailsBid[0].amount
           const formattedLastOffer = parseFloat(this.lastOffer).toLocaleString('es-ES');
           this.$emit('last-offer-updated', formattedLastOffer);
-          //this.loading = false
         })
         .catch(error => {
           console.error(error);
-
-          //this.loading = false
         });
     },
+    toggleNextBids() {
+      this.showNextBids = !this.showNextBids;
+      if (this.showNextBids) {
+        this.nextBidIndex = this.detailsBid.length - 1;
+      } else {
+        this.nextBidIndex = 1;
+      }
+    },
   },
-
 }
 </script>
 

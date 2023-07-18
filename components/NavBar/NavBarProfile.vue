@@ -9,7 +9,7 @@
         <div class="navigation">
           <div class="gavel w-5 h-5"></div>
           <button>
-            <a href="/user/inicioo">
+            <a href="/user/inicio">
               <p class="font-montserrat font-medium text-base leading-6 text-gray-900 pl-12">Tus subastas</p>
             </a>
           </button>
