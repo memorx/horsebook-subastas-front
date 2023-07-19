@@ -122,7 +122,6 @@ export default {
         }
       })
         .then(response => {
-          console.log(response, "RESPONSE GET DETAILS BID")
           this.detailsBid = response.data
           this.lastOffer = this.detailsBid[0].amount
           const formattedLastOffer = parseFloat(this.lastOffer).toLocaleString('es-ES');
