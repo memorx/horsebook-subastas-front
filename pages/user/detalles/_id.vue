@@ -42,7 +42,7 @@
   </div>
 </template>
 <script>
-import goToDetails from '@/pages/user/inicioo.vue';
+import goToDetails from '@/pages/user/inicio.vue';
 import jwt_decode from 'jwt-decode';
 import Loading from '../../../components/shared/Loading.vue';
 import moment from 'moment';

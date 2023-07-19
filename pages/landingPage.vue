@@ -98,10 +98,93 @@
       </div>
       <p class="not-italic font-normal text-[80px] leading-[98px] text-center pt-24 ">¿Como pujar?</p>
       <p class="pt-8 not-italic font-normal text-[25px] leading-[30px] text-center">Nuestro proceso</p>
-
+      <div v-if="nextAuction">
+        <h1>Próxima subasta:</h1>
+        <p>{{ countdown }}</p>
+      </div>
+      <div v-else>
+        <h1>No hay subastas próximas</h1>
+      </div>
     </div>
   </div>
 </template>
+<script>
+import JWTDecode from 'jwt-decode';
+export default {
+  data() {
+    return {
+      subastas: [],
+      nextAuction: null,
+      countdown: "",
+      loading: false,
+    };
+  },
+  created() {
+    this.fetchSubastas();
+    this.updateCountdown();
+  },
+  methods: {
+    async fetchSubastas() {
+      this.email = [];
+      const listSubastasEndpoint = "/subastas/list-subastas/";
+      const currentDate = new Date().toISOString().slice(0, 10);
+      const url = `${this.$config.baseURL}${listSubastasEndpoint}?start_date=${currentDate}&only_subasta_data=true`;
+      const decoded = JWTDecode(this.$cookies.get("access_token"));
+
+      if (decoded) {
+        const token = decoded.token; // Use the decoded token directly
+        const headers = {
+          Authorization: `Token ${token}`,
+        };
+        this.loading = true;
+        try {
+          const response = await this.$axios.get(url, { headers });
+          this.subastas = response.data; // Assign the response data to this.subastas
+          this.loading = false;
+        } catch (error) {
+          console.log(error, "ERRORR");
+          this.loading = false;
+        }
+      }
+    },
+    updateCountdown() {
+      setInterval(() => {
+        if (this.subastas.length === 0) {
+          return;
+        }
+
+        const now = new Date().getTime();
+        let closestTime = Infinity;
+        let closestIndex = -1;
+
+        for (let i = 0; i < this.subastas.length; i++) {
+          const startBidTime = new Date(this.subastas[i].start_bid).getTime();
+          const timeDifference = startBidTime - now;
+          if (timeDifference > 0 && timeDifference < closestTime) {
+            closestTime = timeDifference;
+            closestIndex = i;
+          }
+        }
+
+        if (closestIndex !== -1) {
+          this.nextAuction = this.subastas[closestIndex];
+          this.updateCountdownText(closestTime);
+        } else {
+          this.nextAuction = null;
+        }
+      }, 1000);
+    },
+    updateCountdownText(timeDifference) {
+      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+      this.countdown = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    },
+  }
+}
+</script>
 <style>
 .containerBackground {
   background: #f1f3f4;

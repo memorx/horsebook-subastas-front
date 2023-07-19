@@ -11,7 +11,7 @@
             <div class="contentt flex items-center gap-2">
               <div class="gavel w-5 h-5"></div>
               <button class="font-montserrat font-medium text-base leading-6 text-white">
-                <a href="/user/inicioo" class="pl-6">
+                <a href="/user/inicio">
                   Tus subastas
                 </a>
               </button>
