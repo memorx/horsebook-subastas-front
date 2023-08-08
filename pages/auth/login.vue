@@ -47,7 +47,7 @@
             <nuxt-link to="/auth/sign-up" class="font-medium text-base text-black">Resgístrate ahora</nuxt-link>
           </div>
           <div class="text-center mt-4">
-            <nuxt-link to="/user/inicio" class="font-medium text-base text-black">Ingresar a subastas</nuxt-link>
+            <nuxt-link to="/landingPage" class="font-medium text-base text-black">Ingresar a subastas</nuxt-link>
           </div>
         </form>
       </div>
@@ -344,7 +344,7 @@ export default {
             console.log(this.$store, "STORE")
 
             // Redirect to the home page
-            this.$router.push('/user/inicio')
+            this.$router.push('/landingPage')
           }
         })
         .catch((error) => {
