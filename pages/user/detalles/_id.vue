@@ -17,7 +17,6 @@
           </p>
           <p class="datesAuction font-montserrat">Cierre de preoferta: {{ new Date(item.start_bid).toLocaleString() }}
           </p>
-                                                                                                                                                                                                                                                                                                    <p class="dateAuction">DD/MM/YY</p> -->
 
         </div>
         <!-- <div class="dividerr"></div> -->
