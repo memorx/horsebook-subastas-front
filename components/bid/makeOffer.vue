@@ -20,7 +20,7 @@
         <form class="form-makeOffer" @submit="submitForm">
           <div>
             <label class="valorPuja font-montserrat" for="amount">Ingresa el valor de tu oferta aquí:</label>
-            <input type="number" id="amount" class="inputPuja" placeholder="Ingrese valor" v-model="formData.amount"
+            <input type="number" id="amount" class="inputPuja" placeholder="Ingrese valor" step="1000" min="0" v-model="formData.amount"
               required>
           </div>
           <div class="cont-buttonOffer">
