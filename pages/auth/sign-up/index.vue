@@ -34,14 +34,15 @@
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
                 placeholder="Ingresar apellido materno" />
             </div>
-            <div class="flex flex-col w-full ">
+            <div class="flex flex-col w-full">
               <label for="identification_document" class="titleInput font-medium text-base text-black">Documento de
-                identidad
-                (ID/Pasaporte)</label>
+              identidad (ID/Pasaporte)</label>
               <input v-model="form.identification_document" type="number" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar número de documento o pasaporte" />
+              class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
+              placeholder="Ingresar número de documento o pasaporte"
+              style="-webkit-appearance: none; -moz-appearance: textfield; appearance: none;" />
             </div>
+
             <div class="flex flex-col w-full ">
               <label for="country" class="titleInput font-medium text-base text-black">País</label>
               <input v-model="form.country" @input="autocompleteCountry" @keydown.delete="clearInputOnDelete"
@@ -274,4 +275,14 @@ export default {
   }
 }
 </script>
+<style scoped>
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
 
+</style>

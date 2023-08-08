@@ -24,7 +24,7 @@
         <div class="flex justify-center space-x-8">
           <p class="not-italic font-medium text-xl leading-5 text-white letterMonserrat">Subasta online</p>
           <p class="not-italic font-medium text-xl leading-5 text-white letterMonserrat">Informacion</p>
-          <p class="not-italic font-medium text-xl leading-5 text-white font-bold letterMonserrat">¿Como pujar?</p>
+          <p class="not-italic font-medium text-xl leading-5 text-white font-bold letterMonserrat">¿Como ofertar?</p>
           <p class="not-italic font-medium text-xl leading-5 text-white font-bold letterMonserrat">Contacto</p>
           <p class="not-italic font-medium text-xl leading-5 text-white font-bold letterMonserrat">Noticias</p>
         </div>
@@ -96,11 +96,11 @@
           </a>
         </button>
       </div>
-      <p class="not-italic font-normal text-[80px] leading-[98px] text-center pt-24 ">¿Como pujar?</p>
+      <p class="not-italic font-normal text-[80px] leading-[98px] text-center pt-24 ">¿Como ofertar?</p>
       <p class="pt-8 not-italic font-normal text-[25px] leading-[30px] text-center">Nuestro proceso</p>
       <div v-if="nextAuction">
-        <h1>Próxima subasta:</h1>
-        <p>{{ countdown }}</p>
+        
+        <p class="not-italic font-normal text-[80px] leading-[98px] text-center pt-24 ">{{ countdown }}</p>
       </div>
       <div v-else>
         <h1>No hay subastas próximas</h1>

@@ -13,11 +13,10 @@
         <img src="../../../public/image_detail_horse.png" width="100%" height="100%">
         <div class="title">
           <p class="styleTitle font-montserrat">Subasta</p>
-          <p class="datesAuction font-montserrat">Fecha de pre-oferta: {{ new Date(item.start_pre_bid).toLocaleString() }}
+          <p class="datesAuction font-montserrat">Inicio de preoferta: {{ new Date(item.start_pre_bid).toLocaleString() }}
           </p>
-          <p class="datesAuction font-montserrat">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}
+          <p class="datesAuction font-montserrat">Cierre de preoferta: {{ new Date(item.start_bid).toLocaleString() }}
           </p>
-          <!-- <p class="dateAuction">DD/MM/YY</p>
                                                                                                                                                                                                                                                                                                     <p class="dateAuction">DD/MM/YY</p> -->
 
         </div>
