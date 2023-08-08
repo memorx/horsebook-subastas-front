@@ -9,8 +9,7 @@
       </div>
       <div class="sectionheaderr">
         <p class="textSub font-aeonik">Próximas subastas disponibles</p>
-        <div class="contentttttt" v-for="
-         in email" :key="item.id">
+        <div class="contentttttt" v-for="item in email" :key="item.id">
           <img v-if="item.image" :src="item.image" alt="logo" class="auction-image">
           <img v-else src="../../public/image_subasta.png" alt="logo" class="auction-image">
           <div class="contentttttttt">
