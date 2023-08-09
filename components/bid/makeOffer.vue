@@ -21,6 +21,7 @@
           <div>
             <label class="valorPuja font-montserrat" for="amount">Ingresa el valor de tu oferta aquí:</label>
             <input type="number" id="amount" class="inputPuja" placeholder="Ingrese valor en USD" step="1000" min="0" v-model="formData.amount"
+
               required>
           </div>
           <div class="cont-buttonOffer">
