@@ -20,7 +20,7 @@
         <form class="form-makeOffer" @submit="submitForm">
           <div>
             <label class="valorPuja font-montserrat" for="amount">Ingresa el valor de tu oferta aquí:</label>
-            <input type="number" id="amount" class="inputPuja" placeholder="Ingrese valor" v-model="formData.amount"
+            <input type="number" id="amount" class="inputPuja" placeholder="Ingrese valor en USD" step="1000" min="0" v-model="formData.amount"
               required>
           </div>
           <div class="cont-buttonOffer">
@@ -145,6 +145,7 @@ export default {
         })
         .catch(error => {
           this.errorMessage = 'Error al enviar la oferta';
+
           if (error.response && error.response.data && error.response.data.non_field_errors && error.response.data.non_field_errors.length > 0) {
             this.errorMessage = error.response.data.non_field_errors[0];
           }

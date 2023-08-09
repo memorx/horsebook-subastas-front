@@ -55,7 +55,11 @@
             <div
               class="flex flex-row justify-center items-center gap-2.5 w-[260px] h-[62px] px-7 py-5 bg-black border border-white">
               <p class="not-italic font-light text-[25px] leading-[51px] text-center text-white letterMonserrat">
-                <span class="whitespace-nowrap ">VER ÚLTIMA SUBASTA</span>
+                <a href="user/inicio">
+                  <button>
+                    <span class="whitespace-nowrap">VER ÚLTIMA SUBASTA</span>
+                  </button>
+                </a>
               </p>
             </div>
           </button>
