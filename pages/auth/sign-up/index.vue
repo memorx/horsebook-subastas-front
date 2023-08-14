@@ -92,15 +92,23 @@
             <div class="flex flex-col w-full ">
               <label for="password" class="titleInput font-medium text-base text-black">Contraseña</label>
               <input v-model="form.password" type="password" required
+                @input="handlePasswordInput"
+                @focus="isPasswordFocused = true"
+                @blur="isPasswordFocused = false"
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
                 placeholder="Ingresar contraseña" />
+              <div v-if="isPasswordFocused" class="text-red-500 text-sm">{{ passwordValidationMessage }}</div>
+              <div v-if="isPasswordFocused" class="text-red-500 text-sm">{{ digitValidationMessage }}</div>
+              <div v-if="isPasswordFocused" class="text-red-500 text-sm">{{ specialCharacterValidationMessage }}</div>
             </div>
             <div class="flex flex-col w-full ">
               <label for="confirmPassword" class="titleInput font-medium text-base text-black">Confirmar
                 contraseña</label>
-              <input v-model="form.confirmPassword" type="password" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Confirmar contraseña" />
+                <input v-model="form.confirmPassword" type="password" required
+                  @input="validatePasswordMatch" 
+                  class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
+                  placeholder="Confirmar contraseña" />
+                <div class="text-red-500 text-sm">{{ passwordMatchValidationMessage }}</div>
             </div>
           </div>
           <div class="flex flex-col w-full mt-6 containerButton">
@@ -154,10 +162,36 @@ export default {
         email: "",
         password: "",
         confirmPassword: "",
+        passwordValidationMessage: '',
+        digitValidationMessage: '',
+        specialCharacterValidationMessage: '',
+        isPasswordFocused: false,
+        passwordMatchValidationMessage: '',
       },
     };
   },
   methods: {
+    handlePasswordInput() {
+      this.validatePassword();
+    },
+    validatePasswordMatch() {
+      const password = this.form.password;
+      const confirmPassword = this.form.confirmPassword;
+      this.passwordMatchValidationMessage = password === confirmPassword ? '' : 'Las contraseñas deben ser iguales.';
+    },
+    validatePassword() {
+      const password = this.form.password;
+
+      const isLengthValid = password.length >= 8;
+      const hasDigit = /\d/.test(password);
+
+      const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
+    
+
+      this.passwordValidationMessage = isLengthValid ? '' : 'La contraseña debe tener al menos 8 caracteres.';
+      this.digitValidationMessage = hasDigit ? '' : 'La contraseña debe contener al menos un dígito.';
+      this.specialCharacterValidationMessage = hasSpecialCharacter ? '' : 'La contraseña debe contener al menos un carácter especial.';
+    },
     handleSubmit() {
       // Check the data
       if (this.form.password !== this.form.confirmPassword) {
@@ -183,8 +217,7 @@ export default {
         this.$toast.error("La contraseña debe tener al menos 8 caracteres,<br>contener al menos un dígito,<br>un carácter especial,<br>no puede incluir parte de los atributos del usuario,<br>ni ser una contraseña común o fácilmente adivinable.");
         return;
       }
-      // console.log('Form submitted', this.form)
-      // call the request to create App User
+     
       this.signUp(this.form);
     },
     normalizeString(input) {
@@ -233,7 +266,6 @@ export default {
       };
       await this.$axios.$post(url, body, { headers })
         .then((response) => {
-          // console.log(response);
           this.loading = false
           let data = response
           // even knowing the password is encrypted, We shouldn't include in our store
