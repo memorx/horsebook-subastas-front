@@ -1,91 +1,4 @@
 <template>
-  <!-- <div>
-    <div class="cont-bid">
-      <NavBarAuction />
-      <div class="cont-context">
-        <div class="cont-horseImg">
-        </div>
-        <div class="data-bid">
-          <p style="font-size: 30px; font-weight: 400;">{{ HorsenName }}</p>
-          <p
-            class="statusOffer"
-            v-if="isCurrentDate === 1"
-            style="color: green; font-weight: 600;"
-          >PRE OFERTA ABIERTA
-          </p>
-          <p
-            class="statusOffer"
-            v-else-if="isCurrentDate === 2"
-            style="color: green; font-weight: 600;"
-          >OFERTA ABIERTA
-          </p>
-          <p
-            class="statusOfferClose"
-            v-else
-            style="color: red; font-weight: 600;"
-          >OFERTA CERRADA</p>
-          <div class="preOffer-date">
-            <div
-              v-if="isCurrentDate === 1 || isCurrentDate > 1"
-              style="color: #667085;"
-            >
-              <p id="">Termino de Pre-Oferta:</p>
-              <p
-                id="date"
-                style="font-family: 16px; font-weight: bold;"
-              >{{ EndPreBidDateFormat }}</p>
-            </div>
-            <div
-              v-else
-              style="color: #667085;"
-            >
-              <p id="">Fecha de Pre-Oferta:</p>
-              <p
-                id="date"
-                style="font-family: 16px; font-weight: bold;"
-              >{{ PreBidDateFormat }}</p>
-            </div>
-          </div>
-          <div class="offer-date">
-            <div
-              v-if="isCurrentDate === 2 || isCurrentDate > 2"
-              style="color: #667085;"
-            >
-              <p id="">Termino de subasta:</p>
-              <p
-                id="date"
-                style="font-family: 16px; font-weight: bold;"
-              >{{ EndBidDateFormat }}</p>
-            </div>
-            <div
-              v-else
-              style="color: #667085;"
-            >
-              <p id="">Fecha de subasta:</p>
-              <p
-                id="date"
-                style="font-family: 16px; font-weight: bold;"
-              >{{ BidDateFormat }}</p>
-            </div>
-          </div>
-          <MakeOffer
-            :bidId="bidId"
-            :horseID="horseID"
-            :EndPreBidDate="EndPreBidDate"
-            :BidDate="BidDate"
-            :lastOffer="lastOffer"
-            @form-submitted="handleFormSubmitted"
-          />
-        </div>
-        <hr>
-        <Bids
-          ref="detailsBid"
-          :bidId="bidId"
-          :horseID="horseID"
-          @last-offer-updated="updateLastOffer"
-        />
-      </div>
-    </div> -->
   <div>
     <div class="bg-gray-100 py-8">
       <div class="alert-cont">
@@ -330,10 +243,6 @@ export default {
     },
   },
   mounted() {
-    this.fetchData()
-    // setInterval(() => {
-    //   this.getDetailsBid(this.bidId, this.horseID);
-    // }, 1000);
   },
   methods: {
     handleAmountInput(event) {
@@ -468,20 +377,6 @@ export default {
   width: 100%;
   height: auto;
 }
-
-/* .statusOffer {
-  border: 1px solid green;
-  border-radius: 50px;
-  padding: 10px
-} */
-
-/* .statusOfferClose {
-  border: 2px solid red;
-  border-radius: 50px;
-  padding: 10px
-} */
-
-/*-- BID DATA --*/
 
 .data-bid {
   display: flex;

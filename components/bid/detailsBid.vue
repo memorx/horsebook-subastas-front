@@ -6,11 +6,6 @@
           <p style="font-size: 30px; font-weight:600">Historial de ofertas:</p>
           <!-- <p style="color: #667085;">Últimas ofertas</p> -->
         </div>
-        <!-- <Winner
-          class=""
-          :bidId="bidId"
-          :horseID="horseID"
-        /> -->
       </div>
     </div>
     <template v-if="setUser">
@@ -47,12 +42,6 @@
             </tbody>
           </table>
         </div>
-        <!-- <button
-          @click="toggleNextBids"
-          class="mx-5"
-        >
-          {{ showNextBids ? 'Mostrar solo ultima oferta' : 'Mostrar todas las ofertas' }}
-        </button> -->
         <div class="flex justify-center">
           <div class="flex items-center my-3">
             <button

@@ -1,7 +1,6 @@
 <template lang="">
     <div>
       <div class="">
-        <!-- <p :style="textStyle" class="text-center">{{ winnerBid ? winnerBid : 'Aun nadie subasto por este caballo' }}</p> -->
         <p id="win-flag" v-if="winnerBid" :style="textStyle">GANADOR hasta ahora : {{ winnerBid ? winnerBid : 'Aun nadie subasto por este caballo' }} </p>
       </div>
     </div>
