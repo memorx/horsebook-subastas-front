@@ -1,43 +1,56 @@
 <template>
   <div class="cont-detailsBid">
-    <div class="details-bid">
-      <div class="cont-titleBid">
-        <div v-if="setUser" class="title-bid">
-          <p style="font-size: 30px; font-weight:600">Ofertas</p>
-          <p style="color: #667085;">Últimas ofertas</p>
+    <div class="details-bid max-w-6xl">
+      <div class="cont-titleBid title-bid flex justify-between">
+        <div v-if="setUser">
+          <p style="font-size: 30px; font-weight:600">Historial de ofertas:</p>
+          <!-- <p style="color: #667085;">Últimas ofertas</p> -->
         </div>
       </div>
     </div>
-
-    <Winner class="pl-[800px] mt-[-80px]" :bidId="bidId" :horseID="horseID" />
-
     <template v-if="setUser">
-      <div class="cont-tableBid ">
-        <table class="table-bid " :key="tableKey">
-          <thead class="th-tableBid">
-            <th class="columns-8">Nombre</th>
-            <th class="columns-1">Oferta (USD)</th>
-            <th class="columns-1">Fecha</th>
-          </thead>
-          <tbody>
-            <tr v-for="(bid, index) in visibleBids" :key="bid.id">
-              <td>
-                {{
-                  bid.user_profile.name +
-                  ' ' +
-                  bid.user_profile.fathers_surname +
-                  ' ' +
-                  bid.user_profile.mothers_maiden_name
-                }}
-              </td>
-              <td>${{ formatAmount(bid.amount) }}</td>
-              <td>{{ formatDate(bid.bid_date) }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <button @click="toggleNextBids">
-          {{ showNextBids ? 'Hide Next Bids' : 'Show Next Bids' }}
-        </button>
+      <div class="cont-tableBid max-w-6xl mx-auto px-4 my-5">
+        <div class="overflow-x-auto">
+          <table
+            class="table-bid min-w-full"
+            :key="tableKey"
+          >
+            <thead class="th-tableBid">
+              <tr>
+                <th class="columns-1 md:columns-8">Nombre</th>
+                <th class="columns-1">Oferta (USD)</th>
+                <th class="columns-1">Fecha</th>
+              </tr>
+            </thead>
+            <tbody style="font-size: 13px;">
+              <tr
+                v-for="(bid, index) in visibleBids"
+                :key="bid.id"
+              >
+                <td>
+                  {{
+                    bid.user_profile.name +
+                    ' ' +
+                    bid.user_profile.fathers_surname +
+                    ' ' +
+                    bid.user_profile.mothers_maiden_name
+                  }}
+                </td>
+                <td>${{ formatAmount(bid.amount) }}</td>
+                <td>{{ formatDate(bid.bid_date) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex justify-center">
+          <div class="flex items-center my-3">
+            <button
+              @click="toggleNextBids"
+              class="bg-blue-500 text-white px-4 py-2 rounded-md px-4"
+            >{{ showNextBids ? 'Mostrar solo ultima oferta' : 'Mostrar todas las ofertas' }}
+            </button>
+          </div>
+        </div>
       </div>
     </template>
   </div>
@@ -144,18 +157,17 @@ export default {
 </script>
 
 <style scoped>
-.cont-detailsBid {
+/* .cont-detailsBid {
   padding-left: 25px;
-}
+} */
 
-.details-bid {
-  padding-top: 45px;
-}
+/* .details-bid {} */
 
 .cont-titleBid {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 }
 
 .winner {
@@ -178,14 +190,7 @@ export default {
 
 .cont-tableBid {
   border-radius: 15px;
-  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.2);
-  margin-top: 30px;
-  margin-right: 25px;
-  margin-bottom: 45px;
-  padding: 15px;
-  height: 400px;
-  overflow: auto;
-
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .table-bid {
@@ -195,8 +200,7 @@ export default {
 .th-tableBid {
   position: sticky;
   top: 0;
-  background-color: black;
-  color: white;
+  color: rgba(59, 130, 246, 1);
   z-index: 1;
 }
 

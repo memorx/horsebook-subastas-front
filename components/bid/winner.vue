@@ -1,9 +1,8 @@
 <template lang="">
     <div>
-        <div class="winner">
-            <p :style="textStyle">{{ winnerBid ? winnerBid : 'Aun nadie subasto por este caballo' }}</p>
-            <p id="win-flag" v-if="winnerBid">GANADOR</p>
-          </div>
+      <div class="">
+        <p id="win-flag" v-if="winnerBid" :style="textStyle">GANADOR hasta ahora : {{ winnerBid ? winnerBid : 'Aun nadie subasto por este caballo' }} </p>
+      </div>
     </div>
 </template>
 <script>
@@ -35,9 +34,9 @@ export default {
   computed: {
     textStyle() {
       if (!this.winnerBid) {
-        return 'font-size: 20px; font-weight: 500; color: gray';
+        return 'font-size: 20px; font-weight: 300; color: gray';
       } else {
-        return 'font-size: 20px; font-weight: 500';
+        return 'font-size: 15px; font-weight: 300';
       }
     },
   },
@@ -69,17 +68,14 @@ export default {
   display: flex;
   flex-direction: row;
   gap: 25px;
-  padding-right: 25px;
-  padding-top: 35px;
+  align-items: center;
 }
 
 #win-flag {
-  color: #027A48;
-  border: solid #027A48;
-  border-radius: 18px;
-  font-size: 15px;
-  padding: 5px 5px;
-  text-align: center;
+  /* border: 2px solid green;
+  border-radius: 50px; */
+  /* padding: 10px; */
   font-weight: 600;
+  color: green;
 }
 </style>
