@@ -1,5 +1,5 @@
 <template>
-  <div class="cont-detailsBid">
+  <div class="">
     <div class="details-bid max-w-6xl">
       <div class="cont-titleBid title-bid flex justify-between">
         <div v-if="setUser">
@@ -9,7 +9,7 @@
       </div>
     </div>
     <template v-if="setUser">
-      <div class="cont-tableBid max-w-6xl mx-auto px-4 my-5">
+      <div class="cont-tableBid mx-auto px-4 my-5">
         <div class="overflow-x-auto">
           <table
             class="table-bid min-w-full"
@@ -18,7 +18,7 @@
             <thead class="th-tableBid">
               <tr>
                 <th class="columns-1">Nombre</th>
-                <th class="columns-1 md:columns-4">Nacionalidad</th>
+                <th class="columns-1">Nacionalidad</th>
                 <th class="columns-1">Oferta (USD)</th>
                 <th class="columns-1">Fecha</th>
               </tr>

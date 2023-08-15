@@ -36,6 +36,7 @@
     "vue-toast-notification": "^0.6.3",
     "vue2-datepicker": "^3.10.4",
     "vue2-daterange-picker": "^0.6.8",
+    "vue2-simple-carousel": "^0.3.22",
     "webpack": "^4.46.0"
   },
   "devDependencies": {
