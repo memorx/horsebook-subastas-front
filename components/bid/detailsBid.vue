@@ -17,7 +17,8 @@
           >
             <thead class="th-tableBid">
               <tr>
-                <th class="columns-1 md:columns-8">Nombre</th>
+                <th class="columns-1">Nombre</th>
+                <th class="columns-1 md:columns-4">Nacionalidad</th>
                 <th class="columns-1">Oferta (USD)</th>
                 <th class="columns-1">Fecha</th>
               </tr>
@@ -36,6 +37,7 @@
                     bid.user_profile.mothers_maiden_name
                   }}
                 </td>
+                <td>{{ bid.user_profile.country }}</td>
                 <td>${{ formatAmount(bid.amount) }}</td>
                 <td>{{ formatDate(bid.bid_date) }}</td>
               </tr>
@@ -46,7 +48,7 @@
           <div class="flex items-center my-3">
             <button
               @click="toggleNextBids"
-              class="bg-blue-500 text-white px-4 py-2 rounded-md px-4"
+              class="bg-black text-white px-4 py-2 rounded-md px-4"
             >{{ showNextBids ? 'Mostrar solo ultima oferta' : 'Mostrar todas las ofertas' }}
             </button>
           </div>
@@ -200,7 +202,7 @@ export default {
 .th-tableBid {
   position: sticky;
   top: 0;
-  color: rgba(59, 130, 246, 1);
+  color: rgb(44, 45, 48);
   z-index: 1;
 }
 

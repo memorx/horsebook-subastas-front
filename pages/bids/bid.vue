@@ -136,7 +136,7 @@
               </div>
               <div class="flex items-center my-5">
                 <button
-                  class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-green-500 duration-100"
+                  class="bg-black text-white px-4 py-2 rounded-md hover:bg-grey-100 duration-100"
                   style="width: 100%; height: 50px;"
                   type="submit"
                 >Ofertar</button>
@@ -243,6 +243,7 @@ export default {
     },
   },
   mounted() {
+    this.fetchData()
   },
   methods: {
     handleAmountInput(event) {
