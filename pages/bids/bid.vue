@@ -135,17 +135,6 @@
                   @input="handleAmountInput"
                   required
                 >
-                <button
-                  class="border border-black bg-transparent text-black ml-2 px-4 py-2 rounded focus:outline-none hover:bg-gray-200"
-                  type="submit"
-                >-</button><button
-                  class="border border-black bg-transparent text-black ml-2 px-4 py-2 rounded focus:outline-none hover:bg-gray-200"
-                  type="submit"
-                >+</button>
-                <button
-                  class="border border-black bg-transparent text-black ml-2 px-4 py-2 rounded focus:outline-none hover:bg-gray-200"
-                  type="submit"
-                >Ofertar</button>
               </div>
               <!-- <div class="flex items-center my-5">
                 <button
@@ -159,7 +148,7 @@
                   class="bg-black text-white px-4 py-2 rounded-md hover:bg-grey-100 duration-100"
                   style="width: 100%; height: 50px;"
                   type="submit"
-                >Ofertar Sugerida (${{ lastOffer }} USD)</button>
+                >Ofertar</button>
               </div>
             </form>
           </div>
