@@ -24,19 +24,7 @@
             class="px-4"
             style="flex: 6;"
           >
-            <!-- Imagen de Caballo -->
-            <div
-              class="h-full rounded-lg bg-gray-300 mb-4"
-              style="box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2);"
-            >
-              <img
-                style=""
-                class="w-full h-full object-cover cont-horseImg"
-                src="../../public/horse_white.png"
-                alt="Product Image"
-              >
-            </div>
-
+            <Carousel />
           </div>
           <!-- Info de Subasta -->
           <div
@@ -45,23 +33,36 @@
           >
             <h2 class="text-2xl font-bold mb-2">{{ HorsenName }}</h2>
             <!-- Info de Estatus de Subasta -->
-            <p
-              class="statusOffer"
-              v-if="isCurrentDate === 1"
-              style="color: green; font-weight: 600; width: 50%;"
-            >PRE OFERTA ABIERTA
-            </p>
-            <p
-              class="statusOffer"
-              v-else-if="isCurrentDate === 2"
-              style="color: green; font-weight: 600; width: 50px;"
-            >OFERTA ABIERTA
-            </p>
-            <p
-              class="statusOfferClose"
-              v-else
-              style="color: red; font-weight: 600;"
-            >OFERTA CERRADA</p>
+            <div v-if="isCurrentDate === 1">
+              <span
+                class="statusOffer"
+                style="font-weight: 600; width: 50%;"
+              >PRE OFERTA ABIERTA
+              </span>
+              <span class="bg-yellow-500 text-white px-3 py-1 rounded-full">
+                EN VIVO
+              </span>
+            </div>
+            <div v-else-if="isCurrentDate === 2">
+              <span
+                class="statusOffer"
+                style="font-weight: 600; width: 50%;"
+              >OFERTA ABIERTA
+              </span>
+              <span class="bg-green-500 text-white px-3 py-1 rounded-full">
+                EN VIVO
+              </span>
+            </div>
+            <div v-else>
+              <span
+                class="statusOfferClose"
+                style="font-weight: 600; width: 50%;"
+              >OFERTA ABIERTA
+              </span>
+              <span class="bg-red-500 text-white px-3 py-1 rounded-full">
+                CERRADA
+              </span>
+            </div>
             <div class="border-b border-gray-300 my-4"></div>
 
             <!-- Fechas de Subasta -->
@@ -136,13 +137,6 @@
                   required
                 >
               </div>
-              <!-- <div class="flex items-center my-5">
-                <button
-                  class="border border-black bg-transparent text-black px-4 py-2 rounded focus:outline-none hover:bg-gray-200"
-                  style="width: 100%; height: 50px;"
-                  type="submit"
-                >Ofertar</button>
-              </div> -->
               <div class="flex items-center my-5">
                 <button
                   class="bg-black text-white px-4 py-2 rounded-md hover:bg-grey-100 duration-100"
@@ -208,50 +202,40 @@
                   <div class="px-4 py-5 flex-auto">
                     <div class="tab-content tab-space">
                       <div v-bind:class="{ 'hidden': openTab !== 1, 'block': openTab === 1 }">
-                        <ul>
-                          <div class="flex flex-col md:flex-row -mx-4">
-                            <div
-                              class="px-4"
-                              style="flex: 4;"
-                            >
-                              <h2>Peso</h2>
-                              <p>153kg</p>
-                            </div>
-                            <div
-                              class="px-4"
-                              style="flex: 4;"
-                            >
-                              <h3>Peso</h3>
-                              <p>153kg</p>
-                            </div>
-                            <div
-                              class="px-4"
-                              style="flex: 4;"
-                            >
-                              <h3>Peso</h3>
-                              <p>153kg</p>
-                            </div>
-                          </div>
-                        </ul>
+                        <div class="mr-4">
+                          <span class="font-bold text-gray-700">Nombre:</span>
+                          <span class="text-gray-600">{{ HorsenName }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Peso:</span>
+                          <span class="text-gray-600">{{ Peso }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Altura:</span>
+                          <span class="text-gray-600">{{ Altura }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Raza:</span>
+                          <span class="text-gray-600">{{ Raza }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Color:</span>
+                          <span class="text-gray-600">{{ Color }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Rancho:</span>
+                          <span class="text-gray-600">{{ Rancho }}</span>
+                        </div>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 2, 'block': openTab === 2 }">
                         <p>
-                        <ul>
-                          <li>Nombre: Pancho</li>
-                          <li>Peso: 300kg</li>
-                          <li>Rancho: Mamulique</li>
-                          <li>Raza: Pegaso</li>
-                        </ul>
+                          <img
+                            src="@/public/PEDIGREE-ISDS.jpg"
+                            style="height: 100%; width: 100%;"
+                          >
                         </p>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }">
                         <p>
-                        <ul>
-                          <li>Nombre: Pancho</li>
-                          <li>Peso: 300kg</li>
-                          <li>Rancho: Mamulique</li>
-                          <li>Raza: Pegaso</li>
-                        </ul>
+                          <img
+                            src="@/public/1000_F_572792968_HTMtcUHQbWfHld1FAXVIKtWl3X2XUPjt.jpg"
+                            style="height: 100%; width: 100%;"
+                          >
                         </p>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
@@ -289,7 +273,7 @@
   </div>
 </template>
 <script>
-import SimpleCarousel from "vue2-simple-carousel";
+import Carousel from '../../components/Carousel.vue'
 import Winner from '../../components/bid/winner.vue'
 import Bids from '../../components/bid/detailsBid.vue'
 import MakeOffer from '../../components/bid/makeOffer.vue'
@@ -303,7 +287,7 @@ export default {
     Bids,
     MakeOffer,
     Winner,
-    SimpleCarousel,
+    Carousel,
   },
   props: {
     bidId: {
@@ -317,6 +301,11 @@ export default {
   },
   data() {
     return {
+      Peso: '143Kg',
+      Rancho: 'Los Angeles',
+      Raza: 'Labrador',
+      Altura: '200cm',
+      Color: 'Cafe/Blanco',
       HorsenName: '',
       lastOffer: '',
       horseID: '',
