@@ -24,18 +24,7 @@
             class="px-4"
             style="flex: 6;"
           >
-            <!-- Imagen de Caballo -->
-            <div
-              class="h-[380px] rounded-lg bg-gray-300 mb-4"
-              style="box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2);"
-            >
-              <img
-                style=""
-                class="w-full h-full object-cover cont-horseImg"
-                src="../../public/horse_white.png"
-                alt="Product Image"
-              >
-            </div>
+            <Carousel />
           </div>
           <!-- Info de Subasta -->
           <div
@@ -44,23 +33,36 @@
           >
             <h2 class="text-2xl font-bold mb-2">{{ HorsenName }}</h2>
             <!-- Info de Estatus de Subasta -->
-            <p
-              class="statusOffer"
-              v-if="isCurrentDate === 1"
-              style="color: green; font-weight: 600; width: 50%;"
-            >PRE OFERTA ABIERTA
-            </p>
-            <p
-              class="statusOffer"
-              v-else-if="isCurrentDate === 2"
-              style="color: green; font-weight: 600; width: 50px;"
-            >OFERTA ABIERTA
-            </p>
-            <p
-              class="statusOfferClose"
-              v-else
-              style="color: red; font-weight: 600;"
-            >OFERTA CERRADA</p>
+            <div v-if="isCurrentDate === 1">
+              <span
+                class="statusOffer"
+                style="font-weight: 600; width: 50%;"
+              >PRE OFERTA ABIERTA
+              </span>
+              <span class="bg-yellow-500 text-white px-3 py-1 rounded-full">
+                EN VIVO
+              </span>
+            </div>
+            <div v-else-if="isCurrentDate === 2">
+              <span
+                class="statusOffer"
+                style="font-weight: 600; width: 50%;"
+              >OFERTA ABIERTA
+              </span>
+              <span class="bg-green-500 text-white px-3 py-1 rounded-full">
+                EN VIVO
+              </span>
+            </div>
+            <div v-else>
+              <span
+                class="statusOfferClose"
+                style="font-weight: 600; width: 50%;"
+              >OFERTA ABIERTA
+              </span>
+              <span class="bg-red-500 text-white px-3 py-1 rounded-full">
+                CERRADA
+              </span>
+            </div>
             <div class="border-b border-gray-300 my-4"></div>
 
             <!-- Fechas de Subasta -->
@@ -117,15 +119,16 @@
               <div class="mr-4">
                 <span class="font-bold text-gray-700">Ultima Oferta:</span>
                 <span class="text-gray-600">${{ lastOffer }}</span>
+                <span class="text-gray-600">USD</span>
               </div>
             </div>
             <!-- Input para ofertar -->
             <form @submit="submitForm">
-              <div class="flex items-center my-5">
+              <div class="flex items-center">
                 <input
                   type="number"
-                  class="border rounded-md px-4 py-2 flex-grow"
-                  :placeholder="`Ejemplo: $${(Number(lastOffer.replace('.', '')) + 1000).toLocaleString('de-DE')}`"
+                  class="border rounded-md flex-grow"
+                  :placeholder="`Ejemplo: $${(Number(lastOffer.replace('.', '')) + 1000).toLocaleString('de-DE')} USD`"
                   autofocus
                   :min="0"
                   id="amount"
@@ -144,18 +147,133 @@
             </form>
           </div>
         </div>
-        <Bids
-          ref="detailsBid"
-          :bidId="bidId"
-          :horseID="horseID"
-          @last-offer-updated="updateLastOffer"
-        />
+        <div class="border-b border-gray-300 my-4"></div>
+        <div class="flex flex-col md:flex-row -mx-4">
+          <div
+            class="px-4"
+            style="flex: 7;"
+          >
+            <div class="flex flex-wrap">
+              <div class="w-full">
+                <!-- Tabs -->
+                <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
+                  <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                    <button
+                      type="button"
+                      class="text-xs font-bold uppercase px-5 py-3 rounded"
+                      v-on:click="toggleTabs(1)"
+                      v-bind:class="{ 'text-black bg-transparent': openTab !== 1, 'w-full bg-black text-white': openTab === 1 }"
+                    >
+                      Descripcion
+                    </button>
+                  </li>
+                  <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                    <button
+                      type="button"
+                      class="text-xs font-bold uppercase px-5 py-3 rounded"
+                      v-on:click="toggleTabs(2)"
+                      v-bind:class="{ 'text-black bg-transparent': openTab !== 2, 'w-full bg-black text-white': openTab === 2 }"
+                    >
+                      Pedigree
+                    </button>
+                  </li>
+                  <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                    <button
+                      type="button"
+                      class="text-xs font-bold uppercase px-5 py-3 rounded"
+                      v-on:click="toggleTabs(3)"
+                      v-bind:class="{ 'text-black bg-transparent': openTab !== 3, 'w-full bg-black text-white': openTab === 3 }"
+                    >
+                      X-Ray
+                    </button>
+                  </li>
+                  <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                    <button
+                      type="button"
+                      class="text-xs font-bold uppercase px-5 py-3 rounded"
+                      v-on:click="toggleTabs(4)"
+                      v-bind:class="{ 'text-black bg-transparent': openTab !== 4, 'w-full bg-black text-white': openTab === 4 }"
+                    >
+                      Video
+                    </button>
+                  </li>
+                </ul>
+                <div class="relative flex flex-col min-w-0 break-words w-full mb-6 rounded">
+                  <div class="px-4 py-5 flex-auto">
+                    <div class="tab-content tab-space">
+                      <div v-bind:class="{ 'hidden': openTab !== 1, 'block': openTab === 1 }">
+                        <div class="mr-4">
+                          <span class="font-bold text-gray-700">Nombre:</span>
+                          <span class="text-gray-600">{{ HorsenName }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Peso:</span>
+                          <span class="text-gray-600">{{ Peso }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Altura:</span>
+                          <span class="text-gray-600">{{ Altura }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Raza:</span>
+                          <span class="text-gray-600">{{ Raza }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Color:</span>
+                          <span class="text-gray-600">{{ Color }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Rancho:</span>
+                          <span class="text-gray-600">{{ Rancho }}</span>
+                        </div>
+                      </div>
+                      <div v-bind:class="{ 'hidden': openTab !== 2, 'block': openTab === 2 }">
+                        <p>
+                          <img
+                            src="@/public/PEDIGREE-ISDS.jpg"
+                            style="height: 100%; width: 100%;"
+                          >
+                        </p>
+                      </div>
+                      <div v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }">
+                        <p>
+                          <img
+                            src="@/public/1000_F_572792968_HTMtcUHQbWfHld1FAXVIKtWl3X2XUPjt.jpg"
+                            style="height: 100%; width: 100%;"
+                          >
+                        </p>
+                      </div>
+                      <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
+                        <p>
+                        <ul>
+                          <li>Nombre: Pancho</li>
+                          <li>Peso: 300kg</li>
+                          <li>Rancho: Mamulique</li>
+                          <li>Raza: Pegaso</li>
+                        </ul>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="px-4"
+            style="flex: 5;"
+          >
+            <Bids
+              ref="detailsBid"
+              :bidId="bidId"
+              :horseID="horseID"
+              @last-offer-updated="updateLastOffer"
+            />
+          </div>
+        </div>
+        <div class="border-b border-gray-300 my-4"></div>
       </div>
+
     </div>
   </div>
 </template>
 <script>
-
+import Carousel from '../../components/Carousel.vue'
 import Winner from '../../components/bid/winner.vue'
 import Bids from '../../components/bid/detailsBid.vue'
 import MakeOffer from '../../components/bid/makeOffer.vue'
@@ -168,7 +286,8 @@ export default {
   components: {
     Bids,
     MakeOffer,
-    Winner
+    Winner,
+    Carousel,
   },
   props: {
     bidId: {
@@ -182,6 +301,11 @@ export default {
   },
   data() {
     return {
+      Peso: '143Kg',
+      Rancho: 'Los Angeles',
+      Raza: 'Labrador',
+      Altura: '200cm',
+      Color: 'Cafe/Blanco',
       HorsenName: '',
       lastOffer: '',
       horseID: '',
@@ -203,6 +327,7 @@ export default {
         email: '',
         pre_bid: true
       },
+      openTab: 1,
       rawAmount: '',
       largeBidConfirmed: false,
       successMessage: '',
@@ -246,6 +371,9 @@ export default {
     this.fetchData()
   },
   methods: {
+    toggleTabs: function (tabNumber) {
+      this.openTab = tabNumber
+    },
     handleAmountInput(event) {
       const value = event.target.value.replace(/\D/g, ''); // Keep only digit characters
       this.formData.amount = value; // Update formData.amount with the numeric value
