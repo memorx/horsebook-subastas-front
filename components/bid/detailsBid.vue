@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     formatAmount(amount) {
-      return parseFloat(amount).toLocaleString('es-ES');
+      return parseInt(amount).toLocaleString('en-US');
     },
     formatDate(date) {
       return moment(date).format('YY/MM/DD HH:mm');
@@ -139,7 +139,7 @@ export default {
         .then(response => {
           this.detailsBid = response.data
           this.lastOffer = this.detailsBid[0].amount
-          const formattedLastOffer = parseFloat(this.lastOffer).toLocaleString('es-ES');
+          const formattedLastOffer = parseInt(this.lastOffer).toLocaleString('en-US');
           this.$emit('last-offer-updated', formattedLastOffer);
         })
         .catch(error => {
