@@ -126,15 +126,12 @@
             <form @submit="submitForm">
               <div class="flex items-center">
                 <input
-                  type="number"
+                  type="text"
                   class="border rounded-md flex-grow"
-                  :placeholder="`Ejemplo: $${(Number(lastOffer.replace('.', '')) + 1000).toLocaleString('de-DE')} USD`"
                   autofocus
-                  :min="0"
                   id="amount"
-                  :value="formattedAmount"
-                  @input="handleAmountInput"
                   required
+                  :value="lastOffer"
                 >
               </div>
               <div class="flex items-center my-5">
@@ -203,23 +200,25 @@
                     <div class="tab-content tab-space">
                       <div v-bind:class="{ 'hidden': openTab !== 1, 'block': openTab === 1 }">
                         <div class="mr-4">
-                          <span class="font-bold text-gray-700">Nombre:</span>
-                          <span class="text-gray-600">{{ HorsenName }}</span>
+                          <span class="font-bold text-gray-700">Genero:</span>
+                          <span class="text-gray-600">{{ horseData.Genre || '------' }}</span>
                           <br>
-                          <span class="font-bold text-gray-700">Peso:</span>
-                          <span class="text-gray-600">{{ Peso }}</span>
-                          <br>
-                          <span class="font-bold text-gray-700">Altura:</span>
-                          <span class="text-gray-600">{{ Altura }}</span>
-                          <br>
-                          <span class="font-bold text-gray-700">Raza:</span>
-                          <span class="text-gray-600">{{ Raza }}</span>
+                          <span class="font-bold text-gray-700">Fecha de Nacimiento:</span>
+                          <span class="text-gray-600">{{ horseData.BirthDate || '------' }}</span>
                           <br>
                           <span class="font-bold text-gray-700">Color:</span>
-                          <span class="text-gray-600">{{ Color }}</span>
+                          <span class="text-gray-600">{{ horseData.Color || '------' }}</span>
                           <br>
-                          <span class="font-bold text-gray-700">Rancho:</span>
-                          <span class="text-gray-600">{{ Rancho }}</span>
+                          <span class="font-bold text-gray-700">Peso:</span>
+                          <span class="text-gray-600">{{ horseData.Weight || '------' }}</span>
+                          <span class="text-gray-600">kg</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Altura:</span>
+                          <span class="text-gray-600">{{ horseData.Height || '------' }}</span>
+                          <span class="text-gray-600">m</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Ubicacion:</span>
+                          <span class="text-gray-600">{{ horseData.Location || '------' }}</span>
                         </div>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 2, 'block': openTab === 2 }">
@@ -232,16 +231,20 @@
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }">
                         <p>
-                          <img
+                          <!-- <img
                             src="@/public/1000_F_572792968_HTMtcUHQbWfHld1FAXVIKtWl3X2XUPjt.jpg"
                             style="height: 100%; width: 100%;"
-                          >
+                          > -->
+                          <button
+                            type="button"
+                            class="w-full bg-black text-white text-xs font-bold uppercase px-5 py-3 rounded"
+                          >Descargar X-Ray</button>
                         </p>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
                         <p>
                         <ul>
-                          <li>Nombre: Pancho</li>
+                          <li>Genero: {{ Genre }}</li>
                           <li>Peso: 300kg</li>
                           <li>Rancho: Mamulique</li>
                           <li>Raza: Pegaso</li>
@@ -301,11 +304,14 @@ export default {
   },
   data() {
     return {
-      Peso: '143Kg',
-      Rancho: 'Los Angeles',
-      Raza: 'Labrador',
-      Altura: '200cm',
-      Color: 'Cafe/Blanco',
+      horseData: {
+        Genre: '',
+        BirthDate: '',
+        Color: '',
+        Weight: '',
+        Height: '',
+        Location: '',
+      },
       HorsenName: '',
       lastOffer: '',
       horseID: '',
@@ -336,10 +342,6 @@ export default {
     }
   },
   computed: {
-    formattedAmount() {
-      const amount = parseInt(this.formData.amount, 10);
-      return isNaN(amount) ? '' : amount.toLocaleString('en-US').replace(/,/g, '.'); // Format with dots as thousands separators
-    },
     setUser() {
       return this.$store.state.user;
     },
@@ -369,14 +371,11 @@ export default {
   },
   mounted() {
     this.fetchData()
+    this.fetchHorseData()
   },
   methods: {
     toggleTabs: function (tabNumber) {
       this.openTab = tabNumber
-    },
-    handleAmountInput(event) {
-      const value = event.target.value.replace(/\D/g, ''); // Keep only digit characters
-      this.formData.amount = value; // Update formData.amount with the numeric value
     },
     formatted(date) {
       const dateformat = moment(date).format('DD/MM/YYYY')
@@ -389,6 +388,37 @@ export default {
     updateLastOffer(offer) {
       this.lastOffer = offer;
     },
+    fetchHorseData() {
+      const horseDataEndpoint = `/horse/1/info`
+      const url = `${this.$config.baseURL}${horseDataEndpoint}`
+      const decoded = JWTDecode(this.$cookies.get("access_token"))
+      axios.get(url, {
+        headers: {
+          Authorization: `Token ${decoded.token}`
+        },
+        params: {
+          auction: this.bidId
+        }
+      })
+        .then(response => {
+          const desc = response.data
+          //genre
+          this.horseData.Genre = desc.external_data.sex
+          //Birthdate
+          this.horseData.BirthDate = this.formatted(desc.external_data.birth_date)
+          //color
+          this.horseData.Color = desc.external_data.color
+          //Weight
+          this.horseData.Weight = desc.external_data.weight
+          //Height
+          this.horseData.Height = desc.external_data.height
+          //Location
+          this.horseData.Location = desc.external_data.location
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     fetchData() {
 
       const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
@@ -397,7 +427,7 @@ export default {
       axios.get(url, {
         headers: {
           Authorization: `Token ${decoded.token}`
-        }
+        },
       })
         .then(response => {
           const horse = response.data
@@ -418,6 +448,7 @@ export default {
 
         })
         .catch(error => {
+          console.error('No funciona');
           console.error(error);
         });
     },
@@ -430,7 +461,7 @@ export default {
       event.preventDefault();
       const submittedAmount = parseInt(this.formData.amount);
       const lastOfferNumber = parseInt(this.lastOffer.replace(/\./g, ''));
-      // console.log(submittedAmount, lastOfferNumber, this.lastOffer)
+      console.log(submittedAmount, lastOfferNumber, this.lastOffer)
       if (submittedAmount - lastOfferNumber > 10000 && !this.largeBidConfirmed) {
         if (window.confirm('Estas a punto de ofertar una diferencia de mas de $10.000, estas seguro?')) {
           this.largeBidConfirmed = true;
@@ -484,6 +515,7 @@ export default {
 
 }
 </script>
+
 <style>
 .cont-bid {
   display: flex;
