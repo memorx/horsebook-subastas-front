@@ -146,10 +146,7 @@
         </div>
         <div class="border-b border-gray-300 my-4"></div>
         <div class="flex flex-col md:flex-row -mx-4">
-          <div
-            class="px-4"
-            style="flex: 7;"
-          >
+          <div style="flex: 7;">
             <div class="flex flex-wrap">
               <div class="w-full">
                 <!-- Tabs -->
@@ -196,8 +193,9 @@
                   </li>
                 </ul>
                 <div class="relative flex flex-col min-w-0 break-words w-full mb-6 rounded">
-                  <div class="px-4 py-5 flex-auto">
+                  <div class="px-4 flex-auto">
                     <div class="tab-content tab-space">
+                      <!-- Description Tab -->
                       <div v-bind:class="{ 'hidden': openTab !== 1, 'block': openTab === 1 }">
                         <div class="mr-4">
                           <span class="font-bold text-gray-700">Genero:</span>
@@ -221,13 +219,15 @@
                           <span class="text-gray-600">{{ horseData.Location || '------' }}</span>
                         </div>
                       </div>
+                      <!-- Pedigree Tab -->
                       <div v-bind:class="{ 'hidden': openTab !== 2, 'block': openTab === 2 }">
-                        <p>
-                          <img
-                            src="@/public/PEDIGREE-ISDS.jpg"
-                            style="height: 100%; width: 100%;"
-                          >
-                        </p>
+                        <div class="pedigreeTab bg-white py-5 px-5">
+                          <Pedigree
+                            :parents="parents"
+                            :grandparents="grandparents"
+                            :greatGrandParents="greatGrandParents"
+                          />
+                        </div>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }">
                         <p>
@@ -276,6 +276,7 @@
   </div>
 </template>
 <script>
+import Pedigree from '../../components/bid/horsePedigree.vue'
 import Carousel from '../../components/Carousel.vue'
 import Winner from '../../components/bid/winner.vue'
 import Bids from '../../components/bid/detailsBid.vue'
@@ -287,6 +288,7 @@ import moment from 'moment'
 
 export default {
   components: {
+    Pedigree,
     Bids,
     MakeOffer,
     Winner,
@@ -304,6 +306,26 @@ export default {
   },
   data() {
     return {
+      parents: {
+        father: '',
+        mother: '',
+      },
+      grandparents: {
+        fatherFather: '',
+        fatherMother: '',
+        motherFather: '',
+        motherMother: '',
+      },
+      greatGrandParents: {
+        fatherFatherFather: '',
+        fatherFatherMother: '',
+        fatherMotherFather: '',
+        fatherMotherMother: '',
+        motherFatherFather: '',
+        motherFatherMother: '',
+        motherMotherFather: '',
+        motherMotherMother: '',
+      },
       horseData: {
         Genre: '',
         BirthDate: '',
@@ -414,6 +436,31 @@ export default {
           this.horseData.Height = desc.external_data.height
           //Location
           this.horseData.Location = desc.external_data.location
+
+          //
+          //PARENTS
+          //
+          this.parents.father = desc.external_data.pedigree_info[0].father.name
+          this.parents.mother = desc.external_data.pedigree_info[0].mother.name
+          //
+          //Grand Parents
+          //
+          this.grandparents.motherFather = desc.external_data.pedigree_info[1].PM2.father.name
+          this.grandparents.motherMother = desc.external_data.pedigree_info[1].PM2.mother.name
+          this.grandparents.fatherFather = desc.external_data.pedigree_info[2].PF2.father.name
+          this.grandparents.fatherMother = desc.external_data.pedigree_info[2].PF2.mother.name
+          //
+          //Great Grand Parents
+          //
+          this.greatGrandParents.motherMotherMother = desc.external_data.pedigree_info[3].MM3.mother.name
+          this.greatGrandParents.motherMotherFather = desc.external_data.pedigree_info[3].MM3.father.name
+          this.greatGrandParents.motherFatherMother = desc.external_data.pedigree_info[4].MF3.mother.name
+          this.greatGrandParents.motherFatherFather = desc.external_data.pedigree_info[4].MF3.father.name
+          //
+          this.greatGrandParents.fatherMotherMother = desc.external_data.pedigree_info[5].FM3.mother.name
+          this.greatGrandParents.fatherMotherFather = desc.external_data.pedigree_info[5].FM3.father.name
+          this.greatGrandParents.fatherFatherMother = desc.external_data.pedigree_info[6].FF3.mother.name
+          this.greatGrandParents.fatherFatherFather = desc.external_data.pedigree_info[6].FF3.father.name
         })
         .catch(error => {
           console.error(error);
@@ -570,5 +617,10 @@ export default {
     background-color: #f8d7da;
     border-color: #f5c6cb;
   }
+}
+
+.pedigreeTab {
+  border-radius: 15px;
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2);
 }
 </style>
