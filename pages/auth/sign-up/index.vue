@@ -1,131 +1,255 @@
 <template>
   <div class="flex containerGeneral h-full bg-white">
-    <Loading v-if="loading"
-      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
+    <Loading
+      v-if="loading"
+      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+    />
     <div class="flex items-center justify-center flex-1 rightSide">
       <div class="flex flex-col items-center w-4/5 limiter">
         <div class="logo mt-8">
-          <img src="../../../public/image_la_silla.png" alt="logo" />
+          <img
+            src="../../../public/image_la_silla.png"
+            alt="logo"
+          />
         </div>
         <div class="flex flex-col items-center w-full mt-8 title">
           <h1 class="sesion font-medium text-4xl text-black">Crear Cuenta</h1>
           <p class="horsebook font-normal text-base text-neutral-600">Ingresa tus datos para entrar a HorseBook
           </p>
         </div>
-        <form class="w-full mt-12 space-y-6" @submit.prevent=handleSubmit>
+        <form
+          class="w-full mt-12 space-y-6"
+          @submit.prevent=handleSubmit
+        >
           <div class="flex flex-col w-full gap-6">
             <div class="flex flex-col w-full ">
-              <label for="name" class="titleInput font-medium text-base text-black">Nombres</label>
-              <input v-model="form.name" required
+              <label
+                for="name"
+                class="titleInput font-medium text-base text-black"
+              >Nombres</label>
+              <input
+                v-model="form.name"
+                required
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar nombres" />
+                placeholder="Ingresar nombres"
+              />
             </div>
             <div class="flex flex-col w-full">
-              <label for="fathers_surname" class="titleInput font-medium text-base text-black">Apellido
+              <label
+                for="fathers_surname"
+                class="titleInput font-medium text-base text-black"
+              >Apellido
                 Paterno</label>
-              <input v-model="form.fathers_surname" required
+              <input
+                v-model="form.fathers_surname"
+                required
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar apellido paterno" />
+                placeholder="Ingresar apellido paterno"
+              />
             </div>
             <div class="flex flex-col w-full">
-              <label for="mothers_maiden_name" class="titleInput font-medium text-base text-black">Apellido
+              <label
+                for="mothers_maiden_name"
+                class="titleInput font-medium text-base text-black"
+              >Apellido
                 Materno</label>
-              <input v-model="form.mothers_maiden_name" required
+              <input
+                v-model="form.mothers_maiden_name"
+                required
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar apellido materno" />
+                placeholder="Ingresar apellido materno"
+              />
             </div>
             <div class="flex flex-col w-full">
-              <label for="identification_document" class="titleInput font-medium text-base text-black">Documento de
-              identidad (ID/Pasaporte)</label>
-              <input v-model="form.identification_document" type="number" required
-              class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-              placeholder="Ingresar número de documento o pasaporte"
-              style="-webkit-appearance: none; -moz-appearance: textfield; appearance: none;" />
+              <label
+                for="identification_document"
+                class="titleInput font-medium text-base text-black"
+              >Documento de
+                identidad (ID/Pasaporte)</label>
+              <input
+                v-model="form.identification_document"
+                type="number"
+                required
+                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
+                placeholder="Ingresar número de documento o pasaporte"
+                style="-webkit-appearance: none; -moz-appearance: textfield; appearance: none;"
+              />
             </div>
 
             <div class="flex flex-col w-full ">
-              <label for="country" class="titleInput font-medium text-base text-black">País</label>
-              <input v-model="form.country" @input="autocompleteCountry" @keydown.delete="clearInputOnDelete"
-                @keydown="onCountryKeyDown" required
+              <label
+                for="country"
+                class="titleInput font-medium text-base text-black"
+              >País</label>
+              <input
+                v-model="form.country"
+                @input="autocompleteCountry"
+                @keydown.delete="clearInputOnDelete"
+                @keydown="onCountryKeyDown"
+                required
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar país" />
+                placeholder="Ingresar país"
+              />
             </div>
             <div class="flex flex-col w-full ">
-              <label for="state" class="titleInput font-medium text-base text-black">Estado</label>
-              <input v-if="normalizeString(form.country) !== 'mexico'" v-model.lazy="form.state" required
+              <label
+                for="state"
+                class="titleInput font-medium text-base text-black"
+              >Estado</label>
+              <input
+                v-if="normalizeString(form.country) !== 'mexico'"
+                v-model.lazy="form.state"
+                required
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar estado" />
-              <select v-else v-model="form.state" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg">
-                <option value="" disabled>Seleccionar estado</option>
-                <option v-for="estado in estadosMunicipios" :key="estado.id" :value="estado.nombre">
+                placeholder="Ingresar estado"
+              />
+              <select
+                v-else
+                v-model="form.state"
+                required
+                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
+              >
+                <option
+                  value=""
+                  disabled
+                >Seleccionar estado</option>
+                <option
+                  v-for="estado in estadosMunicipios"
+                  :key="estado.id"
+                  :value="estado.nombre"
+                >
                   {{ estado.nombre }}
                 </option>
               </select>
             </div>
             <div class="flex flex-col w-full ">
-              <label for="municipalitie" required class="titleInput font-medium text-base text-black">Ciudad</label>
-              <input v-if="normalizeString(form.country) !== 'mexico'" v-model.lazy="form.municipalitie" required
+              <label
+                for="municipalitie"
+                required
+                class="titleInput font-medium text-base text-black"
+              >Ciudad</label>
+              <input
+                v-if="normalizeString(form.country) !== 'mexico'"
+                v-model.lazy="form.municipalitie"
+                required
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar ciudad" />
-              <select v-else v-model="form.municipalitie" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg">
-                <option value="" disabled>Seleccionar ciudad</option>
-                <option v-for="municipio in selectedStateMunicipios" :key="municipio.id" :value="municipio.nombre">
+                placeholder="Ingresar ciudad"
+              />
+              <select
+                v-else
+                v-model="form.municipalitie"
+                required
+                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
+              >
+                <option
+                  value=""
+                  disabled
+                >Seleccionar ciudad</option>
+                <option
+                  v-for="municipio in selectedStateMunicipios"
+                  :key="municipio.id"
+                  :value="municipio.nombre"
+                >
                   {{ municipio.nombre }}
                 </option>
               </select>
             </div>
 
             <div class="flex flex-col w-full ">
-              <label for="phone" class="titleInput font-medium text-base text-black">Teléfono</label>
-              <input v-model="form.phone" required
+              <label
+                for="phone"
+                class="titleInput font-medium text-base text-black"
+              >Teléfono</label>
+              <input
+                v-model="form.phone"
+                required
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar teléfono" />
+                placeholder="Ingresar teléfono"
+              />
             </div>
             <div class="flex flex-col w-full ">
-              <label for="email" class="titleInput font-medium text-base text-black">Email</label>
-              <input v-model="form.email" type="email" required
+              <label
+                for="email"
+                class="titleInput font-medium text-base text-black"
+              >Email</label>
+              <input
+                v-model="form.email"
+                type="email"
+                required
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar email" />
+                placeholder="Ingresar email"
+              />
             </div>
             <div class="flex flex-col w-full ">
-              <label for="password" class="titleInput font-medium text-base text-black">Contraseña</label>
-              <input v-model="form.password" type="password" required
+              <label
+                for="password"
+                class="titleInput font-medium text-base text-black"
+              >Contraseña</label>
+              <input
+                v-model="form.password"
+                type="password"
+                required
                 @input="handlePasswordInput"
                 @focus="isPasswordFocused = true"
                 @blur="isPasswordFocused = false"
                 class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar contraseña" />
-              <div v-if="isPasswordFocused" class="text-red-500 text-sm">{{ passwordValidationMessage }}</div>
-              <div v-if="isPasswordFocused" class="text-red-500 text-sm">{{ digitValidationMessage }}</div>
-              <div v-if="isPasswordFocused" class="text-red-500 text-sm">{{ specialCharacterValidationMessage }}</div>
+                placeholder="Ingresar contraseña"
+              />
+              <div
+                v-if="isPasswordFocused"
+                class="text-red-500 text-sm"
+              >{{ passwordValidationMessage }}</div>
+              <div
+                v-if="isPasswordFocused"
+                class="text-red-500 text-sm"
+              >{{ digitValidationMessage }}</div>
+              <div
+                v-if="isPasswordFocused"
+                class="text-red-500 text-sm"
+              >{{ specialCharacterValidationMessage }}</div>
             </div>
             <div class="flex flex-col w-full ">
-              <label for="confirmPassword" class="titleInput font-medium text-base text-black">Confirmar
+              <label
+                for="confirmPassword"
+                class="titleInput font-medium text-base text-black"
+              >Confirmar
                 contraseña</label>
-                <input v-model="form.confirmPassword" type="password" required
-                  @input="validatePasswordMatch" 
-                  class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                  placeholder="Confirmar contraseña" />
-                <div class="text-red-500 text-sm">{{ passwordMatchValidationMessage }}</div>
+              <input
+                v-model="form.confirmPassword"
+                type="password"
+                required
+                @input="validatePasswordMatch"
+                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
+                placeholder="Confirmar contraseña"
+              />
+              <div class="text-red-500 text-sm">{{ passwordMatchValidationMessage }}</div>
             </div>
           </div>
           <div class="flex flex-col w-full mt-6 containerButton">
-            <button type="submit" class="buttonCta py-2 px-4 bg-black text-white rounded-lg">Crear
+            <button
+              type="submit"
+              class="buttonCta py-2 px-4 bg-black text-white rounded-lg"
+            >Crear
               cuenta</button>
           </div>
           <div class="flex justify-center w-full mt-6 pb-2 signUp">
             <div class="flex flex-col items-center signUpp">
-              <p class="signUppp font-normal text-base text-neutral-600">¿Ya tienes cuenta? <nuxt-link to="/auth/login"
-                  class="font-medium text-base text-black">Inicia sesión</nuxt-link></p>
+              <p class="signUppp font-normal text-base text-neutral-600">¿Ya tienes cuenta? <nuxt-link
+                  to="/auth/login"
+                  class="font-medium text-base text-black"
+                >Inicia sesión</nuxt-link></p>
             </div>
           </div>
         </form>
       </div>
     </div>
     <div class="lg:flex hidden flex-1 leftSide ">
-      <img src="../../../public/image_horsebook_login.png" alt="logo-login" class="w-full h-full object-cover" />
+      <img
+        src="../../../public/horse_black.png"
+        alt="logo-login"
+        class="w-full object-cover"
+        style="height: 100vh;"
+      />
     </div>
   </div>
 </template>
@@ -186,7 +310,7 @@ export default {
       const hasDigit = /\d/.test(password);
 
       const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
-    
+
 
       this.passwordValidationMessage = isLengthValid ? '' : 'La contraseña debe tener al menos 8 caracteres.';
       this.digitValidationMessage = hasDigit ? '' : 'La contraseña debe contener al menos un dígito.';
@@ -217,7 +341,7 @@ export default {
         this.$toast.error("La contraseña debe tener al menos 8 caracteres,<br>contener al menos un dígito,<br>un carácter especial,<br>no puede incluir parte de los atributos del usuario,<br>ni ser una contraseña común o fácilmente adivinable.");
         return;
       }
-     
+
       this.signUp(this.form);
     },
     normalizeString(input) {
@@ -313,8 +437,9 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-input[type="number"] {
-  -moz-appearance: textfield; /* Firefox */
-}
 
+input[type="number"] {
+  -moz-appearance: textfield;
+  /* Firefox */
+}
 </style>
