@@ -124,20 +124,32 @@
             </div>
             <!-- Input para ofertar -->
             <form @submit="submitForm">
-              <div class="flex items-center">
+              <div class="flex items-center input-container my-5 space-x-2">
+                <button
+                  class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
+                  type="button"
+                  @click="substractThousand"
+                >-</button>
+                <span class="dollar-symbol">$</span>
                 <input
                   type="text"
-                  class="border rounded-md flex-grow"
+                  class="border rounded-md flex-grow custom-input"
                   autofocus
                   id="amount"
                   required
-                  :value="lastOffer"
+                  v-model="formData.amount"
                 >
-              </div>
-              <div class="flex items-center my-5">
+                <span class="usd-symbol">USD</span>
                 <button
-                  class="bg-black text-white px-4 py-2 rounded-md hover:bg-grey-100 duration-100"
-                  style="width: 100%; height: 50px;"
+                  class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
+                  type="button"
+                  @click="addThousand"
+                >+</button>
+              </div>
+              <div class="flex items-center my-5 space-x-2">
+                <button
+                  class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow"
+                  style="height: 50px;"
                   type="submit"
                 >Ofertar</button>
               </div>
@@ -364,6 +376,7 @@ export default {
     }
   },
   computed: {
+
     setUser() {
       return this.$store.state.user;
     },
@@ -394,8 +407,27 @@ export default {
   mounted() {
     this.fetchData()
     this.fetchHorseData()
+    setTimeout(() => {
+      this.formData.amount = this.preloadAmount();
+    }, 1500);
   },
   methods: {
+    addThousand() {
+      let currentValue = parseInt(this.formData.amount.replace(',', ''));
+      currentValue += 1000;
+      this.formData.amount = currentValue.toLocaleString('en-US');
+    },
+    substractThousand() {
+      let currentValue = parseInt(this.formData.amount.replace(',', ''));
+      currentValue -= 1000;
+      this.formData.amount = currentValue.toLocaleString('en-US');
+    },
+    preloadAmount() {
+      let lastOfferInt = parseInt(this.lastOffer.replace(',', ''));
+      lastOfferInt += 1000;
+      const lastOfferStr = lastOfferInt.toLocaleString('en-US');
+      return lastOfferStr;
+    },
     toggleTabs: function (tabNumber) {
       this.openTab = tabNumber
     },
@@ -506,21 +538,7 @@ export default {
     },
     submitForm(event) {
       event.preventDefault();
-      const submittedAmount = parseInt(this.formData.amount);
-      const lastOfferNumber = parseInt(this.lastOffer.replace(/\./g, ''));
-      console.log(submittedAmount, lastOfferNumber, this.lastOffer)
-      if (submittedAmount - lastOfferNumber > 10000 && !this.largeBidConfirmed) {
-        if (window.confirm('Estas a punto de ofertar una diferencia de mas de $10.000, estas seguro?')) {
-          this.largeBidConfirmed = true;
-          this.submitForm(event);
-          return;
-        } else {
-          return;
-        }
-      }
-
-      this.largeBidConfirmed = false;
-
+      const submittedAmount = parseInt(this.formData.amount.replace(',', ''))
       const PostBidEndpoint = '/subastas/bid/';
       const url = `${this.$config.baseURL}${PostBidEndpoint}`;
       const decoded = JWTDecode(this.$cookies.get("access_token"));
@@ -529,7 +547,9 @@ export default {
       this.formData.subasta_id = this.bidId;
       this.formData.email = this.setUser.email;
       //status offer
-      this.formData.pre_bid = this.statusOffer(this.BidDate);
+      setTimeout(() => {
+        this.formData.amount = this.preloadAmount();
+      }, 1500);
 
       axios.post(url, this.formData, {
         headers: {
@@ -540,7 +560,7 @@ export default {
           this.successMessage = 'Oferta enviada correctamente';
           this.errorMessage = '';
           this.$emit('form-submitted');
-          this.formData.amount = ''; // Clear the input value
+          this.formData.amount = this.preloadAmount();
           setTimeout(() => {
             this.successMessage = '';
           }, 6000);
@@ -551,7 +571,9 @@ export default {
             this.errorMessage = error.response.data.non_field_errors[0];
           }
           this.successMessage = '';
-          this.formData.amount = '';
+          setTimeout(() => {
+            this.formData.amount = this.preloadAmount();
+          }, 1500);
           setTimeout(() => {
             this.errorMessage = '';
             this.successMessage = '';
@@ -622,5 +644,32 @@ export default {
 .pedigreeTab {
   border-radius: 15px;
   box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dollar-symbol {
+  position: absolute;
+  left: 50px;
+  z-index: 2;
+}
+
+.custom-input {
+  padding-left: 20px;
+}
+
+.usd-symbol {
+  position: absolute;
+  right: 65px;
+  z-index: 2;
+}
+
+.alert-cont {
+  z-index: 9999;
+  position: relative;
 }
 </style>
