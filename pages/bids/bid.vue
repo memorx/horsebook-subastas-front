@@ -371,7 +371,6 @@ export default {
   },
   mounted() {
     this.fetchData()
-    this.fetchHorseData()
   },
   methods: {
     toggleTabs: function (tabNumber) {
@@ -388,39 +387,7 @@ export default {
     updateLastOffer(offer) {
       this.lastOffer = offer;
     },
-    fetchHorseData() {
-      const horseDataEndpoint = `/horse/1/info`
-      const url = `${this.$config.baseURL}${horseDataEndpoint}`
-      const decoded = JWTDecode(this.$cookies.get("access_token"))
-      axios.get(url, {
-        headers: {
-          Authorization: `Token ${decoded.token}`
-        },
-        params: {
-          auction: this.bidId
-        }
-      })
-        .then(response => {
-          const desc = response.data
-          //genre
-          this.horseData.Genre = desc.external_data.sex
-          //Birthdate
-          this.horseData.BirthDate = this.formatted(desc.external_data.birth_date)
-          //color
-          this.horseData.Color = desc.external_data.color
-          //Weight
-          this.horseData.Weight = desc.external_data.weight
-          //Height
-          this.horseData.Height = desc.external_data.height
-          //Location
-          this.horseData.Location = desc.external_data.location
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
     fetchData() {
-
       const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
       const url = `${this.$config.baseURL}${listSubastasEndpoint}`
       const decoded = JWTDecode(this.$cookies.get("access_token"))
@@ -445,7 +412,19 @@ export default {
           this.EndBidDate = horse.end_bid
           this.BidDateFormat = this.formatted(horse.start_bid)
           this.EndBidDateFormat = this.formatted(horse.end_bid)
-
+          //horse Description
+          //genre
+          this.horseData.Genre = horse.horses[this.horsePositionList].external_data.sex
+          //Birthdate
+          this.horseData.BirthDate = this.formatted(horse.horses[this.horsePositionList].external_data.birth_date)
+          //color
+          this.horseData.Color = horse.horses[this.horsePositionList].external_data.color
+          //Weight
+          this.horseData.Weight = horse.horses[this.horsePositionList].external_data.weight
+          //Height
+          this.horseData.Height = horse.horses[this.horsePositionList].external_data.height
+          //Location
+          this.horseData.Location = horse.horses[this.horsePositionList].external_data.location
         })
         .catch(error => {
           console.error('No funciona');
