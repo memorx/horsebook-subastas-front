@@ -210,25 +210,35 @@
                       <!-- Description Tab -->
                       <div v-bind:class="{ 'hidden': openTab !== 1, 'block': openTab === 1 }">
                         <div class="mr-4">
-                          <span class="font-bold text-gray-700">Genero:</span>
-                          <span class="text-gray-600">{{ horseData.Genre || '------' }}</span>
+                          <span class="font-bold text-gray-700">Sexo:</span>
+                          <span class="text-gray-600">{{ horseData.Genre || 'NA' }}</span>
                           <br>
                           <span class="font-bold text-gray-700">Fecha de Nacimiento:</span>
-                          <span class="text-gray-600">{{ horseData.BirthDate || '------' }}</span>
+                          <span class="text-gray-600">{{ horseData.BirthDate || 'NA' }}</span>
                           <br>
                           <span class="font-bold text-gray-700">Color:</span>
-                          <span class="text-gray-600">{{ horseData.Color || '------' }}</span>
+                          <span class="text-gray-600">{{ horseData.Color || 'NA' }}</span>
                           <br>
                           <span class="font-bold text-gray-700">Peso:</span>
-                          <span class="text-gray-600">{{ horseData.Weight || '------' }}</span>
+                          <span class="text-gray-600">{{ horseData.Weight || 'NA' }}</span>
                           <span class="text-gray-600">kg</span>
                           <br>
                           <span class="font-bold text-gray-700">Altura:</span>
-                          <span class="text-gray-600">{{ horseData.Height || '------' }}</span>
+                          <span class="text-gray-600">{{ horseData.Height || 'NA' }}</span>
                           <span class="text-gray-600">m</span>
                           <br>
                           <span class="font-bold text-gray-700">Ubicacion:</span>
-                          <span class="text-gray-600">{{ horseData.Location || '------' }}</span>
+                          <span class="text-gray-600">{{ horseData.Location || 'NA' }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Criadero:</span>
+                          <span class="text-gray-600">{{ horseData.Hatchery || 'NA' }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">No. Registro:</span>
+                          <span class="text-gray-600">{{ horseData.registerNumber || 'NA' }}</span>
+                          <br>
+                          <span class="font-bold text-gray-700">Edad:</span>
+                          <span class="text-gray-600">{{ horseData.Age || 'NA' }}</span>
+                          <span class="text-gray-600">años</span>
                         </div>
                       </div>
                       <!-- Pedigree Tab -->
@@ -251,12 +261,7 @@
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
                         <p>
-                        <ul>
-                          <li>Genero: {{ Genre }}</li>
-                          <li>Peso: 300kg</li>
-                          <li>Rancho: Mamulique</li>
-                          <li>Raza: Pegaso</li>
-                        </ul>
+                          Video no disponible por el momento
                         </p>
                       </div>
                     </div>
@@ -322,6 +327,10 @@ export default {
         Height: '',
         Location: '',
         Pedigree: '',
+        Age: '',
+        registerNumber: '',
+        Hatchery: '',
+        birthDate: '',
       },
       HorsenName: '',
       lastOffer: '',
@@ -352,8 +361,10 @@ export default {
       OfferStatus: null,
     }
   },
+  created() {
+    this.age = this.calculateAge();
+  },
   computed: {
-
     setUser() {
       return this.$store.state.user;
     },
@@ -407,10 +418,13 @@ export default {
     toggleTabs: function (tabNumber) {
       this.openTab = tabNumber
     },
+    calculateAge() {
+      const today = moment();
+      return today.diff(this.birthDate, 'years');
+    },
     formatted(date) {
       const dateformat = moment(date).format('DD/MM/YYYY')
       return dateformat
-
     },
     handleFormSubmitted() {
       this.$refs.detailsBid.getDetailsBid(this.bidId, this.horseID);
@@ -458,6 +472,15 @@ export default {
           this.horseData.Location = horse.horses[this.horsePositionList].external_data.location
           //Pedigree Image
           this.horseData.Pedigree = horse.horses[this.horsePositionList].local_data.pedigree
+          //Age
+          //
+          //No. Register
+          this.horseData.registerNumber = horse.horses[this.horsePositionList].local_data.registration_no
+          //Hatchery
+          this.horseData.Hatchery = horse.horses[this.horsePositionList].external_data.birth_location
+          const birthDateMoment = moment(this.horseData.BirthDate, 'DD/MM/YYYY');
+          const today = moment();
+          this.horseData.Age = today.diff(birthDateMoment, 'years');
         })
         .catch(error => {
           console.error('No funciona');
