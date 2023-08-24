@@ -383,6 +383,9 @@ export default {
   },
   mounted() {
     this.fetchData()
+    setTimeout(() => {
+      this.formData.amount = this.preloadAmount();
+    }, 1500);
   },
   methods: {
     addThousand() {
