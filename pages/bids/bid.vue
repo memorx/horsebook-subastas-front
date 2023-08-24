@@ -249,14 +249,7 @@
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }">
                         <p>
-                          <!-- <img
-                            src="@/public/1000_F_572792968_HTMtcUHQbWfHld1FAXVIKtWl3X2XUPjt.jpg"
-                            style="height: 100%; width: 100%;"
-                          > -->
-                          <button
-                            type="button"
-                            class="w-full bg-black text-white text-xs font-bold uppercase px-5 py-3 rounded"
-                          >Descargar X-Ray</button>
+                          <xRayGallery :images="horseData.xRayGallery" />
                         </p>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
@@ -289,6 +282,7 @@
   </div>
 </template>
 <script>
+import xRayGallery from '../../components/bid/xRayGallery.vue'
 import Pedigree from '../../components/bid/horsePedigree.vue'
 import Carousel from '../../components/Carousel.vue'
 import Winner from '../../components/bid/winner.vue'
@@ -301,6 +295,7 @@ import moment from 'moment'
 
 export default {
   components: {
+    xRayGallery,
     Pedigree,
     Bids,
     MakeOffer,
@@ -331,6 +326,7 @@ export default {
         registerNumber: '',
         Hatchery: '',
         birthDate: '',
+        xRayGallery: [],
       },
       HorsenName: '',
       lastOffer: '',
@@ -472,8 +468,6 @@ export default {
           this.horseData.Location = horse.horses[this.horsePositionList].external_data.location
           //Pedigree Image
           this.horseData.Pedigree = horse.horses[this.horsePositionList].local_data.pedigree
-          //Age
-          //
           //No. Register
           this.horseData.registerNumber = horse.horses[this.horsePositionList].local_data.registration_no
           //Hatchery
@@ -481,6 +475,8 @@ export default {
           const birthDateMoment = moment(this.horseData.BirthDate, 'DD/MM/YYYY');
           const today = moment();
           this.horseData.Age = today.diff(birthDateMoment, 'years');
+          //xRays
+          this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image);
         })
         .catch(error => {
           console.error('No funciona');
