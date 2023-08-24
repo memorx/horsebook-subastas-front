@@ -105,11 +105,17 @@ export default {
       return this.$store.state.user;
     },
     visibleBids() {
+      if (!Array.isArray(this.detailsBid)) {
+        console.error("Unexpected data format for detailsBid:", this.detailsBid);
+        return [];
+      }
+
       if (this.showNextBids) {
         return this.detailsBid.slice(0, this.nextBidIndex + 1);
       }
       return this.detailsBid.slice(0, 1); // Only display the first bid
-    },
+    }
+
   },
   mounted() {
     setInterval(() => {

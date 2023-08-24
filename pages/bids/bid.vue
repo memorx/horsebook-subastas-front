@@ -222,11 +222,7 @@
                       <!-- Pedigree Tab -->
                       <div v-bind:class="{ 'hidden': openTab !== 2, 'block': openTab === 2 }">
                         <div class="pedigreeTab bg-white py-5 px-5">
-                          <Pedigree
-                            :parents="parents"
-                            :grandparents="grandparents"
-                            :greatGrandParents="greatGrandParents"
-                          />
+                          <Pedigree :link="horseData.Pedigree" />
                         </div>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }">
@@ -306,26 +302,6 @@ export default {
   },
   data() {
     return {
-      parents: {
-        father: '',
-        mother: '',
-      },
-      grandparents: {
-        fatherFather: '',
-        fatherMother: '',
-        motherFather: '',
-        motherMother: '',
-      },
-      greatGrandParents: {
-        fatherFatherFather: '',
-        fatherFatherMother: '',
-        fatherMotherFather: '',
-        fatherMotherMother: '',
-        motherFatherFather: '',
-        motherFatherMother: '',
-        motherMotherFather: '',
-        motherMotherMother: '',
-      },
       horseData: {
         Genre: '',
         BirthDate: '',
@@ -333,6 +309,7 @@ export default {
         Weight: '',
         Height: '',
         Location: '',
+        Pedigree: '',
       },
       HorsenName: '',
       lastOffer: '',
@@ -447,6 +424,8 @@ export default {
           this.horseData.Height = horse.horses[this.horsePositionList].external_data.height
           //Location
           this.horseData.Location = horse.horses[this.horsePositionList].external_data.location
+          //Pedigree Image
+          this.horseData.Pedigree = horse.horses[this.horsePositionList].local_data.pedigree
         })
         .catch(error => {
           console.error('No funciona');
