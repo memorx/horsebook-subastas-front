@@ -234,11 +234,7 @@
                       <!-- Pedigree Tab -->
                       <div v-bind:class="{ 'hidden': openTab !== 2, 'block': openTab === 2 }">
                         <div class="pedigreeTab bg-white py-5 px-5">
-                          <Pedigree
-                            :parents="parents"
-                            :grandparents="grandparents"
-                            :greatGrandParents="greatGrandParents"
-                          />
+                          <Pedigree :link="horseData.Pedigree" />
                         </div>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }">
@@ -318,26 +314,6 @@ export default {
   },
   data() {
     return {
-      parents: {
-        father: '',
-        mother: '',
-      },
-      grandparents: {
-        fatherFather: '',
-        fatherMother: '',
-        motherFather: '',
-        motherMother: '',
-      },
-      greatGrandParents: {
-        fatherFatherFather: '',
-        fatherFatherMother: '',
-        fatherMotherFather: '',
-        fatherMotherMother: '',
-        motherFatherFather: '',
-        motherFatherMother: '',
-        motherMotherFather: '',
-        motherMotherMother: '',
-      },
       horseData: {
         Genre: '',
         BirthDate: '',
@@ -345,6 +321,7 @@ export default {
         Weight: '',
         Height: '',
         Location: '',
+        Pedigree: '',
       },
       HorsenName: '',
       lastOffer: '',
@@ -406,10 +383,6 @@ export default {
   },
   mounted() {
     this.fetchData()
-    this.fetchHorseData()
-    setTimeout(() => {
-      this.formData.amount = this.preloadAmount();
-    }, 1500);
   },
   methods: {
     addThousand() {
@@ -442,64 +415,7 @@ export default {
     updateLastOffer(offer) {
       this.lastOffer = offer;
     },
-    fetchHorseData() {
-      const horseDataEndpoint = `/horse/1/info`
-      const url = `${this.$config.baseURL}${horseDataEndpoint}`
-      const decoded = JWTDecode(this.$cookies.get("access_token"))
-      axios.get(url, {
-        headers: {
-          Authorization: `Token ${decoded.token}`
-        },
-        params: {
-          auction: this.bidId
-        }
-      })
-        .then(response => {
-          const desc = response.data
-          //genre
-          this.horseData.Genre = desc.external_data.sex
-          //Birthdate
-          this.horseData.BirthDate = this.formatted(desc.external_data.birth_date)
-          //color
-          this.horseData.Color = desc.external_data.color
-          //Weight
-          this.horseData.Weight = desc.external_data.weight
-          //Height
-          this.horseData.Height = desc.external_data.height
-          //Location
-          this.horseData.Location = desc.external_data.location
-
-          //
-          //PARENTS
-          //
-          this.parents.father = desc.external_data.pedigree_info[0].father.name
-          this.parents.mother = desc.external_data.pedigree_info[0].mother.name
-          //
-          //Grand Parents
-          //
-          this.grandparents.motherFather = desc.external_data.pedigree_info[1].PM2.father.name
-          this.grandparents.motherMother = desc.external_data.pedigree_info[1].PM2.mother.name
-          this.grandparents.fatherFather = desc.external_data.pedigree_info[2].PF2.father.name
-          this.grandparents.fatherMother = desc.external_data.pedigree_info[2].PF2.mother.name
-          //
-          //Great Grand Parents
-          //
-          this.greatGrandParents.motherMotherMother = desc.external_data.pedigree_info[3].MM3.mother.name
-          this.greatGrandParents.motherMotherFather = desc.external_data.pedigree_info[3].MM3.father.name
-          this.greatGrandParents.motherFatherMother = desc.external_data.pedigree_info[4].MF3.mother.name
-          this.greatGrandParents.motherFatherFather = desc.external_data.pedigree_info[4].MF3.father.name
-          //
-          this.greatGrandParents.fatherMotherMother = desc.external_data.pedigree_info[5].FM3.mother.name
-          this.greatGrandParents.fatherMotherFather = desc.external_data.pedigree_info[5].FM3.father.name
-          this.greatGrandParents.fatherFatherMother = desc.external_data.pedigree_info[6].FF3.mother.name
-          this.greatGrandParents.fatherFatherFather = desc.external_data.pedigree_info[6].FF3.father.name
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
     fetchData() {
-
       const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
       const url = `${this.$config.baseURL}${listSubastasEndpoint}`
       const decoded = JWTDecode(this.$cookies.get("access_token"))
@@ -524,7 +440,21 @@ export default {
           this.EndBidDate = horse.end_bid
           this.BidDateFormat = this.formatted(horse.start_bid)
           this.EndBidDateFormat = this.formatted(horse.end_bid)
-
+          //horse Description
+          //genre
+          this.horseData.Genre = horse.horses[this.horsePositionList].external_data.sex
+          //Birthdate
+          this.horseData.BirthDate = this.formatted(horse.horses[this.horsePositionList].external_data.birth_date)
+          //color
+          this.horseData.Color = horse.horses[this.horsePositionList].external_data.color
+          //Weight
+          this.horseData.Weight = horse.horses[this.horsePositionList].external_data.weight
+          //Height
+          this.horseData.Height = horse.horses[this.horsePositionList].external_data.height
+          //Location
+          this.horseData.Location = horse.horses[this.horsePositionList].external_data.location
+          //Pedigree Image
+          this.horseData.Pedigree = horse.horses[this.horsePositionList].local_data.pedigree
         })
         .catch(error => {
           console.error('No funciona');
