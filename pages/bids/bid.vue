@@ -24,7 +24,7 @@
             class="px-4"
             style="flex: 6;"
           >
-            <Carousel />
+            <Carousel :images="horseData.images" />
           </div>
           <!-- Info de Subasta -->
           <div
@@ -249,20 +249,19 @@
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }">
                         <p>
-                          <!-- <img
-                            src="@/public/1000_F_572792968_HTMtcUHQbWfHld1FAXVIKtWl3X2XUPjt.jpg"
-                            style="height: 100%; width: 100%;"
-                          > -->
-                          <button
-                            type="button"
-                            class="w-full bg-black text-white text-xs font-bold uppercase px-5 py-3 rounded"
-                          >Descargar X-Ray</button>
+                          <xRayGallery :images="horseData.xRayGallery" />
                         </p>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
-                        <p>
-                          Video no disponible por el momento
-                        </p>
+                        <div class="aspect-w-16 aspect-h-9">
+                          <iframe
+                            class="aspect-content rounded-lg"
+                            :src="horseData.videoUrl ? `https://www.youtube.com/embed/${horseData.videoUrl}` : `https://www.youtube.com/embed/ivGNj_t6S2c`"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                          ></iframe>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -289,6 +288,7 @@
   </div>
 </template>
 <script>
+import xRayGallery from '../../components/bid/xRayGallery.vue'
 import Pedigree from '../../components/bid/horsePedigree.vue'
 import Carousel from '../../components/Carousel.vue'
 import Winner from '../../components/bid/winner.vue'
@@ -301,6 +301,7 @@ import moment from 'moment'
 
 export default {
   components: {
+    xRayGallery,
     Pedigree,
     Bids,
     MakeOffer,
@@ -331,6 +332,9 @@ export default {
         registerNumber: '',
         Hatchery: '',
         birthDate: '',
+        xRayGallery: [],
+        images: [],
+        videoUrl: '',
       },
       HorsenName: '',
       lastOffer: '',
@@ -394,11 +398,12 @@ export default {
   },
   mounted() {
     this.fetchData()
-    setTimeout(() => {
-      this.formData.amount = this.preloadAmount();
-    }, 1500);
   },
   methods: {
+    extractYouTubeId(url) {
+      const parsedUrl = new URL(url);
+      return parsedUrl.searchParams.get('v');
+    },
     addThousand() {
       let currentValue = parseInt(this.formData.amount.replace(',', ''));
       currentValue += 1000;
@@ -431,6 +436,7 @@ export default {
     },
     updateLastOffer(offer) {
       this.lastOffer = offer;
+      this.formData.amount = this.preloadAmount();
     },
     fetchData() {
       const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
@@ -472,8 +478,6 @@ export default {
           this.horseData.Location = horse.horses[this.horsePositionList].external_data.location
           //Pedigree Image
           this.horseData.Pedigree = horse.horses[this.horsePositionList].local_data.pedigree
-          //Age
-          //
           //No. Register
           this.horseData.registerNumber = horse.horses[this.horsePositionList].local_data.registration_no
           //Hatchery
@@ -481,6 +485,10 @@ export default {
           const birthDateMoment = moment(this.horseData.BirthDate, 'DD/MM/YYYY');
           const today = moment();
           this.horseData.Age = today.diff(birthDateMoment, 'years');
+          //xRays
+          this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
+          //Video URL
+          this.horseData.videoUrl = this.extractYouTubeId(horse.horses[this.horsePositionList].local_data.video_url)
         })
         .catch(error => {
           console.error('No funciona');
