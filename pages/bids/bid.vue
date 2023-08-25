@@ -24,7 +24,7 @@
             class="px-4"
             style="flex: 6;"
           >
-            <Carousel />
+            <Carousel :images="horseData.images" />
           </div>
           <!-- Info de Subasta -->
           <div
@@ -327,6 +327,7 @@ export default {
         Hatchery: '',
         birthDate: '',
         xRayGallery: [],
+        images: [],
       },
       HorsenName: '',
       lastOffer: '',
@@ -359,6 +360,9 @@ export default {
   },
   created() {
     this.age = this.calculateAge();
+    setTimeout(() => {
+      this.fetchHorseImages()
+    }, 1500);
   },
   computed: {
     setUser() {
@@ -390,11 +394,19 @@ export default {
   },
   mounted() {
     this.fetchData()
-    setTimeout(() => {
-      this.formData.amount = this.preloadAmount();
-    }, 1500);
   },
   methods: {
+    fetchHorseImages() {
+      axios.get(this.$config.baseLaSilla + `/horses/${this.horseID}/images`)
+        .then(response => {
+          const images = response.data.map(imageObj => imageObj.url)
+          this.horseData.images = images
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
     addThousand() {
       let currentValue = parseInt(this.formData.amount.replace(',', ''));
       currentValue += 1000;
@@ -427,6 +439,7 @@ export default {
     },
     updateLastOffer(offer) {
       this.lastOffer = offer;
+      this.formData.amount = this.preloadAmount();
     },
     fetchData() {
       const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
