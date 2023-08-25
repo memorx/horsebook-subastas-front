@@ -24,7 +24,7 @@
             class="px-4"
             style="flex: 6;"
           >
-            <Carousel />
+            <Carousel :images="horseData.images" />
           </div>
           <!-- Info de Subasta -->
           <div
@@ -253,10 +253,10 @@
                         </p>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
-                        <div class="relative aspect-w-16 aspect-h-9">
+                        <div class="aspect-w-16 aspect-h-9">
                           <iframe
-                            class="absolute top-0 left-0 w-full h-full rounded"
-                            src="https://www.youtube.com/embed/lMQLxLFWMhM"
+                            class="aspect-content rounded-lg"
+                            :src="horseData.videoUrl ? horseData.videoUrl : `https://www.youtube.com/embed/ivGNj_t6S2c`"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen
@@ -333,6 +333,8 @@ export default {
         Hatchery: '',
         birthDate: '',
         xRayGallery: [],
+        images: [],
+        videoUrl: '',
       },
       HorsenName: '',
       lastOffer: '',
@@ -365,6 +367,9 @@ export default {
   },
   created() {
     this.age = this.calculateAge();
+    setTimeout(() => {
+      this.fetchHorseImages()
+    }, 1500);
   },
   computed: {
     setUser() {
@@ -396,11 +401,20 @@ export default {
   },
   mounted() {
     this.fetchData()
-    setTimeout(() => {
-      this.formData.amount = this.preloadAmount();
-    }, 1500);
+    console.log('asdasd')
   },
   methods: {
+    fetchHorseImages() {
+      axios.get(this.$config.baseLaSilla + `/horses/${this.horseID}/images`)
+        .then(response => {
+          const images = response.data.map(imageObj => imageObj.url)
+          this.horseData.images = images
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
     addThousand() {
       let currentValue = parseInt(this.formData.amount.replace(',', ''));
       currentValue += 1000;
@@ -433,6 +447,7 @@ export default {
     },
     updateLastOffer(offer) {
       this.lastOffer = offer;
+      this.formData.amount = this.preloadAmount();
     },
     fetchData() {
       const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
@@ -482,10 +497,12 @@ export default {
           const today = moment();
           this.horseData.Age = today.diff(birthDateMoment, 'years');
           //xRays
-          this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image);
+          this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
+          //Video URL
+          this.horseData.videoUrl = horse.horses[this.horsePositionList].local_data.video_url
         })
         .catch(error => {
-          console.error('No funciona');
+          console.error('No funciona asdasd');
           console.error(error);
         });
     },
