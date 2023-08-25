@@ -393,6 +393,8 @@ export default {
             // Set JWT to the cookie
             Cookie.set("access_token", jwt)
 
+            this.$store.commit('authenticate', true);
+
             // Set the user information in the store
             this.$store.commit('setUser', { email: this.login.email, token: response.token })
             console.log(this.$store, "STORE")
