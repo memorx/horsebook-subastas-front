@@ -256,7 +256,7 @@
                         <div class="aspect-w-16 aspect-h-9">
                           <iframe
                             class="aspect-content rounded-lg"
-                            :src="horseData.videoUrl ? horseData.videoUrl : `https://www.youtube.com/embed/ivGNj_t6S2c`"
+                            :src="horseData.videoUrl ? `https://www.youtube.com/embed/${horseData.videoUrl}` : `https://www.youtube.com/embed/ivGNj_t6S2c`"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen
@@ -367,9 +367,6 @@ export default {
   },
   created() {
     this.age = this.calculateAge();
-    setTimeout(() => {
-      this.fetchHorseImages()
-    }, 1500);
   },
   computed: {
     setUser() {
@@ -401,20 +398,12 @@ export default {
   },
   mounted() {
     this.fetchData()
-    console.log('asdasd')
   },
   methods: {
-    fetchHorseImages() {
-      axios.get(this.$config.baseLaSilla + `/horses/${this.horseID}/images`)
-        .then(response => {
-          const images = response.data.map(imageObj => imageObj.url)
-          this.horseData.images = images
-        })
-        .catch(error => {
-          console.error(error);
-        });
+    extractYouTubeId(url) {
+      const parsedUrl = new URL(url);
+      return parsedUrl.searchParams.get('v');
     },
-
     addThousand() {
       let currentValue = parseInt(this.formData.amount.replace(',', ''));
       currentValue += 1000;
@@ -499,10 +488,10 @@ export default {
           //xRays
           this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
           //Video URL
-          this.horseData.videoUrl = horse.horses[this.horsePositionList].local_data.video_url
+          this.horseData.videoUrl = this.extractYouTubeId(horse.horses[this.horsePositionList].local_data.video_url)
         })
         .catch(error => {
-          console.error('No funciona asdasd');
+          console.error('No funciona');
           console.error(error);
         });
     },
