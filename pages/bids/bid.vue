@@ -254,7 +254,7 @@
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
                         <p>
-                          Video no disponible por el momento
+                          Video no disponible por el momentos
                         </p>
                       </div>
                     </div>
