@@ -363,6 +363,7 @@ export default {
   },
   created() {
     this.age = this.calculateAge();
+    this.testImages()
   },
   computed: {
     setUser() {
@@ -399,6 +400,16 @@ export default {
     }, 1500);
   },
   methods: {
+    testImages() {
+      let id = 1
+      axios.get(this.$config.baseLaSilla + `/horses/${id}/images`)
+        .then(response => {
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     addThousand() {
       let currentValue = parseInt(this.formData.amount.replace(',', ''));
       currentValue += 1000;
