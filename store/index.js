@@ -1,4 +1,5 @@
 export const state = () => ({
+  isAuthenticated: false,
   singUpData: {},
   setUser: {},
   horseDetails: {},
@@ -6,6 +7,9 @@ export const state = () => ({
 });
 
 export const mutations = {
+  authenticate(state, value) {
+    state.isAuthenticated = value;   // Add this mutation
+  },
   setSingUpData(state, value) {
     state.singUpData = value;
     localStorage.setItem('singUpData', JSON.stringify(value));

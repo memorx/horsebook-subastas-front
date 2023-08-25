@@ -1,21 +1,39 @@
 <template>
   <div class="container">
-    <Loading v-if="loading"
-      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
-    <NavBarAuction />
+    <Loading
+      v-if="loading"
+      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+    />
     <div class="main">
       <div class="title">
         <p class="textttt font-aeonik">Bienvenido a HorseBook {{ setUser?.email || " " }}</p>
       </div>
       <div class="sectionheaderr">
         <p class="textSub font-aeonik">Próximas subastas disponibles</p>
-        <div class="contentttttt" v-for="item in email" :key="item.id">
-          <img v-if="item.image" :src="item.image" alt="logo" class="auction-image">
-          <img v-else src="../../public/image_subasta.png" alt="logo" class="auction-image">
+        <div
+          class="contentttttt"
+          v-for="item in email"
+          :key="item.id"
+        >
+          <img
+            v-if="item.image"
+            :src="item.image"
+            alt="logo"
+            class="auction-image"
+          >
+          <img
+            v-else
+            src="../../public/image_subasta.png"
+            alt="logo"
+            class="auction-image"
+          >
           <div class="contentttttttt">
             <div class="headingText">
               <p class="author font-aeonik">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}</p>
-              <NuxtLink :to="'/user/detalles/' + item.id" @click.prevent="goToDetails(item.id)">
+              <NuxtLink
+                :to="'/user/detalles/' + item.id"
+                @click.prevent="goToDetails(item.id)"
+              >
                 <p class="headingRegister font-aeonik">Colección 2023</p>
               </NuxtLink>
               <p class="supportingText font-aeonik">{{ item.notes }}</p>
@@ -26,10 +44,22 @@
       <div class="framee1">
         <div class="dividerr"></div>
       </div>
-      <div v-if="setUser" class="sectionheaderr">
+      <div
+        v-if="setUser"
+        class="sectionheaderr"
+      >
         <p class="textSub font-aeonik">Subastas en las que estas registrado</p>
-        <div class="contentttttt" v-for="item in register" :key="item.id">
-          <img src="../../public/image_subasta.png" alt="logo" width="90%" height="100%">
+        <div
+          class="contentttttt"
+          v-for="item in register"
+          :key="item.id"
+        >
+          <img
+            src="../../public/image_subasta.png"
+            alt="logo"
+            width="90%"
+            height="100%"
+          >
           <div class="contentttttttt">
             <div class="headingText">
               <p class="author font-aeonik">Fecha de subasta: {{ new Date(item.start_bid).toLocaleString() }}</p>
@@ -640,6 +670,7 @@ export default {
   },
   async created() {
     if (this.setUser) {
+      this.$store.commit('authenticate', true);
       await this.registerAuctions()
     }
   },
