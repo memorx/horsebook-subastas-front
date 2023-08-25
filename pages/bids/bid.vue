@@ -253,9 +253,15 @@
                         </p>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
-                        <p>
-                          Video no disponible por el momento
-                        </p>
+                        <div class="relative aspect-w-16 aspect-h-9">
+                          <iframe
+                            class="absolute top-0 left-0 w-full h-full rounded"
+                            src="https://www.youtube.com/embed/lMQLxLFWMhM"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                          ></iframe>
+                        </div>
                       </div>
                     </div>
                   </div>
