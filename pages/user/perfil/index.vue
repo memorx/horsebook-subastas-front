@@ -1,8 +1,9 @@
 <template>
   <div class="container">
-    <Loading v-if="loading"
-      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
-    <NavBarProfile />
+    <Loading
+      v-if="loading"
+      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+    />
     <div class="containerAll">
       <div class="mainn">
         <div class="mainTitle">
@@ -19,7 +20,10 @@
       </div>
       <div class="main">
         <p class="generalDates font-montserrat">Datos generales</p>
-        <div v-if="1 > 0" class="containerGeneralDates">
+        <div
+          v-if="1 > 0"
+          class="containerGeneralDates"
+        >
           <p class="name font-montserrat">Nombre (s)</p>
           <p class="nameStyle font-montserrat">{{ email.name }}</p>
           <p class="lastNameMother font-montserrat">Apellido materno</p>
@@ -76,8 +80,10 @@
           <p class="nameStyle font-montserrat">******</p>
         </div>
         <div class="pl-[350px] pt-[140px]">
-          <button @click="clearUserData"
-            class="box-border flex flex-row justify-center items-center gap-2 w-[178px] h-10 border shadow-[0px_1px_2px_rgba(16,24,40,0.05)] px-0 py-2.5 border-solid border-[#171618] bg-[#171618]">
+          <button
+            @click="clearUserData"
+            class="box-border flex flex-row justify-center items-center gap-2 w-[178px] h-10 border shadow-[0px_1px_2px_rgba(16,24,40,0.05)] px-0 py-2.5 border-solid border-[#171618] bg-[#171618]"
+          >
             <p class="not-italic font-semibold text-sm leading-5 text-white font-montserrat">Cambiar contraseña</p>
           </button>
         </div>
@@ -98,18 +104,23 @@
               <div class="box-border flex flex-row items-start isolate border p-0 rounded-lg border-[#D0D5DD] filterr">
                 <button
                   :class="['flex flex-row justify-center items-center gap-2 w-[100px] h-10 text-[#1D2939] px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'all', 'bg-[#D0D5DD]': selectedStatus === 'all' }]"
-                  @click="selectedStatus = 'all'">
+                  @click="selectedStatus = 'all'"
+                >
                   <p class="not-italic font-semibold text-sm leading-5 text-[#1D2939] font-montserrat">Todas</p>
                 </button>
                 <button
                   :class="['flex flex-row justify-center items-center gap-2 w-[95px] h-10 px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'won', 'bg-[#D0D5DD]': selectedStatus === 'won' }]"
-                  @click="selectedStatus = 'won'">
-                  <p :class="['not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat', { 'text-[#1D2939] font-semibold': selectedStatus === 'won' }]"
-                    @click="selectedStatus = 'won'">Ganadas</p>
+                  @click="selectedStatus = 'won'"
+                >
+                  <p
+                    :class="['not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat', { 'text-[#1D2939] font-semibold': selectedStatus === 'won' }]"
+                    @click="selectedStatus = 'won'"
+                  >Ganadas</p>
                 </button>
                 <button
                   :class="['flex flex-row justify-center items-center gap-2 w-[95px] h-10 px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'lost', 'bg-[#D0D5DD]': selectedStatus === 'lost' }]"
-                  @click="selectedStatus = 'lost'">
+                  @click="selectedStatus = 'lost'"
+                >
                   <p class="not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat">Perdidas</p>
                 </button>
               </div>
@@ -133,33 +144,42 @@
                 </th>
               </thead>
               <tbody>
-                <tr v-for="    record     in     filteredRecords    " :key="record.bid_date">
+                <tr
+                  v-for="    record     in     filteredRecords    "
+                  :key="record.bid_date"
+                >
                   <td
-                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-8 py-4">
+                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-8 py-4"
+                  >
                     <div class="flex">
                       Subasta {{ record.subasta.id }}
                     </div>
                   </td>
                   <td
-                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
+                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4"
+                  >
                     <div class="flex">
                       {{ record.horse.external_data.name }}
                     </div>
                   </td>
                   <td
-                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
+                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4"
+                  >
                     <div class="flex">
                       {{ new Date(record.bid_date).toLocaleString() }}
                     </div>
                   </td>
                   <td
-                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
+                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4"
+                  >
                     <div class="flex">
                       ${{ record.highest_bid }}
                     </div>
                   </td>
-                  <td class="not-italic font-semibold text-sm leading-5 font-montserrat align-top px-16 py-4"
-                    :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }">
+                  <td
+                    class="not-italic font-semibold text-sm leading-5 font-montserrat align-top px-16 py-4"
+                    :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }"
+                  >
                     <div class="flex">
                       {{ record.status === 'won' ? 'Ganada' : (record.status === 'lost' ? 'Perdida' : '') }}
                     </div>
@@ -580,7 +600,7 @@ export default {
           Authorization: `Token ${decoded.token}`,
         };
 
-
+        this.$store.commit('authenticate', true);
         this.loading = true;
 
         try {

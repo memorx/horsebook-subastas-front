@@ -1,131 +1,265 @@
 <template>
-  <div class="flex containerGeneral h-full bg-white">
-    <Loading v-if="loading"
-      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
-    <div class="flex items-center justify-center flex-1 rightSide">
-      <div class="flex flex-col items-center w-4/5 limiter">
-        <div class="logo mt-8">
-          <img src="../../../public/image_la_silla.png" alt="logo" />
-        </div>
-        <div class="flex flex-col items-center w-full mt-8 title">
-          <h1 class="sesion font-medium text-4xl text-black">Crear Cuenta</h1>
-          <p class="horsebook font-normal text-base text-neutral-600">Ingresa tus datos para entrar a HorseBook
-          </p>
-        </div>
-        <form class="w-full mt-12 space-y-6" @submit.prevent=handleSubmit>
-          <div class="flex flex-col w-full gap-6">
-            <div class="flex flex-col w-full ">
-              <label for="name" class="titleInput font-medium text-base text-black">Nombres</label>
-              <input v-model="form.name" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar nombres" />
-            </div>
-            <div class="flex flex-col w-full">
-              <label for="fathers_surname" class="titleInput font-medium text-base text-black">Apellido
-                Paterno</label>
-              <input v-model="form.fathers_surname" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar apellido paterno" />
-            </div>
-            <div class="flex flex-col w-full">
-              <label for="mothers_maiden_name" class="titleInput font-medium text-base text-black">Apellido
-                Materno</label>
-              <input v-model="form.mothers_maiden_name" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar apellido materno" />
-            </div>
-            <div class="flex flex-col w-full">
-              <label for="identification_document" class="titleInput font-medium text-base text-black">Documento de
-              identidad (ID/Pasaporte)</label>
-              <input v-model="form.identification_document" type="number" required
-              class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-              placeholder="Ingresar número de documento o pasaporte"
-              style="-webkit-appearance: none; -moz-appearance: textfield; appearance: none;" />
+  <div class="flex h-screen">
+    <Loading
+      v-if="loading"
+      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+    />
+    <div class="w-1/2 hidden md:block">
+      <img
+        src="../../../public/horse_white.png"
+        alt="logo"
+        class="w-full object-cover"
+        style="height: 100vh;"
+      />
+    </div>
+    <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
+      <div class="mb-6">
+        <h1 class="text-4xl font-medium text-black">Crea tu cuenta</h1>
+      </div>
+      <form
+        class="w-full"
+        @submit.prevent=handleSubmit
+      >
+        <div class="flex flex-col w-full gap-6">
+          <!-- First part of form -->
+          <div class="flex flex-col w-full mb-5">
+            <label
+              for="email"
+              class="text-black-600 font-medium"
+            >Email</label>
+            <input
+              v-model="form.email"
+              type="email"
+              required
+              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              placeholder="Ingresar email"
+            />
+          </div>
+          <div class="flex">
+            <!-- Password Field -->
+            <div class="flex flex-col w-1/2 pr-2">
+              <label
+                for="password"
+                class="text-black-600 font-medium"
+              >Contraseña</label>
+              <input
+                v-model="form.password"
+                type="password"
+                required
+                @input="handlePasswordInput"
+                @focus="isPasswordFocused = true"
+                @blur="isPasswordFocused = false"
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar contraseña"
+              />
+              <div
+                v-if="isPasswordFocused"
+                class="text-red-500 text-sm"
+              >{{ passwordValidationMessage }}</div>
+              <div
+                v-if="isPasswordFocused"
+                class="text-red-500 text-sm"
+              >{{ digitValidationMessage }}</div>
+              <div
+                v-if="isPasswordFocused"
+                class="text-red-500 text-sm"
+              >{{ specialCharacterValidationMessage }}</div>
             </div>
 
-            <div class="flex flex-col w-full ">
-              <label for="country" class="titleInput font-medium text-base text-black">País</label>
-              <input v-model="form.country" @input="autocompleteCountry" @keydown.delete="clearInputOnDelete"
-                @keydown="onCountryKeyDown" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar país" />
+            <!-- Confirm Password Field -->
+            <div class="flex flex-col w-1/2 pl-2">
+              <label
+                for="confirmPassword"
+                class="text-black-600 font-medium"
+              >Confirmar contraseña</label>
+              <input
+                v-model="form.confirmPassword"
+                type="password"
+                required
+                @input="validatePasswordMatch"
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Confirmar contraseña"
+              />
+              <div class="text-red-500 text-sm">{{ passwordMatchValidationMessage }}</div>
             </div>
-            <div class="flex flex-col w-full ">
-              <label for="state" class="titleInput font-medium text-base text-black">Estado</label>
-              <input v-if="normalizeString(form.country) !== 'mexico'" v-model.lazy="form.state" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar estado" />
-              <select v-else v-model="form.state" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg">
-                <option value="" disabled>Seleccionar estado</option>
-                <option v-for="estado in estadosMunicipios" :key="estado.id" :value="estado.nombre">
+          </div>
+          <!-- Second part of form -->
+          <div class="flex flex-col w-full mb-5">
+            <label
+              for="name"
+              class="text-black-600 font-medium"
+            >Nombres</label>
+            <input
+              v-model="form.name"
+              required
+              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              placeholder="Ingresar nombres"
+            />
+          </div>
+          <div class="flex space-x-4 w-full">
+            <!-- Apellido Paterno Input -->
+            <div class="flex flex-col w-1/2 mb-5">
+              <label
+                for="fathers_surname"
+                class="text-black-600 font-medium"
+              >Apellido Paterno</label>
+              <input
+                v-model="form.fathers_surname"
+                required
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar apellido paterno"
+              />
+            </div>
+
+            <!-- Apellido Materno Input -->
+            <div class="flex flex-col w-1/2 mb-5">
+              <label
+                for="mothers_maiden_name"
+                class="text-black-600 font-medium"
+              >Apellido Materno</label>
+              <input
+                v-model="form.mothers_maiden_name"
+                required
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar apellido materno"
+              />
+            </div>
+          </div>
+          <!-- Cellphone Input -->
+          <div class="flex flex-col w-full mb-5">
+            <label
+              for="phone"
+              class="text-black-600 font-medium"
+            >Teléfono</label>
+            <input
+              v-model="form.phone"
+              required
+              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              placeholder="Ingresar teléfono"
+            />
+          </div>
+          <div class="flex flex-col w-full mb-5">
+            <label class="text-black-600 font-medium relative cursor-pointer">
+              <span class="block mb-2">Documento de identidad (ID/Pasaporte)</span>
+              <div class="flex items-center">
+                <input
+                  type="file"
+                  ref="fileInput"
+                  @change="handleFileChange"
+                  accept="image/*"
+                  class="hidden"
+                />
+                <button
+                  type="button"
+                  class="py-2 px-5 bg-black text-white rounded-lg mr-2"
+                  @click="$refs.fileInput.click()"
+                >
+                  Upload
+                </button>
+                <span
+                  class="custom-file-message py-2 px-3 mt-1 bg-gray-100 border border-gray-300 rounded-lg"
+                  :class="{ 'bg-transparent border-0': form.identification_document }"
+                >
+                  {{ form.identification_document ? form.identification_document.name : 'No file chosen' }}
+                </span>
+              </div>
+            </label>
+          </div>
+          <div class="flex space-x-4 w-full">
+            <!-- País Input -->
+            <div class="flex flex-col w-1/2 mb-5">
+              <label
+                for="country"
+                class="text-black-600 font-medium"
+              >País</label>
+              <input
+                v-model="form.country"
+                @input="autocompleteCountry"
+                @keydown.delete="clearInputOnDelete"
+                @keydown="onCountryKeyDown"
+                required
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar país"
+              />
+            </div>
+            <!-- Estado Input -->
+            <div class="flex flex-col w-1/2 mb-5">
+              <label
+                for="state"
+                class="text-black-600 font-medium"
+              >Estado</label>
+              <input
+                v-if="normalizeString(form.country) !== 'mexico'"
+                v-model.lazy="form.state"
+                required
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar estado"
+              />
+              <select
+                v-else
+                v-model="form.state"
+                required
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              >
+                <option
+                  value=""
+                  disabled
+                >Seleccionar estado</option>
+                <option
+                  v-for="estado in estadosMunicipios"
+                  :key="estado.id"
+                  :value="estado.nombre"
+                >
                   {{ estado.nombre }}
                 </option>
               </select>
             </div>
-            <div class="flex flex-col w-full ">
-              <label for="municipalitie" required class="titleInput font-medium text-base text-black">Ciudad</label>
-              <input v-if="normalizeString(form.country) !== 'mexico'" v-model.lazy="form.municipalitie" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar ciudad" />
-              <select v-else v-model="form.municipalitie" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg">
-                <option value="" disabled>Seleccionar ciudad</option>
-                <option v-for="municipio in selectedStateMunicipios" :key="municipio.id" :value="municipio.nombre">
-                  {{ municipio.nombre }}
-                </option>
-              </select>
-            </div>
-
-            <div class="flex flex-col w-full ">
-              <label for="phone" class="titleInput font-medium text-base text-black">Teléfono</label>
-              <input v-model="form.phone" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar teléfono" />
-            </div>
-            <div class="flex flex-col w-full ">
-              <label for="email" class="titleInput font-medium text-base text-black">Email</label>
-              <input v-model="form.email" type="email" required
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar email" />
-            </div>
-            <div class="flex flex-col w-full ">
-              <label for="password" class="titleInput font-medium text-base text-black">Contraseña</label>
-              <input v-model="form.password" type="password" required
-                @input="handlePasswordInput"
-                @focus="isPasswordFocused = true"
-                @blur="isPasswordFocused = false"
-                class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                placeholder="Ingresar contraseña" />
-              <div v-if="isPasswordFocused" class="text-red-500 text-sm">{{ passwordValidationMessage }}</div>
-              <div v-if="isPasswordFocused" class="text-red-500 text-sm">{{ digitValidationMessage }}</div>
-              <div v-if="isPasswordFocused" class="text-red-500 text-sm">{{ specialCharacterValidationMessage }}</div>
-            </div>
-            <div class="flex flex-col w-full ">
-              <label for="confirmPassword" class="titleInput font-medium text-base text-black">Confirmar
-                contraseña</label>
-                <input v-model="form.confirmPassword" type="password" required
-                  @input="validatePasswordMatch" 
-                  class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-                  placeholder="Confirmar contraseña" />
-                <div class="text-red-500 text-sm">{{ passwordMatchValidationMessage }}</div>
-            </div>
           </div>
-          <div class="flex flex-col w-full mt-6 containerButton">
-            <button type="submit" class="buttonCta py-2 px-4 bg-black text-white rounded-lg">Crear
+          <div class="flex flex-col w-full mb-5">
+            <label
+              for="municipalitie"
+              required
+              class="text-black-600 font-medium"
+            >Ciudad</label>
+            <input
+              v-if="normalizeString(form.country) !== 'mexico'"
+              v-model.lazy="form.municipalitie"
+              required
+              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              placeholder="Ingresar ciudad"
+            />
+            <select
+              v-else
+              v-model="form.municipalitie"
+              required
+              class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
+            >
+              <option
+                value=""
+                disabled
+              >Seleccionar ciudad</option>
+              <option
+                v-for="municipio in selectedStateMunicipios"
+                :key="municipio.id"
+                :value="municipio.nombre"
+              >
+                {{ municipio.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="flex flex-col w-full">
+            <button
+              type="submit"
+              class="py-2 px-5 mb-5 bg-black text-white rounded-lg"
+            >Crear
               cuenta</button>
+            <span class="text-gray-600 mb-5">¿Ya tienes cuenta? <nuxt-link
+                to="/auth/login"
+                class="font-medium text-base text-black hover:text-blue-500"
+              >Inicia sesión</nuxt-link></span>
           </div>
-          <div class="flex justify-center w-full mt-6 pb-2 signUp">
-            <div class="flex flex-col items-center signUpp">
-              <p class="signUppp font-normal text-base text-neutral-600">¿Ya tienes cuenta? <nuxt-link to="/auth/login"
-                  class="font-medium text-base text-black">Inicia sesión</nuxt-link></p>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <div class="lg:flex hidden flex-1 leftSide ">
-      <img src="../../../public/image_horsebook_login.png" alt="logo-login" class="w-full h-full object-cover" />
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -147,6 +281,7 @@ export default {
   },
   data() {
     return {
+      step: false,
       loading: false,
       estadosMunicipios: [],
       form: {
@@ -171,6 +306,15 @@ export default {
     };
   },
   methods: {
+    handleFileChange(event) {
+      const selectedFile = event.target.files[0];
+      this.form.identification_document = selectedFile;
+      this.$refs.fileInput.value = '';
+    },
+    nextStep() {
+      console.log("Hola")
+      return this.step = !this.step
+    },
     handlePasswordInput() {
       this.validatePassword();
     },
@@ -186,7 +330,7 @@ export default {
       const hasDigit = /\d/.test(password);
 
       const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
-    
+
 
       this.passwordValidationMessage = isLengthValid ? '' : 'La contraseña debe tener al menos 8 caracteres.';
       this.digitValidationMessage = hasDigit ? '' : 'La contraseña debe contener al menos un dígito.';
@@ -217,7 +361,7 @@ export default {
         this.$toast.error("La contraseña debe tener al menos 8 caracteres,<br>contener al menos un dígito,<br>un carácter especial,<br>no puede incluir parte de los atributos del usuario,<br>ni ser una contraseña común o fácilmente adivinable.");
         return;
       }
-     
+
       this.signUp(this.form);
     },
     normalizeString(input) {
@@ -250,6 +394,10 @@ export default {
       const headers = {
         Authorization: token,
       };
+      // Create a FormData object
+      let formData = new FormData();
+
+      // Data to append
       const body = {
         "email": data.email,
         "password": data.password,
@@ -264,14 +412,32 @@ export default {
           "phone": data.phone,
         }
       };
-      await this.$axios.$post(url, body, { headers })
+
+      // Append text fields from body
+      formData.append("email", body.email);
+      formData.append("password", body.password);
+
+      // Append nested object
+      formData.append("app_user_profile[name]", body.app_user_profile.name);
+      formData.append("app_user_profile[mothers_maiden_name]", body.app_user_profile.mothers_maiden_name);
+      formData.append("app_user_profile[fathers_surname]", body.app_user_profile.fathers_surname);
+      formData.append("app_user_profile[country]", body.app_user_profile.country);
+      formData.append("app_user_profile[state]", body.app_user_profile.state);
+      formData.append("app_user_profile[municipalitie]", body.app_user_profile.municipalitie);
+      formData.append("app_user_profile[phone]", body.app_user_profile.phone);
+
+      // Append the file, if it exists
+      if (body.app_user_profile.identification_document) {
+        formData.append("app_user_profile[identification_document]", body.app_user_profile.identification_document);
+      }
+
+      await this.$axios.$post(url, formData, { headers })
         .then((response) => {
           this.loading = false
           let data = response
           // even knowing the password is encrypted, We shouldn't include in our store
           delete data.password
           this.$store.commit('setSingUpData', data);
-          this.$router.push('/auth/sign-up/confirm-account')
         })
         .catch((error) => {
           this.loading = false
@@ -307,14 +473,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type="number"] {
-  -moz-appearance: textfield; /* Firefox */
-}
-
-</style>

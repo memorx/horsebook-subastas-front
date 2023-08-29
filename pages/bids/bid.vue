@@ -253,9 +253,15 @@
                         </p>
                       </div>
                       <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
-                        <p>
-                          Video no disponible por el momentos
-                        </p>
+                        <div class="aspect-w-16 aspect-h-9">
+                          <iframe
+                            class="aspect-content rounded-lg"
+                            :src="horseData.videoUrl ? `https://www.youtube.com/embed/${horseData.videoUrl}` : `https://www.youtube.com/embed/ivGNj_t6S2c`"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                          ></iframe>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -328,6 +334,7 @@ export default {
         birthDate: '',
         xRayGallery: [],
         images: [],
+        videoUrl: '',
       },
       HorsenName: '',
       lastOffer: '',
@@ -406,7 +413,10 @@ export default {
           console.error(error);
         });
     },
-
+    extractYouTubeId(url) {
+      const parsedUrl = new URL(url);
+      return parsedUrl.searchParams.get('v');
+    },
     addThousand() {
       let currentValue = parseInt(this.formData.amount.replace(',', ''));
       currentValue += 1000;
@@ -489,7 +499,9 @@ export default {
           const today = moment();
           this.horseData.Age = today.diff(birthDateMoment, 'years');
           //xRays
-          this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image);
+          this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
+          //Video URL
+          this.horseData.videoUrl = this.extractYouTubeId(horse.horses[this.horsePositionList].local_data.video_url)
         })
         .catch(error => {
           console.error('No funciona');
