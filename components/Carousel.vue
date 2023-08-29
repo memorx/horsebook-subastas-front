@@ -1,7 +1,7 @@
 <template>
     <div
-        class="relative bg-black rounded-lg"
-        style="width: 100%; height: 100%;"
+        class="relative bg-black rounded-lg overflow"
+        style="width: 100%; height: 400px;"
     >
         <!-- Left Arrow -->
         <button
@@ -19,7 +19,7 @@
                 :key="currentImage"
                 class="rounded-lg"
                 :src="currentImage"
-                alt="test"
+                alt="image"
                 style="width: 100%; height: 100%;"
             >
         </transition>
@@ -37,13 +37,14 @@
 <script>
 export default {
     name: 'Carousel',
+    props: {
+        images: {
+            type: Array,
+            default: () => [],
+        }
+    },
     data() {
         return {
-            imagesURL: [
-                require('@/public/horse_black.png'),
-                require('@/public/horse_example.png'),
-                require('@/public/horse_white.png')
-            ],
             currentImageIndex: 0
         }
     },
@@ -56,18 +57,18 @@ export default {
     methods: {
         startCarousel() {
             this.imageInterval = setInterval(() => {
-                this.currentImageIndex = (this.currentImageIndex + 1) % this.imagesURL.length;
+                this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
             }, 7000);
         },
         prevImage() {
             if (this.currentImageIndex > 0) {
                 this.currentImageIndex--;
             } else {
-                this.currentImageIndex = this.imagesURL.length - 1;
+                this.currentImageIndex = this.images.length - 1;
             }
         },
         nextImage() {
-            if (this.currentImageIndex < this.imagesURL.length - 1) {
+            if (this.currentImageIndex < this.images.length - 1) {
                 this.currentImageIndex++;
             } else {
                 this.currentImageIndex = 0;
@@ -76,7 +77,7 @@ export default {
     },
     computed: {
         currentImage() {
-            return this.imagesURL[this.currentImageIndex];
+            return this.images[this.currentImageIndex];
         }
     }
 }
