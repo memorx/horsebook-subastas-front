@@ -367,6 +367,9 @@ export default {
   },
   created() {
     this.age = this.calculateAge();
+    setTimeout(() => {
+      this.fetchHorseImages()
+    }, 1500);
   },
   computed: {
     setUser() {
@@ -400,6 +403,16 @@ export default {
     this.fetchData()
   },
   methods: {
+    fetchHorseImages() {
+      axios.get(this.$config.baseLaSilla + `/horses/${this.horseID}/images`)
+        .then(response => {
+          const images = response.data.map(imageObj => imageObj.url)
+          this.horseData.images = images
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     extractYouTubeId(url) {
       const parsedUrl = new URL(url);
       return parsedUrl.searchParams.get('v');
