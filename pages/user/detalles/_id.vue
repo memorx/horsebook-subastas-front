@@ -1,72 +1,135 @@
 <template>
-  <div class="container">
-    <div class="sideBar bg-gray-200 border-r border-gray-300">
-      <Loading
-        v-if="loading"
-        class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
-      />
-      <NavBarAuction />
-    </div>
-    <div class="main">
-      <div class="breadcumbs">
-        <p class="textBreadcumbs font-montserrat">Tus subastas / Subasta {{ item.id }} </p>
-      </div>
-      <div class="main2">
+  <div class="bg-zinc-200 py-5 px-20">
+    <Loading
+      v-if="loading"
+      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+    />
+    <div class="flex">
+      <!-- First Column -->
+      <div class="w-1/2">
         <img
           src="../../../public/image_detail_horse.png"
-          width="100%"
-          height="100%"
-        >
-        <div class="title">
-          <p class="styleTitle font-montserrat">Subasta</p>
-          <p class="datesAuction font-montserrat">Inicio de preoferta: {{ new Date(item.start_pre_bid).toLocaleString() }}
-          </p>
-          <p class="datesAuction font-montserrat">Cierre de preoferta: {{ new Date(item.start_bid).toLocaleString() }}
-          </p>
+          alt="logo"
+          class="w-full object-cover rounded-lg"
+          style="height: 500px;"
+        />
+      </div>
 
+      <!-- Second Column -->
+      <div class="w-1/2">
+        <!-- First Row in the second column -->
+        <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
+          <h2 class="text-2xl font-bold mb-1">Subasta la Silla</h2>
+          <h4 class="text-sm mb-4">🇲🇽 Monterrey, Nuevo Leon</h4>
+          <span class="text-xl font-bold mb-2 mr-1">4</span>
+          <span>Caballos</span>
         </div>
-        <!-- <div class="dividerr"></div> -->
-        <div class="auctions">
-          <li
-            class="li"
-            v-for="(horse, index,) in item.horses"
-            :key="horse.id"
-          >
-            <img src="../../../public/horse_example.png">
-            <p class="nameHorse font-montserrat">{{ horse.external_data.name }}</p>
-            <p class="prizeHorse font-montserrat">Precio inicial: {{ horse.local_data.initial_pre_bid_amount }} USD</p>
-            <!-- <button class="buttonDetails" v-on:click="showHorseDetails(horse)"> -->
-            <NuxtLink
-              class="buttonDetails"
-              :to="`/bids/bid?id=${id}&horsePositionList=${index}`"
-            >
-              <p class="seeDetails font-montserrat">Ver detalles </p>
-            </NuxtLink>
-            <div v-if="horse.showDetails">
-              <p class="font-montserrat">Detalles: {{ horse.external_data.alt_name }}</p>
-              <!-- Add more details here -->
+
+        <!-- Second Row in the second column -->
+        <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
+          <h1 class="text-center text-sm font-bold mb-5">LA PRE OFERTA COMIENZA EN</h1>
+          <div class="flex justify-center">
+            <div class="mx-10">
+              <p class="text-center text-5xl mb-2 font-bold">{{ preBidTime.days }}</p>
+              <p class="text-center text-slate-500">Days</p>
             </div>
-          </li>
+            <div class="mx-10">
+              <p class="text-center text-5xl mb-2 font-bold">{{ preBidTime.hours }}</p>
+              <p class="text-center text-slate-500">Hours</p>
+            </div>
+            <div class="mx-10">
+              <p class="text-center text-5xl mb-2 font-bold">{{ preBidTime.minutes }}</p>
+              <p class="text-center text-slate-500">Minutes</p>
+            </div>
+            <div class="mx-10">
+              <p class="text-center text-5xl mb-2 font-bold">{{ preBidTime.seconds }}</p>
+              <p class="text-center text-slate-500">Seconds</p>
+            </div>
+          </div>
+          <br>
+          <h1 class="text-center text-sm font-bold mb-5">LA SUBASTA EN VIVO COMIENZA EN</h1>
+          <div class="flex justify-center">
+            <div class="mx-10">
+              <p class="text-center text-5xl mb-2 font-bold">{{ bidTime.days }}</p>
+              <p class="text-center text-slate-500">Days</p>
+            </div>
+            <div class="mx-10">
+              <p class="text-center text-5xl mb-2 font-bold">{{ bidTime.hours }}</p>
+              <p class="text-center text-slate-500">Hours</p>
+            </div>
+            <div class="mx-10">
+              <p class="text-center text-5xl mb-2 font-bold">{{ bidTime.minutes }}</p>
+              <p class="text-center text-slate-500">Minutes</p>
+            </div>
+            <div class="mx-10">
+              <p class="text-center text-5xl mb-2 font-bold">{{ bidTime.seconds }}</p>
+              <p class="text-center text-slate-500">Seconds</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h1 class="text-4xl font-semibold my-6">Caballos a subastar</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+        <!-- Repeat this section for each list item (horse) -->
+        <div
+          class="bg-white rounded-lg shadow-md"
+          v-for="(horse, index) in item.horses"
+          :key="horse.id"
+        >
+          <NuxtLink
+            class="buttonDetails"
+            :to="`/bids/bid?id=${id}&horsePositionList=${index}`"
+          >
+            <img
+              src="../../../public/horse_example.png"
+              class="w-full object-cover rounded-t-lg"
+              style="height: 300px;"
+            >
+            <p class="text-sm  my-4 mx-6 text-slate-500">Canatra x Laval</p>
+            <p class="text-xl font-bold my-2 mx-6">{{ horse.external_data.name }}</p>
+            <p class="text-sm  my-2 mx-6 text-slate-500">2018</p>
+            <div class="border-b border-gray-300 my-4 mx-5"></div>
+            <p class="text-sm font-bold text-center my-2 mx-3">Precio inicial</p>
+            <p class="text-lg font-bold text-center mt-2 mb-3 mx-3">$ {{ horse.local_data.initial_pre_bid_amount ?
+              horse.local_data.initial_pre_bid_amount : '15,000' }} USD</p>
+          </NuxtLink>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import goToDetails from '@/pages/user/inicio.vue';
 import jwt_decode from 'jwt-decode';
 import Loading from '../../../components/shared/Loading.vue';
-import moment from 'moment';
 import NavBarAuction from "../../../components/NavBar/NavBarAuction.vue"
 
 export default {
   components: { Loading, NavBarAuction },
   data() {
     return {
-      item: {},
+      bidTime: {
+        days: '',
+        hours: '',
+        minutes: '',
+        seconds: '',
+      },
+      preBidTime: {
+        days: '',
+        hours: '',
+        minutes: '',
+        seconds: '',
+      },
+      item: {
+        horses: '',
+        start_bid: '',
+        start_pre_bid: '',
+      },
       id: '',
       loading: false,
-      moment: moment
+      countdownSubasta: 'Calculando cuenta regresiva...',
+      countdownPre: 'Calculando cuenta regresiva...',
     }
   },
   async created() {
@@ -75,7 +138,55 @@ export default {
     await this.getDetailsAuction(itemId)
     console.log(itemId)
   },
+  mounted() {
+    // Update the countdown every second
+    this.timer = setInterval(this.calculateCountdown, 1000);
+    this.timer2 = setInterval(this.calculateCountdownPre, 1000);
+  },
+  beforeDestroy() {
+    // Clear the timer when the component is destroyed
+    clearInterval(this.timer);
+    clearInterval(this.timer2);
+  },
   methods: {
+    calculateCountdown() {
+      const now = new Date();
+      const targetDate = new Date(this.item.start_bid);
+      const timeDifference = targetDate - now;
+
+      if (timeDifference <= 0) {
+        this.countdownSubasta = 'La Subasta ha terminado';
+        clearInterval(this.timer);
+      } else {
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+        this.bidTime.days = days
+        this.bidTime.hours = hours
+        this.bidTime.minutes = minutes
+        this.bidTime.seconds = seconds
+      }
+    },
+    calculateCountdownPre() {
+      const now = new Date();
+      const targetDate = new Date(this.item.start_pre_bid);
+      const timeDifference = targetDate - now;
+
+      if (timeDifference <= 0) {
+        this.countdownPre = 'La Pre Oferta ha terminado';
+        clearInterval(this.timer2);
+      } else {
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+        this.preBidTime.days = days
+        this.preBidTime.hours = hours
+        this.preBidTime.minutes = minutes
+        this.preBidTime.seconds = seconds
+      }
+    },
     async getDetailsAuction(itemId) {
       const url = this.$config.baseURL + `/subastas/list-subastas/?id=${itemId}`
       const decoded = jwt_decode(this.$cookies.get("access_token"))
@@ -93,7 +204,11 @@ export default {
         .get(url, { headers })
         .then((response) => {
           console.log(response.data, "RESPONSE.DATA")
-          this.item = response.data
+          this.item.start_bid = response.data.start_bid
+          this.item.start_pre_bid = response.data.start_pre_bid
+          this.item.horses = response.data.horses
+          this.calculateCountdown()
+          this.calculateCountdownPre()
           this.loading = false
         })
         .catch((error) => {
@@ -109,195 +224,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.container {
-  display: flex;
-  padding: 0px;
-  width: 100%;
-  height: 100%
-}
-
-.dashboard {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0px;
-  position: absolute;
-  width: 1440px;
-  height: 2538px;
-  left: 0px;
-  top: 78px;
-  background: #FCFCFD;
-}
-
-.sideBar {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0px;
-  width: 280px;
-  height: 70vh;
-  background: #F9FAFB;
-  border-right: 1px solid #EAECF0;
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 32px 0px 48px;
-  gap: 48px;
-  background: #FCFCFD;
-}
-
-.breadcumbs {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0px 32px;
-  gap: 12px;
-  width: 100%;
-  height: 100%;
-}
-
-.breadcumbsTitle {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0px;
-}
-
-.textBreadcumbs {
-
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: #475467;
-}
-
-.breadcumbsText {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 0px;
-  width: 67px;
-  height: 20px;
-}
-
-.main2 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px 0px 48px;
-  gap: 48px;
-  background: #FCFCFD;
-}
-
-.title {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0px;
-  gap: 16px;
-}
-
-.styleTitle {
-  width: 632px;
-  height: 38px;
-  padding-left: 20px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 30px;
-  line-height: 38px;
-  color: #101828;
-}
-
-.datesAuction {
-  width: 197px;
-  height: 20px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  color: #667085;
-}
-
-.dateAuction {
-  width: 90px;
-  height: 2px;
-  padding-top: 100px;
-  padding-right: 30%;
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  color: #344054;
-}
-
-.dividerr {
-  width: 1096px;
-  height: 1px;
-  background: #EAECF0;
-}
-
-.auctions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.li {
-  flex-basis: calc(33.33% - 10px);
-  margin-bottom: 20px;
-}
-
-.nameHorse {
-  margin-top: 5px;
-  padding-left: 10px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 30px;
-  color: #101828;
-}
-
-.prizeHorse {
-  margin-top: 5px;
-  padding-left: 10px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 28px;
-  color: #101828;
-}
-
-.buttonDetails {
-  box-sizing: border-box;
-  margin-top: 30px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 16px;
-  gap: 8px;
-  width: 322.67px;
-  height: 40px;
-  background: #171618;
-  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-
-}
-
-.seeDetails {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: #FFFFFF;
-}</style>
-
