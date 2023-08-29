@@ -139,21 +139,32 @@
             />
           </div>
           <div class="flex flex-col w-full mb-5">
-            <label
-              for="identification_document"
-              class="text-black-600 font-medium"
-            >Documento de
-              identidad (ID/Pasaporte)</label>
-            <input
-              v-model="form.identification_document"
-              type="number"
-              required
-              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              placeholder="Ingresar número de documento o pasaporte"
-              style="-webkit-appearance: none; -moz-appearance: textfield; appearance: none;"
-            />
+            <label class="text-black-600 font-medium relative cursor-pointer">
+              <span class="block mb-2">Documento de identidad (ID/Pasaporte)</span>
+              <div class="flex items-center">
+                <input
+                  type="file"
+                  ref="fileInput"
+                  @change="handleFileChange"
+                  accept="image/*"
+                  class="hidden"
+                />
+                <button
+                  type="button"
+                  class="py-2 px-5 bg-black text-white rounded-lg mr-2"
+                  @click="$refs.fileInput.click()"
+                >
+                  Upload
+                </button>
+                <span
+                  class="custom-file-message py-2 px-3 mt-1 bg-gray-100 border border-gray-300 rounded-lg"
+                  :class="{ 'bg-transparent border-0': form.identification_document }"
+                >
+                  {{ form.identification_document ? form.identification_document.name : 'No file chosen' }}
+                </span>
+              </div>
+            </label>
           </div>
-
           <div class="flex space-x-4 w-full">
             <!-- País Input -->
             <div class="flex flex-col w-1/2 mb-5">
@@ -295,6 +306,11 @@ export default {
     };
   },
   methods: {
+    handleFileChange(event) {
+      const selectedFile = event.target.files[0];
+      this.form.identification_document = selectedFile;
+      this.$refs.fileInput.value = '';
+    },
     nextStep() {
       console.log("Hola")
       return this.step = !this.step
@@ -378,6 +394,10 @@ export default {
       const headers = {
         Authorization: token,
       };
+      // Create a FormData object
+      let formData = new FormData();
+
+      // Data to append
       const body = {
         "email": data.email,
         "password": data.password,
@@ -392,14 +412,32 @@ export default {
           "phone": data.phone,
         }
       };
-      await this.$axios.$post(url, body, { headers })
+
+      // Append text fields from body
+      formData.append("email", body.email);
+      formData.append("password", body.password);
+
+      // Append nested object
+      formData.append("app_user_profile[name]", body.app_user_profile.name);
+      formData.append("app_user_profile[mothers_maiden_name]", body.app_user_profile.mothers_maiden_name);
+      formData.append("app_user_profile[fathers_surname]", body.app_user_profile.fathers_surname);
+      formData.append("app_user_profile[country]", body.app_user_profile.country);
+      formData.append("app_user_profile[state]", body.app_user_profile.state);
+      formData.append("app_user_profile[municipalitie]", body.app_user_profile.municipalitie);
+      formData.append("app_user_profile[phone]", body.app_user_profile.phone);
+
+      // Append the file, if it exists
+      if (body.app_user_profile.identification_document) {
+        formData.append("app_user_profile[identification_document]", body.app_user_profile.identification_document);
+      }
+
+      await this.$axios.$post(url, formData, { headers })
         .then((response) => {
           this.loading = false
           let data = response
           // even knowing the password is encrypted, We shouldn't include in our store
           delete data.password
           this.$store.commit('setSingUpData', data);
-          this.$router.push('/auth/sign-up/confirm-account')
         })
         .catch((error) => {
           this.loading = false
