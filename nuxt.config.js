@@ -36,7 +36,10 @@ export default {
 
   // router middleware
   router: {
-    middleware: ['authenticated', 'loadLocalStorage']
+    middleware: [
+      'loadLocalStorage',
+      // 'authenticated' Comment this just in case we need back the authentication middleware
+    ]
   },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
