@@ -14,8 +14,8 @@
             <div class="flex items-center space-x-4">
                 
                 <div v-if="isUserAuthenticated">
-                <nuxt-link to="/user/inicio">
-                    <button
+                    <nuxt-link to="/user/inicio">
+                        <button
                             class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
                             >Tus Subastas
                         </button>
@@ -28,8 +28,8 @@
                     </button>
 
                     <nuxt-link to="/user/perfil">
-                <button
-                    class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
+                        <button
+                            class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
                         >
                             <i class="fas fa-user fa-lg"></i>
                         </button>
@@ -43,14 +43,14 @@
                         >Iniciar sesion
                     </button>
                     <nuxt-link to="/auth/sign-up">
-                    <button
+                        <button
                             @click="login"
-                        class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
+                            class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
                         >Registrate
-                    </button>
-                </nuxt-link>
+                        </button>
+                    </nuxt-link>
+                </div>
             </div>
-        </div>
         </div>
     </nav>
 </template>
@@ -59,15 +59,19 @@
 export default {
     methods: {
         login() {
-            this.$router.push('/')
+            this.$router.push('/auth/login')
         },
         logout() {
             this.$store.commit('authenticate', false);
-            this.$router.push('/')
+            this.removeUserCredentials();
+            this.$router.push('/');
+        },
+        removeUserCredentials() {
+            localStorage.setItem("setUser", "")
         }
     },
     computed: {
-        isLoggedIn() {
+        isUserAuthenticated() {
             return this.$store.state.isAuthenticated;
         }
     }
