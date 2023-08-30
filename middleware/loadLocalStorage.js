@@ -13,6 +13,7 @@ export default function ({ store }) {
           const parsedUser = JSON.parse(storedUser);
           console.log('loading user from localStore:', parsedUser);
           store.commit('setUser', parsedUser);
+          store.commit("authenticate", true);
       }
 
       const storedHorseDetails = localStorage.getItem('horseDetails');
@@ -21,7 +22,8 @@ export default function ({ store }) {
           console.log('loading horseDetails from localStore:', parsedHorseDetails);
           store.commit('setHorseDetails', parsedHorseDetails);
       }
-      const storedUserInformation=localStorage.getItem("userInformation");
+      
+      const storedUserInformation = localStorage.getItem("userInformation");
       if(storedUserInformation){
         const parsedUserInformation= JSON.parse(storedUserInformation);
         console.log("loading user infor from localStore:", parsedUserInformation);
