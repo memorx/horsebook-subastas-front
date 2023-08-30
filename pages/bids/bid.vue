@@ -366,10 +366,6 @@ export default {
     }
   },
   created() {
-    this.age = this.calculateAge();
-    setTimeout(() => {
-      this.fetchHorseImages()
-    }, 1500);
   },
   computed: {
     setUser() {
@@ -461,6 +457,7 @@ export default {
         },
       })
         .then(response => {
+          this.$store.commit('authenticate', true);
           const horse = response.data
           //name
           this.HorsenName = horse.horses[this.horsePositionList].external_data.name
@@ -502,6 +499,8 @@ export default {
           this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
           //Video URL
           this.horseData.videoUrl = this.extractYouTubeId(horse.horses[this.horsePositionList].local_data.video_url)
+          this.fetchHorseImages()
+          this.age = this.calculateAge();
         })
         .catch(error => {
           console.error('No funciona');

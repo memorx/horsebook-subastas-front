@@ -59,6 +59,7 @@ export default {
         },
         logout() {
             this.$store.commit('authenticate', false);
+            this.$store.commit('clearUserData');
             this.$router.push('/')
         }
     },
