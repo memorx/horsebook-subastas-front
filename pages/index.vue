@@ -3,7 +3,7 @@
 <script>
 export default {
    created(){
-      this.$router.push("/auth/login");
+      this.$router.push("/landingPage");
    }
 }
 </script>
