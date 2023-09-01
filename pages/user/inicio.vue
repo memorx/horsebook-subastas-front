@@ -21,6 +21,43 @@
           class="bg-white rounded-lg flex flex-col md:flex-row mb-10"
         >
           <img
+            src="../../public/image_subasta.png"
+            alt="logo"
+            class="w-full md:w-1/2 object-cover md:rounded-l-lg"
+            style="height: 400px;"
+            loading="lazy"
+          >
+          <div class="w-full md:w-1/2 flex flex-col justify-between">
+            <div class="p-5">
+              <p class="text-4xl font-bold">Colección <span class="font-extrabold">2023</span></p>
+              <p class="text-sm font-medium text-slate-500">Fecha de subasta: <span class="font-normal">{{ new
+                Date(item.start_bid).toLocaleString() }}</span></p>
+              <div class="border-b border-gray-300 my-3"></div>
+              <p class="mb-5">{{ item.notes !== 'null' ? item.notes : '' }}</p>
+              <div class="text-center mt-auto">
+                <NuxtLink
+                  :to="'/user/detalles/' + item.id"
+                  @click.prevent="goToDetails(item.id)"
+                >
+                  <button class="bg-black py-3 px-5 text-white rounded-lg">
+                    Ingresar A Subasta
+                  </button>
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="">
+          <p class="text-xl font-bold mb-3">PRÓXIMAS SUBASTAS</p>
+        </div>
+        <div
+          v-for="item in register"
+          :key="item.id"
+          class="bg-white rounded-lg flex flex-col md:flex-row mb-10"
+        >
+          <img
             v-if="item.image"
             :src="item.image"
             alt="logo"
@@ -106,9 +143,6 @@ export default {
         await this.$axios
           .get(url, { headers })
           .then((response) => {
-            for (let i = 0; i < response.data.length; i++) {
-              console.log(response.data[i].start_bid);
-            }
             this.email = response.data;
             this.loading = false;
           })
@@ -121,6 +155,7 @@ export default {
       this.register = []
       const currentDate = new Date().toISOString().slice(0, 10);
       const url = `${this.$config.baseURL}/subastas/get-registered-subastas/?email=${this.$store.state.user.email}&start_date=${currentDate}`;
+      console.log(url)
       const decoded = JWTDecode(this.$cookies.get("access_token"))
       //I want to stop to make a hardcode and do it using logic
       if (decoded) {
@@ -132,14 +167,12 @@ export default {
         await this.$axios
           .get(url, { headers })
           .then((response) => {
-            for (let i = 0; i < response.data.length; i++) {
-              console.log(response.data[i].start_bid);
-            }
             this.register = response.data.subastas;
+            console.log('test' + this.register)
             this.loading = false;
           })
           .catch((error) => {
-            this.loading = false;
+            console.log(error)
           });
       }
     },

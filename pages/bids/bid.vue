@@ -1,7 +1,10 @@
 <template>
-  <div>
-    <div class="bg-gray-100 py-8">
-      <div class="alert-cont">
+  <div class="bg-zinc-200 py-5 md:px-20">
+    <a href="/user/inicio">
+      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">Atras</button>
+    </a>
+    <div>
+      <div>
         <div
           v-if="successMessage"
           class="alert alert-success"
@@ -15,138 +18,126 @@
           {{ errorMessage }}
         </div>
       </div>
-      <a href="/user/inicio">
-        <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">Atras</button>
-      </a>
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row -mx-4">
-          <div
-            class="px-4"
-            style="flex: 6;"
-          >
-            <Carousel :images="horseData.images" />
+      <div
+        v-if="statusBid == 'PREBID' || statusBid == 'BIDDING'"
+        class="mb-4 bg-white p-5 mx-5 rounded-lg"
+      >
+        <div class="flex items-center">
+          <span class="text-2xl font-bold mr-3">Subasta la Silla</span>
+          <div v-if="isCurrentDate === 1">
+            <span class="bg-yellow-500 text-white px-3 py-1 rounded-full">
+              EN VIVO
+            </span>
           </div>
-          <!-- Info de Subasta -->
+          <div v-else-if="isCurrentDate === 2">
+            <span class="bg-green-500 text-white px-3 py-1 rounded-full">
+              EN VIVO
+            </span>
+          </div>
+          <div v-else>
+            <span class="bg-red-500 text-white px-3 py-1 rounded-full">
+              CERRADA
+            </span>
+          </div>
+        </div>
+        <h4 class="text-sm">🇲🇽 Monterrey, Nuevo Leon</h4>
+      </div>
+      <div class="flex flex-col md:flex-row mx-5 mb-4">
+        <div
+          v-if="statusBid == 'BIDDING'"
+          class="md:w-1/2 p-5 md:mr-2 bg-white rounded-lg"
+        >
+          <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/2 order-2 md:order-1">
+              <Carousel :images="horseData.images" />
+            </div>
+            <div class="md:w-1/2 bg-green px-3 order-1 md:order-2">
+              <p class="text-sm text-slate-500">Canatra x Laval</p>
+              <h2 class="text-xl font-bold mb-2">{{ HorsenName }}</h2>
+            </div>
+          </div>
+          <div class="border-b border-gray-300 my-4"></div>
+          <div class="aspect-w-16 aspect-h-9">
+            <iframe
+              class="aspect-content rounded-lg"
+              :src="horseData.videoUrl ? `https://www.youtube.com/embed/${horseData.videoUrl}` : `https://www.youtube.com/embed/ivGNj_t6S2c`"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+        <div
+          v-if="statusBid == 'PREBID'"
+          class="md:w-1/2 p-5 md:mr-2 bg-white rounded-lg"
+        >
+          <div class="">
+            <div class="w-full bg-green p-3">
+              <p class="text-sm text-slate-500">Canatra x Laval</p>
+              <h2 class="text-xl font-bold mb-2">{{ HorsenName }}</h2>
+            </div>
+            <div class="w-full">
+              <Carousel :images="horseData.images" />
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="statusBid == 'COMING'"
+          class="md:w-2/3 md:mr-2 bg-white rounded-lg"
+        >
+          <div>
+            <div class="w-full">
+              <Carousel :images="horseData.images" />
+            </div>
+          </div>
+        </div>
+        <div
+          v-if="statusBid == 'BIDDING' || statusBid == 'PREBID'"
+          class="md:w-1/2 mt-4 md:mt-0 bg-white rounded-lg"
+        >
           <div
-            class="px-4"
-            style="flex: 4;"
+            class="text-center w-full rounded-t-lg p-5"
+            style="background-color: #b99d61;"
           >
-            <h2 class="text-2xl font-bold mb-2">{{ HorsenName }}</h2>
-            <!-- Info de Estatus de Subasta -->
-            <div v-if="isCurrentDate === 1">
-              <span
-                class="statusOffer"
-                style="font-weight: 600; width: 50%;"
-              >PRE OFERTA ABIERTA
-              </span>
-              <span class="bg-yellow-500 text-white px-3 py-1 rounded-full">
-                EN VIVO
-              </span>
-            </div>
-            <div v-else-if="isCurrentDate === 2">
-              <span
-                class="statusOffer"
-                style="font-weight: 600; width: 50%;"
-              >OFERTA ABIERTA
-              </span>
-              <span class="bg-green-500 text-white px-3 py-1 rounded-full">
-                EN VIVO
-              </span>
-            </div>
-            <div v-else>
-              <span
-                class="statusOfferClose"
-                style="font-weight: 600; width: 50%;"
-              >OFERTA ABIERTA
-              </span>
-              <span class="bg-red-500 text-white px-3 py-1 rounded-full">
-                CERRADA
-              </span>
-            </div>
-            <div class="border-b border-gray-300 my-4"></div>
-
-            <!-- Fechas de Subasta -->
-            <div
-              v-if="isCurrentDate === 1 || isCurrentDate > 1"
-              style="color: #667085;"
-            >
-              <p id="">Termino de Pre-Oferta:</p>
-              <p
-                id="date"
-                style="font-family: 16px; font-weight: bold;"
-              >{{ EndPreBidDateFormat }}</p>
-            </div>
-            <div
-              v-else
-              style="color: #667085;"
-            >
-              <p id="">Fecha de Pre-Oferta:</p>
-              <p
-                id="date"
-                style="font-family: 16px; font-weight: bold;"
-              >{{ PreBidDateFormat }}</p>
-            </div>
-            <div class="offer-date">
-              <div
-                v-if="isCurrentDate === 2 || isCurrentDate > 2"
-                style="color: #667085;"
-              >
-                <p id="">Termino de subasta:</p>
-                <p
-                  id="date"
-                  style="font-family: 16px; font-weight: bold;"
-                >{{ EndBidDateFormat }}</p>
-              </div>
-              <div
-                v-else
-                style="color: #667085;"
-              >
-                <p id="">Fecha de subasta:</p>
-                <p
-                  id="date"
-                  style="font-family: 16px; font-weight: bold;"
-                >{{ BidDateFormat }}</p>
-              </div>
-            </div>
-            <!-- Descripcion de Oferta -->
-            <div class="border-b border-gray-300 my-4"></div>
+            <p class="text-white font-bold text-sm">OFERTA MAS ALTA</p>
+            <span class="text-white font-bold text-2xl">${{ lastOffer }} USD</span>
             <Winner
-              class=""
+              class="text-white"
               :bidId="bidId"
               :horseID="horseID"
             />
-            <div class="flex mb-4">
-              <div class="mr-4">
-                <span class="font-bold text-gray-700">Ultima Oferta:</span>
-                <span class="text-gray-600">${{ lastOffer }}</span>
-                <span class="text-gray-600">USD</span>
-              </div>
-            </div>
-            <!-- Input para ofertar -->
+          </div>
+          <div class="px-5 mt-5">
+            <p class="text-sm font-bold">OFERTAR POR ESTE LOTE</p>
             <form @submit="submitForm">
-              <div class="flex items-center input-container my-5 space-x-2">
+              <div class="flex items-center space-x-2">
                 <button
                   class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
                   type="button"
                   @click="substractThousand"
                 >-</button>
-                <span class="dollar-symbol">$</span>
                 <input
                   type="text"
-                  class="border rounded-md flex-grow custom-input"
+                  class="border rounded-md flex-grow"
                   autofocus
                   id="amount"
                   required
                   v-model="formData.amount"
                 >
-                <span class="usd-symbol">USD</span>
                 <button
                   class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
                   type="button"
                   @click="addThousand"
                 >+</button>
+                <div class="hidden md:block">
+                  <button
+                    class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
+                    style="height: 50px;"
+                    type="submit"
+                  >Ofertar</button>
+                </div>
               </div>
-              <div class="flex items-center my-5 space-x-2">
+              <div class="sm:hidden text-center mt-5">
                 <button
                   class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow"
                   style="height: 50px;"
@@ -155,135 +146,179 @@
               </div>
             </form>
           </div>
+          <div>
+            <div class="mx-5">
+              <div class="border-b border-gray-300 my-4"></div>
+              <p class="text-sm font-bold">OFERTAS</p>
+              <div class="border-b border-gray-300 my-4"></div>
+            </div>
+            <div
+              class="px-4"
+              style="flex: 5;"
+            >
+              <Bids
+                ref="detailsBid"
+                :bidId="bidId"
+                :horseID="horseID"
+                @last-offer-updated="updateLastOffer"
+              />
+            </div>
+          </div>
         </div>
-        <div class="border-b border-gray-300 my-4"></div>
-        <div class="flex flex-col md:flex-row -mx-4">
-          <div style="flex: 7;">
-            <div class="flex flex-wrap">
-              <div class="w-full">
-                <!-- Tabs -->
-                <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
-                  <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-                    <button
-                      type="button"
-                      class="text-xs font-bold uppercase px-5 py-3 rounded"
-                      v-on:click="toggleTabs(1)"
-                      v-bind:class="{ 'text-black bg-transparent': openTab !== 1, 'w-full bg-black text-white': openTab === 1 }"
-                    >
-                      Descripcion
-                    </button>
-                  </li>
-                  <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-                    <button
-                      type="button"
-                      class="text-xs font-bold uppercase px-5 py-3 rounded"
-                      v-on:click="toggleTabs(2)"
-                      v-bind:class="{ 'text-black bg-transparent': openTab !== 2, 'w-full bg-black text-white': openTab === 2 }"
-                    >
-                      Pedigree
-                    </button>
-                  </li>
-                  <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-                    <button
-                      type="button"
-                      class="text-xs font-bold uppercase px-5 py-3 rounded"
-                      v-on:click="toggleTabs(3)"
-                      v-bind:class="{ 'text-black bg-transparent': openTab !== 3, 'w-full bg-black text-white': openTab === 3 }"
-                    >
-                      X-Ray
-                    </button>
-                  </li>
-                  <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-                    <button
-                      type="button"
-                      class="text-xs font-bold uppercase px-5 py-3 rounded"
-                      v-on:click="toggleTabs(4)"
-                      v-bind:class="{ 'text-black bg-transparent': openTab !== 4, 'w-full bg-black text-white': openTab === 4 }"
-                    >
-                      Video
-                    </button>
-                  </li>
-                </ul>
-                <div class="relative flex flex-col min-w-0 break-words w-full mb-6 rounded">
-                  <div class="px-4 flex-auto">
-                    <div class="tab-content tab-space">
-                      <!-- Description Tab -->
-                      <div v-bind:class="{ 'hidden': openTab !== 1, 'block': openTab === 1 }">
-                        <div class="mr-4">
-                          <span class="font-bold text-gray-700">Sexo:</span>
-                          <span class="text-gray-600">{{ horseData.Genre || 'NA' }}</span>
-                          <br>
-                          <span class="font-bold text-gray-700">Fecha de Nacimiento:</span>
-                          <span class="text-gray-600">{{ horseData.BirthDate || 'NA' }}</span>
-                          <br>
-                          <span class="font-bold text-gray-700">Color:</span>
-                          <span class="text-gray-600">{{ horseData.Color || 'NA' }}</span>
-                          <br>
-                          <span class="font-bold text-gray-700">Peso:</span>
-                          <span class="text-gray-600">{{ horseData.Weight || 'NA' }}</span>
-                          <span class="text-gray-600">kg</span>
-                          <br>
-                          <span class="font-bold text-gray-700">Altura:</span>
-                          <span class="text-gray-600">{{ horseData.Height || 'NA' }}</span>
-                          <span class="text-gray-600">m</span>
-                          <br>
-                          <span class="font-bold text-gray-700">Ubicacion:</span>
-                          <span class="text-gray-600">{{ horseData.Location || 'NA' }}</span>
-                          <br>
-                          <span class="font-bold text-gray-700">Criadero:</span>
-                          <span class="text-gray-600">{{ horseData.Hatchery || 'NA' }}</span>
-                          <br>
-                          <span class="font-bold text-gray-700">No. Registro:</span>
-                          <span class="text-gray-600">{{ horseData.registerNumber || 'NA' }}</span>
-                          <br>
-                          <span class="font-bold text-gray-700">Edad:</span>
-                          <span class="text-gray-600">{{ horseData.Age || 'NA' }}</span>
-                          <span class="text-gray-600">años</span>
-                        </div>
-                      </div>
-                      <!-- Pedigree Tab -->
-                      <div v-bind:class="{ 'hidden': openTab !== 2, 'block': openTab === 2 }">
-                        <div class="pedigreeTab bg-white py-5 px-5">
-                          <Pedigree :link="horseData.Pedigree" />
-                        </div>
-                      </div>
-                      <div v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }">
-                        <p>
-                          <xRayGallery :images="horseData.xRayGallery" />
-                        </p>
-                      </div>
-                      <div v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }">
-                        <div class="aspect-w-16 aspect-h-9">
-                          <iframe
-                            class="aspect-content rounded-lg"
-                            :src="horseData.videoUrl ? `https://www.youtube.com/embed/${horseData.videoUrl}` : `https://www.youtube.com/embed/ivGNj_t6S2c`"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen
-                          ></iframe>
-                        </div>
-                      </div>
+        <div
+          v-if="statusBid == 'COMING'"
+          class="md:w-1/3 mt-4 md:mt-0"
+        >
+          <div class="text-center w-full rounded-lg px-5 pt-5 bg-white mb-5">
+            <div class="w-full bg-green p-3">
+              <p class="text-sm text-slate-500">Canatra x Laval</p>
+              <h2 class="text-xl font-bold mb-2">{{ HorsenName }}</h2>
+            </div>
+          </div>
+          <div class="w-full rounded-lg p-5 pt-5 bg-white mt-5">
+            <div class="text-center w-full px-5">
+              <p class="font-bold text-sm">PRECIO INICIAL</p>
+              <span class="font-bold text-2xl">${{ horseData.initialAmount }} USD</span>
+              <div class="border-b border-gray-300 my-4"></div>
+            </div>
+            <div class="w-full rounded-t-lg px-5">
+              <p class="font-bold text-sm">SUBASTA EN VIVO</p>
+              <span class="font-bold text-sm">{{ BidDateFormat }}</span>
+              <div class="border-b border-gray-300 my-4"></div>
+            </div>
+            <div class="w-full rounded-t-lg px-5">
+              <p class="font-bold text-sm">PRE OFERTA</p>
+              <span class="font-bold text-sm">Inicia {{ PreBidDateFormat }}</span>
+            </div>
+            <div class="w-full rounded-t-lg px-5">
+              <span class="font-bold text-sm">Termina {{ EndPreBidDateFormat }}</span>
+            </div>
+            <div class="text-center texthidden md:block mt-1">
+              <button
+                class="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
+              >REGISTRATE ANTES DEL {{ BidDateFormat }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
+        <div class="mb-4">
+          <span class="text-2xl font-bold">Estadisticas</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div class="mr-4">
+            <span class="font-bold text-gray-700">Genero:</span>
+            <span class="text-gray-600">{{ horseData.Genre || 'NA' }}</span>
+          </div>
+
+          <div class="mr-4">
+            <span class="font-bold text-gray-700">Edad:</span>
+            <span class="text-gray-600">{{ horseData.Age || 'NA' }}</span>
+            <span class="text-gray-600">años</span>
+          </div>
+
+          <!-- <div class="mr-4">
+            <span class="font-bold text-gray-700">Fecha de Nacimiento:</span>
+            <span class="text-gray-600">{{ horseData.BirthDate || 'NA' }}</span>
+          </div> -->
+
+          <div class="mr-4">
+            <span class="font-bold text-gray-700">Color:</span>
+            <span class="text-gray-600">{{ horseData.Color || 'NA' }}</span>
+          </div>
+
+          <div class="mr-4">
+            <span class="font-bold text-gray-700">Peso:</span>
+            <span class="text-gray-600">{{ horseData.Weight || 'NA' }}</span>
+            <span class="text-gray-600">kg</span>
+          </div>
+
+          <div class="mr-4">
+            <span class="font-bold text-gray-700">Altura:</span>
+            <span class="text-gray-600">{{ horseData.Height || 'NA' }}</span>
+            <span class="text-gray-600">m</span>
+          </div>
+
+          <div class="mr-4">
+            <span class="font-bold text-gray-700">Ubicacion:</span>
+            <span class="text-gray-600">{{ horseData.Location || 'NA' }}</span>
+          </div>
+
+          <div class="mr-4">
+            <span class="font-bold text-gray-700">Criadero:</span>
+            <span class="text-gray-600">{{ horseData.Hatchery || 'NA' }}</span>
+          </div>
+
+          <!-- <div class="mr-4">
+            <span class="font-bold text-gray-700">No. Registro:</span>
+            <span class="text-gray-600">{{ horseData.registerNumber || 'NA' }}</span>
+          </div> -->
+        </div>
+      </div>
+      <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
+        <div class="mb-4">
+          <span class="text-2xl font-bold">Pedigree</span>
+        </div>
+        <Pedigree :link="horseData.Pedigree" />
+      </div>
+    </div>
+    <div class="mb-4 p-5 rounded-lg">
+      <button
+        class="rounded-full"
+        style="width: 100px; height: 50px;"
+        type="button"
+        v-on:click="toggleTabs(3)"
+        v-bind:class="{ 'text-black bg-white': openTab !== 3, 'w-full bg-black text-white': openTab === 3 }"
+      >
+        X-Ray
+      </button>
+      <button
+        class="rounded-full"
+        style="width: 100px; height: 50px;"
+        type="button"
+        v-on:click="toggleTabs(4)"
+        v-bind:class="{ 'text-black bg-white': openTab !== 4, 'w-full bg-black text-white': openTab === 4 }"
+      >
+        Video
+      </button>
+    </div>
+    <div class="flex flex-col md:flex-row -mx-4">
+      <div style="flex: 7;">
+        <div class="flex flex-wrap">
+          <div class="w-full">
+            <!-- Tabs -->
+
+            <div class="relative flex flex-col min-w-0 break-words w-full mb-6 rounded">
+              <div class="px-4 flex-auto">
+                <div class="tab-content tab-space">
+                  <div
+                    class="mb-4 bg-white p-5 mx-5 rounded-lg"
+                    v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }"
+                  >
+                    <p>
+                      <xRayGallery :images="horseData.xRayGallery" />
+                    </p>
+                  </div>
+                  <div
+                    class="mb-4 bg-white p-5 mx-5 rounded-lg"
+                    v-bind:class="{ 'hidden': openTab !== 4, 'block': openTab === 4 }"
+                  >
+                    <div class="aspect-w-16 aspect-h-9 mx-5">
+                      <iframe
+                        class="aspect-content rounded-lg"
+                        :src="horseData.videoUrl ? `https://www.youtube.com/embed/${horseData.videoUrl}` : `https://www.youtube.com/embed/ivGNj_t6S2c`"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                      ></iframe>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div
-            class="px-4"
-            style="flex: 5;"
-          >
-            <Bids
-              ref="detailsBid"
-              :bidId="bidId"
-              :horseID="horseID"
-              @last-offer-updated="updateLastOffer"
-            />
-          </div>
         </div>
-        <div class="border-b border-gray-300 my-4"></div>
       </div>
-
     </div>
   </div>
 </template>
@@ -293,7 +328,6 @@ import Pedigree from '../../components/bid/horsePedigree.vue'
 import Carousel from '../../components/Carousel.vue'
 import Winner from '../../components/bid/winner.vue'
 import Bids from '../../components/bid/detailsBid.vue'
-import MakeOffer from '../../components/bid/makeOffer.vue'
 import axios from 'axios'
 import JWTDecode from "jwt-decode"
 import moment from 'moment'
@@ -304,19 +338,8 @@ export default {
     xRayGallery,
     Pedigree,
     Bids,
-    MakeOffer,
     Winner,
     Carousel,
-  },
-  props: {
-    bidId: {
-      type: String,
-      required: true
-    },
-    horseID: {
-      type: [String, Number],
-      required: true
-    }
   },
   data() {
     return {
@@ -335,6 +358,7 @@ export default {
         xRayGallery: [],
         images: [],
         videoUrl: '',
+        initialAmount: '',
       },
       HorsenName: '',
       lastOffer: '',
@@ -348,7 +372,7 @@ export default {
       EndBidDate: '',
       BidDateFormat: '',
       EndBidDateFormat: '',
-      statusBid: false,
+      statusBid: '',
       apiImg: 'https://storage.googleapis.com/horsebook/',
       formData: {
         subasta_id: '',
@@ -357,19 +381,13 @@ export default {
         email: '',
         pre_bid: true
       },
-      openTab: 1,
+      openTab: 3,
       rawAmount: '',
       largeBidConfirmed: false,
       successMessage: '',
       errorMessage: '',
       OfferStatus: null,
     }
-  },
-  created() {
-    this.age = this.calculateAge();
-    setTimeout(() => {
-      this.fetchHorseImages()
-    }, 1500);
   },
   computed: {
     setUser() {
@@ -399,10 +417,19 @@ export default {
       return 0
     },
   },
+  created() {
+
+  },
   mounted() {
     this.fetchData()
   },
   methods: {
+    setInitialAmount() {
+      if (this.formData.amount == null) {
+        console.log('Trying to set amount')
+        this.fotmData.amount == this.horseData.initialAmount
+      }
+    },
     fetchHorseImages() {
       axios.get(this.$config.baseLaSilla + `/horses/${this.horseID}/images`)
         .then(response => {
@@ -461,6 +488,7 @@ export default {
         },
       })
         .then(response => {
+          this.$store.commit('authenticate', true);
           const horse = response.data
           //name
           this.HorsenName = horse.horses[this.horsePositionList].external_data.name
@@ -502,9 +530,16 @@ export default {
           this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
           //Video URL
           this.horseData.videoUrl = this.extractYouTubeId(horse.horses[this.horsePositionList].local_data.video_url)
+          //Horse Images
+          this.fetchHorseImages()
+          //Horse Age
+          this.age = this.calculateAge();
+          //Bid Status
+          this.statusBid = horse.status
+          //Bid Initial Amout
+          this.horseData.initialAmount = horse.horses[this.horsePositionList].local_data.initial_amount
         })
         .catch(error => {
-          console.error('No funciona');
           console.error(error);
         });
     },
@@ -641,7 +676,7 @@ export default {
 
 .usd-symbol {
   position: absolute;
-  right: 65px;
+  right: 200px;
   z-index: 2;
 }
 

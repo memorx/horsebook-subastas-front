@@ -246,6 +246,40 @@
                 {{ municipio.nombre }}
               </option>
             </select>
+            <div class="flex items-center mt-5">
+              <input
+                type="checkbox"
+                class="mr-2"
+                required
+              >
+              <label class="text-gray-600">
+                Al continuar estoy de acuerdo con los
+                <button
+                  @click="openPDF"
+                  target="_blank"
+                  class="underline"
+                >Terminos y Condiciones</button> de La Silla.
+              </label>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="remember-me"
+                name="remember-me"
+                class="mr-2"
+                required
+              >
+              <label
+                for="remember-me"
+                class="text-gray-600"
+              >Al continuar estoy de acuerdo con la
+                <button
+                  @click="openPDF"
+                  target="_blank"
+                  class="underline"
+                >Politica de Privacidad</button> de La Silla.
+              </label>
+            </div>
           </div>
           <div class="flex flex-col w-full">
             <button
@@ -306,6 +340,11 @@ export default {
     };
   },
   methods: {
+    openPDF(path) {
+      const pdfPath = path;
+
+      window.open(pdfPath, '_blank');
+    },
     handleFileChange(event) {
       const selectedFile = event.target.files[0];
       this.form.identification_document = selectedFile;

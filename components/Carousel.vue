@@ -1,7 +1,7 @@
 <template>
     <div
         class="relative bg-black rounded-lg overflow"
-        style="width: 100%; height: 400px;"
+        style="padding-bottom: 62.5%;"
     >
         <!-- Left Arrow -->
         <button
@@ -17,10 +17,10 @@
         >
             <img
                 :key="currentImage"
-                class="rounded-lg"
+                class="rounded-lg absolute inset-0 w-full h-full object-cover"
                 :src="currentImage"
                 alt="image"
-                style="width: 100%; height: 100%;"
+                loading="lazy"
             >
         </transition>
 
@@ -32,7 +32,7 @@
             →
         </button>
     </div>
-</template>
+</template>  
 
 <script>
 export default {
