@@ -1,7 +1,7 @@
 <template lang="">
     <div>
       <div class="">
-        <p id="win-flag" v-if="winnerBid" :style="textStyle">GANADOR hasta ahora : {{ winnerBid ? winnerBid : 'Aun nadie subasto por este caballo' }} </p>
+        <p id="win-flag" v-if="winnerBid" :style="textStyle">Por {{ winnerBid ? winnerBid : 'Aun nadie subasto por este caballo' }} </p>
       </div>
     </div>
 </template>
@@ -56,26 +56,10 @@ export default {
           this.winnerBid = winner.user_profile.name
         })
         .catch(error => {
-          console.error(error);
+          // console.error(error);
         });
     }
   }
 
 }
 </script>
-<style>
-.winner {
-  display: flex;
-  flex-direction: row;
-  gap: 25px;
-  align-items: center;
-}
-
-#win-flag {
-  /* border: 2px solid green;
-  border-radius: 50px; */
-  /* padding: 10px; */
-  font-weight: 600;
-  color: green;
-}
-</style>
