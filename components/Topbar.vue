@@ -63,12 +63,12 @@ export default {
         },
         logout() {
             this.$store.commit('authenticate', false);
-            this.removeUserCredentials();
+            this.removeUserCredentialsFromBrowser();
             this.$router.push('/');
         },
-        removeUserCredentials() {
+        removeUserCredentialsFromBrowser() {
             localStorage.setItem("setUser", "")
-        }
+        },
     },
     computed: {
         isUserAuthenticated() {
