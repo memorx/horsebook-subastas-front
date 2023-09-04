@@ -9,11 +9,11 @@
 </template>
   
 <script>
-import TopBar from '~/components/TopBar.vue';
+import Topbar from '~/components/TopBar.vue';
 
 export default {
     components: {
-        TopBar
+        Topbar
     }
 };
 </script>
