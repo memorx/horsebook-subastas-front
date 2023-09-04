@@ -1,98 +1,84 @@
 <template>
-  <div>
-    <div class="relative">
-      <img
-        src="../public/image_landing.png"
-        alt="logo"
-        class="w-full h-auto"
-      />
-      <div
-        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center"
-      >
-        <p class="not-italic font-medium text-[68px] leading-[83px] text-white letterMonserrat">
-          <span class="whitespace-nowrap">La calidad se hereda</span>
-        </p>
-        <p class="not-italic font-light text-[42px] leading-[51px] text-white letterMonserrat">
-          <span class="whitespace-nowrap">Calidad respaldada por sus resultados internacionales</span>
-        </p>
-        <div class="flex-row space-x-6 mt-6">
-          <button>
-            <div
-              class="flex flex-row justify-center items-center gap-2.5 w-[200px] h-[62px] px-7 py-5 border border-white"
-            >
-              <a href="auth/sign-up/">
-                <p class="not-italic font-light text-[25px] leading-[51px] text-center text-white letterMonserrat">
+  <div
+    class="bg-zinc-200"
+    style="height: 100%;"
+  >
+    <div>
+      <div class="relative w-full text-center">
+        <img
+          src="../public/image_landing.png"
+          alt="logo"
+          class="w-full object-cover"
+          style="height: 90vh;"
+        />
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+          <div>
+            <p class="font-bold text-6xl text-white">
+              La calidad se hereda
+            </p>
+            <p class="font-light text-2xl text-white">
+              Calidad respaldada por sus resultados internacionales
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-x-0 sm:space-x-6 mt-6">
+              <a
+                href="auth/sign-up/"
+                class="button-black mb-2 sm:mb-0"
+              >
+                <button class="bg-black text-white px-5 py-3 rounded-lg font-medium">
                   REGÍSTRATE
-                </p>
+                </button>
+              </a>
+              <a
+                href="user/inicio"
+                class="button-white"
+              >
+                <button class="bg-black text-white px-5 py-3 rounded-lg font-medium">
+                  ÚLTIMA SUBASTA
+                </button>
               </a>
             </div>
-          </button>
-          <button>
-            <div
-              class="flex flex-row justify-center items-center gap-2.5 w-[260px] h-[62px] px-7 py-5 bg-black border border-white"
-            >
-              <p class="not-italic font-light text-[25px] leading-[51px] text-center text-white letterMonserrat">
-                <a href="user/inicio">
-                  <button>
-                    <span class="whitespace-nowrap">VER ÚLTIMA SUBASTA</span>
-                  </button>
-                </a>
-              </p>
-            </div>
-          </button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="w-full h-full containerBackground relative mb-12">
-      <p class="not-italic font-normal text-[80px] leading-[98px] text-center">Subasta Online</p>
-      <p class="mt-12 not-italic font-normal text-xl leading-[30px] text-center letterMonserrat">COLECCIÓN 2023 / DATE
-        COMING
-        SOON</p>
+    <div class="w-full my-5 text-center">
+      <p class="font-medium text-4xl leading-tight text-center">Subasta Online</p>
+      <div v-if="nextAuction">
+        <p class="text-center text-md font-bold">{{ countdown }}</p>
+      </div>
+      <div v-else>
+        <h1 class="text-center text-md font-bold">No hay subastas próximas</h1>
+      </div>
       <img
-        class="mt-12 mx-auto my-auto"
+        class="rounded-lg mx-auto my-5 object-cover"
+        style="height: 400px;"
         src="../public/image_landing_2.png"
         alt="logo"
       />
-      <div class="flex justify-center items-center mt-12">
-        <button class="flex flex-row justify-center items-center gap-2.5 w-[183px] h-[62px] bg-black">
-          <p class="not-italic font-medium text-lg leading-[22px] text-white">CONOCER MÁS</p>
-        </button>
+      <div class="flex justify-center items-center">
+        <a href="auth/sign-up/"><button class="bg-black text-white px-5 py-3 rounded-lg">
+            CONOCER MÁS
+          </button>
+        </a>
       </div>
     </div>
-    <div class="w-full h-full relative bg-white mt-12">
-      <p class="pt-4 pl-24 not-italic font-normal text-[80px] leading-[98px] text-black letterMonserrat">
-        Información
-      </p>
-
-      <p class="pt-12 pl-24 pr-4 not-italic font-normal text-[25px] leading-[30px] text-black">La mejor manera de
-        encontrar al equino perfecto</p>
-      <!-- <img src="../../public/image_landing_3.png" class="pl-24" /> -->
-      <p class="pt-8 pl-24 not-italic font-normal text-base leading-6 text-[#212121] max-w-[50%]">Somos una plataforma
-        líder en el mercado que se dedica a conectar a compradores y vendedores de caballos de alta calidad en todo el
-        mundo. Ya sea que esté buscando un caballo de deporte de alto rendimiento o un caballo para competencias de
-        equitación, estamos para ayudarlo a encontrar la mejor opción para sus necesidades.</p>
-
-      <div class="pt-4 pl-24">
-        <button
-          class="flex flex-row justify-center items-center gap-2.5 p-5 hover:blur-sm hover:brightness-50 hover:sepia hover:contrast-100 hover:hue-rotate-30 hover:invert-0 hover:opacity-5 hover:saturate-150 hover:text-orange-400 hover:text-xl disabled:w-3/12 disabled:text-[color:var(--some-color)] disabled:text-[1em] md:inset-x-1/4 md:inset-y-auto supports-[display:grid]:grid supports-[display:grid]:col-span-1 bg-black"
-        >
-          <a href="auth/login">
-            <p class="not-italic font-medium text-lg leading-[22px] uppercase text-white">Ingresar</p>
-          </a>
-        </button>
+    <div class="w-full my-5 py-5 text-center bg-white">
+      <p class="font-medium text-4xl leading-tight text-center">Noticias</p>
+      <p class="text-xl text-center text-sm">Seccion de Noticias</p>
+      <div class="md:px-20">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni vitae harum ex impedit eveniet ea maxime laborum
+        amet veniam suscipit. Repellat similique inventore iste eveniet maxime, libero id itaque non!
       </div>
-      <p class="not-italic font-normal text-[80px] leading-[98px] text-center pt-24 ">¿Como ofertar?</p>
-      <p class="pt-8 not-italic font-normal text-[25px] leading-[30px] text-center">Nuestro proceso</p>
-      <div v-if="nextAuction">
-
-        <p class="not-italic font-normal text-[80px] leading-[98px] text-center pt-24 ">{{ countdown }}</p>
-      </div>
-      <div v-else>
-        <h1>No hay subastas próximas</h1>
+      <div class="flex justify-center items-center my-5">
+        <a href="auth/sign-up/"><button class="bg-black text-white px-5 py-3 rounded-lg">
+            Leer mas
+          </button>
+        </a>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import JWTDecode from 'jwt-decode';
 export default {
@@ -170,12 +156,3 @@ export default {
   }
 }
 </script>
-<style>
-.containerBackground {
-  background: #f1f3f4;
-}
-
-.letterMonserrat {
-  font-family: "Montserrat" "sans-serif";
-}
-</style>

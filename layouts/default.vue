@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Your TopBar Component -->
-        <TopBar />
+        <Topbar />
 
         <!-- This will be replaced by the page content -->
         <Nuxt />
@@ -9,11 +9,11 @@
 </template>
   
 <script>
-import TopBar from '~/components/Topbar.vue';
+import Topbar from '~/components/Topbar.vue';
 
 export default {
     components: {
-        TopBar
+        Topbar
     }
 };
 </script>

@@ -100,11 +100,10 @@ import axios from "axios"
 import moment from 'moment';
 import JWTDecode from "jwt-decode"
 import Loading from '../../components/shared/Loading.vue';
-import NavBarAuction from "../../components/NavBar/NavBarAuction.vue"
 
 
 export default {
-  components: { Loading, NavBarAuction },
+  components: { Loading },
   computed: {
     setUser() {
       return this.$store.state.user;

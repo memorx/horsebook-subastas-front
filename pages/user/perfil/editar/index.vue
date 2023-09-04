@@ -144,11 +144,10 @@
 <script>
 import JWTDecode from 'jwt-decode';
 import Loading from '../../../../components/shared/Loading.vue';
-import NavBarProfile from "../../../../components/NavBar/NavBarProfile.vue";
 import Swal from 'sweetalert2';
 
 export default {
-  components: { Loading, NavBarProfile },
+  components: { Loading },
   data() {
     return {
       loading: false,
