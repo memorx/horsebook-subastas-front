@@ -246,6 +246,40 @@
                 {{ municipio.nombre }}
               </option>
             </select>
+            <div class="flex items-center mt-5">
+              <input
+                type="checkbox"
+                class="mr-2"
+                required
+              >
+              <label class="text-gray-600">
+                Al continuar estoy de acuerdo con los
+                <button
+                  @click="openPDF"
+                  target="_blank"
+                  class="underline"
+                >Terminos y Condiciones</button> de La Silla.
+              </label>
+            </div>
+            <div class="flex items-center">
+              <input
+                type="checkbox"
+                id="remember-me"
+                name="remember-me"
+                class="mr-2"
+                required
+              >
+              <label
+                for="remember-me"
+                class="text-gray-600"
+              >Al continuar estoy de acuerdo con la
+                <button
+                  @click="openPDF"
+                  target="_blank"
+                  class="underline"
+                >Politica de Privacidad</button> de La Silla.
+              </label>
+            </div>
           </div>
           <div class="flex flex-col w-full">
             <button
@@ -306,6 +340,11 @@ export default {
     };
   },
   methods: {
+    openPDF(path) {
+      const pdfPath = path;
+
+      window.open(pdfPath, '_blank');
+    },
     handleFileChange(event) {
       const selectedFile = event.target.files[0];
       this.form.identification_document = selectedFile;
@@ -418,17 +457,17 @@ export default {
       formData.append("password", body.password);
 
       // Append nested object
-      formData.append("app_user_profile[name]", body.app_user_profile.name);
-      formData.append("app_user_profile[mothers_maiden_name]", body.app_user_profile.mothers_maiden_name);
-      formData.append("app_user_profile[fathers_surname]", body.app_user_profile.fathers_surname);
-      formData.append("app_user_profile[country]", body.app_user_profile.country);
-      formData.append("app_user_profile[state]", body.app_user_profile.state);
-      formData.append("app_user_profile[municipalitie]", body.app_user_profile.municipalitie);
-      formData.append("app_user_profile[phone]", body.app_user_profile.phone);
+      formData.append("name", body.app_user_profile.name);
+      formData.append("mothers_maiden_name", body.app_user_profile.mothers_maiden_name);
+      formData.append("fathers_surname", body.app_user_profile.fathers_surname);
+      formData.append("country", body.app_user_profile.country);
+      formData.append("state", body.app_user_profile.state);
+      formData.append("municipalitie", body.app_user_profile.municipalitie);
+      formData.append("phone", body.app_user_profile.phone);
 
       // Append the file, if it exists
       if (body.app_user_profile.identification_document) {
-        formData.append("app_user_profile[identification_document]", body.app_user_profile.identification_document);
+        formData.append("official_document", body.app_user_profile.identification_document);
       }
 
       await this.$axios.$post(url, formData, { headers })
@@ -437,7 +476,8 @@ export default {
           let data = response
           // even knowing the password is encrypted, We shouldn't include in our store
           delete data.password
-          this.$store.commit('setSingUpData', data);
+          this.$store.commit('setSingUpData', data)
+          this.$router.push('/auth/sign-up/confirm-account')
         })
         .catch((error) => {
           this.loading = false

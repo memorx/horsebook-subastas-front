@@ -1,26 +1,18 @@
 <template>
-  <div class="">
-    <div class="details-bid max-w-6xl">
-      <div class="cont-titleBid title-bid flex justify-between">
-        <div v-if="setUser">
-          <p style="font-size: 30px; font-weight:600">Historial de ofertas:</p>
-          <!-- <p style="color: #667085;">Últimas ofertas</p> -->
-        </div>
-      </div>
-    </div>
+  <div>
     <template v-if="setUser">
-      <div class="cont-tableBid mx-auto px-4 my-5">
+      <div class="cont-tableBid mx-auto px-2 my-5">
         <div class="overflow-x-auto">
           <table
-            class="table-bid min-w-full"
+            class="min-w-full"
             :key="tableKey"
           >
-            <thead class="th-tableBid">
+            <thead>
               <tr>
-                <th class="columns-1">Nombre</th>
-                <th class="columns-1">Nacionalidad</th>
-                <th class="columns-1">Oferta (USD)</th>
-                <th class="columns-1">Fecha</th>
+                <th class="table-header">Nombre</th>
+                <th class="table-header">Nacionalidad</th>
+                <th class="table-header">Oferta</th>
+                <th class="table-header">Fecha</th>
               </tr>
             </thead>
             <tbody style="font-size: 13px;">
@@ -28,18 +20,16 @@
                 v-for="(bid, index) in visibleBids"
                 :key="bid.id"
               >
-                <td>
+                <td class="table-cell border-y text-center">
                   {{
                     bid.user_profile.name +
                     ' ' +
-                    bid.user_profile.fathers_surname +
-                    ' ' +
-                    bid.user_profile.mothers_maiden_name
+                    bid.user_profile.fathers_surname
                   }}
                 </td>
-                <td>{{ bid.user_profile.country }}</td>
-                <td>${{ formatAmount(bid.amount) }}</td>
-                <td>{{ formatDate(bid.bid_date) }}</td>
+                <td class="table-cell border-y text-center">{{ bid.user_profile.country }}</td>
+                <td class="table-cell border-y text-center">${{ formatAmount(bid.amount) }}</td>
+                <td class="table-cell border-y text-center">{{ formatDate(bid.bid_date) }}</td>
               </tr>
             </tbody>
           </table>
@@ -163,59 +153,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-/* .cont-detailsBid {
-  padding-left: 25px;
-} */
-
-/* .details-bid {} */
-
-.cont-titleBid {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.winner {
-  display: flex;
-  flex-direction: row;
-  gap: 25px;
-  padding-right: 25px;
-  padding-top: 35px;
-}
-
-#win-flag {
-  color: #027A48;
-  border: solid #027A48;
-  border-radius: 18px;
-  font-size: 15px;
-  padding: 5px 5px;
-  text-align: center;
-  font-weight: 600;
-}
-
-.cont-tableBid {
-  border-radius: 15px;
-  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.2);
-}
-
-.table-bid {
-  width: 100%;
-}
-
-.th-tableBid {
-  position: sticky;
-  top: 0;
-  color: rgb(44, 45, 48);
-  z-index: 1;
-}
-
-.table-bid th,
-.table-bid td {
-  border-bottom: 1px solid #ccc;
-  text-align: left;
-  padding: 8px;
-}
-</style>

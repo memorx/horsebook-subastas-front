@@ -9,7 +9,7 @@
                 <img
                     :src="image"
                     alt="Gallery Image"
-                    class="rounded shadow-lg w-30 h-20 object-cover cursor-pointer"
+                    class="rounded shadow-lg w-30 h-20 object-cover"
                 />
             </div>
         </div>
@@ -20,7 +20,6 @@
                 @click="downloadImage"
             >Descargar</button>
         </div>
-
     </div>
 </template>
   

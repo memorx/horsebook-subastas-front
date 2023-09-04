@@ -1,385 +1,146 @@
 <template>
-  <div class="container">
-    <Loading v-if="loading"
-      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
-    <NavBarProfile />
-
-    <div class="containerEdit">
-      <div class="mainn">
-        <div class="mainTitle">
-          <p class="editProfile font-montserrat">Editar perfil</p>
-          <p class="editProfileSubtitle font-montserrat">Edita tu perfil y tus datos personales</p>
+  <div class="p-5 bg-zinc-200">
+    <Loading
+      v-if="loading"
+      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+    />
+    <div class="bg-white rounded-lg p-6 md:p-10 mb-4">
+      <div class="text-center">
+        <NuxtLink to="/user/perfil">
+          <button class="bg-black text-white p-2 rounded-lg">
+            <i class="fas fa-times mr-2"></i> Cancelar
+          </button>
+        </NuxtLink>
+        <NuxtLink to="/user/perfil">
+          <button
+            @click="updateProfile"
+            class="bg-black text-white p-2 rounded-lg"
+          >
+            <i class="fas fa-save mr-2"></i> Guardar
+          </button>
+        </NuxtLink>
+      </div>
+      <p class="text-xl font-bold mb-6">EDITAR PERFIL</p>
+      <div class="border-b border-gray-300 mb-4"></div>
+      <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
+        <div class="grid md:grid-cols-2 grid-cols-1 gap-2">
+          <label class="text-md font-bold">Nombre(s):</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Nombre (s)"
+            v-model="name"
+          />
+          <label class="text-md font-bold">Apellido paterno:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Apellido paterno"
+            v-model="fathers_surname"
+          />
+          <label class="text-md font-bold">Apellido materno:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Apellido materno"
+            v-model="mothers_maiden_name"
+          />
+          <label class="text-md font-bold">Fecha de nacimiento:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Fecha de nacimiento"
+            type="date"
+            v-model="birth_date"
+          />
         </div>
-        <div class="buttonAcomodatee">
-          <a href="/user/perfil" class="buttonEditContainerr">
-            <p class="buttonEditt font-montserrat">Cancelar</p>
-          </a>
-        </div>
-        <div class="buttonAcomodate">
-          <a href="/user/perfil" class="buttonEditContainer" @click=updateProfile>
-            <p class="buttonEdit font-montserrat">Guardar</p>
-          </a>
+        <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
+          <label class="text-md font-bold">Nacionalidad:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Nacionalidad"
+            v-model="nationality"
+          />
+          <label class="text-md font-bold">Teléfono:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Teléfono"
+            v-model="phone"
+          />
+          <label class="text-md font-bold">Pasaporte ó Identificacion oficial:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="# de pasaporte o ID"
+            v-model="identification_document"
+          />
+          <div></div>
         </div>
       </div>
-      <div class="main">
-        <p class="generalDates font-montserrat">Nombre (s)</p>
-        <input class="inputs" placeholder="Nombre (s)" v-model="name" />
-        <p class="generalDates font-montserrat">Apellido paterno</p>
-        <input class="inputs" placeholder="Apellido paterno" v-model="fathers_surname" />
-        <p class="generalDates font-montserrat">Apellido materno</p>
-        <input class="inputs" placeholder="Apellido materno" v-model="mothers_maiden_name" />
-        <p class="generalDates font-montserrat">Fecha de nacimiento</p>
-        <input class="inputs" placeholder="Fecha de nacimiento" type="date" v-model="birth_date" />
-        <p class="generalDates font-montserrat">Nacionalidad</p>
-        <input class="inputs" placeholder="Nacionalidad" v-model="nationality" />
-        <p class="generalDates font-montserrat">Teléfono</p>
-        <input class="inputs" placeholder="Teléfono" v-model="phone" />
-        <p class="generalDates font-montserrat"># de pasaporte o ID</p>
-        <input class="inputs" placeholder="# de pasaporte o ID" v-model="identification_document" />
-        <p class="generalDates font-montserrat">Pais</p>
-        <input class="inputs" placeholder="Pais" v-model="country" />
-        <p class="generalDates font-montserrat">Estado</p>
-        <input class="inputs" placeholder="Estado" v-model="state" />
-        <p class="generalDates font-montserrat">Ciudad</p>
-        <input class="inputs" placeholder="Ciudad" v-model="municipalitie" />
-        <p class="generalDates font-montserrat">Calle</p>
-        <input class="inputs" placeholder="Calle" v-model="street" />
-        <p class="generalDates font-montserrat">Número exterior</p>
-        <input class="inputs" placeholder="Número exterior" v-model="outdoor_number" />
-        <p class="generalDates font-montserrat">Número interior</p>
-        <input class="inputs" placeholder="Número interior" v-model="interior_number" />
-        <p class="generalDates font-montserrat">C.P</p>
-        <input class="inputs" placeholder="C.P" v-model="zip_code" />
+      <div class="border-b border-gray-300 my-5"></div>
+      <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
+        <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
+          <label class="text-md font-bold">Pais:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Pais"
+            v-model="country"
+          />
+          <label class="text-md font-bold">Estado:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Estado"
+            v-model="state"
+          />
+          <label class="text-md font-bold">Ciudad:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Ciudad"
+            v-model="municipalitie"
+          />
+          <label class="text-md font-bold">Calle:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Calle"
+            v-model="street"
+          />
+        </div>
+        <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
+          <label class="text-md font-bold">Número exterior:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Número exterior"
+            v-model="outdoor_number"
+          />
+          <label class="text-md font-bold">Número interior:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="Número interior"
+            v-model="interior_number"
+          />
+          <label class="text-md font-bold">C.P:</label>
+          <input
+            class="border rounded-lg px-5 py-3 border-black"
+            placeholder="C.P"
+            v-model="zip_code"
+          />
+          <div></div>
+        </div>
+      </div>
+      <div class="text-center mt-5">
+        <NuxtLink to="/user/perfil">
+          <button class="bg-black text-white p-2 rounded-lg">
+            <i class="fas fa-times mr-2"></i> Cancelar
+          </button>
+        </NuxtLink>
+        <NuxtLink to="/user/perfil">
+          <button
+            @click="updateProfile"
+            class="bg-black text-white p-2 rounded-lg"
+          >
+            <i class="fas fa-save mr-2"></i> Guardar
+          </button>
+        </NuxtLink>
       </div>
     </div>
   </div>
 </template>
-<style>
-.inputs {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px 14px;
-  margin-left: 220px;
-  gap: 8px;
-  width: 512px;
-  height: 44px;
-  background: #FFFFFF;
-  border: 1px solid #D0D5DD;
-  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-  border-radius: 8px;
-}
 
-.generalDates {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 5px;
-  color: #344054;
-  padding-top: 70px;
-  padding-left: 30px;
-}
-
-.main {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.buttonEditContainerr {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0px;
-  gap: 8px;
-  width: 117px;
-  height: 40px;
-  background: #ffffff;
-  border: 1px solid #D0D5DD;
-  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-}
-
-.buttonEditt {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  color: #344054;
-}
-
-.buttonAcomodatee {
-  padding-right: 10px;
-  padding-top: 40px;
-}
-
-.buttonAcomodate {
-  padding-top: 40px;
-}
-
-.buttonEditContainer {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0px;
-  gap: 8px;
-  width: 117px;
-  height: 40px;
-  background: #171618;
-  border: 1px solid #171618;
-  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-}
-
-.buttonEdit {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  color: #FFFFFF;
-}
-
-.mainn {
-  display: flex;
-  /* flex-direction: column; */
-  width: 100%;
-  height: 100%;
-  background: #F9F9F9;
-}
-
-.mainTitle {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  background: #F9F9F9;
-}
-
-.editProfileSubtitle {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  color: #475467;
-  padding-top: 5px;
-  padding-left: 30px;
-}
-
-.editProfile {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 28px;
-  color: #101828;
-  padding-top: 30px;
-  padding-left: 30px;
-}
-
-.containerEdit {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  flex-direction: column;
-}
-
-.container {
-  display: flex;
-  padding: 0px;
-  width: 100%;
-  height: 100%
-}
-
-.dashboard {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0px;
-  position: absolute;
-  width: 1440px;
-  height: 2538px;
-  left: 0px;
-  top: 78px;
-  background: #FCFCFD;
-}
-
-.sideBar {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0px;
-
-  width: 280px;
-  height: 70vh;
-  background: #F9FAFB;
-  border-right: 1px solid #EAECF0;
-
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 0px;
-  width: 280px;
-  height: 822px;
-}
-
-.nav {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 32px 0px 0px;
-  gap: 84px;
-  width: 280px;
-  height: 505px;
-}
-
-.frame1 {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0px 20px;
-  gap: 8px;
-  width: 280px;
-  height: 92px;
-}
-
-.logo {
-  width: 90px;
-  height: 92px;
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-}
-
-.search {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px 24px;
-
-  display: none;
-  width: 279px;
-  height: 44px;
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-}
-
-.navigation {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px 16px;
-  gap: 16px;
-  width: 280px;
-  height: 297px;
-}
-
-.navItemBase {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 8px 12px;
-  gap: 8px;
-  width: 248px;
-  height: 48px;
-  background: #141313;
-  border-radius: 10px;
-}
-
-.contentt {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0px;
-  gap: 12px;
-  width: 224px;
-  height: 24px;
-}
-
-.gavel {
-  width: 20px;
-  height: 20px;
-}
-
-.text {
-  width: 104px;
-  height: 24px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  color: #FFFFFF;
-}
-
-.framee1 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 8px 0px 0px;
-  gap: 8px;
-  width: 100vh;
-  height: 9px;
-}
-
-.divider {
-  width: 248px;
-  height: 1px;
-  background: #EAECF0;
-}
-
-.navItemBasee {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 8px 12px;
-  gap: 8px;
-  width: 248px;
-  height: 40px;
-  border-radius: 6px;
-}
-
-.contenttt {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0px;
-  margin: -25px;
-  padding-right: 20px;
-  gap: 12px;
-  width: 224px;
-  height: 24px;
-}
-
-.description {
-  width: 24px;
-  height: 24px;
-
-}
-
-.textt {
-  width: 24px;
-  height: 24px;
-}
-
-.footer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px 16px 32px;
-  gap: 24px;
-
-  width: 280px;
-  height: 72px;
-}
-</style>
 <script>
 import JWTDecode from 'jwt-decode';
 import Loading from '../../../../components/shared/Loading.vue';
