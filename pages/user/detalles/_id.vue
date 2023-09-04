@@ -127,14 +127,14 @@
     </div>
   </div>
 </template>
+
 <script>
 import axios from 'axios'
 import jwt_decode from 'jwt-decode';
 import Loading from '../../../components/shared/Loading.vue';
-import NavBarAuction from "../../../components/NavBar/NavBarAuction.vue"
 
 export default {
-  components: { Loading, NavBarAuction },
+  components: { Loading },
   data() {
     return {
       bidTime: {
