@@ -1,10 +1,10 @@
 <template>
     <div class="flex-grow tool-tip-container">
         <button
-            class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow"
+            class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full"
             v-bind:class="{ disabled: isNotAuthenticated }"
             type="submit"
-        >Ofertar</button>
+        >{{ buttonText }}</button>
         <span 
             class="tool-tip-text"
             v-bind:class="{ show: isNotAuthenticated }"
@@ -17,19 +17,19 @@
 
 <script>
 export default {
-    name: "AuthenticatedButton",
+    name: "SubmitAuthenticatedButton",
+    props: {
+        buttonText: { type: Text },
+    },
     data() {
         return {
-            isNotAuthenticated: false // this.isUserAuthenticated()
+            isNotAuthenticated: !this.isUserAuthenticated()
         }
     },
     methods: {
-        isUserNotAuthenticated() {
-            return !this.$store.state.isAuthenticated;
+        isUserAuthenticated() {
+            return this.$store.state.isAuthenticated;
         },
-        submitForm() {
-            this.$emit('authenticatedSumbit')
-        }
     }
 }
 </script>
@@ -38,8 +38,8 @@ export default {
 
 .disabled {
     pointer-events: none;
-    cursor: not-allowed;
     opacity: 0.3;
+    cursor: not-allowed;
 }
 
 .tool-tip-container {
@@ -48,6 +48,7 @@ export default {
 }
 
 .tool-tip-text {
+    display: none;
     position: absolute;
     left: 50%;
     top: 0;
@@ -61,9 +62,10 @@ export default {
 }
 
 .tool-tip-container:hover .tool-tip-text.show {
+    display: block;
     top: -130%;
     visibility: visible;
-    opacity: 1;
+    opacity: 0.9;
 }
 
 </style>
