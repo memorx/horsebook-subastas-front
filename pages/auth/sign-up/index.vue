@@ -140,7 +140,7 @@
           </div>
           <div class="flex flex-col w-full mb-5">
             <label class="text-black-600 font-medium relative cursor-pointer">
-              <span class="block mb-2">Documento de identidad (ID/Pasaporte)</span>
+              <span class="block mb-2">Documento de identidad Enfrente</span>
               <div class="flex items-center">
                 <input
                   type="file"
@@ -161,6 +161,33 @@
                   :class="{ 'bg-transparent border-0': form.identification_document }"
                 >
                   {{ form.identification_document ? form.identification_document.name : 'No file chosen' }}
+                </span>
+              </div>
+            </label>
+          </div>
+          <div class="flex flex-col w-full mb-5">
+            <label class="text-black-600 font-medium relative cursor-pointer">
+              <span class="block mb-2">Documento de identidad Atras</span>
+              <div class="flex items-center">
+                <input
+                  type="file"
+                  ref="fileInputBack"
+                  @change="handleFileChangeBack"
+                  accept="image/*"
+                  class="hidden"
+                />
+                <button
+                  type="button"
+                  class="py-2 px-5 bg-black text-white rounded-lg mr-2"
+                  @click="$refs.fileInputBack.click()"
+                >
+                  Upload
+                </button>
+                <span
+                  class="custom-file-message py-2 px-3 mt-1 bg-gray-100 border border-gray-300 rounded-lg"
+                  :class="{ 'bg-transparent border-0': form.official_document_back }"
+                >
+                  {{ form.official_document_back ? form.official_document_back.name : 'No file chosen' }}
                 </span>
               </div>
             </label>
@@ -246,6 +273,90 @@
                 {{ municipio.nombre }}
               </option>
             </select>
+            <div class="flex flex-col w-full my-5">
+              <p class="text-2xl font-medium mt-3">Referencia 1:</p>
+              <!-- Nombre completo Referencia 1 -->
+              <label
+                for="name"
+                class="text-black-600 font-medium"
+              >Nombres</label>
+              <input
+                v-model="form.reference1.name"
+                required
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar nombres"
+              />
+            </div>
+            <!-- Ocupacion Referencia 1 -->
+            <div class="flex space-x-4 w-full">
+              <div class="flex flex-col w-1/2">
+                <label
+                  for="name"
+                  class="text-black-600 font-medium"
+                >Ocupación</label>
+                <input
+                  v-model="form.reference1.occupation"
+                  required
+                  class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  placeholder="Ingresar nombres"
+                />
+              </div>
+              <!-- Numero de telefono Referencia 1 -->
+              <div class="flex flex-col w-1/2 mb-5">
+                <label
+                  for="phone"
+                  class="text-black-600 font-medium"
+                >Teléfono</label>
+                <input
+                  v-model="form.reference1.phone"
+                  required
+                  class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  placeholder="Ingresar teléfono"
+                />
+              </div>
+            </div>
+            <div class="flex flex-col w-full">
+              <p class="text-2xl font-medium mt-3">Referencia 2:</p>
+              <!-- Nombre completo Referencia 2 -->
+              <label
+                for="name"
+                class="text-black-600 font-medium"
+              >Nombres</label>
+              <input
+                v-model="form.reference2.name"
+                required
+                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar nombres"
+              />
+            </div>
+            <!-- Ocupacion Referencia 2 -->
+            <div class="flex space-x-4 w-full my-5">
+              <div class="flex flex-col w-1/2 mb-5">
+                <label
+                  for="name"
+                  class="text-black-600 font-medium"
+                >Ocupación</label>
+                <input
+                  v-model="form.reference2.occupation"
+                  required
+                  class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  placeholder="Ingresar nombres"
+                />
+              </div>
+              <!-- Numero de telefono Referencia 2 -->
+              <div class="flex flex-col w-1/2 mb-5">
+                <label
+                  for="phone"
+                  class="text-black-600 font-medium"
+                >Teléfono</label>
+                <input
+                  v-model="form.reference2.phone"
+                  required
+                  class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  placeholder="Ingresar teléfono"
+                />
+              </div>
+            </div>
             <div class="flex items-center mt-5">
               <input
                 type="checkbox"
@@ -323,6 +434,7 @@ export default {
         fathers_surname: "",
         mothers_maiden_name: "",
         identification_document: "",
+        official_document_back: '',
         country: "México",
         state: "",
         // municipalitie means city to the back-end
@@ -336,6 +448,16 @@ export default {
         specialCharacterValidationMessage: '',
         isPasswordFocused: false,
         passwordMatchValidationMessage: '',
+        reference1: {
+          name: '',
+          phone: '',
+          occupation: '',
+        },
+        reference2: {
+          name: '',
+          phone: '',
+          occupation: '',
+        }
       },
     };
   },
@@ -348,6 +470,11 @@ export default {
     handleFileChange(event) {
       const selectedFile = event.target.files[0];
       this.form.identification_document = selectedFile;
+      this.$refs.fileInput.value = '';
+    },
+    handleFileChangeBack(event) {
+      const selectedFile = event.target.files[0];
+      this.form.official_document_back = selectedFile;
       this.$refs.fileInput.value = '';
     },
     nextStep() {
@@ -445,10 +572,17 @@ export default {
           "mothers_maiden_name": data.mothers_maiden_name,
           "fathers_surname": data.fathers_surname,
           "identification_document": data.identification_document,
+          "official_document_back": data.official_document_back,
           "country": data.country,
           "state": data.state,
           "municipalitie": data.municipalitie,
           "phone": data.phone,
+          "reference_1_contact": data.reference1.name,
+          "reference_1_occupation": data.reference1.occupation,
+          "reference_1_phone": data.reference1.phone,
+          "reference_2_contact": data.reference2.name,
+          "reference_2_occupation": data.reference2.occupation,
+          "reference_2_phone": data.reference2.phone,
         }
       };
 
@@ -456,7 +590,7 @@ export default {
       formData.append("email", body.email);
       formData.append("password", body.password);
 
-      // Append nested object
+      // Append nested objectx
       formData.append("name", body.app_user_profile.name);
       formData.append("mothers_maiden_name", body.app_user_profile.mothers_maiden_name);
       formData.append("fathers_surname", body.app_user_profile.fathers_surname);
@@ -464,10 +598,22 @@ export default {
       formData.append("state", body.app_user_profile.state);
       formData.append("municipalitie", body.app_user_profile.municipalitie);
       formData.append("phone", body.app_user_profile.phone);
+      formData.append("reference_1_contact", body.app_user_profile.reference_1_contact)
+      formData.append("reference_1_occupation", body.app_user_profile.reference_1_occupation)
+      formData.append("reference_1_phone", body.app_user_profile.reference_1_phone)
+      formData.append("reference_2_contact", body.app_user_profile.reference_2_contact)
+      formData.append("reference_2_occupation", body.app_user_profile.reference_2_occupation)
+      formData.append("reference_2_phone", body.app_user_profile.reference_2_phone)
+
 
       // Append the file, if it exists
       if (body.app_user_profile.identification_document) {
         formData.append("official_document", body.app_user_profile.identification_document);
+      }
+
+      // Append the file, if it exists
+      if (body.app_user_profile.official_document_back) {
+        formData.append("official_document_back", body.app_user_profile.official_document_back);
       }
 
       await this.$axios.$post(url, formData, { headers })
