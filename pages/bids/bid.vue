@@ -60,7 +60,7 @@
           <div class="aspect-w-16 aspect-h-9">
             <iframe
               class="aspect-content rounded-lg"
-              :src="horseData.videoUrl ? `https://www.youtube.com/embed/${horseData.videoUrl}` : `https://www.youtube.com/embed/ivGNj_t6S2c`"
+              :src="horseData.videoUrl ? `https://www.youtube.com/embed/${liveURL}` : `https://www.youtube.com/embed/ivGNj_t6S2c`"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
@@ -360,6 +360,7 @@ export default {
         videoUrl: '',
         initialAmount: '',
       },
+      liveURL: '',
       HorsenName: '',
       lastOffer: '',
       horseID: '',
@@ -441,8 +442,10 @@ export default {
         });
     },
     extractYouTubeId(url) {
-      const parsedUrl = new URL(url);
-      return parsedUrl.searchParams.get('v');
+      if (url) {
+        const parsedUrl = new URL(url);
+        return parsedUrl.searchParams.get('v');
+      }
     },
     addThousand() {
       let currentValue = parseInt(this.formData.amount.replace(',', ''));
@@ -530,6 +533,8 @@ export default {
           this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
           //Video URL
           this.horseData.videoUrl = this.extractYouTubeId(horse.horses[this.horsePositionList].local_data.video_url)
+          // Live URL
+          this.liveURL = this.extractYouTubeId(horse.video_url)
           //Horse Images
           this.fetchHorseImages()
           //Horse Age
