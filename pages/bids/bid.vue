@@ -379,7 +379,6 @@ export default {
         subasta_id: '',
         horse_id: '',
         amount: null,
-        email: '',
         pre_bid: true
       },
       openTab: 3,
@@ -562,7 +561,6 @@ export default {
       this.formData.horse_id = String(this.horseID);
       this.formData.amount = submittedAmount;
       this.formData.subasta_id = this.bidId;
-      this.formData.email = this.setUser.email;
       //status offer
       setTimeout(() => {
         this.formData.amount = this.preloadAmount();
