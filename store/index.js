@@ -28,6 +28,6 @@ export const mutations = {
   clearUserData(state) {
     state.setUser = "";
     state.setSingUpData = "";
-    localStorage.removeItem("setUser");
+    state.isAuthenticated = false;
   }
 };
