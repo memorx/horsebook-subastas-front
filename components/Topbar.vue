@@ -56,6 +56,8 @@
 </template>
   
 <script>
+import Cookies from "js-cookie";
+
 export default {
     methods: {
         login() {
@@ -64,7 +66,7 @@ export default {
         logout() {
             this.$store.commit('authenticate', false);
             this.$store.commit('clearUserData');
-            document.cookie = 'access_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT;'
+            Cookies.remove('access_token');
             localStorage.removeItem("setUser");
             this.$router.push('/')
         }
