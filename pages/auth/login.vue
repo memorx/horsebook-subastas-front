@@ -156,7 +156,10 @@ export default {
             this.$store.commit('authenticate', true);
 
             // Set the user information in the store
-            this.$store.commit('setUser', { email: this.login.email, token: response.token })
+            this.$store.commit('setUser', {
+              email: this.login.email,
+              token: response.token 
+            })
             console.log(this.$store, "STORE")
 
             // Redirect to the home page
