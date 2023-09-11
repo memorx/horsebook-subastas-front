@@ -1,16 +1,8 @@
 <template>
-  <div
-    class="bg-zinc-200"
-    style="height: 100%;"
-  >
+  <div class="bg-zinc-200" style="height: 100%;">
     <div>
       <div class="relative w-full text-center">
-        <img
-          src="../public/image_landing.png"
-          alt="logo"
-          class="w-full object-cover"
-          style="height: 90vh;"
-        />
+        <img src="../public/image_landing.png" alt="logo" class="w-full object-cover" style="height: 90vh;" />
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <div>
             <p class="font-bold text-6xl text-white">
@@ -20,18 +12,12 @@
               Calidad respaldada por sus resultados internacionales
             </p>
             <div class="flex flex-col sm:flex-row justify-center space-x-0 sm:space-x-6 mt-6">
-              <a
-                href="auth/sign-up/"
-                class="button-black mb-2 sm:mb-0"
-              >
+              <a href="auth/sign-up/" class="button-black mb-2 sm:mb-0">
                 <button class="bg-black text-white px-5 py-3 rounded-lg font-medium">
                   REGÍSTRATE
                 </button>
               </a>
-              <a
-                href="user/inicio"
-                class="button-white"
-              >
+              <a href="user/inicio" class="button-white">
                 <button class="bg-black text-white px-5 py-3 rounded-lg font-medium">
                   ÚLTIMA SUBASTA
                 </button>
@@ -49,12 +35,8 @@
       <div v-else>
         <h1 class="text-center text-md font-bold">No hay subastas próximas</h1>
       </div>
-      <img
-        class="rounded-lg mx-auto my-5 object-cover"
-        style="height: 400px;"
-        src="../public/image_landing_2.png"
-        alt="logo"
-      />
+      <img class="rounded-lg mx-auto my-5 object-cover" style="height: 400px;" src="../public/image_landing_2.png"
+        alt="logo" />
       <div class="flex justify-center items-center">
         <nuxt-link to="/user/inicio">
           <button class="bg-black text-white px-5 py-3 rounded-lg">
@@ -105,18 +87,17 @@ export default {
       const token = getUserTokenOrDefault()
 
       // const token = decoded.token; // Use the decoded token directly
-        const headers = {
-          Authorization: `Token ${token}`,
-        };
-        this.loading = true;
-        try {
-          const response = await this.$axios.get(url, { headers });
-          this.subastas = response.data; // Assign the response data to this.subastas
-          this.loading = false;
-        } catch (error) {
-          console.log(error, "ERRORR");
-          this.loading = false;
-        }
+      const headers = {
+        Authorization: `Token ${token}`,
+      };
+      this.loading = true;
+      try {
+        const response = await this.$axios.get(url, { headers });
+        this.subastas = response.data; // Assign the response data to this.subastas
+        this.loading = false;
+      } catch (error) {
+        console.log(error, "ERRORR");
+        this.loading = false;
       }
     },
     updateCountdown() {
