@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-zinc-200 py-5 md:px-20">
+  <div class="bg-zinc-200 py-5 lg:px-20">
     <a href="/user/inicio">
       <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">Atras</button>
     </a>
@@ -129,15 +129,17 @@
                   type="button"
                   @click="addThousand"
                 >+</button>
+
                 <div class="hidden md:block">
                   <SubmitAuthenticatedButton 
                     button-text="Ofertar"
                   />
                 </div>
+                
               </div>
-              <div class="sm:hidden text-center mt-5">
+              <div class="lg:hidden text-center mt-5 w-full">
                 <button
-                  class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow"
+                  class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full"
                   style="height: 50px;"
                   type="submit"
                 >Ofertar</button>
@@ -192,9 +194,11 @@
               <span class="font-bold text-sm">Termina {{ EndPreBidDateFormat }}</span>
             </div>
             <div class="text-center texthidden md:block mt-1">
-              <button
-                class="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
-              >REGISTRATE ANTES DEL {{ BidDateFormat }}</button>
+              <nuxt-link to="/auth/sign-up">
+                <button
+                  class="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
+                >REGISTRATE ANTES DEL {{ BidDateFormat }}</button>
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -265,19 +269,19 @@
         class="rounded-full"
         style="width: 100px; height: 50px;"
         type="button"
-        v-on:click="toggleTabs(3)"
-        v-bind:class="{ 'text-black bg-white': openTab !== 3, 'w-full bg-black text-white': openTab === 3 }"
+        v-on:click="toggleTabs(4)"
+        v-bind:class="{ 'text-black bg-white': openTab !== 4, 'w-full bg-black text-white': openTab === 4 }"
       >
-        X-Ray
+        Video
       </button>
       <button
         class="rounded-full"
         style="width: 100px; height: 50px;"
         type="button"
-        v-on:click="toggleTabs(4)"
-        v-bind:class="{ 'text-black bg-white': openTab !== 4, 'w-full bg-black text-white': openTab === 4 }"
+        v-on:click="toggleTabs(3)"
+        v-bind:class="{ 'text-black bg-white': openTab !== 3, 'w-full bg-black text-white': openTab === 3 }"
       >
-        Video
+        X-Ray
       </button>
     </div>
     <div class="flex flex-col md:flex-row -mx-4">
@@ -379,10 +383,9 @@ export default {
         subasta_id: '',
         horse_id: '',
         amount: null,
-        email: '',
         pre_bid: true
       },
-      openTab: 3,
+      openTab: 4,
       rawAmount: '',
       largeBidConfirmed: false,
       successMessage: '',
@@ -561,7 +564,6 @@ export default {
       this.formData.horse_id = String(this.horseID);
       this.formData.amount = submittedAmount;
       this.formData.subasta_id = this.bidId;
-      this.formData.email = this.setUser.email;
       //status offer
       setTimeout(() => {
         this.formData.amount = this.preloadAmount();

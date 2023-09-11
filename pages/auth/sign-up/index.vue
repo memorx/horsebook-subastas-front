@@ -284,7 +284,7 @@
                 v-model="form.reference1.name"
                 required
                 class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar nombres"
+                placeholder="Ingresar nombre completo"
               />
             </div>
             <!-- Ocupacion Referencia 1 -->
@@ -298,7 +298,7 @@
                   v-model="form.reference1.occupation"
                   required
                   class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  placeholder="Ingresar nombres"
+                  placeholder="Ingresar ocupación"
                 />
               </div>
               <!-- Numero de telefono Referencia 1 -->
@@ -326,7 +326,7 @@
                 v-model="form.reference2.name"
                 required
                 class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar nombres"
+                placeholder="Ingresar nombre completo"
               />
             </div>
             <!-- Ocupacion Referencia 2 -->
@@ -340,7 +340,7 @@
                   v-model="form.reference2.occupation"
                   required
                   class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  placeholder="Ingresar nombres"
+                  placeholder="Ingresar ocupación"
                 />
               </div>
               <!-- Numero de telefono Referencia 2 -->

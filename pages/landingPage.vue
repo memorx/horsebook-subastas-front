@@ -56,10 +56,11 @@
         alt="logo"
       />
       <div class="flex justify-center items-center">
-        <a href="auth/sign-up/"><button class="bg-black text-white px-5 py-3 rounded-lg">
+        <nuxt-link to="/user/inicio">
+          <button class="bg-black text-white px-5 py-3 rounded-lg">
             CONOCER MÁS
           </button>
-        </a>
+        </nuxt-link>
       </div>
     </div>
     <div class="w-full my-5 py-5 text-center bg-white">

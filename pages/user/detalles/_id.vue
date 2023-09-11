@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-zinc-200 py-5 md:px-20">
+  <div class="bg-zinc-200 py-5 lg:px-20 md:px-3">
     <Loading
       v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
@@ -25,7 +25,19 @@
 
         <!-- Second Row in the second column -->
         <div class="bg-white p-5 mx-5 rounded-lg md:flex-grow">
-          <h1 class="text-center text-sm font-bold">LA PRE OFERTA COMIENZA EN</h1>
+          <!-- PREOFERTA -->
+          <h1
+            v-if="bidStatus == 'COMING'"
+            class="text-center text-sm font-bold"
+          >LA PRE OFERTA COMIENZA EN</h1>
+          <h1
+            v-if="bidStatus == 'PREBID'"
+            class="text-center text-sm font-bold"
+          >LA PRE OFERTA HA COMENZADO</h1>
+          <h1
+            v-if="bidStatus == 'BIDDING'"
+            class="text-center text-sm font-bold"
+          >LA PRE OFERTA HA TERMINADO Y</h1>
           <div class="flex justify-center">
             <div
               class="mx-10 my-10"
@@ -50,11 +62,19 @@
                 </div>
               </div>
             </div>
-            <div v-else>
+            <div v-if="bidStatus == 'PREBID'">
               <div class="my-10 px-5 py-2 bg-green-600 text-white font-bold rounded-full">Abierta</div>
             </div>
           </div>
-          <h1 class="text-center text-sm font-bold">LA SUBASTA EN VIVO COMIENZA EN</h1>
+          <!-- SUBASTA -->
+          <h1
+            v-if="bidStatus != 'BIDDING'"
+            class="text-center text-sm font-bold"
+          >LA SUBASTA EN VIVO COMIENZA EN</h1>
+          <h1
+            v-else
+            class="text-center text-sm font-bold"
+          >LA SUBASTA ESTA EN VIVO</h1>
           <div class="flex justify-center">
             <div
               class="mx-10 md:mx-0 my-10"
@@ -80,10 +100,10 @@
               </div>
             </div>
             <div
+              v-if="bidStatus == 'BIDDING'"
               class="w-full md:w-auto"
-              v-else
             >
-              <button class="w-full my-10 py-3 px-5 bg-black text-white rounded-lg">Ver Subasta en Vivo</button>
+              <button class="w-full my-10 py-3 px-5 bg-black text-white rounded-lg">INGRESA A LA SUBASATA</button>
             </div>
           </div>
         </div>
@@ -162,6 +182,7 @@ export default {
       loading: false,
       countdownSubasta: 'Calculando cuenta regresiva...',
       countdownPre: 'Calculando cuenta regresiva...',
+      bidStatus: '',
     }
   },
   async created() {
@@ -200,7 +221,6 @@ export default {
     fetchImagesForAllHorses() {
       this.horseData.imagesID.forEach(horseID => {
         this.fetchHorseImages(horseID);
-        console.log(this.horseData.horseImages)
       });
     },
     calculateCountdown() {
@@ -256,9 +276,9 @@ export default {
           this.item.start_bid = response.data.start_bid
           this.item.start_pre_bid = response.data.start_pre_bid
           this.item.horses = response.data.horses
+          this.bidStatus = response.data.status
+          console.log(this.bidStatus)
           this.horseData.imagesID = response.data.horses.map(horse => horse.external_data.id);
-          console.log(this.horseData.imagesID)
-          // this.fetchImagesForAllHorses();
           this.calculateCountdown()
           this.calculateCountdownPre()
           this.fetchImagesForAllHorses()
