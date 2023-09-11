@@ -130,7 +130,7 @@
 
 <script>
 import axios from 'axios'
-import jwt_decode from 'jwt-decode';
+import getUserTokenOrDefault from '../../../utils/getUserTokenOrDefault';
 import Loading from '../../../components/shared/Loading.vue';
 
 export default {
@@ -243,17 +243,13 @@ export default {
     },
     async getDetailsAuction(itemId) {
       const url = this.$config.baseURL + `/subastas/list-subastas/?id=${itemId}`
-      const decoded = jwt_decode(this.$cookies.get("access_token"))
-      console.log(decoded, "decoded")
-      console.log(this.$store.state.user, "ESTADO DETALLE/ID")
-      let headers = {}
-      if (decoded) {
-        headers = {
-          Authorization: `Token ${decoded.token}`,
-        };
-        this.loading = true
-        this.$store.commit('authenticate', true);
-      }
+      const token = getUserTokenOrDefault();
+      console.log("ESTADO DETALLE/ID: ", this.$store.state.user)
+      let headers = {
+        Authorization: `Token ${token}`,
+      };
+      this.loading = true;
+
       await this.$axios
         .get(url, { headers })
         .then((response) => {
