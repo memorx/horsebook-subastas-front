@@ -12,7 +12,11 @@
               Calidad respaldada por sus resultados internacionales
             </p>
             <div class="flex flex-col sm:flex-row justify-center space-x-0 sm:space-x-6 mt-6">
-              <a href="auth/sign-up/" class="button-black mb-2 sm:mb-0">
+              <a
+                v-if="!isUserAuthenticated"
+                href="auth/sign-up/"
+                class="button-black mb-2 sm:mb-0"
+              >
                 <button class="bg-black text-white px-5 py-3 rounded-lg font-medium">
                   REGÍSTRATE
                 </button>
@@ -47,7 +51,7 @@
     </div>
     <div class="w-full my-5 py-5 text-center bg-white">
       <p class="font-medium text-4xl leading-tight text-center">Noticias</p>
-      <p class="text-xl text-center text-sm">Seccion de Noticias</p>
+      <p class="text-xl text-center">Seccion de Noticias</p>
       <div class="md:px-20">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni vitae harum ex impedit eveniet ea maxime laborum
         amet veniam suscipit. Repellat similique inventore iste eveniet maxime, libero id itaque non!
@@ -77,6 +81,11 @@ export default {
   created() {
     this.fetchSubastas();
     this.updateCountdown();
+  },
+  computed: {
+    isUserAuthenticated() {
+      return this.$store.state.isAuthenticated;
+    }
   },
   methods: {
     async fetchSubastas() {

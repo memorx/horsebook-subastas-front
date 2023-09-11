@@ -29,9 +29,40 @@
           <div>
             <p class="text-md font-bold mb-5">Email: <span class="font-medium">{{ email.email }}</span></p>
             <p class="text-md font-bold mb-5">Teléfono: <span class="font-medium">{{ email.phone }}</span></p>
-            <p class="text-md font-bold mb-5">Nacionalidad: <span class="font-medium">{{ email.nationality }}</span></p>
-            <p class="text-md font-bold mb-5">Pasaporte ó Identificacion oficial: <span class="font-medium">{{
-              email.identification_document }}</span></p>
+            <p class="text-md font-bold mb-5">Nacionalidad: <span class="font-medium">{{ selectedNationality }}</span>
+            </p>
+            <p
+              v-if="email.official_document"
+              class="text-md font-bold mb-5"
+            >Identificacion Oficial Enfrente: <span>
+                <img
+                  class="w-30 h-30"
+                  :src="email.official_document"
+                  alt="official_document"
+                >
+              </span>
+            </p>
+            <p
+              v-else
+              class="text-md font-bold mb-5"
+            >Identificacion Oficial Enfrente: <span class="font-medium">No existe un documento cargado</span>
+            </p>
+            <p
+              v-if="email.official_document_back"
+              class="text-md font-bold mb-5"
+            >Identificacion Oficial Atras: <span>
+                <img
+                  class="w-30 h-30"
+                  :src="email.official_document_back"
+                  alt="official_document"
+                >
+              </span>
+            </p>
+            <p
+              v-else
+              class="text-md font-bold mb-5"
+            >Identificacion Oficial Atras: <span class="font-medium">No existe un documento cargado</span>
+            </p>
           </div>
         </div>
       </div>
@@ -47,9 +78,10 @@
         <div class="border-b border-gray-300 mb-4"></div>
         <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
           <div>
-            <p class="text-md font-bold mb-5">Pais: <span class="font-medium">{{ email.country }}</span></p>
-            <p class="text-md font-bold mb-5">Ciudad: <span class="font-medium">{{ email.state }}</span></p>
-            <p class="text-md font-bold mb-5">Estado: <span class="font-medium">{{ email.municipalitie }}</span></p>
+            <p class="text-md font-bold mb-5">Pais: <span class="font-medium">{{ selectedCountry }}</span></p>
+            <p class="text-md font-bold mb-5">Ciudad: <span class="font-medium">{{ selectedState }}</span></p>
+            <p class="text-md font-bold mb-5">Estado: <span class="font-medium">{{ selectedCity }}</span>
+            </p>
             <p class="text-md font-bold mb-5">Calle: <span class="font-medium">{{ email.street }}</span></p>
           </div>
           <div>
@@ -151,12 +183,21 @@ export default {
       email: [],
       info: [],
       profile: null,
-      selectedStatus: "all"
+      selectedStatus: "all",
+      countries: [],
+      states: [],
+      cities: [],
+      selectedCountry: '',
+      selectedState: '',
+      selectedCity: '',
+      selectedNationality: '',
     }
+  },
+  created() {
+    this.getInfo();
   },
   mounted() {
     this.validateUser();
-    this.getInfo();
     this.getAuctionsRecord();
   },
   computed: {
@@ -175,6 +216,53 @@ export default {
   },
 
   methods: {
+    fetchCountries() {
+      const endpoint = '/countries';
+      const url = `${this.$config.baseURL}${endpoint}`;
+      axios
+        .get(url)
+        .then(response => {
+          const countries = response.data;
+          this.countries = countries;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    async fetchStates() {
+      const endpoint = '/states'
+      const url = `${this.$config.baseURL}${endpoint}`
+      const code = this.selectedCountryCode
+      axios.get(url, {
+        params: {
+          country: code
+        },
+      })
+        .then(response => {
+          const states = response.data
+          this.states = states
+        })
+        .catch(error => {
+          console
+        })
+    },
+    async fetchCities() {
+      const endpoint = '/cities'
+      const url = `${this.$config.baseURL}${endpoint}`
+      const code = this.selectedStateCode
+      axios.get(url, {
+        params: {
+          state: code
+        },
+      })
+        .then(response => {
+          const cities = response.data
+          this.cities = cities
+        })
+        .catch(error => {
+          console
+        })
+    },
     validateUser() {
       if (!this.$store.state.user) {
         Swal.fire({
@@ -202,8 +290,12 @@ export default {
         try {
           const response = await this.$axios.get(url, { headers });
           this.email = response.data.app_user_profile;
-          console.log(email)
-          this.profile = response.data.app_user_profile; // Almacenar los datos del perfil en la variable "profile"
+          this.profile = response.data.app_user_profile;
+          console.log(this.email)
+          this.selectedCountry = this.email.country.name
+          this.selectedState = this.email.state.name
+          this.selectedCity = this.email.municipalitie.name
+          this.selectedNationality = this.email.nationality.name
           this.loading = false;
         } catch (error) {
           this.loading = false;
@@ -219,11 +311,9 @@ export default {
           Authorization: `Token ${decoded.token}`,
         }
         this.loading = true;
-        console.log(this.$store.state.user.email, "ESTADO")
         try {
           const info = await this.$axios.get(url, { headers });
           this.info = info.data
-          console.log(info.data)
           this.loading = false;
 
         } catch (error) {
