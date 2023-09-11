@@ -32,7 +32,11 @@ const retrieveUserInformationOrDefault = (app) => {
 }
 
 const setUserInLocalStorage = (setUserObject) => {
-  localStorage.setItem(storageScopes.userCredentials, setUserObject)
+  const userInLocalStorage = localStorage.getItem(storageScopes.userCredentials)
+
+  if (!userInLocalStorage){
+    localStorage.setItem(storageScopes.userCredentials, setUserObject)
+  }
 }
 
 export default function ({ app, store }) {
@@ -44,12 +48,11 @@ export default function ({ app, store }) {
           store.commit('setSingUpData', parsedData);
       }
 
-      const { isAuthenticated, ...authenticatedObject } = retrieveUserInformationOrDefault(app)
-      console.log("Usuario autenticado: ", isAuthenticated)
-      store.commit('authenticate', isAuthenticated)
+    const { isAuthenticated, ...authenticatedObject } = retrieveUserInformationOrDefault(app)
+    console.log("User Authenticated in Local Storage: ", isAuthenticated)
+    store.commit('authenticate', isAuthenticated);
       if (isAuthenticated) {
-        console.log("usuario: ", authenticatedObject)
-        console.log("Está autenticado")
+        console.log("User Authenticated in loadLocalStorage: ", authenticatedObject);
         setUserInLocalStorage(authenticatedObject)
         store.commit('setUser', authenticatedObject);
       }
