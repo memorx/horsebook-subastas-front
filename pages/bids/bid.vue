@@ -528,6 +528,41 @@ export default {
         });
       return lastOffer
     },
+    async setCurrentOffer() {
+      const currentLastOfferInServer = await this.fetchLastOffer(125, 1)
+      const inputValue = this.formData.amount
+      if (currentLastOfferInServer >= inputValue) {
+        this.formData.amount = this.parseFetchedAmount(currentLastOfferInServer);
+      } else {
+        // this.formData.amount = this.preloadAmount();
+      }
+    },
+    async fetchLastOffer(bid, horse) {
+      const getLastBidsEndpoint = `/subastas/get-last-bids/`
+      const url = `${this.$config.baseURL}${getLastBidsEndpoint}`
+      const decoded = JWTDecode(this.$cookies.get("access_token"))
+      const parameters = {
+        subasta_id: bid,
+        horse_id: horse,
+      }
+      // this.tableKey++;
+      let lastOffer = await axios.get(url, {
+        params: parameters,
+        headers: {
+          Authorization: `Token ${decoded.token}`
+        }
+      })
+        .then(response => {
+          const detailsBid = response.data
+          const lastOffer = detailsBid[0]?.amount
+          const formattedLastOffer = parseInt(lastOffer).toLocaleString('en-US');
+          return formattedLastOffer
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      return lastOffer
+    },
     fetchData() {
      const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
      const url = `${this.$config.baseURL}${listSubastasEndpoint}`
