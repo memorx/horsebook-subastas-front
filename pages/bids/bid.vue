@@ -129,13 +129,13 @@
                   type="button"
                   @click="addThousand"
                 >+</button>
-                <div class="hidden lg:block">
-                  <button
-                    class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
-                    style="height: 50px;"
-                    type="submit"
-                  >Ofertar</button>
+
+                <div class="hidden md:block">
+                  <SubmitAuthenticatedButton 
+                    button-text="Ofertar"
+                  />
                 </div>
+                
               </div>
               <div class="lg:hidden text-center mt-5 w-full">
                 <button
@@ -330,8 +330,9 @@ import Pedigree from '../../components/bid/horsePedigree.vue'
 import Carousel from '../../components/Carousel.vue'
 import Winner from '../../components/bid/winner.vue'
 import Bids from '../../components/bid/detailsBid.vue'
+import SubmitAuthenticatedButton from '../../components/bid/submitAuthenticatedButton.vue'
+import getUserTokenOrDefault from '../../utils/getUserTokenOrDefault'
 import axios from 'axios'
-import JWTDecode from "jwt-decode"
 import moment from 'moment'
 
 
@@ -342,7 +343,8 @@ export default {
     Bids,
     Winner,
     Carousel,
-  },
+    SubmitAuthenticatedButton
+},
   data() {
     return {
       horseData: {
@@ -483,71 +485,70 @@ export default {
       this.formData.amount = this.preloadAmount();
     },
     fetchData() {
-      const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
-      const url = `${this.$config.baseURL}${listSubastasEndpoint}`
-      const decoded = JWTDecode(this.$cookies.get("access_token"))
-      axios.get(url, {
-        headers: {
-          Authorization: `Token ${decoded.token}`
-        },
-      })
-        .then(response => {
-          this.$store.commit('authenticate', true);
-          const horse = response.data
-          //name
-          this.HorsenName = horse.horses[this.horsePositionList].external_data.name
-          //horse ID
-          this.horseID = horse.horses[this.horsePositionList].external_data.id
-          //prebid date
-          this.PreBidDate = horse.start_pre_bid
-          this.EndPreBidDate = horse.end_pre_bid
-          this.PreBidDateFormat = this.formatted(horse.start_pre_bid)
-          this.EndPreBidDateFormat = this.formatted(horse.end_pre_bid)
-          //bid date
-          this.BidDate = horse.start_bid
-          this.EndBidDate = horse.end_bid
-          this.BidDateFormat = this.formatted(horse.start_bid)
-          this.EndBidDateFormat = this.formatted(horse.end_bid)
-          //horse Description
-          //genre
-          this.horseData.Genre = horse.horses[this.horsePositionList].external_data.sex
-          //Birthdate
-          this.horseData.BirthDate = this.formatted(horse.horses[this.horsePositionList].external_data.birth_date)
-          //color
-          this.horseData.Color = horse.horses[this.horsePositionList].external_data.color
-          //Weight
-          this.horseData.Weight = horse.horses[this.horsePositionList].external_data.weight
-          //Height
-          this.horseData.Height = horse.horses[this.horsePositionList].external_data.height
-          //Location
-          this.horseData.Location = horse.horses[this.horsePositionList].external_data.location
-          //Pedigree Image
-          this.horseData.Pedigree = horse.horses[this.horsePositionList].local_data.pedigree
-          //No. Register
-          this.horseData.registerNumber = horse.horses[this.horsePositionList].local_data.registration_no
-          //Hatchery
-          this.horseData.Hatchery = horse.horses[this.horsePositionList].external_data.birth_location
-          const birthDateMoment = moment(this.horseData.BirthDate, 'DD/MM/YYYY');
-          const today = moment();
-          this.horseData.Age = today.diff(birthDateMoment, 'years');
-          //xRays
-          this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
-          //Video URL
-          this.horseData.videoUrl = this.extractYouTubeId(horse.horses[this.horsePositionList].local_data.video_url)
-          // Live URL
-          this.liveURL = this.extractYouTubeId(horse.video_url)
-          //Horse Images
-          this.fetchHorseImages()
-          //Horse Age
-          this.age = this.calculateAge();
-          //Bid Status
-          this.statusBid = horse.status
-          //Bid Initial Amout
-          this.horseData.initialAmount = horse.horses[this.horsePositionList].local_data.initial_amount
-        })
-        .catch(error => {
-          console.error(error);
-        });
+     const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
+     const url = `${this.$config.baseURL}${listSubastasEndpoint}`
+     const token = getUserTokenOrDefault()
+     axios.get(url, {
+       headers: {
+         Authorization: `Token ${token}`
+       },
+     })
+       .then(response => {
+         const horse = response.data
+         //name
+         this.HorsenName = horse.horses[this.horsePositionList].external_data.name
+         //horse ID
+         this.horseID = horse.horses[this.horsePositionList].external_data.id
+         //prebid date
+         this.PreBidDate = horse.start_pre_bid
+         this.EndPreBidDate = horse.end_pre_bid
+         this.PreBidDateFormat = this.formatted(horse.start_pre_bid)
+         this.EndPreBidDateFormat = this.formatted(horse.end_pre_bid)
+         //bid date
+         this.BidDate = horse.start_bid
+         this.EndBidDate = horse.end_bid
+         this.BidDateFormat = this.formatted(horse.start_bid)
+         this.EndBidDateFormat = this.formatted(horse.end_bid)
+         //horse Description
+         //genre
+         this.horseData.Genre = horse.horses[this.horsePositionList].external_data.sex
+         //Birthdate
+         this.horseData.BirthDate = this.formatted(horse.horses[this.horsePositionList].external_data.birth_date)
+         //color
+         this.horseData.Color = horse.horses[this.horsePositionList].external_data.color
+         //Weight
+         this.horseData.Weight = horse.horses[this.horsePositionList].external_data.weight
+         //Height
+         this.horseData.Height = horse.horses[this.horsePositionList].external_data.height
+         //Location
+         this.horseData.Location = horse.horses[this.horsePositionList].external_data.location
+         //Pedigree Image
+         this.horseData.Pedigree = horse.horses[this.horsePositionList].local_data.pedigree
+         //No. Register
+         this.horseData.registerNumber = horse.horses[this.horsePositionList].local_data.registration_no
+         //Hatchery
+         this.horseData.Hatchery = horse.horses[this.horsePositionList].external_data.birth_location
+         const birthDateMoment = moment(this.horseData.BirthDate, 'DD/MM/YYYY');
+         const today = moment();
+         this.horseData.Age = today.diff(birthDateMoment, 'years');
+         //xRays
+         this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
+         //Video URL
+         this.horseData.videoUrl = this.extractYouTubeId(horse.horses[this.horsePositionList].local_data.video_url)
+         // Live URL
+         this.liveURL = this.extractYouTubeId(horse.video_url)
+         //Horse Images
+         this.fetchHorseImages()
+         //Horse Age
+         this.age = this.calculateAge();
+         //Bid Status
+         this.statusBid = horse.status
+         //Bid Initial Amout
+         this.horseData.initialAmount = horse.horses[this.horsePositionList].local_data.initial_amount
+       })
+       .catch(error => {
+         console.error(error);
+       });
     },
     statusOffer(BidDate) {
       const CurrentDate = new Date()
@@ -559,7 +560,7 @@ export default {
       const submittedAmount = parseInt(this.formData.amount.replace(',', ''))
       const PostBidEndpoint = '/subastas/bid/';
       const url = `${this.$config.baseURL}${PostBidEndpoint}`;
-      const decoded = JWTDecode(this.$cookies.get("access_token"));
+      const token = getUserTokenOrDefault()
       this.formData.horse_id = String(this.horseID);
       this.formData.amount = submittedAmount;
       this.formData.subasta_id = this.bidId;
@@ -570,7 +571,7 @@ export default {
 
       axios.post(url, this.formData, {
         headers: {
-          Authorization: `Token ${decoded.token}`,
+          Authorization: `Token ${token}`,
         },
       })
         .then((response) => {

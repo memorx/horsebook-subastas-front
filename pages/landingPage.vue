@@ -81,7 +81,8 @@
 </template>
 
 <script>
-import JWTDecode from 'jwt-decode';
+import getUserTokenOrDefault from '../utils/getUserTokenOrDefault';
+
 export default {
   data() {
     return {
@@ -101,10 +102,9 @@ export default {
       const listSubastasEndpoint = "/subastas/list-subastas/";
       const currentDate = new Date().toISOString().slice(0, 10);
       const url = `${this.$config.baseURL}${listSubastasEndpoint}?start_date=${currentDate}&only_subasta_data=true`;
-      const decoded = JWTDecode(this.$cookies.get("access_token"));
+      const token = getUserTokenOrDefault()
 
-      if (decoded) {
-        const token = decoded.token; // Use the decoded token directly
+      // const token = decoded.token; // Use the decoded token directly
         const headers = {
           Authorization: `Token ${token}`,
         };

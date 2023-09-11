@@ -197,7 +197,6 @@ export default {
           Authorization: `Token ${decoded.token}`,
         };
 
-        this.$store.commit('authenticate', true);
         this.loading = true;
 
         try {

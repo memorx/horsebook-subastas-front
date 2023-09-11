@@ -9,7 +9,7 @@
             class="tool-tip-text"
             v-bind:class="{ show: isNotAuthenticated }"
         >
-            <p>Usario no verificado. Comunícate con el administrador</p>
+            <p>{{ hoverText }}</p>
         </span>
     </div>
 
@@ -19,16 +19,35 @@
 export default {
     name: "SubmitAuthenticatedButton",
     props: {
-        buttonText: { type: Text },
+        buttonText: { type: String },
     },
     data() {
         return {
-            isNotAuthenticated: !this.isUserAuthenticated()
+            isNotAuthenticated: !this.isUserAuthenticated(),
+            hoverText: ''
+        }
+    },
+    created() {
+        const isAuthenticated = this.isUserAuthenticated()
+
+        if (!isAuthenticated) {
+            this.hoverText = "Usuario No Verificado. Comunícate con el administrador";
+        }
+
+        const isUserLoggedIn = localStorage.getItem('setUser');
+        if (!isUserLoggedIn) {
+            this.hoverText = "Inicia sesión para ofertar";
         }
     },
     methods: {
         isUserAuthenticated() {
-            return this.$store.state.isAuthenticated;
+            const userState = this.$store.state.isAuthenticated;
+            if(userState){
+                return userState;
+            }
+            else {
+                return false
+            }
         },
     }
 }

@@ -54,6 +54,7 @@ import Winner from '../../components/bid/winner.vue'
 import JWTDecode from "jwt-decode"
 import axios from 'axios'
 import moment from 'moment'
+import getUserTokenOrDefault from '../../utils/getUserTokenOrDefault';
 
 
 
@@ -122,14 +123,14 @@ export default {
     async getDetailsBid(bid, horse) {
       const getLastBidsEndpoint = `/subastas/get-last-bids/`
       const url = `${this.$config.baseURL}${getLastBidsEndpoint}`
-      const decoded = JWTDecode(this.$cookies.get("access_token"))
+      const token = getUserTokenOrDefault()
       this.parameters.subasta_id = bid
       this.parameters.horse_id = horse
       this.tableKey++;
       await axios.get(url, {
         params: this.parameters,
         headers: {
-          Authorization: `Token ${decoded.token}`
+          Authorization: `Token ${token}`
         }
       })
         .then(response => {

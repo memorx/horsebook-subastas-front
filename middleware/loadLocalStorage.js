@@ -1,5 +1,45 @@
+import { Console } from "console";
+import { parse } from "cookieparser";
+import Cookies from "js-cookie";
+import jwtDecode from "jwt-decode";
 
-export default function ({ store }) {
+const storageScopes = {
+  signUpData: "singUpData",
+  userCredentials: "setUser",
+  horseDetail: "horseDetail",
+  userInformation: "userInformation"
+}
+
+// const DEFAULT_TOKEN = 'bb877c767cdf1b094eccbf000b20ce753c2219fb'
+const DEFAULT_TOKEN = '0119158e9e647cc58e9c895fa08316b2a5b03df4'
+
+const retrieveUserInformationOrDefault = (app) => {
+  const cookie = app.$cookies.get('access_token');
+
+  if (!cookie){
+    return {
+      isAuthenticated: false,
+      token: DEFAULT_TOKEN
+    }
+  }
+
+  const decodedObject = jwtDecode(cookie)
+  return {
+    isAuthenticated: true,
+    token: decodedObject.token,
+    user: decodedObject.email
+  }
+}
+
+const setUserInLocalStorage = (setUserObject) => {
+  const userInLocalStorage = localStorage.getItem(storageScopes.userCredentials)
+
+  if (!userInLocalStorage){
+    localStorage.setItem(storageScopes.userCredentials, setUserObject)
+  }
+}
+
+export default function ({ app, store }) {
   if (process.client) {
       const storedSingUpData = localStorage.getItem('singUpData');
       if (storedSingUpData) {
@@ -8,12 +48,13 @@ export default function ({ store }) {
           store.commit('setSingUpData', parsedData);
       }
 
-      const storedUser = localStorage.getItem('setUser');
-      if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
-          console.log('loading user from localStore:', parsedUser);
-          store.commit('setUser', parsedUser);
-          store.commit("authenticate", true);
+    const { isAuthenticated, ...authenticatedObject } = retrieveUserInformationOrDefault(app)
+    console.log("User Authenticated in Local Storage: ", isAuthenticated)
+    store.commit('authenticate', isAuthenticated);
+      if (isAuthenticated) {
+        console.log("User Authenticated in loadLocalStorage: ", authenticatedObject);
+        setUserInLocalStorage(authenticatedObject)
+        store.commit('setUser', authenticatedObject);
       }
 
       const storedHorseDetails = localStorage.getItem('horseDetails');
@@ -30,5 +71,4 @@ export default function ({ store }) {
         store.commit("setUserInformation", parsedUserInformation);
       }
   }
-
 }
