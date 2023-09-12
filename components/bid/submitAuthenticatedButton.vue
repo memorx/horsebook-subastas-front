@@ -28,7 +28,7 @@ export default {
                 notLoggedIn: "Inicia sesión para ofertar",
                 notAuthorized: "No estás autorizado para ofertar. Comunícate con el administrador al número: ",
             },
-            isNotAuthenticated: true ,// !this.isUserAuthenticated() || !this.isUserAbleToBid(),
+            isNotAuthenticated: !this.isUserAuthenticated() || !this.isUserAbleToBid(),
             hoverText: ''
         }
     },
