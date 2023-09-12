@@ -144,7 +144,8 @@ export default {
             const encodedHeaders = btoa(JSON.stringify(header))
             const claims = {
               "email": this.login.email,
-              "token": response.token
+              "token": response.token,
+              "isAbleToBid": response.data.app_user_profile.bid || false
             }
             const encodedPlayload = btoa(JSON.stringify(claims))
             const signature = HMACSHA256(`${encodedHeaders}.${encodedPlayload}`, "mysecret")
@@ -158,8 +159,9 @@ export default {
             // Set the user information in the store
             this.$store.commit('setUser', {
               email: this.login.email,
-              token: response.token 
+              token: response.token,
             })
+            this.$store.commit('setIsUserAbleToBid', response.data.app_user_profile.bid)
             console.log(this.$store, "STORE")
 
             // Redirect to the home page

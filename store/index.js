@@ -10,6 +10,9 @@ export const mutations = {
   authenticate(state, value) {
     state.isAuthenticated = value;
   },
+  setIsUserAbleToBid(state, isAbleToBid) {
+    state.isUserAbleToBid = isAbleToBid
+  },
   setSingUpData(state, value) {
     state.singUpData = value;
     localStorage.setItem('singUpData', JSON.stringify(value));

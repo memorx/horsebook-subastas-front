@@ -5,10 +5,7 @@
             v-bind:class="{ disabled: isNotAuthenticated }"
             type="submit"
         >{{ buttonText }}</button>
-        <span 
-            class="tool-tip-text"
-            v-bind:class="{ show: isNotAuthenticated }"
-        >
+        <span v-bind:class="{ show: isNotAuthenticated }" class="tool-tip-text">
             <p>{{ hoverText }}</p>
         </span>
     </div>
@@ -16,6 +13,10 @@
 </template>
 
 <script>
+import axios from 'axios';
+
+import getUserTokenOrDefault from '../../utils/getUserTokenOrDefault';
+
 export default {
     name: "SubmitAuthenticatedButton",
     props: {
@@ -23,20 +24,27 @@ export default {
     },
     data() {
         return {
-            isNotAuthenticated: !this.isUserAuthenticated(),
+            hoverMessage: {
+                notLoggedIn: "Inicia sesión para ofertar",
+                notAuthorized: "No estás autorizado para ofertar. Comunícate con el administrador al número: ",
+            },
+            isNotAuthenticated: true ,// !this.isUserAuthenticated() || !this.isUserAbleToBid(),
             hoverText: ''
         }
     },
-    created() {
-        const isAuthenticated = this.isUserAuthenticated()
-
-        if (!isAuthenticated) {
-            this.hoverText = "Usuario No Verificado. Comunícate con el administrador";
+    async created() {
+        if (!this.isUserAuthenticated()) {
+            this.hoverText = this.hoverMessage.notLoggedIn;
+        }
+        
+        if(!this.isUserAbleToBid()){
+            const administratorPhone = await this.fetchAdministratorPhone();
+            this.hoverText = this.getNotAuthorizedUserMessage(administratorPhone)
         }
 
         const isUserLoggedIn = localStorage.getItem('setUser');
         if (!isUserLoggedIn) {
-            this.hoverText = "Inicia sesión para ofertar";
+            this.hoverText = this.hoverMessage.notLoggedIn;
         }
     },
     methods: {
@@ -49,6 +57,31 @@ export default {
                 return false
             }
         },
+        isUserAbleToBid() {
+            return this.$store.state.isUserAbleToBid
+        },
+        getNotAuthorizedUserMessage(administratorPhone) {
+            return `${this.hoverMessage.notAuthorized} ${administratorPhone}`
+        },
+        async fetchAdministratorPhone() {
+            const url = `${this.$config.baseURL}/contact/info/`;
+            const token = getUserTokenOrDefault()
+
+            const administratorPhone = await axios.get(url, {
+                headers: {
+                    Authorization: `Token ${token}`
+                } 
+            })
+                .then(response => {
+                    return response.data.app_user_profile.phone
+                })
+                .catch(error => {
+                    console.error("Error retrieving administrator phone: ", error);
+                    return ''
+                })
+
+            console.log("El Phone del admin", administratorPhone)
+        }
     }
 }
 </script>
@@ -67,11 +100,13 @@ export default {
 }
 
 .tool-tip-text {
-    display: none;
+    display: block;
     position: absolute;
+    max-width: 300px;
+    height: auto;
     left: 50%;
-    top: 0;
-    transform: translateX(-50%);
+    top: -.25rem;
+    transform: translateX(-50%) translateY(-100%);
     color: white;
     background-color: gray;
     white-space: nowrap;
@@ -82,7 +117,8 @@ export default {
 
 .tool-tip-container:hover .tool-tip-text.show {
     display: block;
-    top: -130%;
+    height: auto;
+    position: absolute;
     visibility: visible;
     opacity: 0.9;
 }
