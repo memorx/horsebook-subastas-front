@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             hoverMessage: {
-                notLoggedIn: "Inicia sesión para ofertar",
+                notLoggedIn: "Inicia sesión",
                 notAuthorized: "No estás autorizado para ofertar. Comunícate con el administrador al número: ",
             },
             isNotAuthenticated: !this.isUserAuthenticated() || !this.isUserAbleToBid(),
@@ -73,14 +73,14 @@ export default {
                 } 
             })
                 .then(response => {
-                    return response.data.app_user_profile.phone
+                    return response.data.app_user_profile.phone.replace("T. ", "")
                 })
                 .catch(error => {
                     console.error("Error retrieving administrator phone: ", error);
                     return ''
                 })
 
-            console.log("El Phone del admin", administratorPhone)
+            return administratorPhone
         }
     }
 }
@@ -102,14 +102,12 @@ export default {
 .tool-tip-text {
     display: block;
     position: absolute;
-    max-width: 300px;
-    height: auto;
+    max-width: 600px;
     left: 50%;
     top: -.25rem;
     transform: translateX(-50%) translateY(-100%);
     color: white;
     background-color: gray;
-    white-space: nowrap;
     padding: 5px 20px;
     border-radius: 7px;
     opacity: 0;
@@ -117,7 +115,6 @@ export default {
 
 .tool-tip-container:hover .tool-tip-text.show {
     display: block;
-    height: auto;
     position: absolute;
     visibility: visible;
     opacity: 0.9;
