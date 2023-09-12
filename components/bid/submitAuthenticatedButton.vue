@@ -57,6 +57,28 @@ export default {
         },
         isUserAbleToBid() {
             return this.$store.state.isUserAbleToBid
+        },
+        getNotAuthorizedUserMessage(administratorPhone) {
+            return `${this.hoverMessage.notAuthorized} ${administratorPhone}`
+        },
+        async fetchAdministratorPhone() {
+            const url = `${this.$config.baseURL}/contact/info/`;
+            const token = getUserTokenOrDefault()
+
+            const administratorPhone = await axios.get(url, {
+                headers: {
+                    Authorization: `Token ${token}`
+                } 
+            })
+                .then(response => {
+                    return response.data.app_user_profile.phone
+                })
+                .catch(error => {
+                    console.error("Error retrieving administrator phone: ", error);
+                    return ''
+                })
+
+            console.log("El Phone del admin", administratorPhone)
         }
     }
 }
