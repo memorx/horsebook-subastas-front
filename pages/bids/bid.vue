@@ -576,16 +576,24 @@ export default {
     async setCurrentOffer() {
       const currentLastOfferInServer = await this.fetchLastOffer(125, 1)
       const inputValue = this.formData.amount
-      if (currentLastOfferInServer >= inputValue) {
-        this.formData.amount = this.parseFetchedAmount(currentLastOfferInServer);
+      const inputValueParsed = parseInt(inputValue.replace(",", ""))
+      const currentLastOfferInServerParsed = parseInt(currentLastOfferInServer.replace(",", ""))
+      if (isNaN(inputValue)) {
+        if (currentLastOfferInServerParsed >= inputValueParsed) {
+          console.log('ParseFetchAmount')
+          this.formData.amount = this.parseFetchedAmount(currentLastOfferInServer);
+        } else {
+          console.log('PreloadAmount')
+          this.formData.amount = this.preloadAmount();
+        }
       } else {
-        // this.formData.amount = this.preloadAmount();
+        this.formData.amount = parseInt(this.horseData.final_amount).toLocaleString('en-US');
       }
     },
     async fetchLastOffer(bid, horse) {
       const getLastBidsEndpoint = `/subastas/get-last-bids/`
       const url = `${this.$config.baseURL}${getLastBidsEndpoint}`
-      const decoded = JWTDecode(this.$cookies.get("access_token"))
+      const token = getUserTokenOrDefault()
       const parameters = {
         subasta_id: bid,
         horse_id: horse,
@@ -594,12 +602,12 @@ export default {
       let lastOffer = await axios.get(url, {
         params: parameters,
         headers: {
-          Authorization: `Token ${decoded.token}`
+          Authorization: `Token ${token}`
         }
       })
         .then(response => {
           const detailsBid = response.data
-          const lastOffer = detailsBid[0]?.amount
+          const lastOffer = detailsBid[0]?.amount || 0
           const formattedLastOffer = parseInt(lastOffer).toLocaleString('en-US');
           return formattedLastOffer
         })
