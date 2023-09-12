@@ -1,5 +1,11 @@
 <template>
   <div class="bg-zinc-200 py-5 lg:px-20">
+    <modal
+      v-show="showModal"
+      :amount="formData.amount"
+      :submitForm="submitForm"
+      :disableModal="disableModal"
+    />
     <a href="/user/inicio">
       <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">Atras</button>
     </a>
@@ -145,7 +151,10 @@
                 
               </div>
               <div class="lg:hidden text-center mt-5 w-full">
-                <SubmitAuthenticatedButton button-text="Ofertar" />
+                <SubmitAuthenticatedButton
+                  :enable-modal="enableModal"
+                  button-text="Ofertar"
+                />
               </div>
             </form>
           </div>
@@ -349,6 +358,8 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
+import moment from 'moment'
 import xRayGallery from '../../components/bid/xRayGallery.vue'
 import Pedigree from '../../components/bid/horsePedigree.vue'
 import Carousel from '../../components/Carousel.vue'
@@ -356,8 +367,7 @@ import Winner from '../../components/bid/winner.vue'
 import Bids from '../../components/bid/detailsBid.vue'
 import SubmitAuthenticatedButton from '../../components/bid/submitAuthenticatedButton.vue'
 import getUserTokenOrDefault from '../../utils/getUserTokenOrDefault'
-import axios from 'axios'
-import moment from 'moment'
+import modal from '../../components/bid/modal.vue'
 
 
 export default {
@@ -414,6 +424,7 @@ export default {
       successMessage: '',
       errorMessage: '',
       OfferStatus: null,
+      showModal: false,
     }
   },
   computed: {
@@ -457,6 +468,12 @@ export default {
   //   }
   // },
   methods: {
+    enableModal() {
+      this.showModal = true
+    },
+    disableModal() {
+      this.showModal = false
+    },
     setInitialAmount() {
       if (this.formData.amount) {
         this.formData.amount = this.horseData.final_amount ? this.horseData.final_amount : 0
@@ -472,8 +489,7 @@ export default {
           this.horseData.images = images
         })
         .catch(error => {
-          // console.error(error);
-          console.log('nel perro')
+          console.error(error)
         });
     },
     extractYouTubeId(url) {
@@ -506,12 +522,8 @@ export default {
     },
     preloadAmount() {
       const lastOffer = this.lastOffer;
-      // this.formData.amount = 1000;
       const lastOfferStr = this.formData.amount.toLocaleString('en-US');
       return lastOfferStr
-      // let lastOfferInt = parseInt(this.lastOffer?.replace(',', ''));
-      // lastOfferInt += 1000;
-      // return lastOfferStr;
     },
     toggleTabs: function (tabNumber) {
       this.openTab = tabNumber
@@ -537,10 +549,8 @@ export default {
       const currentLastOfferInServerParsed = parseInt(currentLastOfferInServer.replace(",", ""))
       if (isNaN(inputValue)) {
         if (currentLastOfferInServerParsed >= inputValueParsed) {
-          console.log('ParseFetchAmount')
           this.formData.amount = this.parseFetchedAmount(currentLastOfferInServer);
         } else {
-          console.log('PreloadAmount')
           this.formData.amount = this.preloadAmount();
         }
       } else {
