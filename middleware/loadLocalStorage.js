@@ -27,12 +27,15 @@ const retrieveUserInformationOrDefault = (app) => {
   return {
     isAuthenticated: true,
     token: decodedObject.token,
-    user: decodedObject.email
+    user: decodedObject.email,
+    isAbleToBid: decodedObject.isAbleToBid
   }
 }
 
 const setUserInLocalStorage = (setUserObject) => {
-  const userInLocalStorage = localStorage.getItem(storageScopes.userCredentials)
+  const userInLocalStorage = localStorage.getItem(
+    storageScopes.userCredentials
+  )
 
   if (!userInLocalStorage){
     localStorage.setItem(storageScopes.userCredentials, setUserObject)
@@ -48,14 +51,14 @@ export default function ({ app, store }) {
           store.commit('setSingUpData', parsedData);
       }
 
-    const { isAuthenticated, ...authenticatedObject } = retrieveUserInformationOrDefault(app)
-    console.log("User Authenticated in Local Storage: ", isAuthenticated)
+    const { isAuthenticated, isAbleToBid, ...authenticatedObject } = retrieveUserInformationOrDefault(app)
     store.commit('authenticate', isAuthenticated);
-      if (isAuthenticated) {
-        console.log("User Authenticated in loadLocalStorage: ", authenticatedObject);
-        setUserInLocalStorage(authenticatedObject)
-        store.commit('setUser', authenticatedObject);
-      }
+    if (isAuthenticated) {
+      console.log("User Authenticated in loadLocalStorage: ", authenticatedObject);
+      setUserInLocalStorage(authenticatedObject);
+      store.commit('setUser', authenticatedObject);
+      store.commit('setIsUserAbleToBid', isAbleToBid);
+    }
 
       const storedHorseDetails = localStorage.getItem('horseDetails');
       if (storedHorseDetails) {
