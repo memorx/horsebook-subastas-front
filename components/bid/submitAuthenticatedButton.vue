@@ -23,20 +23,24 @@ export default {
     },
     data() {
         return {
-            isNotAuthenticated: !this.isUserAuthenticated(),
+            notLoggedInUserMessage: "Inicia sesión para ofertar",
+            notAbleToBidMessage: "No estás autorizado para ofertar. Comunícate con administrador",
+            isNotAuthenticated: !this.isUserAuthenticated() || !this.isUserAbleToBid(),
             hoverText: ''
         }
     },
     created() {
-        const isAuthenticated = this.isUserAuthenticated()
+        if (!this.isUserAuthenticated()) {
+            this.hoverText = this.notLoggedInUserMessage;
+        }
 
-        if (!isAuthenticated) {
-            this.hoverText = "Usuario No Verificado. Comunícate con el administrador";
+        if(!this.isUserAbleToBid()){
+            this.hoverText = this.notAbleToBidMessage
         }
 
         const isUserLoggedIn = localStorage.getItem('setUser');
         if (!isUserLoggedIn) {
-            this.hoverText = "Inicia sesión para ofertar";
+            this.hoverText = this.notLoggedInUserMessage;
         }
     },
     methods: {
@@ -49,6 +53,9 @@ export default {
                 return false
             }
         },
+        isUserAbleToBid() {
+            return this.$store.state.isUserAbleToBid
+        }
     }
 }
 </script>
