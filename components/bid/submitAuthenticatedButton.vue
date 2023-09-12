@@ -23,24 +23,26 @@ export default {
     },
     data() {
         return {
-            notLoggedInUserMessage: "Inicia sesión para ofertar",
-            notAbleToBidMessage: "No estás autorizado para ofertar. Comunícate con administrador",
+            hoverMessage: {
+                notLoggedIn: "Inicia sesión para ofertar",
+                notAuthorized: "No estás autorizado para ofertar. Comunícate con administrador",
+            },
             isNotAuthenticated: !this.isUserAuthenticated() || !this.isUserAbleToBid(),
             hoverText: ''
         }
     },
     created() {
         if (!this.isUserAuthenticated()) {
-            this.hoverText = this.notLoggedInUserMessage;
+            this.hoverText = this.hoverMessage.notLoggedIn;
         }
 
         if(!this.isUserAbleToBid()){
-            this.hoverText = this.notAbleToBidMessage
+            this.hoverText = this.hoverMessage.notAuthorized
         }
 
         const isUserLoggedIn = localStorage.getItem('setUser');
         if (!isUserLoggedIn) {
-            this.hoverText = this.notLoggedInUserMessage;
+            this.hoverText = this.hoverMessage.notLoggedIn;
         }
     },
     methods: {
