@@ -68,9 +68,9 @@
           </div>
           <!-- SUBASTA -->
           <h1
-            v-if="bidStatus != 'BIDDING'"
+            v-if="bidStatus == 'CLOSED'"
             class="text-center text-sm font-bold"
-          >LA SUBASTA EN VIVO COMIENZA EN</h1>
+          >LA SUBASTA HA TERMINADO</h1>
           <h1
             v-else
             class="text-center text-sm font-bold"
@@ -99,12 +99,12 @@
                 </div>
               </div>
             </div>
-            <div
+            <!-- <div
               v-if="bidStatus == 'BIDDING'"
               class="w-full md:w-auto"
             >
               <button class="w-full my-10 py-3 px-5 bg-black text-white rounded-lg">INGRESA A LA SUBASATA</button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -117,6 +117,29 @@
           v-for="(horse, index) in item.horses"
           :key="horse.id"
         >
+          <div v-if="bidStatus == 'PREBID'">
+            <div
+              v-if="horse.local_data.status == 'COMING'"
+              class="text-center bg-yellow-300 mx-5 my-3 px-3 py-1 text-white font-bold text-sm rounded-full"
+            >PRE OFERTA</div>
+          </div>
+          <div v-else>
+            <div
+              v-if="horse.local_data.status == 'BIDDING'"
+              class="text-center bg-green-400 mx-5 my-3 px-3 py-1 text-white font-bold text-sm rounded-full"
+            >EN
+              VIVO
+            </div>
+            <div
+              v-if="horse.local_data.status == 'COMING'"
+              class="text-center bg-yellow-300 mx-5 my-3 px-3 py-1 text-white font-bold text-sm rounded-full"
+            >POR VENIR</div>
+            <div
+              v-if="horse.local_data.status == 'CLOSED'"
+              class="text-center bg-red-400 mx-5 my-3 px-3 py-1 text-white font-bold text-sm rounded-full"
+            >CERRADA
+            </div>
+          </div>
           <NuxtLink
             class="buttonDetails"
             :to="`/bids/bid?id=${id}&horsePositionList=${index}`"
@@ -125,22 +148,22 @@
             <img
               v-if="horseData.horseImages[index]"
               :src="horseData.horseImages[index]"
-              class="w-full object-cover rounded-t-lg"
+              class="w-full object-cover"
               style="height: 40vh;"
             >
             <img
               v-else
               src="../../../public/horse_black.png"
               alt="Default Horse"
-              class="w-full object-cover rounded-t-lg"
+              class="w-full object-cover"
               style="height: 40vh;"
             >
-            <p class="text-sm  my-4 mx-6 text-slate-500">Canatra x Laval</p>
+            <!-- <p class="text-sm  my-4 mx-6 text-slate-500">Canatra x Laval</p> -->
             <p class="text-xl font-bold my-2 mx-6">{{ horse.external_data.name }}</p>
             <p class="text-sm  my-2 mx-6 text-slate-500">2018</p>
             <div class="border-b border-gray-300 my-4 mx-5"></div>
             <p class="text-sm font-bold text-center my-2 mx-3">Precio inicial</p>
-            <p class="text-lg font-bold text-center mt-2 mb-3 mx-3">$ {{ horse.local_data.initial_amount }} USD</p>
+            <p class="text-lg font-bold text-center mt-2 mb-3 mx-3">$ {{ horse.local_data.final_amount }} USD</p>
           </NuxtLink>
         </div>
       </div>
@@ -277,7 +300,6 @@ export default {
           this.item.start_pre_bid = response.data.start_pre_bid
           this.item.horses = response.data.horses
           this.bidStatus = response.data.status
-          console.log(this.bidStatus)
           this.horseData.imagesID = response.data.horses.map(horse => horse.external_data.id);
           this.calculateCountdown()
           this.calculateCountdownPre()

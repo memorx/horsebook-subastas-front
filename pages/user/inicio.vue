@@ -9,7 +9,7 @@
     />
     <div>
       <div class="text-center my-5">
-        <p class="text-2xl md:text-4xl font-bold">Bienvenido {{ setUser?.email || "Invitado" }}</p>
+        <p class="text-2xl md:text-4xl font-bold">Bienvenido {{ setUser?.user || "Invitado" }}</p>
       </div>
       <div>
         <div class="">
@@ -130,6 +130,7 @@ export default {
       const listSubastasEndpoint = "/subastas/list-subastas/";
       const currentDate = new Date().toISOString().slice(0, 10);
       const url = `${this.$config.baseURL}${listSubastasEndpoint}?start_date=${currentDate}&only_subasta_data=true`;
+      const token = getUserTokenOrDefault()
       //I want to stop to make a hardcode and do it using logic
       if (token) {
         const headers = {

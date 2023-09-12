@@ -3,13 +3,6 @@
         class="relative bg-black rounded-lg overflow"
         style="padding-bottom: 62.5%;"
     >
-        <!-- Left Arrow -->
-        <button
-            @click="prevImage"
-            class="font-black text-white absolute top-1/2 left-0 transform -translate-y-1/2 p-4"
-        >
-            ←
-        </button>
 
         <transition
             name="fade"
@@ -23,7 +16,13 @@
                 loading="lazy"
             >
         </transition>
-
+        <!-- Left Arrow -->
+        <button
+            @click="prevImage"
+            class="font-black text-white absolute top-1/2 left-0 transform -translate-y-1/2 p-4"
+        >
+            ←
+        </button>
         <!-- Right Arrow -->
         <button
             @click="nextImage"

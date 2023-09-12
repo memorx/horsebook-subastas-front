@@ -27,7 +27,7 @@
                     bid.user_profile.fathers_surname
                   }}
                 </td>
-                <td class="table-cell border-y text-center">{{ bid.user_profile.country }}</td>
+                <td class="table-cell border-y text-center">{{ bid.user_profile.country?.name }}</td>
                 <td class="table-cell border-y text-center">${{ formatAmount(bid.amount) }}</td>
                 <td class="table-cell border-y text-center">{{ formatDate(bid.bid_date) }}</td>
               </tr>
@@ -49,9 +49,7 @@
 </template>
 
 <script>
-//import Loading from '../../../components/shared/Loading.vue';
 import Winner from '../../components/bid/winner.vue'
-import JWTDecode from "jwt-decode"
 import axios from 'axios'
 import moment from 'moment'
 import getUserTokenOrDefault from '../../utils/getUserTokenOrDefault';
@@ -104,7 +102,7 @@ export default {
       if (this.showNextBids) {
         return this.detailsBid.slice(0, this.nextBidIndex + 1);
       }
-      return this.detailsBid.slice(0, 1); // Only display the first bid
+      return this.detailsBid.slice(0, 1);
     }
 
   },
@@ -135,9 +133,11 @@ export default {
       })
         .then(response => {
           this.detailsBid = response.data
-          this.lastOffer = this.detailsBid[0].amount
-          const formattedLastOffer = parseInt(this.lastOffer).toLocaleString('en-US');
-          this.$emit('last-offer-updated', formattedLastOffer);
+          if (this.detailsBid) {
+            this.lastOffer = this.detailsBid[0]?.amount
+            const formattedLastOffer = parseInt(this.lastOffer).toLocaleString('en-US');
+            this.$emit('last-offer-updated', formattedLastOffer);
+          }
         })
         .catch(error => {
           console.error(error);
