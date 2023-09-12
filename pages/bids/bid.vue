@@ -144,14 +144,18 @@
                 >+</button>
 
                 <div class="hidden md:block">
-                  <SubmitAuthenticatedButton 
+                  <SubmitAuthenticatedButton
+                    :enable-modal="enableModal"
                     button-text="Ofertar"
                   />
                 </div>
                 
               </div>
               <div class="lg:hidden text-center mt-5 w-full">
-                <SubmitAuthenticatedButton button-text="Ofertar" />
+                <SubmitAuthenticatedButton
+                  :enable-modal="enableModal"
+                  button-text="Ofertar"
+                />
               </div>
             </form>
           </div>
@@ -374,8 +378,9 @@ export default {
     Bids,
     Winner,
     Carousel,
-    SubmitAuthenticatedButton
-},
+    SubmitAuthenticatedButton,
+    modal,
+  },
   data() {
     return {
       horseData: {
@@ -548,49 +553,6 @@ export default {
         if (currentLastOfferInServerParsed >= inputValueParsed) {
           this.formData.amount = this.parseFetchedAmount(currentLastOfferInServer);
         } else {
-          this.formData.amount = this.preloadAmount();
-        }
-      } else {
-        this.formData.amount = parseInt(this.horseData.final_amount).toLocaleString('en-US');
-      }
-    },
-    async fetchLastOffer(bid, horse) {
-      const getLastBidsEndpoint = `/subastas/get-last-bids/`
-      const url = `${this.$config.baseURL}${getLastBidsEndpoint}`
-      const token = getUserTokenOrDefault()
-      const parameters = {
-        subasta_id: bid,
-        horse_id: horse,
-      }
-      // this.tableKey++;
-      let lastOffer = await axios.get(url, {
-        params: parameters,
-        headers: {
-          Authorization: `Token ${token}`
-        }
-      })
-        .then(response => {
-          const detailsBid = response.data
-          const lastOffer = detailsBid[0]?.amount || 0
-          const formattedLastOffer = parseInt(lastOffer).toLocaleString('en-US');
-          return formattedLastOffer
-        })
-        .catch(error => {
-          console.error(error);
-        });
-      return lastOffer
-    },
-    async setCurrentOffer() {
-      const currentLastOfferInServer = await this.fetchLastOffer(125, 1)
-      const inputValue = this.formData.amount
-      const inputValueParsed = parseInt(inputValue.replace(",", ""))
-      const currentLastOfferInServerParsed = parseInt(currentLastOfferInServer.replace(",", ""))
-      if (isNaN(inputValue)) {
-        if (currentLastOfferInServerParsed >= inputValueParsed) {
-          console.log('ParseFetchAmount')
-          this.formData.amount = this.parseFetchedAmount(currentLastOfferInServer);
-        } else {
-          console.log('PreloadAmount')
           this.formData.amount = this.preloadAmount();
         }
       } else {
