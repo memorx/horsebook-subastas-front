@@ -151,10 +151,7 @@
                 
               </div>
               <div class="lg:hidden text-center mt-5 w-full">
-                <SubmitAuthenticatedButton
-                  :enable-modal="enableModal"
-                  button-text="Ofertar"
-                />
+                <SubmitAuthenticatedButton button-text="Ofertar" />
               </div>
             </form>
           </div>
