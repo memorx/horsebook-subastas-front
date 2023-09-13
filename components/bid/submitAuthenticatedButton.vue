@@ -33,19 +33,12 @@ export default {
         }
     },
     async created() {
-        if (!this.isUserAuthenticated()) {
-            this.hoverText = this.hoverMessage.notLoggedIn;
-        }
-        
-        if(!this.isUserAbleToBid()){
-            const administratorPhone = await this.fetchAdministratorPhone();
-            this.hoverText = this.getNotAuthorizedUserMessage(administratorPhone)
-        }
-
-        const isUserLoggedIn = localStorage.getItem('setUser');
-        if (!isUserLoggedIn) {
-            this.hoverText = this.hoverMessage.notLoggedIn;
-        }
+        const adminPhone = await this.fetchAdministratorPhone()
+        this.hoverText = this.getToolTipMessage(
+            this.isUserAuthenticated,
+            this.isUserAbleToBid,
+            adminPhone
+        )
     },
     methods: {
         isUserAuthenticated() {
@@ -59,6 +52,17 @@ export default {
         },
         isUserAbleToBid() {
             return this.$store.state.isUserAbleToBid
+        },
+        getToolTipMessage(isUserAuthenticated, isUserAbleToBid, adminPhone) {
+            if(!isUserAuthenticated()) {
+                return this.hoverMessage.notLoggedIn
+            }
+
+            if(!isUserAbleToBid()) {
+                return this.getNotAuthorizedUserMessage(adminPhone)
+            }
+
+            return this.hoverMessage.notLoggedIn
         },
         getNotAuthorizedUserMessage(administratorPhone) {
             return `${this.hoverMessage.notAuthorized} ${administratorPhone}`
