@@ -146,8 +146,8 @@
           >
             <!-- Display the first image if it's available -->
             <img
-              v-if="horseData.horseImages[index]"
-              :src="horseData.horseImages[index]"
+              v-if="getImageUrl(horse.local_data.horse_id)"
+              :src="getImageUrl(horse.local_data.horse_id)"
               class="w-full object-cover"
               style="height: 40vh;"
             >
@@ -177,7 +177,7 @@ import getUserTokenOrDefault from '../../../utils/getUserTokenOrDefault';
 import Loading from '../../../components/shared/Loading.vue';
 
 export default {
-  components: { Loading },
+  components: { Loading, },
   data() {
     return {
       bidTime: {
@@ -198,8 +198,8 @@ export default {
         start_pre_bid: '',
       },
       horseData: {
+        imagesObject: {},
         imagesID: [],
-        horseImages: [],
       },
       id: '',
       loading: false,
@@ -224,23 +224,29 @@ export default {
     clearInterval(this.timer2);
   },
   methods: {
+    getImageUrl(horseID) {
+      return this.horseData.imagesObject[horseID];
+    },
     fetchHorseImages(horseID) {
       if (!horseID) {
         return; // Exit early if horseID is not defined
       }
-      axios.get(this.$config.baseLaSilla + `/horses/${horseID}/images`)
+      axios
+        .get(this.$config.baseLaSilla + `/horses/${horseID}/images`)
         .then(response => {
           // Check if there are images in the response
-          if (response.data && response.data.length > 0) {
+          if (Array.isArray(response.data) && response.data.length > 0) {
             const imageUrl = response.data[0].url;
-            this.horseData.horseImages.push(imageUrl);
-            console.log(imageUrl)
+            this.$set(this.horseData.imagesObject, horseID, imageUrl);
+          } else {
+            console.error('No images found in the response for horse: ', horseID);
           }
         })
         .catch(error => {
           console.error(error);
         });
     },
+
     fetchImagesForAllHorses() {
       this.horseData.imagesID.forEach(horseID => {
         this.fetchHorseImages(horseID);
@@ -287,7 +293,6 @@ export default {
     async getDetailsAuction(itemId) {
       const url = this.$config.baseURL + `/subastas/list-subastas/?id=${itemId}`
       const token = getUserTokenOrDefault();
-      console.log("ESTADO DETALLE/ID: ", this.$store.state.user)
       let headers = {
         Authorization: `Token ${token}`,
       };
@@ -300,7 +305,7 @@ export default {
           this.item.start_pre_bid = response.data.start_pre_bid
           this.item.horses = response.data.horses
           this.bidStatus = response.data.status
-          this.horseData.imagesID = response.data.horses.map(horse => horse.external_data.id);
+          this.horseData.imagesID = response.data.horses.map(horse => horse.local_data.horse_id);
           this.calculateCountdown()
           this.calculateCountdownPre()
           this.fetchImagesForAllHorses()

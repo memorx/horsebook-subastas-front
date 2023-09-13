@@ -7,7 +7,7 @@ export default () => {
     const cookie = Cookies.get('access_token');
 
     if (!cookie) {
-        console.log("Se usa el default token")
+        // console.log("Se usa el default token")
         return DEFAULT_TOKEN
     }
 

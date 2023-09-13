@@ -6,24 +6,10 @@
       :submitForm="submitForm"
       :disableModal="disableModal"
     />
-    <a href="/user/inicio">
+    <NuxtLink :to="`/user/detalles/${bidId}`">
       <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">Atras</button>
-    </a>
+    </NuxtLink>
     <div>
-      <div>
-        <div
-          v-if="successMessage"
-          class="bg-green-100 text-green-800 p-4 mb-4 rounded-lg shadow-md"
-        >
-          {{ successMessage }}
-        </div>
-        <div
-          v-if="errorMessage"
-          class="bg-red-100 text-red-800 p-4 mb-4 rounded-lg shadow-md"
-        >
-          {{ errorMessage }}
-        </div>
-      </div>
       <div
         v-if="statusBid == 'BIDDING'"
         class="mb-4 bg-white p-5 mx-5 rounded-lg"
@@ -158,6 +144,20 @@
                 />
               </div>
             </form>
+            <div>
+              <div
+                v-if="successMessage"
+                class="bg-green-100 text-green-800 p-4 my-4 rounded-lg shadow-md"
+              >
+                {{ successMessage }}
+              </div>
+              <div
+                v-if="errorMessage"
+                class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
+              >
+                {{ errorMessage }}
+              </div>
+            </div>
           </div>
           <div>
             <div class="mx-5">

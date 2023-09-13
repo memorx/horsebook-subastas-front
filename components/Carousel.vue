@@ -9,9 +9,17 @@
             mode="out-in"
         >
             <img
+                v-if="currentImage"
                 :key="currentImage"
                 class="rounded-lg absolute inset-0 w-full h-full object-cover"
                 :src="currentImage"
+                alt="image"
+                loading="lazy"
+            >
+            <img
+                v-else
+                class="rounded-lg absolute inset-0 w-full h-full object-cover"
+                src="../public/horse_black.png"
                 alt="image"
                 loading="lazy"
             >

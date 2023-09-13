@@ -336,7 +336,7 @@
           <div class="flex flex-col w-full my-5">
             <div class="flex flex-col w-full">
               <!-- Nombre completo Referencia 1 -->
-              <p class="text-xl font-medium">Referencia 1:</p>
+              <p class="text-2xl font-medium">Referencia 1:</p>
               <label
                 for="name"
                 class="text-black-600 font-medium"
@@ -748,7 +748,7 @@ export default {
           else {
             this.$toast.error("Lo sentimos, ha ocurrido un error");
           }
-          console.log(error);
+          console.error(error);
         });
     },
     fetchCountries() {
@@ -759,7 +759,6 @@ export default {
         .then(response => {
           const countries = response.data;
           this.form.countries = countries;
-          console.log(this.form.countries)
         })
         .catch(error => {
           console.error(error);

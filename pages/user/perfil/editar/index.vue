@@ -4,42 +4,56 @@
       v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
     />
-    <div class="bg-white rounded-lg p-6 md:p-10 mb-4">
+    <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
+      <p class="text-xl text-white font-bold">EDITAR PERFIL</p>
       <div class="text-center">
         <NuxtLink to="/user/perfil">
-          <button class="bg-black text-white p-2 rounded-lg">
-            <i class="fas fa-times mr-2"></i> Cancelar
+          <button class="bg-white text-black p-2 rounded-lg">
+            <i class="fas fa-times mr-2 text-red-500"></i> Cancelar
           </button>
         </NuxtLink>
         <button
           @click="updateProfile"
-          class="bg-black text-white p-2 rounded-lg"
+          class="bg-white text-black p-2 rounded-lg"
         >
-          <i class="fas fa-save mr-2"></i> Guardar
+          <i class="fas fa-save mr-2 text-green-500"></i> Guardar
         </button>
       </div>
-      <p class="text-xl font-bold mb-6">EDITAR PERFIL</p>
-      <div class="border-b border-gray-300 mb-4"></div>
-      <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
-        <div class="grid md:grid-cols-2 grid-cols-1 gap-2">
+    </div>
+    <div class="
+          bg-white
+          rounded-lg
+          p-6
+          md:p-10
+          mb-4">
+      <div class="grid md:grid-cols-3 grid-cols-1 gap-4 my-5">
+        <div class="flex flex-col">
           <label class="text-black-600 font-medium">Nombre(s):</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="Nombre (s)"
             v-model="name"
           />
+        </div>
+        <div class="flex flex-col">
           <label class="text-black-600 font-medium">Apellido paterno:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="Apellido paterno"
             v-model="fathers_surname"
           />
+        </div>
+        <div class="flex flex-col">
           <label class="text-black-600 font-medium">Apellido materno:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="Apellido materno"
             v-model="mothers_maiden_name"
           />
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 grid-cols-1 gap-4 mb-5">
+        <div class="flex flex-col">
           <label class="text-black-600 font-medium">Fecha de nacimiento:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -48,97 +62,43 @@
             v-model="birth_date"
           />
         </div>
-        <div class="">
-          <div class="w-full flex items-center mb-3">
-            <label class="text-black-600 font-medium pr-2">Nacionalidad:</label>
-            <!-- <input
-              @change="updateSelectedNationalityCode"
-              class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 flex-grow"
-              placeholder="Nacionalidad"
-              v-model="nationality"
-            /> -->
-            <select
-              @change="updateSelectedNationalityCode"
-              v-if="nationalities.length > 0 || this.nationality"
-              v-model="selectedNationality"
-              class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+        <div class="flex flex-col">
+          <label class="text-black-600 font-medium">Telefono:</label>
+          <div class="flex items-center">
+            <div
+              class="rounded-l-md px-4 py-2 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 flex-shrink-0"
             >
-              <option value="">{{ nationality }}</option>
-              <option
-                v-for="nationality in nationalities"
-                :key="nationality.code"
-                :value="nationality.name"
-              >
-                {{ nationality.name }}
-              </option>
-            </select>
-          </div>
-          <div class="w-full flex">
-            <label class="text-black-600 font-medium flex-shrink-0 w-1/5">Teléfono:</label>
-            <div class="flex-grow flex">
-              <div
-                class="rounded-l-md px-4 py-2 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 flex-shrink-0"
-              >
-                <span class="font-medium">+{{ selectedDialCode || dial_code }}</span>
-              </div>
-              <input
-                v-model="phone"
-                required
-                class="rounded-r-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 flex-grow"
-                placeholder="Ingresar teléfono"
-              />
+              <span class="font-medium">+{{ selectedDialCode || dial_code }}</span>
             </div>
+            <input
+              class="w-full rounded-r-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 flex-grow"
+              placeholder="Ingresar teléfono"
+              v-model="phone"
+            />
           </div>
         </div>
       </div>
-      <div class="flex space-x-4">
-        <div class="w-1/2">
-          <label class="text-black-600 font-medium relative cursor-pointer text-center mx-1">
-            <span class="block mb-2">Documento de identidad Enfrente</span>
-            <div class="flex items-center">
-              <input
-                type="file"
-                ref="fileInput"
-                @change="handleFileChange"
-                accept="image/*"
-                class="hidden"
-              />
-              <button
-                type="button"
-                class="py-2 bg-gray-200 text-gray-500 underline border-dashed border-gray-600 border-2 rounded-lg w-full h-40"
-                @click="$refs.fileInput.click()"
-              >
-                {{ official_document ? 'Cambiar imagen' : 'Escoge una imagen' }}
-              </button>
-            </div>
-          </label>
+      <div class="border-b border-gray-300 my-4"></div>
+      <div class="grid md:grid-cols-4 grid-cols-1 gap-4 mb-5">
+        <div class="flex flex-col">
+          <label class="text-black-600 font-medium pr-2">Nacionalidad:</label>
+          <select
+            @change="updateSelectedNationalityCode"
+            v-if="nationalities.length > 0 || this.nationality"
+            v-model="selectedNationality"
+            class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="">{{ nationality }}</option>
+            <option
+              v-for="nationality in nationalities"
+              :key="nationality.code"
+              :value="nationality.name"
+            >
+              {{ nationality.name }}
+            </option>
+          </select>
         </div>
-        <!-- ID Atras -->
-        <div class="w-1/2">
-          <label class="text-black-600 font-medium relative cursor-pointer text-center mx-1">
-            <span class="block mb-2">Documento de identidad Atras</span>
-            <div class="flex items-center">
-              <input
-                type="file"
-                ref="fileInputBack"
-                @change="handleFileChangeBack"
-                accept="image/*"
-                class="hidden"
-              />
-              <button
-                type="button"
-                class="py-2 bg-gray-200 text-gray-500 underline border-dashed border-gray-600 border-2 rounded-lg w-full h-40"
-                @click="$refs.fileInputBack.click()"
-              >
-                {{ official_document_back ? 'Cambiar imagen' : 'Escoge una imagen' }}
-              </button>
-            </div>
-          </label>
-        </div>
-      </div>
-      <div class="border-b border-gray-300 my-5"></div>
-      <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
-        <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
+        <div class="flex flex-col">
           <label
             for="country"
             class="text-black-600 font-medium"
@@ -159,6 +119,8 @@
             </option>
           </select>
           <div v-else>Loading countries...</div>
+        </div>
+        <div class="flex flex-col">
           <label
             for="state"
             class="text-black-600 font-medium"
@@ -187,6 +149,8 @@
             class="w-full rounded-md px-4 py-2 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
           </select>
+        </div>
+        <div class="flex flex-col">
           <label
             for="state"
             class="text-black-600 font-medium"
@@ -215,6 +179,10 @@
             class="w-full rounded-md px-4 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
           </select>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-4 grid-cols-1 gap-4 mb-5">
+        <div class="flex flex-col">
           <label class="text-black-600 font-medium">Calle:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -222,40 +190,75 @@
             v-model="street"
           />
         </div>
-        <div class="grid md:grid-cols-2 grid-cols-1 gap-4">
+        <div class="flex flex-col">
           <label class="text-black-600 font-medium">Número exterior:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="Número exterior"
             v-model="outdoor_number"
           />
+        </div>
+        <div class="flex flex-col">
           <label class="text-black-600 font-medium">Número interior:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="Número interior"
             v-model="interior_number"
           />
+        </div>
+        <div class="flex flex-col">
           <label class="text-black-600 font-medium">C.P:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="C.P"
             v-model="zip_code"
           />
-          <div></div>
         </div>
       </div>
-      <div class="text-center mt-5">
-        <NuxtLink to="/user/perfil">
-          <button class="bg-black text-white p-2 rounded-lg">
-            <i class="fas fa-times mr-2"></i> Cancelar
-          </button>
-        </NuxtLink>
-        <button
-          @click="updateProfile"
-          class="bg-black text-white p-2 rounded-lg"
-        >
-          <i class="fas fa-save mr-2"></i> Guardar
-        </button>
+      <div class="border-b border-gray-300 my-4"></div>
+      <div class="grid md:grid-cols-2 grid-cols-1 gap-4 mb-5">
+        <div class="flex flex-col">
+          <label class="text-black-600 font-medium relative cursor-pointer text-center mx-1">
+            <span class="block mb-2">Documento de identidad Enfrente</span>
+            <div class="flex items-center">
+              <input
+                type="file"
+                ref="fileInput"
+                @change="handleFileChange"
+                accept="image/*"
+                class="hidden"
+              />
+              <button
+                type="button"
+                class="py-2 bg-gray-200 text-gray-500 underline border-dashed border-gray-600 border-2 rounded-lg w-full h-40"
+                @click="$refs.fileInput.click()"
+              >
+                {{ official_document ? 'Cambiar imagen' : 'Escoge una imagen' }}
+              </button>
+            </div>
+          </label>
+        </div>
+        <div class="flex flex-col">
+          <label class="text-black-600 font-medium relative cursor-pointer text-center mx-1">
+            <span class="block mb-2">Documento de identidad Atras</span>
+            <div class="flex items-center">
+              <input
+                type="file"
+                ref="fileInputBack"
+                @change="handleFileChangeBack"
+                accept="image/*"
+                class="hidden"
+              />
+              <button
+                type="button"
+                class="py-2 bg-gray-200 text-gray-500 underline border-dashed border-gray-600 border-2 rounded-lg w-full h-40"
+                @click="$refs.fileInputBack.click()"
+              >
+                {{ official_document_back ? 'Cambiar imagen' : 'Escoge una imagen' }}
+              </button>
+            </div>
+          </label>
+        </div>
       </div>
     </div>
   </div>
@@ -505,18 +508,16 @@ export default {
         Authorization: `Token ${decoded.token}`,
       };
 
-      const email = this.$store.state.user.email;
+      const email = decoded.email;
       const url = `${this.$config.baseURL}/users/list-app-users/?email=${email}`;
 
       this.loading = true;
 
       this.$axios.get(url, { headers })
         .then(response => {
-          console.log(response, "USERS");
           this.email = response.data.app_user_profile;
           this.profile = response.data.app_user_profile; // Almacenar los datos del perfil en la variable "profile"
           this.loading = false;
-          console.log(this.profile)
           // Asignar los valores actuales del perfil a las variables del componente
           this.name = this.profile.name || null;
           this.fathers_surname = this.profile.fathers_surname || null;

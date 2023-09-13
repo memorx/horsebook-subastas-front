@@ -112,7 +112,8 @@ export default {
     return {
       email: [],
       register: [],
-      moment: moment
+      moment: moment,
+      loading: '',
     }
   },
   async created() {
