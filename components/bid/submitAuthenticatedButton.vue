@@ -9,7 +9,6 @@
             <p>{{ hoverText }}</p>
         </span>
     </div>
-
 </template>
 
 <script>
@@ -43,7 +42,7 @@ export default {
     methods: {
         isUserAuthenticated() {
             const userState = this.$store.state.isAuthenticated;
-            if(userState){
+            if (userState) {
                 return userState;
             }
             else {
@@ -91,7 +90,6 @@ export default {
 </script>
 
 <style>
-
 .disabled {
     pointer-events: none;
     opacity: 0.3;
@@ -123,5 +121,4 @@ export default {
     visibility: visible;
     opacity: 0.9;
 }
-
 </style>

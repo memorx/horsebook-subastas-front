@@ -9,7 +9,7 @@
     />
     <div>
       <div class="text-center my-5">
-        <p class="text-2xl md:text-4xl font-bold">Bienvenido {{ setUser?.email || "Invitado" }}</p>
+        <p class="text-2xl md:text-4xl font-bold">Bienvenido {{ setUser?.user || "Invitado" }}</p>
       </div>
       <div>
         <div class="">
@@ -97,8 +97,8 @@
 import Cookie from 'js-cookie'
 import axios from "axios"
 import moment from 'moment';
-import JWTDecode from "jwt-decode"
 import Loading from '../../components/shared/Loading.vue';
+import getUserTokenOrDefault from '../../utils/getUserTokenOrDefault';
 
 
 export default {
@@ -129,13 +129,12 @@ export default {
       this.email = []
       const listSubastasEndpoint = "/subastas/list-subastas/";
       const currentDate = new Date().toISOString().slice(0, 10);
-      const url = `${this.$config.baseURL}${listSubastasEndpoint}`;
-      const decoded = JWTDecode(this.$cookies.get("access_token"))
-      console.log(decoded)
+      const url = `${this.$config.baseURL}${listSubastasEndpoint}?start_date=${currentDate}&only_subasta_data=true`;
+      const token = getUserTokenOrDefault()
       //I want to stop to make a hardcode and do it using logic
-      if (decoded) {
+      if (token) {
         const headers = {
-          Authorization: `Token ${decoded.token}`,
+          Authorization: `Token ${token}`,
         };
         this.loading = true;
         await this.$axios
