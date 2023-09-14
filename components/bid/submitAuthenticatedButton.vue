@@ -3,7 +3,8 @@
         <button
             class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full"
             v-bind:class="{ disabled: isNotAuthenticated }"
-            type="submit"
+            type="button"
+            @click="enableModal"
         >{{ buttonText }}</button>
         <span v-bind:class="{ show: isNotAuthenticated }" class="tool-tip-text">
             <p>{{ hoverText }}</p>
@@ -20,6 +21,7 @@ export default {
     name: "SubmitAuthenticatedButton",
     props: {
         buttonText: { type: String },
+        enableModal: { type: Function },
     },
     data() {
         return {
