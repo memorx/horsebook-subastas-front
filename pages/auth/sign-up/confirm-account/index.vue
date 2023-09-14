@@ -15,8 +15,7 @@
     <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
       <div class="mb-6">
         <h1 class="text-4xl font-medium text-black">Verifica tu cuenta</h1>
-        <p class="font-normal text-base text-neutral-600 pt-2">Ingresa el código que te hemos enviado a: {{
-          setUser?.email || 'correo@gmail.com' }}
+        <p class="font-normal text-base text-neutral-600 pt-2">Ingresa el código que te hemos enviado a tu correo
         </p>
       </div>
       <form
@@ -174,7 +173,7 @@ export default {
           } else {
             this.$toast.error("Lo sentimos, ha ocurrido un error");
           }
-          console.log(error.response.data);
+          console.error(error.response.data);
         });
     },
     handleSubmit() {
@@ -211,7 +210,7 @@ export default {
           } else {
             this.$toast.error("Lo sentimos, ha ocurrido un error");
           }
-          console.log(error.response.data);
+          console.error(error.response.data);
         });
     }
   }

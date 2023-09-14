@@ -3,13 +3,13 @@
         <button
             class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full"
             v-bind:class="{ disabled: isNotAuthenticated }"
-            type="submit"
+            type="button"
+            @click="enableModal"
         >{{ buttonText }}</button>
         <span v-bind:class="{ show: isNotAuthenticated }" class="tool-tip-text">
             <p>{{ hoverText }}</p>
         </span>
     </div>
-
 </template>
 
 <script>
@@ -21,6 +21,7 @@ export default {
     name: "SubmitAuthenticatedButton",
     props: {
         buttonText: { type: String },
+        enableModal: { type: Function },
     },
     data() {
         return {
@@ -43,7 +44,7 @@ export default {
     methods: {
         isUserAuthenticated() {
             const userState = this.$store.state.isAuthenticated;
-            if(userState){
+            if (userState) {
                 return userState;
             }
             else {
@@ -91,7 +92,6 @@ export default {
 </script>
 
 <style>
-
 .disabled {
     pointer-events: none;
     opacity: 0.3;
@@ -123,5 +123,4 @@ export default {
     visibility: visible;
     opacity: 0.9;
 }
-
 </style>

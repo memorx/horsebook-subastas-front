@@ -3,6 +3,27 @@
         class="relative bg-black rounded-lg overflow"
         style="padding-bottom: 62.5%;"
     >
+
+        <transition
+            name="fade"
+            mode="out-in"
+        >
+            <img
+                v-if="currentImage"
+                :key="currentImage"
+                class="rounded-lg absolute inset-0 w-full h-full object-cover"
+                :src="currentImage"
+                alt="image"
+                loading="lazy"
+            >
+            <img
+                v-else
+                class="rounded-lg absolute inset-0 w-full h-full object-cover"
+                src="../public/horse_black.png"
+                alt="image"
+                loading="lazy"
+            >
+        </transition>
         <!-- Left Arrow -->
         <button
             @click="prevImage"
@@ -10,20 +31,6 @@
         >
             ←
         </button>
-
-        <transition
-            name="fade"
-            mode="out-in"
-        >
-            <img
-                :key="currentImage"
-                class="rounded-lg absolute inset-0 w-full h-full object-cover"
-                :src="currentImage"
-                alt="image"
-                loading="lazy"
-            >
-        </transition>
-
         <!-- Right Arrow -->
         <button
             @click="nextImage"
