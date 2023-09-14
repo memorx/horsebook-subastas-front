@@ -7,7 +7,7 @@
       <div>
         <div
           v-if="successMessage"
-          class="alert alert-success"
+          class=""
         >
           {{ successMessage }}
         </div>
@@ -101,11 +101,11 @@
           >
             <p class="text-white font-bold text-sm">OFERTA MAS ALTA</p>
             <span class="text-white font-bold text-2xl">${{ lastOffer }} USD</span>
-            <Winner
+            <!-- <Winner
               class="text-white"
               :bidId="bidId"
               :horseID="horseID"
-            />
+            /> -->
           </div>
           <div class="px-5 mt-5">
             <p class="text-sm font-bold">OFERTAR POR ESTE LOTE</p>
@@ -421,11 +421,15 @@ export default {
       return 0
     },
   },
-  created() {
-
-  },
   mounted() {
     this.fetchData()
+    setInterval(() => {
+      this.setCurrentOffer()
+    }, 1000);
+  },
+  async created() {
+    const fetchAmount = await this.fetchLastOffer(125, 1)
+    this.formData.amount = this.parseFetchedAmount(fetchAmount)
   },
   methods: {
     setInitialAmount() {
@@ -460,6 +464,12 @@ export default {
       currentValue -= 1000;
       this.formData.amount = currentValue.toLocaleString('en-US');
     },
+    parseFetchedAmount(value) {
+      let lastOfferInt = parseInt(value.replace(',', ''));
+      lastOfferInt += 1000;
+      const lastOfferStr = lastOfferInt.toLocaleString('en-US');
+      return lastOfferStr;
+    },
     preloadAmount() {
       let lastOfferInt = parseInt(this.lastOffer.replace(',', ''));
       lastOfferInt += 1000;
@@ -482,7 +492,41 @@ export default {
     },
     updateLastOffer(offer) {
       this.lastOffer = offer;
-      this.formData.amount = this.preloadAmount();
+    },
+    async setCurrentOffer() {
+      const currentLastOfferInServer = await this.fetchLastOffer(125, 1)
+      const inputValue = this.formData.amount
+      if (currentLastOfferInServer >= inputValue) {
+        this.formData.amount = this.parseFetchedAmount(currentLastOfferInServer);
+      } else {
+        // this.formData.amount = this.preloadAmount();
+      }
+    },
+    async fetchLastOffer(bid, horse) {
+      const getLastBidsEndpoint = `/subastas/get-last-bids/`
+      const url = `${this.$config.baseURL}${getLastBidsEndpoint}`
+      const decoded = JWTDecode(this.$cookies.get("access_token"))
+      const parameters = {
+        subasta_id: bid,
+        horse_id: horse,
+      }
+      // this.tableKey++;
+      let lastOffer = await axios.get(url, {
+        params: parameters,
+        headers: {
+          Authorization: `Token ${decoded.token}`
+        }
+      })
+        .then(response => {
+          const detailsBid = response.data
+          const lastOffer = detailsBid[0]?.amount
+          const formattedLastOffer = parseInt(lastOffer).toLocaleString('en-US');
+          return formattedLastOffer
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      return lastOffer
     },
     fetchData() {
      const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
@@ -564,10 +608,6 @@ export default {
       this.formData.horse_id = String(this.horseID);
       this.formData.amount = submittedAmount;
       this.formData.subasta_id = this.bidId;
-      //status offer
-      setTimeout(() => {
-        this.formData.amount = this.preloadAmount();
-      }, 1500);
 
       axios.post(url, this.formData, {
         headers: {

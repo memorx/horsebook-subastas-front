@@ -56,7 +56,7 @@ export default {
           this.winnerBid = winner.user_profile.name
         })
         .catch(error => {
-          // console.error(error);
+          console.error(error);
         });
     }
   }

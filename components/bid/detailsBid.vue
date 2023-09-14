@@ -38,7 +38,7 @@
           <div class="flex items-center my-3">
             <button
               @click="toggleNextBids"
-              class="bg-black text-white px-4 py-2 rounded-md px-4"
+              class="bg-black text-white py-2 rounded-md px-4"
             >{{ showNextBids ? 'Mostrar solo ultima oferta' : 'Mostrar todas las ofertas' }}
             </button>
           </div>

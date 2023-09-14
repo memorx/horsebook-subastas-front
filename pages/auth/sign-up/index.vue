@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen">
+  <div class="flex bg-zinc-200">
     <Loading
       v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
@@ -12,17 +12,27 @@
         style="height: 100vh;"
       />
     </div>
-    <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
-      <div class="mb-6">
+    <div class="lg:w-1/2 w-full lg:mx-auto px-5 bg-white">
+      <div
+        class="my-3"
+        v-if="formStep == true"
+      >
+        <button
+          type="button"
+          @click="toggleFormStep"
+          class="py-2 px-5 bg-gray-300 rounded-lg"
+        >← Atras</button>
+      </div>
+      <div
+        v-if="formStep == false"
+        class="my-3"
+      >
         <h1 class="text-4xl font-medium text-black">Crea tu cuenta</h1>
       </div>
-      <form
-        class="w-full"
-        @submit.prevent=handleSubmit
-      >
+      <form @submit.prevent=handleSubmit>
         <div class="flex flex-col w-full gap-6">
-          <!-- First part of form -->
-          <div class="flex flex-col w-full mb-5">
+          <!-- EMAIL -->
+          <div class="flex flex-col w-full mb-3">
             <label
               for="email"
               class="text-black-600 font-medium"
@@ -31,12 +41,12 @@
               v-model="form.email"
               type="email"
               required
-              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              class="rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               placeholder="Ingresar email"
             />
           </div>
-          <div class="flex">
-            <!-- Password Field -->
+          <!-- Password Field -->
+          <div class="flex mb-3">
             <div class="flex flex-col w-1/2 pr-2">
               <label
                 for="password"
@@ -47,27 +57,27 @@
                 type="password"
                 required
                 @input="handlePasswordInput"
-                @focus="isPasswordFocused = true"
-                @blur="isPasswordFocused = false"
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                @focus="form.isPasswordFocused = true"
+                @blur="form.isPasswordFocused = false"
+                class=" rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 placeholder="Ingresar contraseña"
               />
               <div
-                v-if="isPasswordFocused"
+                v-if="form.isPasswordFocused"
                 class="text-red-500 text-sm"
-              >{{ passwordValidationMessage }}</div>
+              >{{ form.passwordValidationMessage }}</div>
               <div
-                v-if="isPasswordFocused"
+                v-if="form.isPasswordFocused"
                 class="text-red-500 text-sm"
-              >{{ digitValidationMessage }}</div>
+              >{{ form.digitValidationMessage }}</div>
               <div
-                v-if="isPasswordFocused"
+                v-if="form.isPasswordFocused"
                 class="text-red-500 text-sm"
-              >{{ specialCharacterValidationMessage }}</div>
+              >{{ form.specialCharacterValidationMessage }}</div>
             </div>
 
             <!-- Confirm Password Field -->
-            <div class="flex flex-col w-1/2 pl-2">
+            <div class="flex flex-col w-1/2 mb-3">
               <label
                 for="confirmPassword"
                 class="text-black-600 font-medium"
@@ -77,14 +87,14 @@
                 type="password"
                 required
                 @input="validatePasswordMatch"
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                class="rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 placeholder="Confirmar contraseña"
               />
-              <div class="text-red-500 text-sm">{{ passwordMatchValidationMessage }}</div>
+              <div class="text-red-500 text-sm">{{ form.passwordMatchValidationMessage }}</div>
             </div>
           </div>
-          <!-- Second part of form -->
-          <div class="flex flex-col w-full mb-5">
+          <!-- Nombre -->
+          <div class="flex flex-col w-full mb-3">
             <label
               for="name"
               class="text-black-600 font-medium"
@@ -92,13 +102,14 @@
             <input
               v-model="form.name"
               required
-              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               placeholder="Ingresar nombres"
             />
           </div>
-          <div class="flex space-x-4 w-full">
+          <!-- Apellidos -->
+          <div class="flex space-x-4 w-full mb-3">
             <!-- Apellido Paterno Input -->
-            <div class="flex flex-col w-1/2 mb-5">
+            <div class="flex flex-col w-1/2">
               <label
                 for="fathers_surname"
                 class="text-black-600 font-medium"
@@ -106,13 +117,13 @@
               <input
                 v-model="form.fathers_surname"
                 required
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 placeholder="Ingresar apellido paterno"
               />
             </div>
 
             <!-- Apellido Materno Input -->
-            <div class="flex flex-col w-1/2 mb-5">
+            <div class="flex flex-col w-1/2">
               <label
                 for="mothers_maiden_name"
                 class="text-black-600 font-medium"
@@ -120,8 +131,140 @@
               <input
                 v-model="form.mothers_maiden_name"
                 required
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 placeholder="Ingresar apellido materno"
+              />
+            </div>
+          </div>
+          <!-- País y Estado Input -->
+          <div class="flex w-full space-x-4 ">
+            <div class="flex flex-col w-1/2">
+              <div>
+                <label
+                  for="country"
+                  class="text-black-600 font-medium"
+                >País</label>
+                <select
+                  v-if="form.countries.length > 0"
+                  v-model="form.selectedCountry"
+                  @change="updateSelectedCountryCode"
+                  class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                >
+                  <option
+                    v-for="country in form.countries"
+                    :key="country.code"
+                    :value="country.name"
+                  >
+                    {{ country.name }}
+                  </option>
+                </select>
+                <div v-else>Loading countries...</div>
+              </div>
+            </div>
+            <!-- Estado Input -->
+            <div class="flex flex-col w-1/2">
+              <label
+                for="state"
+                class="text-black-600 font-medium"
+              >Estado</label>
+              <select
+                v-if="form.states.length > 0"
+                @change="updateSelectedStateCode"
+                v-model="form.selectedState"
+                class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              >
+                <option
+                  v-for="state in form.states"
+                  :key="state.id"
+                  :value="state.name"
+                >
+                  {{ state.name }}
+                </option>
+              </select>
+              <select
+                v-else
+                disabled
+                class="w-full rounded-md px-4 py-2 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              >
+              </select>
+            </div>
+          </div>
+          <!-- Ciudad Input -->
+          <div class="flex flex-col w-full mb-3">
+            <label
+              for="state"
+              class="text-black-600 font-medium"
+            >Ciudad</label>
+            <select
+              v-if="form.cities.length > 0"
+              v-model="form.selectedCity"
+              @change="updateSelectedCityCode"
+              class="w-full rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            >
+              <option
+                v-for="city in form.cities"
+                :key="city.id"
+                :value="city.name"
+              >
+                {{ city.name }}
+              </option>
+            </select>
+            <select
+              v-else
+              disabled
+              class="w-full rounded-md px-4 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            >
+            </select>
+          </div>
+          <!-- Calle -->
+          <div class="flex flex-col w-full mb-3">
+            <label
+              for="name"
+              class="text-black-600 font-medium"
+            >Calle</label>
+            <input
+              v-model="form.street"
+              required
+              class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              placeholder="Ingresar calle"
+            />
+          </div>
+          <div class="flex w-full space-x-2 ">
+            <div class="flex flex-col w-1/3">
+              <!-- Num. Exterior -->
+              <label
+                for="name"
+                class="text-black-600 font-medium"
+              >Num. Exterior</label>
+              <input
+                v-model="form.outdoor_number"
+                required
+                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar num exterior"
+              />
+            </div>
+            <!-- Num. Interior -->
+            <div class="flex flex-col w-1/3">
+              <label
+                for="name"
+                class="text-black-600 font-medium"
+              >Num. Interior</label>
+              <input
+                v-model="form.indoor_number"
+                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar num interior"
+              />
+            </div>
+            <div class="flex flex-col w-1/3">
+              <label
+                for="name"
+                class="text-black-600 font-medium"
+              >Codigo Postal</label>
+              <input
+                v-model="form.zip_code"
+                required
+                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar codigo postal"
               />
             </div>
           </div>
@@ -131,151 +274,69 @@
               for="phone"
               class="text-black-600 font-medium"
             >Teléfono</label>
-            <input
-              v-model="form.phone"
-              required
-              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              placeholder="Ingresar teléfono"
-            />
-          </div>
-          <div class="flex flex-col w-full mb-5">
-            <label class="text-black-600 font-medium relative cursor-pointer">
-              <span class="block mb-2">Documento de identidad Enfrente</span>
-              <div class="flex items-center">
-                <input
-                  type="file"
-                  ref="fileInput"
-                  @change="handleFileChange"
-                  accept="image/*"
-                  class="hidden"
-                />
-                <button
-                  type="button"
-                  class="py-2 px-5 bg-black text-white rounded-lg mr-2"
-                  @click="$refs.fileInput.click()"
-                >
-                  Upload
-                </button>
-                <span
-                  class="custom-file-message py-2 px-3 mt-1 bg-gray-100 border border-gray-300 rounded-lg"
-                  :class="{ 'bg-transparent border-0': form.identification_document }"
-                >
-                  {{ form.identification_document ? form.identification_document.name : 'No file chosen' }}
-                </span>
-              </div>
-            </label>
-          </div>
-          <div class="flex flex-col w-full mb-5">
-            <label class="text-black-600 font-medium relative cursor-pointer">
-              <span class="block mb-2">Documento de identidad Atras</span>
-              <div class="flex items-center">
-                <input
-                  type="file"
-                  ref="fileInputBack"
-                  @change="handleFileChangeBack"
-                  accept="image/*"
-                  class="hidden"
-                />
-                <button
-                  type="button"
-                  class="py-2 px-5 bg-black text-white rounded-lg mr-2"
-                  @click="$refs.fileInputBack.click()"
-                >
-                  Upload
-                </button>
-                <span
-                  class="custom-file-message py-2 px-3 mt-1 bg-gray-100 border border-gray-300 rounded-lg"
-                  :class="{ 'bg-transparent border-0': form.official_document_back }"
-                >
-                  {{ form.official_document_back ? form.official_document_back.name : 'No file chosen' }}
-                </span>
-              </div>
-            </label>
-          </div>
-          <div class="flex space-x-4 w-full">
-            <!-- País Input -->
-            <div class="flex flex-col w-1/2 mb-5">
-              <label
-                for="country"
-                class="text-black-600 font-medium"
-              >País</label>
+            <div class="flex space-x-0 w-full">
+              <div
+                class="rounded-l-md px-4 py-2 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              ><span class="font-medium">+{{ form.selectedDialCode }}</span></div>
               <input
-                v-model="form.country"
-                @input="autocompleteCountry"
-                @keydown.delete="clearInputOnDelete"
-                @keydown="onCountryKeyDown"
+                v-model="form.phone"
                 required
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar país"
+                class="w-full rounded-r-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar teléfono"
               />
             </div>
-            <!-- Estado Input -->
-            <div class="flex flex-col w-1/2 mb-5">
-              <label
-                for="state"
-                class="text-black-600 font-medium"
-              >Estado</label>
-              <input
-                v-if="normalizeString(form.country) !== 'mexico'"
-                v-model.lazy="form.state"
-                required
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar estado"
-              />
-              <select
-                v-else
-                v-model="form.state"
-                required
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              >
-                <option
-                  value=""
-                  disabled
-                >Seleccionar estado</option>
-                <option
-                  v-for="estado in estadosMunicipios"
-                  :key="estado.id"
-                  :value="estado.nombre"
-                >
-                  {{ estado.nombre }}
-                </option>
-              </select>
+          </div>
+          <div class="flex">
+            <!-- ID Enfrente -->
+            <div class="flex w-1/2 flex-col">
+              <label class="text-black-600 font-medium relative cursor-pointer text-center mx-1">
+                <span class="block mb-2">Documento de identidad Enfrente</span>
+                <div class="flex items-center">
+                  <input
+                    type="file"
+                    ref="fileInput"
+                    @change="handleFileChange"
+                    accept="image/*"
+                    class="hidden"
+                  />
+                  <button
+                    type="button"
+                    class="py-2 bg-gray-200 text-gray-500 underline border-dashed border-gray-600 border-2 rounded-lg w-full h-40"
+                    @click="$refs.fileInput.click()"
+                  >
+                    {{ form.identification_document ? form.identification_document.name : 'Escoge una imagen' }}
+                  </button>
+                </div>
+              </label>
+            </div>
+            <!-- ID Atras -->
+            <div class="flex flex-col w-1/2">
+              <label class="text-black-600 font-medium relative cursor-pointer text-center mx-1">
+                <span class="block mb-2">Documento de identidad Atras</span>
+                <div class="flex items-center">
+                  <input
+                    type="file"
+                    ref="fileInputBack"
+                    @change="handleFileChangeBack"
+                    accept="image/*"
+                    class="hidden"
+                  />
+                  <button
+                    type="button"
+                    class="py-2 bg-gray-200 text-gray-500 underline border-dashed border-gray-600 border-2 rounded-lg w-full h-40"
+                    @click="$refs.fileInputBack.click()"
+                  >
+                    {{ form.official_document_back ? form.official_document_back.name : 'Escoge una imagen' }}
+                  </button>
+                </div>
+              </label>
             </div>
           </div>
-          <div class="flex flex-col w-full mb-5">
-            <label
-              for="municipalitie"
-              required
-              class="text-black-600 font-medium"
-            >Ciudad</label>
-            <input
-              v-if="normalizeString(form.country) !== 'mexico'"
-              v-model.lazy="form.municipalitie"
-              required
-              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              placeholder="Ingresar ciudad"
-            />
-            <select
-              v-else
-              v-model="form.municipalitie"
-              required
-              class="styleInput w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-            >
-              <option
-                value=""
-                disabled
-              >Seleccionar ciudad</option>
-              <option
-                v-for="municipio in selectedStateMunicipios"
-                :key="municipio.id"
-                :value="municipio.nombre"
-              >
-                {{ municipio.nombre }}
-              </option>
-            </select>
-            <div class="flex flex-col w-full my-5">
-              <p class="text-2xl font-medium mt-3">Referencia 1:</p>
+          <!-- Referencias -->
+          <div class="flex flex-col w-full my-5">
+            <div class="flex flex-col w-full">
               <!-- Nombre completo Referencia 1 -->
+              <p class="text-xl font-medium">Referencia 1:</p>
               <label
                 for="name"
                 class="text-black-600 font-medium"
@@ -302,7 +363,7 @@
                 />
               </div>
               <!-- Numero de telefono Referencia 1 -->
-              <div class="flex flex-col w-1/2 mb-5">
+              <div class="flex flex-col w-1/2">
                 <label
                   for="phone"
                   class="text-black-600 font-medium"
@@ -315,8 +376,8 @@
                 />
               </div>
             </div>
-            <div class="flex flex-col w-full">
-              <p class="text-2xl font-medium mt-3">Referencia 2:</p>
+            <div class="flex flex-col w-full mt-5">
+              <p class="text-2xl font-medium">Referencia 2:</p>
               <!-- Nombre completo Referencia 2 -->
               <label
                 for="name"
@@ -330,8 +391,8 @@
               />
             </div>
             <!-- Ocupacion Referencia 2 -->
-            <div class="flex space-x-4 w-full my-5">
-              <div class="flex flex-col w-1/2 mb-5">
+            <div class="flex space-x-4 w-full">
+              <div class="flex flex-col w-1/2">
                 <label
                   for="name"
                   class="text-black-600 font-medium"
@@ -344,7 +405,7 @@
                 />
               </div>
               <!-- Numero de telefono Referencia 2 -->
-              <div class="flex flex-col w-1/2 mb-5">
+              <div class="flex flex-col w-1/2">
                 <label
                   for="phone"
                   class="text-black-600 font-medium"
@@ -357,7 +418,10 @@
                 />
               </div>
             </div>
-            <div class="flex items-center mt-5">
+          </div>
+          <!-- Terminos y condiciones y Politicas de Privacidad -->
+          <div class="my-5">
+            <div class="flex items-center">
               <input
                 type="checkbox"
                 class="mr-2"
@@ -392,6 +456,7 @@
               </label>
             </div>
           </div>
+          <!-- Botone de Crear Cuenta -->
           <div class="flex flex-col w-full">
             <button
               type="submit"
@@ -411,6 +476,7 @@
 
 <script>
 import Loading from '../../../components/shared/Loading.vue';
+import axios from 'axios'
 export default {
   components: { Loading },
   computed: {
@@ -421,12 +487,9 @@ export default {
       return selectedState ? selectedState.municipios : [];
     },
   },
-  async created() {
-    await this.fetchEstadosMunicipios();
-  },
   data() {
     return {
-      step: false,
+      formStep: false,
       loading: false,
       estadosMunicipios: [],
       form: {
@@ -435,8 +498,17 @@ export default {
         mothers_maiden_name: "",
         identification_document: "",
         official_document_back: '',
-        country: "México",
-        state: "",
+        official_document: '',
+        selectedCountry: "",
+        selectedCountryCode: "",
+        selectedCity: '',
+        selectedCityCode: '',
+        cities: [],
+        countries: [],
+        states: [],
+        selectedDialCode: '',
+        selectedState: '',
+        selectedStateCode: '',
         // municipalitie means city to the back-end
         municipalitie: "",
         phone: "",
@@ -457,11 +529,52 @@ export default {
           name: '',
           phone: '',
           occupation: '',
-        }
+        },
+        zip_code: '',
+        outdoor_number: '',
+        indoor_number: '',
+        street: '',
       },
     };
   },
+  mounted() {
+    this.fetchCountries()
+  },
   methods: {
+    updateSelectedCountryCode() {
+      const selectedCountryObject = this.form.countries.find(
+        (country) => country.name === this.form.selectedCountry
+      );
+      if (selectedCountryObject) {
+        this.form.selectedCountryCode = selectedCountryObject.code
+        this.form.selectedDialCode = selectedCountryObject.dial_code
+        this.fetchStates()
+      } else {
+        this.form.selectedCountryCode = ''
+        this.form.selectedDialCode = ''
+      }
+    },
+    updateSelectedStateCode() {
+      const selectedStateObject = this.form.states.find(
+        (state) => state.name === this.form.selectedState
+      );
+      if (selectedStateObject) {
+        this.form.selectedStateCode = selectedStateObject.id;
+        this.fetchCities()
+      } else {
+        this.form.selectedStateCode = "";
+      }
+    },
+    updateSelectedCityCode() {
+      const selectedCityObject = this.form.cities.find(
+        (city) => city.name === this.form.selectedCity
+      );
+      if (selectedCityObject) {
+        this.form.selectedCityCode = selectedCityObject.id;
+      } else {
+        this.form.selectedCityCode = "";
+      }
+    },
     openPDF(path) {
       const pdfPath = path;
 
@@ -476,10 +589,6 @@ export default {
       const selectedFile = event.target.files[0];
       this.form.official_document_back = selectedFile;
       this.$refs.fileInput.value = '';
-    },
-    nextStep() {
-      console.log("Hola")
-      return this.step = !this.step
     },
     handlePasswordInput() {
       this.validatePassword();
@@ -498,9 +607,9 @@ export default {
       const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
 
 
-      this.passwordValidationMessage = isLengthValid ? '' : 'La contraseña debe tener al menos 8 caracteres.';
-      this.digitValidationMessage = hasDigit ? '' : 'La contraseña debe contener al menos un dígito.';
-      this.specialCharacterValidationMessage = hasSpecialCharacter ? '' : 'La contraseña debe contener al menos un carácter especial.';
+      this.form.passwordValidationMessage = isLengthValid ? '' : 'La contraseña debe tener al menos 8 caracteres.';
+      this.form.digitValidationMessage = hasDigit ? '' : 'La contraseña debe contener al menos un dígito.';
+      this.form.specialCharacterValidationMessage = hasSpecialCharacter ? '' : 'La contraseña debe contener al menos un carácter especial.';
     },
     handleSubmit() {
       // Check the data
@@ -558,7 +667,7 @@ export default {
       // const token = "Token " + process.env.TOKEN;
       const token = "Token 0119158e9e647cc58e9c895fa08316b2a5b03df4"
       const headers = {
-        Authorization: token,
+        // Authorization: token,
       };
       // Create a FormData object
       let formData = new FormData();
@@ -571,11 +680,11 @@ export default {
           "name": data.name,
           "mothers_maiden_name": data.mothers_maiden_name,
           "fathers_surname": data.fathers_surname,
-          "identification_document": data.identification_document,
+          "official_document": data.official_document,
           "official_document_back": data.official_document_back,
-          "country": data.country,
-          "state": data.state,
-          "municipalitie": data.municipalitie,
+          "country": data.selectedCountryCode,
+          "state": data.selectedStateCode,
+          "municipalitie": data.selectedCityCode,
           "phone": data.phone,
           "reference_1_contact": data.reference1.name,
           "reference_1_occupation": data.reference1.occupation,
@@ -583,6 +692,10 @@ export default {
           "reference_2_contact": data.reference2.name,
           "reference_2_occupation": data.reference2.occupation,
           "reference_2_phone": data.reference2.phone,
+          "street": data.street,
+          "outdoor_number": data.outdoor_number,
+          "indoor_number": data.indoor_number,
+          "zip_code": data.zip_code
         }
       };
 
@@ -594,9 +707,9 @@ export default {
       formData.append("name", body.app_user_profile.name);
       formData.append("mothers_maiden_name", body.app_user_profile.mothers_maiden_name);
       formData.append("fathers_surname", body.app_user_profile.fathers_surname);
-      formData.append("country", body.app_user_profile.country);
-      formData.append("state", body.app_user_profile.state);
-      formData.append("municipalitie", body.app_user_profile.municipalitie);
+      formData.append("selectedCountryCode", body.app_user_profile.country);
+      formData.append("selectedStateCode", body.app_user_profile.state);
+      formData.append("selectedCityCode", body.app_user_profile.municipalitie);
       formData.append("phone", body.app_user_profile.phone);
       formData.append("reference_1_contact", body.app_user_profile.reference_1_contact)
       formData.append("reference_1_occupation", body.app_user_profile.reference_1_occupation)
@@ -604,11 +717,13 @@ export default {
       formData.append("reference_2_contact", body.app_user_profile.reference_2_contact)
       formData.append("reference_2_occupation", body.app_user_profile.reference_2_occupation)
       formData.append("reference_2_phone", body.app_user_profile.reference_2_phone)
-
-
+      formData.append("street", body.app_user_profile.street)
+      formData.append("outdoor_number", body.app_user_profile.outdoor_number)
+      formData.append("indoor_number", body.app_user_profile.indoor_number)
+      formData.append("zip_code", body.app_user_profile.zip_code)
       // Append the file, if it exists
-      if (body.app_user_profile.identification_document) {
-        formData.append("official_document", body.app_user_profile.identification_document);
+      if (body.app_user_profile.official_document) {
+        formData.append("official_document", body.app_user_profile.official_document);
       }
 
       // Append the file, if it exists
@@ -636,26 +751,54 @@ export default {
           console.log(error);
         });
     },
-    async fetchEstadosMunicipios() {
-      this.loading = true
-      try {
-        const url = this.$config.baseURL + "/estado-municipios-list/";
-        // const token = "Token " + process.env.TOKEN;
-        const token = "Token 0119158e9e647cc58e9c895fa08316b2a5b03df4"
-        const response = await this.$axios.get(url, {
-          headers: {
-            Authorization: token,
-          },
+    fetchCountries() {
+      const endpoint = '/countries';
+      const url = `${this.$config.baseURL}${endpoint}`;
+      axios
+        .get(url)
+        .then(response => {
+          const countries = response.data;
+          this.form.countries = countries;
+          console.log(this.form.countries)
+        })
+        .catch(error => {
+          console.error(error);
         });
-        console.log('success-fetchEstadosMunicipios');
-        this.estadosMunicipios = response.data;
-        this.loading = false
-      } catch (error) {
-        console.error("Error fetching estados and municipios:", error);
-        this.$toast.error("Hubo un problema al cargarla lista de estados y ciudades");
-        this.loading = false
-      }
     },
+    async fetchStates() {
+      const endpoint = '/states'
+      const url = `${this.$config.baseURL}${endpoint}`
+      const code = this.form.selectedCountryCode
+      axios.get(url, {
+        params: {
+          country: code
+        },
+      })
+        .then(response => {
+          const states = response.data
+          this.form.states = states
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    async fetchCities() {
+      const endpoint = '/cities'
+      const url = `${this.$config.baseURL}${endpoint}`
+      const code = this.form.selectedStateCode
+      axios.get(url, {
+        params: {
+          state: code
+        },
+      })
+        .then(response => {
+          const cities = response.data
+          this.form.cities = cities
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
   }
 }
 </script>
