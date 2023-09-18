@@ -304,7 +304,7 @@
                     class="py-2 bg-gray-200 text-gray-500 underline border-dashed border-gray-600 border-2 rounded-lg w-full h-40"
                     @click="$refs.fileInput.click()"
                   >
-                    {{ form.identification_document ? form.identification_document.name : 'Escoge una imagen' }}
+                    {{ form.official_document ? form.official_document.name : 'Escoge una imagen' }}
                   </button>
                 </div>
               </label>
@@ -582,7 +582,7 @@ export default {
     },
     handleFileChange(event) {
       const selectedFile = event.target.files[0];
-      this.form.identification_document = selectedFile;
+      this.form.official_document = selectedFile;
       this.$refs.fileInput.value = '';
     },
     handleFileChangeBack(event) {
@@ -664,10 +664,8 @@ export default {
     async signUp(data) {
       this.loading = true
       const url = this.$config.baseURL + "/users/create-user/";
-      // const token = "Token " + process.env.TOKEN;
-      const token = "Token 0119158e9e647cc58e9c895fa08316b2a5b03df4"
+      const token = `Token ${this.$config.apiToken}`
       const headers = {
-        // Authorization: token,
       };
       // Create a FormData object
       let formData = new FormData();
@@ -707,9 +705,9 @@ export default {
       formData.append("name", body.app_user_profile.name);
       formData.append("mothers_maiden_name", body.app_user_profile.mothers_maiden_name);
       formData.append("fathers_surname", body.app_user_profile.fathers_surname);
-      formData.append("selectedCountryCode", body.app_user_profile.country);
-      formData.append("selectedStateCode", body.app_user_profile.state);
-      formData.append("selectedCityCode", body.app_user_profile.municipalitie);
+      formData.append("country", body.app_user_profile.country);
+      formData.append("state", body.app_user_profile.state);
+      formData.append("municipalitie", body.app_user_profile.municipalitie);
       formData.append("phone", body.app_user_profile.phone);
       formData.append("reference_1_contact", body.app_user_profile.reference_1_contact)
       formData.append("reference_1_occupation", body.app_user_profile.reference_1_occupation)

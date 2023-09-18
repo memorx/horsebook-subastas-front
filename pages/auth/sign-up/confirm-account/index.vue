@@ -152,7 +152,7 @@ export default {
       this.loading = true
       const url = this.$config.baseURL + "/users/re-send-email/";
       // const token = "Token " + process.env.TOKEN;
-      const token = "Token 0119158e9e647cc58e9c895fa08316b2a5b03df4"
+      const token = `Token ${this.$config.apiToken}`
       const headers = {
         Authorization: token,
       };
@@ -190,7 +190,7 @@ export default {
       this.loading = true
       const url = this.$config.baseURL + "/users/verification-code/";
       // const token = "Token " + process.env.TOKEN;
-      const token = "Token 0119158e9e647cc58e9c895fa08316b2a5b03df4"
+      const token = `Token ${this.$config.apiToken}`
       const headers = {
         Authorization: token,
       };
