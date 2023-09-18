@@ -10,16 +10,13 @@ const storageScopes = {
   userInformation: "userInformation"
 }
 
-// const DEFAULT_TOKEN = 'bb877c767cdf1b094eccbf000b20ce753c2219fb'
-const DEFAULT_TOKEN = '0119158e9e647cc58e9c895fa08316b2a5b03df4'
-
 const retrieveUserInformationOrDefault = (app) => {
   const cookie = app.$cookies.get('access_token');
 
   if (!cookie) {
     return {
       isAuthenticated: false,
-      token: DEFAULT_TOKEN
+      token: app.$config.apiToken
     }
   }
 

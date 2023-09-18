@@ -664,7 +664,7 @@ export default {
     async signUp(data) {
       this.loading = true
       const url = this.$config.baseURL + "/users/create-user/";
-      const token = this.$config.apiToken
+      const token = `Token ${this.$config.apiToken}`
       const headers = {
       };
       // Create a FormData object

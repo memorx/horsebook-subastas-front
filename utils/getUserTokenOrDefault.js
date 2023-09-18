@@ -1,14 +1,12 @@
 import Cookies from "js-cookie"
 import jwtDecode from "jwt-decode";
 
-const DEFAULT_TOKEN = '4b1089cc8bbc1ac6c05eed6448aca3bb5711ab7b'
-
 export default () => {
     const cookie = Cookies.get('access_token');
 
     if (!cookie) {
         // console.log("Se usa el default token")
-        return DEFAULT_TOKEN
+        return this.$config.apiToken
     }
 
     const decoded = jwtDecode(cookie)
