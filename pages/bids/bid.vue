@@ -16,12 +16,12 @@
       >
         <div class="flex items-center">
           <span class="text-2xl font-bold mr-3">Subasta la Silla</span>
-          <div v-if="isCurrentDate === 1">
+          <div v-if="statusBid == 'COMING'">
             <span class="bg-yellow-500 text-white px-3 py-1 rounded-full">
               EN VIVO
             </span>
           </div>
-          <div v-else-if="isCurrentDate === 2">
+          <div v-else-if="statusBid == 'BIDDING'">
             <span class="bg-green-500 text-white px-3 py-1 rounded-full">
               EN VIVO
             </span>
@@ -60,7 +60,7 @@
           </div>
         </div>
         <div
-          v-if="statusBid == 'PREBID'"
+          v-if="statusBidBid == 'PREBID'"
           class="md:w-1/2 p-5 md:mr-2 bg-white rounded-lg"
         >
           <div class="">
@@ -74,7 +74,7 @@
           </div>
         </div>
         <div
-          v-if="statusBid == 'COMING'"
+          v-if="statusBid == 'COMING' && statusBidBid == 'COMING'"
           class="md:w-2/3 md:mr-2 bg-white rounded-lg"
         >
           <div>
@@ -84,7 +84,7 @@
           </div>
         </div>
         <div
-          v-if="statusBid == 'BIDDING'"
+          v-if="statusBid == 'BIDDING' || statusBidBid == 'PREBID'"
           class="md:w-1/2 mt-4 md:mt-0 bg-white rounded-lg"
         >
           <div
@@ -135,7 +135,7 @@
                     button-text="Ofertar"
                   />
                 </div>
-                
+
               </div>
               <div class="lg:hidden text-center mt-5 w-full">
                 <SubmitAuthenticatedButton
@@ -179,7 +179,7 @@
           </div>
         </div>
         <div
-          v-if="statusBid == 'COMING'"
+          v-if="statusBid == 'COMING' && statusBidBid == 'COMING'"
           class="md:w-1/3 mt-4 md:mt-0"
         >
           <div class="text-center w-full rounded-lg px-5 pt-5 bg-white mb-5">
@@ -235,6 +235,19 @@
               allowfullscreen
             ></iframe>
           </div>
+        </div>
+        <div
+          v-if="statusBidBid == 'CLOSED PREBID'"
+          class="w-full mt-4 md:mt-0"
+        >
+          <div
+            class="text-center w-full rounded-t-lg p-5"
+            style="background-color: #024694;"
+          >
+            <p class="text-white font-bold text-md">PRE OFERTA TERMINADA</p>
+            <p class="text-white font-light text-sm">ESPERA A QUE INICIE LA SUBASTA</p>
+          </div>
+          <Carousel :images="horseData.images" />
         </div>
       </div>
       <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
@@ -400,6 +413,7 @@ export default {
         videoUrl: '',
         final_amount: '',
       },
+      statusBidBid: '',
       liveURL: '',
       HorsenName: '',
       lastOffer: '',
@@ -548,7 +562,7 @@ export default {
       const currentLastOfferInServer = await this.fetchLastOffer(this.bidId, this.horseID)
       const inputValue = this.formData.amount
       const inputValueParsed = parseInt(inputValue.replace(",", ""))
-      const currentLastOfferInServerParsed = parseInt(currentLastOfferInServer.replace(",", ""))
+      const currentLastOfferInServerParsed = parseInt(currentLastOfferInServer?.replace(",", ""))
       if (isNaN(inputValue)) {
         if (currentLastOfferInServerParsed >= inputValueParsed) {
           this.formData.amount = this.parseFetchedAmount(currentLastOfferInServer);
@@ -586,70 +600,73 @@ export default {
       return lastOffer
     },
     fetchData() {
-     const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
-     const url = `${this.$config.baseURL}${listSubastasEndpoint}`
-     const token = getUserTokenOrDefault()
-     axios.get(url, {
-       headers: {
-         Authorization: `Token ${token}`
-       },
-     })
-       .then(response => {
-         const horse = response.data
-         //name
-         this.HorsenName = horse.horses[this.horsePositionList].external_data.name
-         //horse ID
-         this.horseID = horse.horses[this.horsePositionList].external_data.id
-         //prebid date
-         this.PreBidDate = horse.start_pre_bid
-         this.EndPreBidDate = horse.end_pre_bid
-         this.PreBidDateFormat = this.formatted(horse.start_pre_bid)
-         this.EndPreBidDateFormat = this.formatted(horse.end_pre_bid)
-         //bid date
-         this.BidDate = horse.start_bid
-         this.EndBidDate = horse.end_bid
-         this.BidDateFormat = this.formatted(horse.start_bid)
-         this.EndBidDateFormat = this.formatted(horse.end_bid)
-         //horse Description
-         //genre
-         this.horseData.Genre = horse.horses[this.horsePositionList].external_data.sex
-         //Birthdate
-         this.horseData.BirthDate = this.formatted(horse.horses[this.horsePositionList].external_data.birth_date)
-         //color
-         this.horseData.Color = horse.horses[this.horsePositionList].external_data.color
-         //Weight
-         this.horseData.Weight = horse.horses[this.horsePositionList].external_data.weight
-         //Height
-         this.horseData.Height = horse.horses[this.horsePositionList].external_data.height
-         //Location
-         this.horseData.Location = horse.horses[this.horsePositionList].external_data.location
-         //Pedigree Image
-         this.horseData.Pedigree = horse.horses[this.horsePositionList].local_data.pedigree
-         //No. Register
-         this.horseData.registerNumber = horse.horses[this.horsePositionList].local_data.registration_no
-         //Hatchery
-         this.horseData.Hatchery = horse.horses[this.horsePositionList].external_data.birth_location
-         const birthDateMoment = moment(this.horseData.BirthDate, 'DD/MM/YYYY');
-         const today = moment();
-         this.horseData.Age = today.diff(birthDateMoment, 'years');
-         //xRays
-         this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
-         //Video URL
-         this.horseData.videoUrl = this.extractYouTubeId(horse.horses[this.horsePositionList].local_data.video_url)
-         // Live URL
-         this.liveURL = this.extractYouTubeId(horse.video_url)
-         //Horse Images
-         this.fetchHorseImages()
-         //Horse Age
-         this.age = this.calculateAge();
-         //Bid Status
-         this.statusBid = horse.status
-         //Bid Initial Amout
-         this.horseData.initialAmount = horse.horses[this.horsePositionList].local_data.initial_amount
-       })
-       .catch(error => {
-         console.error(error);
-       });
+      const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
+      const url = `${this.$config.baseURL}${listSubastasEndpoint}`
+      const token = getUserTokenOrDefault()
+      axios.get(url, {
+        headers: {
+          Authorization: `Token ${token}`
+        },
+      })
+        .then(response => {
+          const horse = response.data
+          //name
+          this.HorsenName = horse.horses[this.horsePositionList].external_data.name
+          //horse ID
+          this.horseID = horse.horses[this.horsePositionList].external_data.id
+          this.horseIDForm = horse.horses[this.horsePositionList].local_data.id
+          //prebid date
+          this.PreBidDate = horse.start_pre_bid
+          this.EndPreBidDate = horse.end_pre_bid
+          this.PreBidDateFormat = this.formatted(horse.start_pre_bid)
+          this.EndPreBidDateFormat = this.formatted(horse.end_pre_bid)
+          //bid date
+          this.BidDate = horse.start_bid
+          this.EndBidDate = horse.end_bid
+          this.BidDateFormat = this.formatted(horse.start_bid)
+          this.EndBidDateFormat = this.formatted(horse.end_bid)
+          //horse Description
+          //genre
+          this.horseData.Genre = horse.horses[this.horsePositionList].external_data.sex
+          //Birthdate
+          this.horseData.BirthDate = this.formatted(horse.horses[this.horsePositionList].external_data.birth_date)
+          //color
+          this.horseData.Color = horse.horses[this.horsePositionList].external_data.color
+          //Weight
+          this.horseData.Weight = horse.horses[this.horsePositionList].external_data.weight
+          //Height
+          this.horseData.Height = horse.horses[this.horsePositionList].external_data.height
+          //Location
+          this.horseData.Location = horse.horses[this.horsePositionList].external_data.location
+          //Pedigree Image
+          this.horseData.Pedigree = horse.horses[this.horsePositionList].local_data.pedigree
+          //No. Register
+          this.horseData.registerNumber = horse.horses[this.horsePositionList].local_data.registration_no
+          //Hatchery
+          this.horseData.Hatchery = horse.horses[this.horsePositionList].external_data.birth_location
+          const birthDateMoment = moment(this.horseData.BirthDate, 'DD/MM/YYYY');
+          const today = moment();
+          this.horseData.Age = today.diff(birthDateMoment, 'years');
+          //xRays
+          this.horseData.xRayGallery = horse.horses[this.horsePositionList].local_data.xrays.map(xray => xray.image)
+          //Video URL
+          this.horseData.videoUrl = this.extractYouTubeId(horse.horses[this.horsePositionList].local_data.video_url)
+          // Live URL
+          this.liveURL = this.extractYouTubeId(horse.video_url)
+          //Horse Images
+          this.fetchHorseImages()
+          //Horse Age
+          this.age = this.calculateAge();
+          //Bid Status
+          this.statusBid = horse.horses[[this.horsePositionList]].local_data.status
+          console.log(this.statusBid)
+          this.statusBidBid = horse.status
+          //Bid Initial Amout
+          this.horseData.final_amount = horse.horses[this.horsePositionList].local_data.final_amount
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
     statusOffer(BidDate) {
       const CurrentDate = new Date()
@@ -662,7 +679,7 @@ export default {
       const PostBidEndpoint = '/subastas/bid/';
       const url = `${this.$config.baseURL}${PostBidEndpoint}`;
       const token = getUserTokenOrDefault()
-      this.formData.horse_id = String(this.localHorseID);
+      this.formData.horse_id = String(this.horseIDForm);
       this.formData.amount = submittedAmount;
       this.formData.subasta_id = this.bidId;
 
