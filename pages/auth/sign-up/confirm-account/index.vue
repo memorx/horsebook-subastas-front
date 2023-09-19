@@ -190,9 +190,7 @@ export default {
       this.loading = true
       const url = this.$config.baseURL + "/users/verification-code/";
       // const token = "Token " + process.env.TOKEN;
-      const token = `Token ${this.$config.apiToken}`
       const headers = {
-        Authorization: token,
       };
       const body = data
       await this.$axios.$post(url, body, { headers })
