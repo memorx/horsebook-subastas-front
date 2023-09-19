@@ -35,7 +35,7 @@
             class="text-center text-sm font-bold"
           >LA PRE OFERTA HA COMENZADO</h1>
           <h1
-            v-if="bidStatus == 'BIDDING'"
+            v-if="bidStatus == 'CLOSED PREBID'"
             class="text-center text-sm font-bold"
           >LA PRE OFERTA HA TERMINADO Y</h1>
           <div class="flex justify-center">
@@ -72,7 +72,11 @@
             class="text-center text-sm font-bold"
           >LA SUBASTA HA TERMINADO</h1>
           <h1
-            v-else
+            v-if="bidStatus == 'CLOSED PREBID'"
+            class="text-center text-sm font-bold"
+          >LA SUBASTA ESTARA EN VIVO EN</h1>
+          <h1
+            v-if="bidStatus == 'BIDDING'"
             class="text-center text-sm font-bold"
           >LA SUBASTA ESTA EN VIVO</h1>
           <div class="flex justify-center">

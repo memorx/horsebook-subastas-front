@@ -236,6 +236,19 @@
             ></iframe>
           </div>
         </div>
+        <div
+          v-if="statusBidBid == 'CLOSED PREBID'"
+          class="w-full mt-4 md:mt-0"
+        >
+          <div
+            class="text-center w-full rounded-t-lg p-5"
+            style="background-color: #024694;"
+          >
+            <p class="text-white font-bold text-md">PRE OFERTA TERMINADA</p>
+            <p class="text-white font-light text-sm">ESPERA A QUE INICIE LA SUBASTA</p>
+          </div>
+          <Carousel :images="horseData.images" />
+        </div>
       </div>
       <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
         <div class="mb-4">
@@ -646,6 +659,7 @@ export default {
           this.age = this.calculateAge();
           //Bid Status
           this.statusBid = horse.horses[[this.horsePositionList]].local_data.status
+          console.log(this.statusBid)
           this.statusBidBid = horse.status
           //Bid Initial Amout
           this.horseData.final_amount = horse.horses[this.horsePositionList].local_data.final_amount
