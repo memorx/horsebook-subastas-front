@@ -17,19 +17,19 @@
             </thead>
             <tbody style="font-size: 13px;">
               <tr
-                v-for="(bid, index) in visibleBids"
-                :key="bid.id"
+                v-for="(bid, index) in bids"
+                :key="bid?.amount"
               >
                 <td class="table-cell border-y text-center">
                   {{
-                    bid.user_profile.name +
+                    bid?.user_profile?.name +
                     ' ' +
-                    bid.user_profile.fathers_surname
+                    bid?.user_profile?.fathers_surname
                   }}
                 </td>
-                <td class="table-cell border-y text-center">{{ bid.user_profile.country?.name }}</td>
-                <td class="table-cell border-y text-center">${{ formatAmount(bid.amount) }}</td>
-                <td class="table-cell border-y text-center">{{ formatDate(bid.bid_date) }}</td>
+                <td class="table-cell border-y text-center">{{ bid?.user_profile.country?.name }}</td>
+                <td class="table-cell border-y text-center">${{ formatAmount(bid?.amount) }}</td>
+                <td class="table-cell border-y text-center">{{ formatDate(bid?.bid_date) }}</td>
               </tr>
             </tbody>
           </table>
@@ -108,7 +108,7 @@ export default {
 
   },
   mounted() {
-    const lastOffer = this.$props.bids[0].amount
+    const lastOffer = this.$props.bids[0]?.amount
     const formattedLastOffer = parseInt(lastOffer).toLocaleString("en-US")
     this.$emit("last-offer-updated", formattedLastOffer)
   },
