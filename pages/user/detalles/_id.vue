@@ -20,7 +20,7 @@
           <h2 class="text-2xl font-bold mb-1">Subasta la Silla</h2>
           <h4 class="text-sm mb-4">🇲🇽 Monterrey, Nuevo Leon</h4>
           <span class="text-xl font-bold mb-2 mr-1">{{ item.horses.length }}</span>
-          <span>Caballos</span>
+          <span>{{ item.horses.length == 1 ? 'Caballo' : 'Caballos' }}</span>
         </div>
 
         <!-- Second Row in the second column -->
@@ -133,7 +133,7 @@
             <div
               v-if="horse.local_data.status == 'COMING'"
               class="text-center bg-yellow-300 mx-5 my-3 px-3 py-1 text-white font-bold text-sm rounded-full"
-            >POR VENIR</div>
+            >PROXIMA SUBASTA</div>
             <div
               v-if="horse.local_data.status == 'CLOSED'"
               class="text-center bg-red-400 mx-5 my-3 px-3 py-1 text-white font-bold text-sm rounded-full"
@@ -239,7 +239,7 @@ export default {
             const imageUrl = response.data[0].url;
             this.$set(this.horseData.imagesObject, horseID, imageUrl);
           } else {
-            console.error('No images found in the response for horse: ', horseID);
+            console.warn('No images found in the response for horse: ', horseID);
           }
         })
         .catch(error => {
@@ -305,6 +305,7 @@ export default {
           this.item.start_pre_bid = response.data.start_pre_bid
           this.item.horses = response.data.horses
           this.bidStatus = response.data.status
+          console.log(this.bidStatus)
           this.horseData.imagesID = response.data.horses.map(horse => horse.local_data.horse_id);
           this.calculateCountdown()
           this.calculateCountdownPre()
