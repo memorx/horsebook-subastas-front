@@ -51,7 +51,6 @@ export default function ({ app, store }) {
     const { isAuthenticated, isAbleToBid, ...authenticatedObject } = retrieveUserInformationOrDefault(app)
     store.commit('authenticate', isAuthenticated);
     if (isAuthenticated) {
-      console.log("User Authenticated in loadLocalStorage: ", authenticatedObject);
       setUserInLocalStorage(authenticatedObject);
       store.commit('setUser', authenticatedObject);
       store.commit('setIsUserAbleToBid', isAbleToBid);

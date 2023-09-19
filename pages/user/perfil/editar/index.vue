@@ -435,12 +435,12 @@ export default {
     async updateProfile() {
       this.email = [];
       let formData = new FormData();
-      const url = `${this.$config.baseURL}/users/update-user-profile/?email=${this.$store.state.user.email}`;
+      const url = `${this.$config.baseURL}/users/update-user-profile/?email=${this.$store.state.user.user}`;
       const decoded = JWTDecode(this.$cookies.get('access_token'));
       const formattedBirthDate = new Date(this.birth_date).toISOString().split('T')[0];
       if (decoded) {
         const headers = {
-          Authorization: 'Token 4b1089cc8bbc1ac6c05eed6448aca3bb5711ab7b'
+          Authorization: `Token ${decoded.token}`
         };
         const email = this.$store.state.user.email;
         formData.append('name', this.name || this.profile.name)
@@ -476,7 +476,7 @@ export default {
           formData.append("official_document_back", this.official_document_back);
         }
         try {
-          const response = await this.$axios.put(url, formData, { headers });
+          const response = await this.$axios.put(url, formData, { headers })
           this.$router.push('/user/perfil');
         } catch (error) {
           console.log(error, "ERROR");
@@ -503,7 +503,6 @@ export default {
     const decoded = JWTDecode(this.$cookies.get('access_token'));
 
     if (decoded) {
-      const token = "7992136a01a768227f14718e20efe5fa077a0db9"; // Replace with your token value
       const headers = {
         Authorization: `Token ${decoded.token}`,
       };
