@@ -146,7 +146,7 @@
           </div>
           <NuxtLink
             class="buttonDetails"
-            :to="`/bids/bid?id=${id}&horsePositionList=${index}`"
+            :to="`/bids/bid?id=${id}&horsePositionList=${index}&horseId=${horse.local_data.id}`"
           >
             <!-- Display the first image if it's available -->
             <img

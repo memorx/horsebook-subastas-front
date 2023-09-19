@@ -173,7 +173,7 @@
                 ref="detailsBid"
                 :bidId="bidId"
                 :horseID="horseID"
-                @last-offer-updated="updateLastOffer"
+                :bids="this.$data.bids"
               />
             </div>
           </div>
@@ -441,6 +441,8 @@ export default {
       errorMessage: '',
       OfferStatus: null,
       showModal: false,
+      socket: null,
+      bids: []
     }
   },
   computed: {
@@ -449,6 +451,9 @@ export default {
     },
     bidId() {
       return this.$route.query.id;
+    },
+    horseId() {
+      return this.$route.query.horseId
     },
     horsePositionList() {
       return this.$route.query.horsePositionList;
@@ -473,9 +478,25 @@ export default {
   },
   mounted() {
     this.fetchData()
-    setInterval(() => {
-      this.setCurrentOffer()
-    }, 2000);
+    const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
+    this.$data.socket = new WebSocket(url)
+    const mountedThis = this
+    this.$data.socket.onmessage = function (event) {
+      const message = JSON.parse(event.data)
+      if (message.bids && message.bids.length > 0) {
+        mountedThis.$data.bids = message.bids
+      } else {
+        if (mountedThis.$data.bids.length > 20) {
+          mountedThis.$data.bids.pop()
+        }
+        mountedThis.$data.bids.unshift(message.bid)
+      }
+      if (mountedThis.$data.bids.length > 0) {
+        mountedThis.$data.lastOffer = parseInt(mountedThis.$data.bids[0].amount).toLocaleString("en-US")
+        mountedThis.$data.formData.amount = mountedThis.preloadAmount();
+      }
+    }
+
   },
   // async created() {
   //   if (this.formData.amount) {
@@ -676,43 +697,21 @@ export default {
     submitForm(event) {
       event.preventDefault();
       const submittedAmount = parseInt(this.formData.amount.replace(',', ''))
-      const PostBidEndpoint = '/subastas/bid/';
-      const url = `${this.$config.baseURL}${PostBidEndpoint}`;
-      const token = getUserTokenOrDefault()
-      this.formData.horse_id = String(this.horseIDForm);
+      this.formData.horse_id = String(this.localHorseID);
       this.formData.amount = submittedAmount;
       this.formData.subasta_id = this.bidId;
+      const user = JSON.parse(localStorage.getItem("setUser"))
 
-      axios.post(url, this.formData, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-        .then((response) => {
-          this.successMessage = 'Oferta enviada correctamente';
-          this.errorMessage = '';
-          this.$emit('form-submitted');
-          this.formData.amount = this.preloadAmount();
-          setTimeout(() => {
-            this.successMessage = '';
-          }, 6000);
-        })
-        .catch((error) => {
-          this.errorMessage = 'Error al enviar la oferta';
-          if (error.response && error.response.data && error.response.data.non_field_errors && error.response.data.non_field_errors.length > 0) {
-            this.errorMessage = error.response.data.non_field_errors[0];
-          }
-          this.successMessage = '';
-          setTimeout(() => {
-            this.formData.amount = this.preloadAmount();
-          }, 1500);
-          setTimeout(() => {
-            this.errorMessage = '';
-            this.successMessage = '';
-          }, 6000);
-        });
+      this.socket.send(JSON.stringify({
+        "bid_info": {
+          "amount": submittedAmount
+          },
+        "sender": {
+            "email": user.email
+        }
+      }))
     },
-  },
+  }
 
 }
 </script>
