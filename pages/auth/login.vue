@@ -102,13 +102,10 @@
 </template>
 
 <script>
-
-import { env } from 'process';
 import Cookie from 'js-cookie'
-import axios from 'axios'
+
 export default {
   layout: 'auth',
-  // authenticated: false,
   data() {
     return {
       login: {
@@ -121,7 +118,6 @@ export default {
 
   methods: {
     async userLogin() {
-      // Login the user
       const url = this.$config.baseURL + '/users/login-app/'
       const headers = {
       };
@@ -149,20 +145,13 @@ export default {
             const signature = HMACSHA256(`${encodedHeaders}.${encodedPlayload}`, "mysecret")
             const encodedSignature = btoa(signature)
             const jwt = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
-            // Set JWT to the cookie
             Cookie.set("access_token", jwt)
-
             this.$store.commit('authenticate', true);
-
-            // Set the user information in the store
             this.$store.commit('setUser', {
               email: this.login.email,
               token: response.token,
             })
             this.$store.commit('setIsUserAbleToBid', response.data.app_user_profile.bid)
-            console.log(this.$store, "STORE")
-
-            // Redirect to the home page
             this.$router.push('/landingPage')
           }
         })

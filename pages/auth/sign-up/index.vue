@@ -145,6 +145,7 @@
                   class="text-black-600 font-medium"
                 >País</label>
                 <select
+                  required
                   v-if="form.countries.length > 0"
                   v-model="form.selectedCountry"
                   @change="updateSelectedCountryCode"
@@ -168,6 +169,7 @@
                 class="text-black-600 font-medium"
               >Estado</label>
               <select
+                required
                 v-if="form.states.length > 0"
                 @change="updateSelectedStateCode"
                 v-model="form.selectedState"
@@ -196,6 +198,7 @@
               class="text-black-600 font-medium"
             >Ciudad</label>
             <select
+              required
               v-if="form.cities.length > 0"
               v-model="form.selectedCity"
               @change="updateSelectedCityCode"
@@ -289,44 +292,58 @@
           <div class="flex">
             <!-- ID Enfrente -->
             <div class="flex w-1/2 flex-col">
-              <label class="text-black-600 font-medium relative cursor-pointer text-center mx-1">
+              <label
+                for="fileInput"
+                class="text-black-600 font-medium relative cursor-pointer text-center mx-1"
+              >
                 <span class="block mb-2">Documento de identidad Enfrente</span>
                 <div class="flex items-center">
                   <input
+                    id="fileInput"
+                    name="fileFront"
+                    required
                     type="file"
                     ref="fileInput"
                     @change="handleFileChange"
                     accept="image/*"
-                    class="hidden"
+                    class="w-full rounded-l-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                   <button
                     type="button"
-                    class="py-2 bg-gray-200 text-gray-500 underline border-dashed border-gray-600 border-2 rounded-lg w-full h-40"
                     @click="$refs.fileInput.click()"
                   >
-                    {{ form.official_document ? form.official_document.name : 'Escoge una imagen' }}
+                    <i
+                      class="fas fa-upload rounded-r-md px-4 py-3 text-blue-500 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                    </i>
                   </button>
                 </div>
               </label>
             </div>
             <!-- ID Atras -->
             <div class="flex flex-col w-1/2">
-              <label class="text-black-600 font-medium relative cursor-pointer text-center mx-1">
+              <label
+                for="fileInputBack"
+                class="text-black-600 font-medium relative cursor-pointer text-center mx-1"
+              >
                 <span class="block mb-2">Documento de identidad Atras</span>
                 <div class="flex items-center">
                   <input
+                    id="fileInputBack"
+                    name="fileBack"
+                    required
                     type="file"
                     ref="fileInputBack"
                     @change="handleFileChangeBack"
                     accept="image/*"
-                    class="hidden"
+                    class="w-full rounded-l-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                   <button
                     type="button"
-                    class="py-2 bg-gray-200 text-gray-500 underline border-dashed border-gray-600 border-2 rounded-lg w-full h-40"
                     @click="$refs.fileInputBack.click()"
                   >
-                    {{ form.official_document_back ? form.official_document_back.name : 'Escoge una imagen' }}
+                    <i
+                      class="fas fa-upload rounded-r-md px-4 py-3 text-blue-500 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                    </i>
                   </button>
                 </div>
               </label>
@@ -430,7 +447,6 @@
               <label class="text-gray-600">
                 Al continuar estoy de acuerdo con los
                 <button
-                  @click="openPDF"
                   target="_blank"
                   class="underline"
                 >Terminos y Condiciones</button> de La Silla.
@@ -449,7 +465,6 @@
                 class="text-gray-600"
               >Al continuar estoy de acuerdo con la
                 <button
-                  @click="openPDF"
                   target="_blank"
                   class="underline"
                 >Politica de Privacidad</button> de La Silla.
@@ -477,6 +492,7 @@
 <script>
 import Loading from '../../../components/shared/Loading.vue';
 import axios from 'axios'
+
 export default {
   components: { Loading },
   computed: {
@@ -509,7 +525,6 @@ export default {
         selectedDialCode: '',
         selectedState: '',
         selectedStateCode: '',
-        // municipalitie means city to the back-end
         municipalitie: "",
         phone: "",
         email: "",
@@ -575,20 +590,13 @@ export default {
         this.form.selectedCityCode = "";
       }
     },
-    openPDF(path) {
-      const pdfPath = path;
-
-      window.open(pdfPath, '_blank');
-    },
     handleFileChange(event) {
       const selectedFile = event.target.files[0];
       this.form.official_document = selectedFile;
-      this.$refs.fileInput.value = '';
     },
     handleFileChangeBack(event) {
       const selectedFile = event.target.files[0];
       this.form.official_document_back = selectedFile;
-      this.$refs.fileInput.value = '';
     },
     handlePasswordInput() {
       this.validatePassword();
@@ -596,32 +604,25 @@ export default {
     validatePasswordMatch() {
       const password = this.form.password;
       const confirmPassword = this.form.confirmPassword;
-      this.passwordMatchValidationMessage = password === confirmPassword ? '' : 'Las contraseñas deben ser iguales.';
+      this.form.passwordMatchValidationMessage = password === confirmPassword ? '' : 'Las contraseñas deben ser iguales.';
     },
     validatePassword() {
       const password = this.form.password;
-
       const isLengthValid = password.length >= 8;
       const hasDigit = /\d/.test(password);
-
       const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(password);
-
-
       this.form.passwordValidationMessage = isLengthValid ? '' : 'La contraseña debe tener al menos 8 caracteres.';
       this.form.digitValidationMessage = hasDigit ? '' : 'La contraseña debe contener al menos un dígito.';
       this.form.specialCharacterValidationMessage = hasSpecialCharacter ? '' : 'La contraseña debe contener al menos un carácter especial.';
     },
     handleSubmit() {
-      // Check the data
       if (this.form.password !== this.form.confirmPassword) {
         this.$toast.error("Las contraseñas no coinciden");
         return;
       }
-      // Validate password strength
       const passwordPattern = /^(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/;
       const username = this.form.email.split("@")[0];
       const password = this.form.password;
-      // Check if password is valid
       const isValidPassword = !password.includes(username) &&
         !password.includes(this.form.name) &&
         !password.includes(this.form.fathers_surname) &&
@@ -631,12 +632,10 @@ export default {
         password !== "123456" &&
         passwordPattern.test(password) &&
         this.form.password === this.form.confirmPassword;
-      // Display error message if password is invalid
       if (!isValidPassword) {
         this.$toast.error("La contraseña debe tener al menos 8 caracteres,<br>contener al menos un dígito,<br>un carácter especial,<br>no puede incluir parte de los atributos del usuario,<br>ni ser una contraseña común o fácilmente adivinable.");
         return;
       }
-
       this.signUp(this.form);
     },
     normalizeString(input) {
@@ -666,73 +665,37 @@ export default {
       const url = this.$config.baseURL + "/users/create-user/";
       const headers = {
       };
-      // Create a FormData object
       let formData = new FormData();
-
-      // Data to append
-      const body = {
-        "email": data.email,
-        "password": data.password,
-        "app_user_profile": {
-          "name": data.name,
-          "mothers_maiden_name": data.mothers_maiden_name,
-          "fathers_surname": data.fathers_surname,
-          "official_document": data.official_document,
-          "official_document_back": data.official_document_back,
-          "country": data.selectedCountryCode,
-          "state": data.selectedStateCode,
-          "municipalitie": data.selectedCityCode,
-          "phone": data.phone,
-          "reference_1_contact": data.reference1.name,
-          "reference_1_occupation": data.reference1.occupation,
-          "reference_1_phone": data.reference1.phone,
-          "reference_2_contact": data.reference2.name,
-          "reference_2_occupation": data.reference2.occupation,
-          "reference_2_phone": data.reference2.phone,
-          "street": data.street,
-          "outdoor_number": data.outdoor_number,
-          "indoor_number": data.indoor_number,
-          "zip_code": data.zip_code
-        }
-      };
-
-      // Append text fields from body
-      formData.append("email", body.email);
-      formData.append("password", body.password);
-
-      // Append nested objectx
-      formData.append("name", body.app_user_profile.name);
-      formData.append("mothers_maiden_name", body.app_user_profile.mothers_maiden_name);
-      formData.append("fathers_surname", body.app_user_profile.fathers_surname);
-      formData.append("country", body.app_user_profile.country);
-      formData.append("state", body.app_user_profile.state);
-      formData.append("municipalitie", body.app_user_profile.municipalitie);
-      formData.append("phone", body.app_user_profile.phone);
-      formData.append("reference_1_contact", body.app_user_profile.reference_1_contact)
-      formData.append("reference_1_occupation", body.app_user_profile.reference_1_occupation)
-      formData.append("reference_1_phone", body.app_user_profile.reference_1_phone)
-      formData.append("reference_2_contact", body.app_user_profile.reference_2_contact)
-      formData.append("reference_2_occupation", body.app_user_profile.reference_2_occupation)
-      formData.append("reference_2_phone", body.app_user_profile.reference_2_phone)
-      formData.append("street", body.app_user_profile.street)
-      formData.append("outdoor_number", body.app_user_profile.outdoor_number)
-      formData.append("indoor_number", body.app_user_profile.indoor_number)
-      formData.append("zip_code", body.app_user_profile.zip_code)
-      // Append the file, if it exists
-      if (body.app_user_profile.official_document) {
-        formData.append("official_document", body.app_user_profile.official_document);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      formData.append("name", data.name);
+      formData.append("mothers_maiden_name", data.mothers_maiden_name);
+      formData.append("fathers_surname", data.fathers_surname);
+      formData.append("country", data.selectedCountryCode);
+      formData.append("state", data.selectedStateCode);
+      formData.append("municipalitie", data.selectedCityCode);
+      formData.append("phone", data.phone);
+      formData.append("reference_1_contact", data.reference1.name)
+      formData.append("reference_1_occupation", data.reference1.occupation)
+      formData.append("reference_1_phone", data.reference1.phone)
+      formData.append("reference_2_contact", data.reference2.name)
+      formData.append("reference_2_occupation", data.reference2.occupation)
+      formData.append("reference_2_phone", data.reference2.phone)
+      formData.append("street", data.street)
+      formData.append("outdoor_number", data.outdoor_number)
+      formData.append("indoor_number", data.indoor_number)
+      formData.append("zip_code", data.zip_code)
+      if (data.official_document) {
+        formData.append("official_document", data.official_document);
       }
-
-      // Append the file, if it exists
-      if (body.app_user_profile.official_document_back) {
-        formData.append("official_document_back", body.app_user_profile.official_document_back);
+      if (data.official_document_back) {
+        formData.append("official_document_back", data.official_document_back);
       }
-
+      console.log(formData)
       await this.$axios.$post(url, formData, { headers })
         .then((response) => {
           this.loading = false
           let data = response
-          // even knowing the password is encrypted, We shouldn't include in our store
           delete data.password
           this.$store.commit('setSingUpData', data)
           this.$router.push('/auth/sign-up/confirm-account')
@@ -798,3 +761,9 @@ export default {
   }
 }
 </script>
+
+<style>
+input::file-selector-button {
+  display: none;
+}
+</style>
