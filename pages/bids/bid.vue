@@ -496,7 +496,7 @@ export default {
 
       if (message.bids && message.bids.length > 0) {
         mountedThis.$data.bids = message.bids
-      }
+      } 
 
       if (message.bid) {
         if (mountedThis.$data.bids.length > 20) {
@@ -594,12 +594,7 @@ export default {
     async setCurrentOffer() {
       const currentLastOfferInServer = await this.fetchLastOffer(this.bidId, this.horseID)
       const inputValue = this.formData?.amount
-      const inputValueParsed = ''
-      if (typeof inputValue === "string" && inputValue.includes(",")) {
-        const inputValueParsed = parseInt(inputValue.replace(",", ""), 10);
-      } else {
-        console.error("Input value is not in the expected format");
-      }
+      const inputValueParsed = parseInt(inputValue.replace(",", ""))
       const currentLastOfferInServerParsed = parseInt(currentLastOfferInServer?.replace(",", ""))
       if (isNaN(inputValue)) {
         if (currentLastOfferInServerParsed >= inputValueParsed) {
@@ -732,9 +727,9 @@ export default {
       this.socket.send(JSON.stringify({
         "bid_info": {
           "amount": submittedAmount
-        },
+          },
         "sender": {
-          "email": user.email
+            "email": user.email
         }
       }))
     },
