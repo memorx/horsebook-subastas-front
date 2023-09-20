@@ -485,9 +485,7 @@ export default {
   mounted() {
     this.fetchData()
     this.fetchGenres()
-    setInterval(() => {
-      this.setCurrentOffer()
-    }, 2000);
+    console.log(this.horseId)
     const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
     this.$data.socket = new WebSocket(url)
     const mountedThis = this
@@ -590,26 +588,6 @@ export default {
     },
     updateLastOffer(offer) {
       this.lastOffer = offer;
-    },
-    async setCurrentOffer() {
-      const currentLastOfferInServer = await this.fetchLastOffer(this.bidId, this.horseID)
-      const inputValue = this.formData?.amount
-      const inputValueParsed = ''
-      if (typeof inputValue === "string" && inputValue.includes(",")) {
-        const inputValueParsed = parseInt(inputValue.replace(",", ""), 10);
-      } else {
-        console.error("Input value is not in the expected format");
-      }
-      const currentLastOfferInServerParsed = parseInt(currentLastOfferInServer?.replace(",", ""))
-      if (isNaN(inputValue)) {
-        if (currentLastOfferInServerParsed >= inputValueParsed) {
-          this.formData.amount = this.parseFetchedAmount(currentLastOfferInServer);
-        } else {
-          this.formData.amount = this.preloadAmount();
-        }
-      } else {
-        this.formData.amount = parseInt(this.horseData.final_amount).toLocaleString('en-US');
-      }
     },
     async fetchLastOffer(bid, horse) {
       const getLastBidsEndpoint = `/subastas/get-last-bids/`
@@ -724,17 +702,14 @@ export default {
     submitForm(event) {
       event.preventDefault();
       const submittedAmount = parseInt(this.formData.amount.replace(',', ''))
-      this.formData.horse_id = String(this.localHorseID);
       this.formData.amount = submittedAmount;
-      this.formData.subasta_id = this.bidId;
       const user = JSON.parse(localStorage.getItem("setUser"))
-
-      this.socket.send(JSON.stringify({
-        "bid_info": {
-          "amount": submittedAmount
+      this.$data.socket.send(JSON.stringify({
+        bid_info: {
+          amount: submittedAmount
         },
-        "sender": {
-          "email": user.email
+        sender: {
+          email: user.user
         }
       }))
     },
