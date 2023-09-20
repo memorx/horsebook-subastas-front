@@ -2,7 +2,7 @@
   <div class="bg-zinc-200 py-5 lg:px-20">
     <modal
       v-show="showModal"
-      :amount="formData.amount"
+      :amount="formData?.amount"
       :submitForm="submitForm"
       :disableModal="disableModal"
     />
@@ -100,11 +100,6 @@
               v-else
               class="text-white font-bold text-2xl"
             >SE EL PRIMERO EN OFERTAR</span>
-            <!-- <Winner
-              class="text-white"
-              :bidId="bidId"
-              :horseID="horseID"
-            /> -->
           </div>
           <div class="px-5 mt-5">
             <p class="text-sm font-bold">OFERTAR POR ESTE LOTE</p>
@@ -173,7 +168,7 @@
                 ref="detailsBid"
                 :bidId="bidId"
                 :horseID="horseID"
-                @last-offer-updated="updateLastOffer"
+                :bids="this.$data.bids"
               />
             </div>
           </div>
@@ -452,6 +447,8 @@ export default {
         5: 'Yegua Madre',
         6: 'Portadora',
       },
+      socket: null,
+      bids: []
     }
   },
   computed: {
@@ -460,6 +457,9 @@ export default {
     },
     bidId() {
       return this.$route.query.id;
+    },
+    horseId() {
+      return this.$route.query.horseId
     },
     horsePositionList() {
       return this.$route.query.horsePositionList;
@@ -488,13 +488,34 @@ export default {
     setInterval(() => {
       this.setCurrentOffer()
     }, 2000);
+    const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
+    this.$data.socket = new WebSocket(url)
+    const mountedThis = this
+    this.$data.socket.onmessage = function (event) {
+      const message = JSON.parse(event.data)
+
+      if (message.bids && message.bids.length > 0) {
+        mountedThis.$data.bids = message.bids
+      } 
+
+      if (message.bid) {
+        if (mountedThis.$data.bids.length > 20) {
+          mountedThis.$data.bids.pop()
+        } else {
+          mountedThis.$data.bids.unshift(message.bid)
+        }
+      }
+
+      if (mountedThis.$data.bids.length > 0) {
+        mountedThis.$data.lastOffer = parseInt(mountedThis.$data.bids[0]?.amount).toLocaleString("en-US")
+        mountedThis.$data.formData.amount = (parseInt(mountedThis.$data.bids[0]?.amount) + 1000).toLocaleString("en-US");
+      } else if (mountedThis.horseData.final_amount) {
+        mountedThis.$data.formData.amount = mountedThis.horseData.final_amount.toLocaleString("en-US")
+      } else {
+        mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
+      }
+    }
   },
-  // async created() {
-  //   if (this.formData.amount) {
-  //     const fetchAmount = await this.fetchLastOffer(this.bidId, this.horseID)
-  //     this.formData.amount = this.parseFetchedAmount(fetchAmount)
-  //   }
-  // },
   methods: {
     enableModal() {
       this.showModal = true
@@ -503,7 +524,7 @@ export default {
       this.showModal = false
     },
     setInitialAmount() {
-      if (this.formData.amount) {
+      if (this.formData?.amount) {
         this.formData.amount = this.horseData.final_amount ? this.horseData.final_amount : 0
       } else {
         const initialAmount = 1000
@@ -533,12 +554,12 @@ export default {
       }
     },
     addThousand() {
-      let currentValue = parseInt(this.formData.amount?.replace(',', ''));
+      let currentValue = parseInt(this.formData?.amount.replace(',', ''));
       currentValue += 1000;
       this.formData.amount = currentValue.toLocaleString('en-US');
     },
     substractThousand() {
-      let currentValue = parseInt(this.formData.amount?.replace(',', ''));
+      let currentValue = parseInt(this.formData?.amount?.replace(',', ''));
       currentValue -= 1000;
       this.formData.amount = currentValue.toLocaleString('en-US');
     },
@@ -550,7 +571,7 @@ export default {
     },
     preloadAmount() {
       const lastOffer = this.lastOffer;
-      const lastOfferStr = this.formData.amount.toLocaleString('en-US');
+      const lastOfferStr = this.formData?.amount.toLocaleString('en-US');
       return lastOfferStr
     },
     toggleTabs: function (tabNumber) {
@@ -572,7 +593,7 @@ export default {
     },
     async setCurrentOffer() {
       const currentLastOfferInServer = await this.fetchLastOffer(this.bidId, this.horseID)
-      const inputValue = this.formData.amount
+      const inputValue = this.formData?.amount
       const inputValueParsed = parseInt(inputValue.replace(",", ""))
       const currentLastOfferInServerParsed = parseInt(currentLastOfferInServer?.replace(",", ""))
       if (isNaN(inputValue)) {
@@ -698,43 +719,21 @@ export default {
     submitForm(event) {
       event.preventDefault();
       const submittedAmount = parseInt(this.formData.amount.replace(',', ''))
-      const PostBidEndpoint = '/subastas/bid/';
-      const url = `${this.$config.baseURL}${PostBidEndpoint}`;
-      const token = getUserTokenOrDefault()
-      this.formData.horse_id = String(this.horseIDForm);
+      this.formData.horse_id = String(this.localHorseID);
       this.formData.amount = submittedAmount;
       this.formData.subasta_id = this.bidId;
+      const user = JSON.parse(localStorage.getItem("setUser"))
 
-      axios.post(url, this.formData, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-        .then((response) => {
-          this.successMessage = 'Oferta enviada correctamente';
-          this.errorMessage = '';
-          this.$emit('form-submitted');
-          this.formData.amount = this.preloadAmount();
-          setTimeout(() => {
-            this.successMessage = '';
-          }, 6000);
-        })
-        .catch((error) => {
-          this.errorMessage = 'Error al enviar la oferta';
-          if (error.response && error.response.data && error.response.data.non_field_errors && error.response.data.non_field_errors.length > 0) {
-            this.errorMessage = error.response.data.non_field_errors[0];
-          }
-          this.successMessage = '';
-          setTimeout(() => {
-            this.formData.amount = this.preloadAmount();
-          }, 1500);
-          setTimeout(() => {
-            this.errorMessage = '';
-            this.successMessage = '';
-          }, 6000);
-        });
+      this.socket.send(JSON.stringify({
+        "bid_info": {
+          "amount": submittedAmount
+          },
+        "sender": {
+            "email": user.email
+        }
+      }))
     },
-  },
+  }
 
 }
 </script>

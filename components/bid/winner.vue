@@ -24,12 +24,13 @@ export default {
       type: [String, Number],
       required: true
     },
+    bids: {}
   },
   mounted() {
+    if (this.$props.bids.length > 0) {
+      this.$data.winnerBid = this.$props.bids[0].user_profile.name
+    }
 
-    setInterval(() => {
-      this.fetchWinner();
-    }, 1000);
   },
   computed: {
     textStyle() {
@@ -41,24 +42,6 @@ export default {
     },
   },
   methods: {
-
-    fetchWinner() {
-      const subastasEndpointWin = `/subastas/prebid-winner/?subasta_id=${this.bidId}&horse_id=${this.horseID}&pre_bid="True"`
-      const urlWinner = `${this.$config.baseURL}${subastasEndpointWin}`
-      const decoded = JWTDecode(this.$cookies.get("access_token"))
-      axios.get(urlWinner, {
-        headers: {
-          Authorization: `Token ${decoded.token}`
-        }
-      })
-        .then(response => {
-          const winner = response.data
-          this.winnerBid = winner.user_profile.name
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
   }
 
 }

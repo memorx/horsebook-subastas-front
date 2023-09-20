@@ -17,19 +17,19 @@
             </thead>
             <tbody style="font-size: 13px;">
               <tr
-                v-for="(bid, index) in visibleBids"
-                :key="bid.id"
+                v-for="(bid, index) in bids"
+                :key="bid?.amount"
               >
                 <td class="table-cell border-y text-center">
                   {{
-                    bid.user_profile.name +
+                    bid?.user_profile?.name +
                     ' ' +
-                    bid.user_profile.fathers_surname
+                    bid?.user_profile?.fathers_surname
                   }}
                 </td>
-                <td class="table-cell border-y text-center">{{ bid.user_profile.country?.name }}</td>
-                <td class="table-cell border-y text-center">${{ formatAmount(bid.amount) }}</td>
-                <td class="table-cell border-y text-center">{{ formatDate(bid.bid_date) }}</td>
+                <td class="table-cell border-y text-center">{{ bid?.user_profile.country?.name }}</td>
+                <td class="table-cell border-y text-center">${{ formatAmount(bid?.amount) }}</td>
+                <td class="table-cell border-y text-center">{{ formatDate(bid?.bid_date) }}</td>
               </tr>
             </tbody>
           </table>
@@ -69,7 +69,8 @@ export default {
     horseID: {
       type: [String, Number],
       required: true
-    }
+    },
+    bids: {}
   },
   data() {
     return {
@@ -94,22 +95,22 @@ export default {
       return this.$store.state.user;
     },
     visibleBids() {
-      if (!Array.isArray(this.detailsBid)) {
-        console.error("Unexpected data format for detailsBid:", this.detailsBid);
+      if (!Array.isArray(this.$props.bids)) {
+        console.error("Unexpected data format for detailsBid:", this.$props.bids);
         return [];
       }
 
       if (this.showNextBids) {
-        return this.detailsBid.slice(0, this.nextBidIndex + 1);
+        return this.$props.bids.slice(0, this.nextBidIndex + 1);
       }
-      return this.detailsBid.slice(0, 1);
+      return this.$props.bids.slice(0, 1);
     }
 
   },
   mounted() {
-    setInterval(() => {
-      this.getDetailsBid(this.bidId, this.horseID);
-    }, 1000);
+    const lastOffer = this.$props.bids[0]?.amount
+    const formattedLastOffer = parseInt(lastOffer).toLocaleString("en-US")
+    this.$emit("last-offer-updated", formattedLastOffer)
   },
   methods: {
     formatAmount(amount) {
@@ -118,35 +119,10 @@ export default {
     formatDate(date) {
       return moment(date).format('YY/MM/DD HH:mm');
     },
-    async getDetailsBid(bid, horse) {
-      const getLastBidsEndpoint = `/subastas/get-last-bids/`
-      const url = `${this.$config.baseURL}${getLastBidsEndpoint}`
-      const token = getUserTokenOrDefault()
-      this.parameters.subasta_id = bid
-      this.parameters.horse_id = horse
-      this.tableKey++;
-      await axios.get(url, {
-        params: this.parameters,
-        headers: {
-          Authorization: `Token ${token}`
-        }
-      })
-        .then(response => {
-          this.detailsBid = response.data
-          if (this.detailsBid) {
-            this.lastOffer = this.detailsBid[0]?.amount
-            const formattedLastOffer = parseInt(this.lastOffer).toLocaleString('en-US');
-            this.$emit('last-offer-updated', formattedLastOffer);
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
     toggleNextBids() {
       this.showNextBids = !this.showNextBids;
       if (this.showNextBids) {
-        this.nextBidIndex = this.detailsBid.length - 1;
+        this.nextBidIndex = this.$props.bids.length - 1;
       } else {
         this.nextBidIndex = 1;
       }
