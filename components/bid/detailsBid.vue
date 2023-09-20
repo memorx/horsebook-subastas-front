@@ -18,11 +18,11 @@
             <tbody style="font-size: 13px;">
               <tr
                 v-for="(bid, index) in bids"
-                :key="bid?.amount"
+                :key="bid?.id"
               >
                 <td class="table-cell border-y text-center">
                   {{
-                    bid?.user_profile?.name +
+                    (bid?.user_profile?.name ?? '') +
                     ' ' +
                     bid?.user_profile?.fathers_surname
                   }}
@@ -33,15 +33,6 @@
               </tr>
             </tbody>
           </table>
-        </div>
-        <div class="flex justify-center">
-          <div class="flex items-center my-3">
-            <button
-              @click="toggleNextBids"
-              class="bg-black text-white py-2 rounded-md px-4"
-            >{{ showNextBids ? 'Mostrar solo ultima oferta' : 'Mostrar todas las ofertas' }}
-            </button>
-          </div>
         </div>
       </div>
     </template>
