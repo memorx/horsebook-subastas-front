@@ -22,9 +22,9 @@
               >
                 <td class="table-cell border-y text-center">
                   {{
-                    bid?.user_profile?.name +
-                    ' ' +
-                    bid?.user_profile?.fathers_surname
+                    (bid.user_profile.name ?? "") +
+                    " " +
+                    bid.user_profile.fathers_surname
                   }}
                 </td>
                 <td class="table-cell border-y text-center">{{ bid?.user_profile.country?.name }}</td>
