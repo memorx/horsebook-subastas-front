@@ -436,6 +436,17 @@ export default {
       errorMessage: '',
       OfferStatus: null,
       showModal: false,
+      genders: '',
+      genreMapping: {
+        null: '',
+        0: 'Macho Completo',
+        1: 'Hembra',
+        2: 'Macho Castrado',
+        3: 'Semental',
+        4: 'Nano',
+        5: 'Yegua Madre',
+        6: 'Portadora',
+      },
       socket: null,
       bids: []
     }
@@ -473,6 +484,10 @@ export default {
   },
   mounted() {
     this.fetchData()
+    this.fetchGenres()
+    setInterval(() => {
+      this.setCurrentOffer()
+    }, 2000);
     const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
     this.$data.socket = new WebSocket(url)
     const mountedThis = this
@@ -500,7 +515,6 @@ export default {
         mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
       }
     }
-
   },
   methods: {
     enableModal() {
@@ -618,6 +632,17 @@ export default {
         });
       return lastOffer
     },
+    fetchGenres() {
+      const genreEndpoint = '/horses/gender-age'
+      const url = `${this.$config.baseLaSilla}${genreEndpoint}`
+      axios.get(url)
+        .then(response => {
+          this.genders = response.data.gender
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     fetchData() {
       const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
       const url = `${this.$config.baseURL}${listSubastasEndpoint}`
@@ -646,7 +671,7 @@ export default {
           this.EndBidDateFormat = this.formatted(horse.end_bid)
           //horse Description
           //genre
-          this.horseData.Genre = horse.horses[this.horsePositionList].external_data.sex
+          this.horseData.Genre = this.genreMapping[horse.horses[this.horsePositionList]?.external_data.sex] || '';
           //Birthdate
           this.horseData.BirthDate = this.formatted(horse.horses[this.horsePositionList].external_data.birth_date)
           //color
@@ -678,7 +703,6 @@ export default {
           this.age = this.calculateAge();
           //Bid Status
           this.statusBid = horse.horses[[this.horsePositionList]].local_data.status
-          console.log(this.statusBid)
           this.statusBidBid = horse.status
           //Bid Initial Amout
           this.horseData.final_amount = horse.horses[this.horsePositionList].local_data.final_amount
