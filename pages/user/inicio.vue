@@ -20,7 +20,7 @@
           :key="item.id"
           class="bg-white rounded-lg flex flex-col md:flex-row mb-10"
         >
-        <img
+          <img
             src="../../public/image_subasta.png"
             alt="logo"
             class="w-full md:w-1/2 object-cover md:rounded-l-lg"
@@ -58,7 +58,7 @@
           :key="item.id"
           class="bg-white rounded-lg flex flex-col md:flex-row mb-10"
         >
-        <img
+          <img
             src="../../public/image_subasta.png"
             alt="logo"
             class="w-full md:w-1/2 object-cover md:rounded-l-lg"
@@ -140,7 +140,7 @@ export default {
               }
             }
           })
-          
+
           this.loading = false;
         })
         .catch((error) => {
