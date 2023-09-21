@@ -12,25 +12,22 @@
 
             <!-- Navigation items -->
             <div class="flex items-center space-x-4">
-                
+
                 <div v-if="isUserAuthenticated">
                     <nuxt-link to="/user/inicio">
-                        <button
-                            class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
-                            >Tus Subastas
+                        <button class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black">Tus
+                            Subastas
                         </button>
                     </nuxt-link>
 
                     <button
                         class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
                         @click="logout"
-                        >Cerrar sesion
+                    >Cerrar sesión
                     </button>
 
                     <nuxt-link to="/user/perfil">
-                        <button
-                            class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
-                        >
+                        <button class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black">
                             <i class="fas fa-user fa-lg"></i>
                         </button>
                     </nuxt-link>
@@ -40,13 +37,13 @@
                     <button
                         @click="login"
                         class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
-                        >Iniciar sesion
+                    >Iniciar sesión
                     </button>
                     <nuxt-link to="/auth/sign-up">
                         <button
                             @click="login"
                             class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
-                        >Registrate
+                        >Regístrate
                         </button>
                     </nuxt-link>
                 </div>
