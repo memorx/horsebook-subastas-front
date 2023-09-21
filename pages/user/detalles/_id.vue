@@ -177,7 +177,6 @@
 
 <script>
 import axios from 'axios'
-import getUserTokenOrDefault from '../../../utils/getUserTokenOrDefault';
 import Loading from '../../../components/shared/Loading.vue';
 
 export default {
@@ -296,14 +295,10 @@ export default {
     },
     async getDetailsAuction(itemId) {
       const url = this.$config.baseURL + `/subastas/list-subastas/?id=${itemId}`
-      const token = getUserTokenOrDefault();
-      let headers = {
-        Authorization: `Token ${token}`,
-      };
       this.loading = true;
 
       await this.$axios
-        .get(url, { headers })
+        .get(url)
         .then((response) => {
           this.item.start_bid = response.data.start_bid
           this.item.start_pre_bid = response.data.start_pre_bid
