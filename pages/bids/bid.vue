@@ -494,17 +494,17 @@ export default {
     const mountedThis = this
     this.$data.socket.onmessage = function (event) {
       const message = JSON.parse(event.data)
-
+      
       if (message.bids && message.bids.length > 0) {
+        console.log(message.bids)
         mountedThis.$data.bids = message.bids
       }
 
       if (message.bid) {
         if (mountedThis.$data.bids.length > 20) {
           mountedThis.$data.bids.pop()
-        } else {
-          mountedThis.$data.bids.unshift(message.bid)
         }
+          mountedThis.$data.bids.unshift(message.bid)
       }
 
       if (mountedThis.$data.bids.length > 0) {
