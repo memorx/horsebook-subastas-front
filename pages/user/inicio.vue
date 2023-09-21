@@ -98,7 +98,6 @@ import Cookie from 'js-cookie'
 import axios from "axios"
 import moment from 'moment';
 import Loading from '../../components/shared/Loading.vue';
-import getUserTokenOrDefault from '../../utils/getUserTokenOrDefault';
 
 
 export default {
@@ -131,23 +130,17 @@ export default {
       const listSubastasEndpoint = "/subastas/list-subastas/";
       const currentDate = new Date().toISOString().slice(0, 10);
       const url = `${this.$config.baseURL}${listSubastasEndpoint}?start_date=${currentDate}&only_subasta_data=true`;
-      const token = getUserTokenOrDefault()
       //I want to stop to make a hardcode and do it using logic
-      if (token) {
-        const headers = {
-          Authorization: `Token ${token}`,
-        };
-        this.loading = true;
-        await this.$axios
-          .get(url, { headers })
-          .then((response) => {
-            this.email = response.data;
-            this.loading = false;
-          })
-          .catch((error) => {
-            this.loading = false;
-          });
-      }
+      this.loading = true;
+      await this.$axios
+        .get(url)
+        .then((response) => {
+          this.email = response.data;
+          this.loading = false;
+        })
+        .catch((error) => {
+          this.loading = false;
+        });
     },
     // async registerAuctions() {
     //   this.register = []

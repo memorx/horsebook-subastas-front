@@ -175,15 +175,15 @@
         </div>
         <div
           v-if="statusBid == 'COMING' && statusBidBid == 'COMING'"
-          class="md:w-1/3 mt-4 md:mt-0"
+          class="md:w-1/3 mt-4 md:mt-0 flex-col"
         >
-          <div class="text-center w-full rounded-lg px-5 pt-5 bg-white mb-5">
+          <div class="flex-row text-center w-full rounded-lg px-5 pt-5 bg-white mb-5">
             <div class="w-full bg-green p-3">
               <p class="text-sm text-slate-500">Canatra x Laval</p>
               <h2 class="text-xl font-bold mb-2">{{ HorsenName }}</h2>
             </div>
           </div>
-          <div class="w-full rounded-lg p-5 pt-5 bg-white mt-5">
+          <div class=" flex-row w-full rounded-lg p-5 pt-5 bg-white mt-5">
             <div class="text-center w-full px-5">
               <p class="font-bold text-sm">PRECIO INICIAL</p>
               <span class="font-bold text-2xl">${{ horseData.final_amount }} USD</span>
@@ -201,7 +201,10 @@
             <div class="w-full rounded-t-lg px-5">
               <span class="font-bold text-sm">Termina {{ EndPreBidDateFormat }}</span>
             </div>
-            <div class="text-center texthidden md:block mt-1">
+            <div
+              v-if="isUserAuthenticated"
+              class="text-center texthidden md:block mt-1"
+            >
               <nuxt-link to="/auth/sign-up">
                 <button
                   class="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
@@ -589,32 +592,6 @@ export default {
     updateLastOffer(offer) {
       this.lastOffer = offer;
     },
-    async fetchLastOffer(bid, horse) {
-      const getLastBidsEndpoint = `/subastas/get-last-bids/`
-      const url = `${this.$config.baseURL}${getLastBidsEndpoint}`
-      const token = getUserTokenOrDefault()
-      const parameters = {
-        subasta_id: bid,
-        horse_id: horse,
-      }
-      // this.tableKey++;
-      let lastOffer = await axios.get(url, {
-        params: parameters,
-        headers: {
-          Authorization: `Token ${token}`
-        }
-      })
-        .then(response => {
-          const detailsBid = response.data
-          const lastOffer = detailsBid[0]?.amount || 0
-          const formattedLastOffer = parseInt(lastOffer).toLocaleString('en-US');
-          return formattedLastOffer
-        })
-        .catch(error => {
-          console.error('Error Fetching', error);
-        });
-      return lastOffer
-    },
     fetchGenres() {
       const genreEndpoint = '/horses/gender-age'
       const url = `${this.$config.baseLaSilla}${genreEndpoint}`
@@ -629,12 +606,7 @@ export default {
     fetchData() {
       const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
       const url = `${this.$config.baseURL}${listSubastasEndpoint}`
-      const token = getUserTokenOrDefault()
-      axios.get(url, {
-        headers: {
-          Authorization: `Token ${token}`
-        },
-      })
+      axios.get(url)
         .then(response => {
           const horse = response.data
           //name
