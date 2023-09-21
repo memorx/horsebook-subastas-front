@@ -72,7 +72,7 @@
             class="text-center text-sm font-bold"
           >LA SUBASTA HA TERMINADO</h1>
           <h1
-            v-if="bidStatus == 'CLOSED PREBID'"
+            v-if="bidStatus == 'CLOSED PREBID' || bidStatus == 'COMING'"
             class="text-center text-sm font-bold"
           >LA SUBASTA ESTARA EN VIVO EN</h1>
           <h1
