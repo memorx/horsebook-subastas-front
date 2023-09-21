@@ -13,14 +13,14 @@
       </div>
       <div>
         <div class="">
-          <p class="text-xl font-bold mb-3">PRÓXIMAS SUBASTAS</p>
+          <p class="text-xl font-bold mb-3">SUBASTAS EN CURSO</p>
         </div>
         <div
-          v-for="item in email"
+          v-for="item in currentAuctions"
           :key="item.id"
           class="bg-white rounded-lg flex flex-col md:flex-row mb-10"
         >
-          <img
+        <img
             src="../../public/image_subasta.png"
             alt="logo"
             class="w-full md:w-1/2 object-cover md:rounded-l-lg"
@@ -48,27 +48,22 @@
           </div>
         </div>
       </div>
-      <!-- <div>
+
+      <div>
         <div class="">
           <p class="text-xl font-bold mb-3">PRÓXIMAS SUBASTAS</p>
         </div>
         <div
-          v-for="item in register"
+          v-for="item in nextAuctions"
           :key="item.id"
           class="bg-white rounded-lg flex flex-col md:flex-row mb-10"
         >
-          <img
-            v-if="item.image"
-            :src="item.image"
-            alt="logo"
-            class="w-full md:w-1/2 object-cover rounded-t-lg md:rounded-l-lg"
-          >
-          <img
-            v-else
+        <img
             src="../../public/image_subasta.png"
             alt="logo"
-            class="w-full md:w-1/2 object-cover rounded-t-lg md:rounded-l-lg"
+            class="w-full md:w-1/2 object-cover md:rounded-l-lg"
             style="height: 400px;"
+            loading="lazy"
           >
           <div class="w-full md:w-1/2 flex flex-col justify-between">
             <div class="p-5">
@@ -89,7 +84,8 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
+      </div>
     </div>
   </div>
 </div></div></template>
@@ -109,7 +105,8 @@ export default {
   },
   data() {
     return {
-      email: [],
+      nextAuctions: [],
+      currentAuctions: [],
       register: [],
       moment: moment,
       loading: '',
@@ -126,16 +123,24 @@ export default {
   },
   methods: {
     async getAuctions() {
-      this.email = []
       const listSubastasEndpoint = "/subastas/list-subastas/";
-      const currentDate = new Date().toISOString().slice(0, 10);
-      const url = `${this.$config.baseURL}${listSubastasEndpoint}?start_date=${currentDate}&only_subasta_data=true`;
+      const currentDate = new Date();
+      const url = `${this.$config.baseURL}${listSubastasEndpoint}?only_subasta_data=true`;
       //I want to stop to make a hardcode and do it using logic
       this.loading = true;
       await this.$axios
         .get(url)
         .then((response) => {
-          this.email = response.data;
+          response.data.map((auction) => {
+            if (auction.status != "CLOSED") {
+              if (["PREBID", "BIDDING"].includes(auction.status)) {
+                this.currentAuctions.push(auction)
+              } else {
+                this.nextAuctions.push(auction)
+              }
+            }
+          })
+          
           this.loading = false;
         })
         .catch((error) => {
