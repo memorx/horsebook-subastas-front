@@ -1,8 +1,16 @@
 <template>
-  <div class="bg-zinc-200" style="height: 100%;">
+  <div
+    class="bg-zinc-200"
+    style="height: 100%;"
+  >
     <div>
       <div class="relative w-full text-center">
-        <img src="../public/image_landing.png" alt="logo" class="w-full object-cover" style="height: 90vh;" />
+        <img
+          src="../public/image_landing.png"
+          alt="logo"
+          class="w-full object-cover"
+          style="height: 90vh;"
+        />
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <div>
             <p class="font-bold text-6xl text-white">
@@ -21,7 +29,10 @@
                   REGÍSTRATE
                 </button>
               </a>
-              <a href="user/inicio" class="button-white">
+              <a
+                href="user/inicio"
+                class="button-white"
+              >
                 <button class="bg-black text-white px-5 py-3 rounded-lg font-medium">
                   ÚLTIMA SUBASTA
                 </button>
@@ -39,8 +50,12 @@
       <div v-else>
         <h1 class="text-center text-md font-bold">No hay subastas próximas</h1>
       </div>
-      <img class="rounded-lg mx-auto my-5 object-cover" style="height: 400px;" src="../public/image_landing_2.png"
-        alt="logo" />
+      <img
+        class="rounded-lg mx-auto my-5 object-cover"
+        style="height: 400px;"
+        src="../public/image_landing_2.png"
+        alt="logo"
+      />
       <div class="flex justify-center items-center">
         <nuxt-link to="/user/inicio">
           <button class="bg-black text-white px-5 py-3 rounded-lg">
@@ -67,8 +82,6 @@
 </template>
 
 <script>
-import getUserTokenOrDefault from '../utils/getUserTokenOrDefault';
-
 export default {
   data() {
     return {
@@ -93,15 +106,9 @@ export default {
       const listSubastasEndpoint = "/subastas/list-subastas/";
       const currentDate = new Date().toISOString().slice(0, 10);
       const url = `${this.$config.baseURL}${listSubastasEndpoint}?start_date=${currentDate}&only_subasta_data=true`;
-      const token = getUserTokenOrDefault()
-
-      // const token = decoded.token; // Use the decoded token directly
-      const headers = {
-        Authorization: `Token ${token}`,
-      };
       this.loading = true;
       try {
-        const response = await this.$axios.get(url, { headers });
+        const response = await this.$axios.get(url);
         this.subastas = response.data; // Assign the response data to this.subastas
         this.loading = false;
       } catch (error) {

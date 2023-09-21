@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="setUser">
+    <template>
       <div class="cont-tableBid mx-auto px-2 my-5">
         <div class="overflow-x-auto">
           <table
@@ -27,7 +27,7 @@
                     bid?.user_profile?.fathers_surname
                   }}
                 </td>
-                <td class="table-cell border-y text-center">{{ bid?.user_profile.country?.name }}</td>
+                <td class="table-cell border-y text-center">{{ bid?.user_profile.country }}</td>
                 <td class="table-cell border-y text-center">${{ formatAmount(bid?.amount) }}</td>
                 <td class="table-cell border-y text-center">{{ formatDate(bid?.bid_date) }}</td>
               </tr>
@@ -41,11 +41,7 @@
 
 <script>
 import Winner from '../../components/bid/winner.vue'
-import axios from 'axios'
 import moment from 'moment'
-import getUserTokenOrDefault from '../../utils/getUserTokenOrDefault';
-
-
 
 export default {
   name: 'Bids',
@@ -82,9 +78,6 @@ export default {
     }
   },
   computed: {
-    setUser() {
-      return this.$store.state.user;
-    },
     visibleBids() {
       if (!Array.isArray(this.$props.bids)) {
         console.error("Unexpected data format for detailsBid:", this.$props.bids);
