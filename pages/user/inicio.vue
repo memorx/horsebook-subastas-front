@@ -129,7 +129,7 @@ export default {
       this.email = []
       const listSubastasEndpoint = "/subastas/list-subastas/";
       const currentDate = new Date().toISOString().slice(0, 10);
-      const url = `${this.$config.baseURL}${listSubastasEndpoint}?start_date=${currentDate}&only_subasta_data=true`;
+      const url = `${this.$config.baseURL}${listSubastasEndpoint}?only_subasta_data=true`;
       //I want to stop to make a hardcode and do it using logic
       this.loading = true;
       await this.$axios
@@ -137,6 +137,7 @@ export default {
         .then((response) => {
           this.email = response.data;
           this.loading = false;
+          console.log(response.data)
         })
         .catch((error) => {
           this.loading = false;
