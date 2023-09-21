@@ -57,7 +57,7 @@
         alt="logo"
       />
       <div class="flex justify-center items-center">
-        <nuxt-link to="/user/inicio">
+        <nuxt-link to="/user/inicio/">
           <button class="bg-black text-white px-5 py-3 rounded-lg">
             CONOCER MÁS
           </button>
