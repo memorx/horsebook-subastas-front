@@ -446,10 +446,11 @@
               >
               <label class="text-gray-600">
                 Al continuar estoy de acuerdo con los
-                <button
+                <a
                   target="_blank"
+                  href="https://horsebook-subastas-stage.s3.us-east-2.amazonaws.com/static/docs/TerminosyCondiciones.pdf"
                   class="underline"
-                >Terminos y Condiciones</button> de La Silla.
+                >Terminos y Condiciones</a> de La Silla.
               </label>
             </div>
             <div class="flex items-center">
@@ -464,10 +465,11 @@
                 for="remember-me"
                 class="text-gray-600"
               >Al continuar estoy de acuerdo con la
-                <button
+                <a
+                  href="https://horsebook-subastas-stage.s3.us-east-2.amazonaws.com/static/docs/AvisodePrivacidadyPoliticas.pdf"
                   target="_blank"
                   class="underline"
-                >Politica de Privacidad</button> de La Silla.
+                >Politica de Privacidad</a> de La Silla.
               </label>
             </div>
           </div>
