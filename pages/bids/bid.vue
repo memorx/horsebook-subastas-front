@@ -451,7 +451,8 @@ export default {
         6: 'Portadora',
       },
       socket: null,
-      bids: []
+      bids: [],
+      errorMessage: ""
     }
   },
   computed: {
@@ -494,7 +495,13 @@ export default {
     const mountedThis = this
     this.$data.socket.onmessage = function (event) {
       const message = JSON.parse(event.data)
-      
+      if(message.error){
+        mountedThis.errorMessage = message.error
+        setTimeout(() => {
+          mountedThis.errorMessage = "";
+        }, 6000);
+        return
+      }
       if (message.bids && message.bids.length > 0) {
         console.log(message.bids)
         mountedThis.$data.bids = message.bids
@@ -674,7 +681,6 @@ export default {
     submitForm(event) {
       event.preventDefault();
       const submittedAmount = parseInt(this.formData.amount.replace(',', ''))
-      this.formData.amount = submittedAmount;
       const user = JSON.parse(localStorage.getItem("setUser"))
       this.$data.socket.send(JSON.stringify({
         bid_info: {
