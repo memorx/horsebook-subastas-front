@@ -4,6 +4,9 @@
       v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
     />
+    <NuxtLink :to="`/user/inicio/`">
+      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">Atras</button>
+    </NuxtLink>
     <div class="flex flex-wrap">
       <!-- First Column -->
       <div class="w-full sm:w-1/2 md:flex md:flex-col">

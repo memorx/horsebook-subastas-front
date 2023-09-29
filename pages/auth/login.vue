@@ -153,6 +153,7 @@ export default {
             })
             this.$store.commit('setIsUserAbleToBid', response.data.app_user_profile.bid)
             this.$router.push('/landingPage')
+            console.log('holis')
           }
         })
         .catch((error) => {
