@@ -217,6 +217,13 @@
           v-if="statusBid == 'CLOSED'"
           class="w-full mt-4 md:mt-0"
         >
+        <div
+            class="text-center w-full rounded-lg p-5 mb-5"
+            style="background-color: #b99d61;"
+          >
+            <p class="text-white font-bold text-md">GANADOR DE LA SUBASTA</p>
+            <p class="text-white font-bold text-md">{{ winner.name }}</p>
+          </div>
           <div
             class="text-center w-full rounded-t-lg p-5"
             style="background-color: #940202;"
@@ -238,6 +245,13 @@
           v-if="statusBidBid == 'CLOSED PREBID'"
           class="w-full mt-4 md:mt-0"
         >
+        <div
+            class="text-center w-full rounded-lg p-5 mb-5"
+            style="background-color: #b99d61;"
+          >
+          <p class="text-white font-bold text-md">GANADOR DE LA PREOFERTA</p>
+          <p class="text-white font-bold text-md">{{ winner.name }}</p>
+          </div>
           <div
             class="text-center w-full rounded-t-lg p-5"
             style="background-color: #024694;"
@@ -452,7 +466,8 @@ export default {
       },
       socket: null,
       bids: [],
-      errorMessage: ""
+      errorMessage: "",
+      winner: '',
     }
   },
   computed: {
@@ -503,7 +518,7 @@ export default {
         return
       }
       if (message.bids && message.bids.length > 0) {
-        console.log(message.bids)
+        mountedThis.winner = message.bids[0].user_profile
         mountedThis.$data.bids = message.bids
       }
 
