@@ -1,15 +1,14 @@
 <template>
-  <div
-    class="p-5 bg-zinc-200"
-    style="height: 100%;"
-  >
+  <div class="p-5 bg-zinc-200" style="height: 100%">
     <Loading
       v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
     />
     <div>
       <div class="text-center my-5">
-        <p class="text-2xl md:text-4xl font-bold">Bienvenido {{ setUser?.user || "Invitado" }}</p>
+        <p class="text-2xl md:text-4xl font-bold">
+          Bienvenido {{ setUser?.user || "Invitado" }}
+        </p>
       </div>
       <div>
         <div
@@ -21,16 +20,20 @@
             src="../../public/image_subasta.png"
             alt="logo"
             class="w-full md:w-1/2 object-cover md:rounded-l-lg"
-            style="height: 400px;"
+            style="height: 400px"
             loading="lazy"
-          >
+          />
           <div class="w-full md:w-1/2 flex flex-col justify-between">
             <div class="p-5">
               <p class="text-4xl font-bold">Subasta</p>
-              <p class="text-sm font-medium text-slate-500">Fecha de subasta: <span class="font-normal">{{ new
-                Date(item.start_bid).toLocaleString() }}</span></p>
+              <p class="text-sm font-medium text-slate-500">
+                Fecha de subasta:
+                <span class="font-normal">{{
+                  new Date(item.start_bid).toLocaleString()
+                }}</span>
+              </p>
               <div class="border-b border-gray-300 my-3"></div>
-              <p class="mb-5">{{ item.notes !== 'null' ? item.notes : '' }}</p>
+              <p class="mb-5">{{ item.notes !== "null" ? item.notes : "" }}</p>
               <div class="text-center mt-auto">
                 <NuxtLink
                   :to="'/user/detalles/' + item.id"
@@ -47,20 +50,20 @@
       </div>
     </div>
   </div>
-</div></div></template>
-<script>
-import Cookie from 'js-cookie'
-import axios from "axios"
-import moment from 'moment';
-import Loading from '../../components/shared/Loading.vue';
+</template>
 
+<script>
+import Cookie from "js-cookie"
+import axios from "axios"
+import moment from "moment"
+import Loading from "../../components/shared/Loading.vue"
 
 export default {
   components: { Loading },
   computed: {
     setUser() {
-      return this.$store.state.user;
-    },
+      return this.$store.state.user
+    }
   },
   data() {
     return {
@@ -68,12 +71,12 @@ export default {
       currentAuctions: [],
       register: [],
       moment: moment,
-      loading: '',
+      loading: ""
     }
   },
   async created() {
     if (this.setUser) {
-      this.$store.commit('authenticate', true);
+      this.$store.commit("authenticate", true)
       // await this.registerAuctions()
     }
   },
@@ -82,11 +85,11 @@ export default {
   },
   methods: {
     async getAuctions() {
-      const listSubastasEndpoint = "/subastas/list-subastas/";
-      const currentDate = new Date();
-      const url = `${this.$config.baseURL}${listSubastasEndpoint}?only_subasta_data=true`;
+      const listSubastasEndpoint = "/subastas/list-subastas/"
+      const currentDate = new Date()
+      const url = `${this.$config.baseURL}${listSubastasEndpoint}?only_subasta_data=true`
       //I want to stop to make a hardcode and do it using logic
-      this.loading = true;
+      this.loading = true
       await this.$axios
         .get(url)
         .then((response) => {
@@ -100,11 +103,11 @@ export default {
             }
           })
 
-          this.loading = false;
+          this.loading = false
         })
         .catch((error) => {
-          this.loading = false;
-        });
+          this.loading = false
+        })
     },
     // async registerAuctions() {
     //   this.register = []
@@ -132,9 +135,8 @@ export default {
     //   }
     // },
     goToDetails(id) {
-      this.$router.push(`/user/detalles/${id}`);
+      this.$router.push(`/user/detalles/${id}`)
     }
-  },
+  }
 }
-
 </script>
