@@ -12,9 +12,6 @@
         <p class="text-2xl md:text-4xl font-bold">Bienvenido {{ setUser?.user || "Invitado" }}</p>
       </div>
       <div>
-        <div class="">
-          <p class="text-xl font-bold mb-3">SUBASTAS EN CURSO</p>
-        </div>
         <div
           v-for="item in currentAuctions"
           :key="item.id"
@@ -29,7 +26,7 @@
           >
           <div class="w-full md:w-1/2 flex flex-col justify-between">
             <div class="p-5">
-              <p class="text-4xl font-bold">Colección <span class="font-extrabold">2023</span></p>
+              <p class="text-4xl font-bold">Subasta</p>
               <p class="text-sm font-medium text-slate-500">Fecha de subasta: <span class="font-normal">{{ new
                 Date(item.start_bid).toLocaleString() }}</span></p>
               <div class="border-b border-gray-300 my-3"></div>
@@ -40,45 +37,7 @@
                   @click.prevent="goToDetails(item.id)"
                 >
                   <button class="bg-black py-3 px-5 text-white rounded-lg">
-                    Ingresar A Subasta
-                  </button>
-                </NuxtLink>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="">
-          <p class="text-xl font-bold mb-3">PRÓXIMAS SUBASTAS</p>
-        </div>
-        <div
-          v-for="item in nextAuctions"
-          :key="item.id"
-          class="bg-white rounded-lg flex flex-col md:flex-row mb-10"
-        >
-          <img
-            src="../../public/image_subasta.png"
-            alt="logo"
-            class="w-full md:w-1/2 object-cover md:rounded-l-lg"
-            style="height: 400px;"
-            loading="lazy"
-          >
-          <div class="w-full md:w-1/2 flex flex-col justify-between">
-            <div class="p-5">
-              <p class="text-4xl font-bold">Colección <span class="font-extrabold">2023</span></p>
-              <p class="text-sm font-medium text-slate-500">Fecha de subasta: <span class="font-normal">{{ new
-                Date(item.start_bid).toLocaleString() }}</span></p>
-              <div class="border-b border-gray-300 my-3"></div>
-              <p class="mb-5">{{ item.notes !== 'null' ? item.notes : '' }}</p>
-              <div class="text-center mt-auto">
-                <NuxtLink
-                  :to="'/user/detalles/' + item.id"
-                  @click.prevent="goToDetails(item.id)"
-                >
-                  <button class="bg-black py-3 px-5 text-white rounded-lg">
-                    Ingresar A Subasta
+                    Ingresar a Subasta
                   </button>
                 </NuxtLink>
               </div>
