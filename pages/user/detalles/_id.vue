@@ -45,7 +45,7 @@
             v-if="bidStatus == 'PREBID'"
             class="text-center text-sm font-bold"
           >
-            LA PRE OFERTA HA COMENZADO
+            LA PRE OFERTA HA COMENZADO,
           </h1>
           <h1
             v-if="bidStatus == 'CLOSED PREBID'"
@@ -53,18 +53,13 @@
           >
             LA PRE OFERTA HA TERMINADO Y
           </h1>
-          <div class="flex justify-center">
-            <div
-              class="mx-10 my-10"
-              v-if="countdownPre !== 'La Pre Oferta ha terminado'"
-            >
+          <div
+            v-if="loading == false && countdownPre == true"
+            class="flex justify-center"
+          >
+            <div class="mx-10 my-10">
               <div
-                v-if="
-                  preBidTime.days &&
-                  preBidTime.hours &&
-                  preBidTime.minutes &&
-                  preBidTime.seconds
-                "
+                v-if="countdownPre == true || loading == true"
                 class="md:flex md:items-center"
               >
                 <div class="mx-5">
@@ -102,11 +97,7 @@
             LA SUBASTA HA TERMINADO
           </h1>
           <h1
-            v-if="
-              bidStatus == 'CLOSED PREBID' ||
-              bidStatus == 'COMING' ||
-              bidStatus == 'PREBID'
-            "
+            v-if="bidStatus != 'BIDDING'"
             class="text-center text-sm font-bold"
           >
             LA SUBASTA ESTARA EN VIVO EN
@@ -117,12 +108,15 @@
           >
             LA SUBASTA ESTA EN VIVO
           </h1>
-          <div class="flex justify-center">
-            <div
-              class="mx-10 md:mx-0 my-10"
-              v-if="countdownSubasta !== 'La Subasta ha terminado'"
-            >
-              <div class="md:flex md:items-center">
+          <div
+            v-if="loading == false && countdownSubasta == true"
+            class="flex justify-center"
+          >
+            <div class="mx-10 md:mx-0 my-10">
+              <div
+                v-if="countdownSubasta == true || loading == true"
+                class="md:flex md:items-center"
+              >
                 <div class="mx-5">
                   <p class="text-center text-5xl mb-2 font-bold">
                     {{ bidTime.days }}
@@ -168,7 +162,10 @@
             :to="`/bids/bid?id=${id}&horsePositionList=${index}&horseId=${horse.local_data.id}`"
           >
             <div class="px-1 py-1">
-              <horseStatus :status="horse.local_data.status" />
+              <horseStatus
+                :status="horse.local_data.status"
+                :bid-status="bidStatus"
+              />
             </div>
             <img
               v-if="getImageUrl(horse.local_data.horse_id)"
@@ -176,15 +173,22 @@
               class="w-full object-cover"
               style="height: 40vh"
             />
-            <img
+            <div
+              class="bg-gray-200 h-[40vh] flex justify-center items-center"
               v-else
-              src="../../../public/horse_black.png"
-              alt="Default Horse"
-              class="w-full object-cover"
-              style="height: 40vh"
-            />
+            >
+              <img
+                class="m-auto opacity-70"
+                src="../../../public/image_la_silla.png"
+                alt="Default Horse"
+              />
+            </div>
+
             <p class="text-xl font-bold my-2 mx-6">
               {{ horse.external_data.name }}
+            </p>
+            <p class="text-md font-medium mx-6 text-gray-500">
+              Lote {{ horse.local_data.lot }}
             </p>
             <div class="border-b border-gray-300 my-4 mx-5"></div>
             <p
@@ -251,8 +255,8 @@ export default {
       },
       id: "",
       loading: false,
-      countdownSubasta: "Calculando cuenta regresiva...",
-      countdownPre: "Calculando cuenta regresiva...",
+      countdownSubasta: true,
+      countdownPre: true,
       bidStatus: ""
     }
   },
@@ -263,8 +267,6 @@ export default {
   },
   mounted() {
     // Update the countdown every second
-    this.timer = setInterval(this.calculateCountdown, 1000)
-    this.timer2 = setInterval(this.calculateCountdownPre, 1000)
   },
   beforeDestroy() {
     // Clear the timer when the component is destroyed
@@ -313,7 +315,7 @@ export default {
       const timeDifference = targetDate - now
 
       if (timeDifference <= 0) {
-        this.countdownSubasta = "La Subasta ha terminado"
+        this.countdownSubasta = false
         clearInterval(this.timer)
       } else {
         const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
@@ -336,7 +338,7 @@ export default {
       const timeDifference = targetDate - now
 
       if (timeDifference <= 0) {
-        this.countdownPre = "La Pre Oferta ha terminado"
+        this.countdownPre = false
         clearInterval(this.timer2)
       } else {
         const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
@@ -372,6 +374,8 @@ export default {
           this.loading = false
           this.calculateCountdown()
           this.calculateCountdownPre()
+          this.timer = setInterval(this.calculateCountdown, 1000)
+          this.timer2 = setInterval(this.calculateCountdownPre, 1000)
         })
         .catch((error) => {
           console.log(error)
