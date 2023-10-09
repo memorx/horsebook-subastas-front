@@ -256,6 +256,7 @@ export default {
         });
       }
     },
+
     async getInfo() {
       this.email = [];
       const token = getUserTokenOrDefault()
@@ -270,6 +271,7 @@ export default {
 
         try {
           const response = await this.$axios.get(url, { headers });
+          console.log(response)
           this.email = response.data.app_user_profile;
           this.profile = response.data.app_user_profile;
           this.selectedCountry = this.email.country.name

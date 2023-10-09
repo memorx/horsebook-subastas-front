@@ -36,7 +36,10 @@
           </div>
           <div class="w-full md:w-1/2 flex flex-col justify-between">
             <div class="p-5">
-              <p class="text-4xl font-bold">Subasta</p>
+              <div class="flex items-center">
+                <span class="text-4xl font-bold mr-2">Subasta</span>
+                <statusBid :status="item.status" />
+              </div>
               <p class="text-sm font-medium text-slate-500">
                 Fecha de subasta:
                 <span class="font-normal">{{
@@ -68,9 +71,10 @@ import Cookie from "js-cookie"
 import axios from "axios"
 import moment from "moment"
 import Loading from "../../components/shared/Loading.vue"
+import statusBid from "../../components/bid/statusBid.vue"
 
 export default {
-  components: { Loading },
+  components: { Loading, statusBid },
   computed: {
     setUser() {
       return this.$store.state.user
