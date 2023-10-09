@@ -17,15 +17,15 @@
         <div class="grid md:grid-cols-2 grid-cols-1 gap-4 my-5">
           <div class="flex flex-col">
             <p class="text-md font-bold mb-5">Nombre(s): <span class="font-medium">{{ email?.name }}</span></p>
-            <p class="text-md font-bold mb-5">Apellido paterno: <span class="font-medium">{{ email.fathers_surname
+            <p class="text-md font-bold mb-5">Apellido paterno: <span class="font-medium">{{ email?.fathers_surname
             }}</span>
             </p>
-            <p class="text-md font-bold mb-5">Apellido materno: <span class="font-medium">{{ email.mothers_maiden_name
+            <p class="text-md font-bold mb-5">Apellido materno: <span class="font-medium">{{ email?.mothers_maiden_name
             }}</span></p>
-            <p class="text-md font-bold mb-5">Fecha de nacimiento: <span class="font-medium">{{ email.birth_date }}</span>
+            <p class="text-md font-bold mb-5">Fecha de nacimiento: <span class="font-medium">{{ email?.birth_date }}</span>
             </p>
-            <p class="text-md font-bold mb-5">Email: <span class="font-medium">{{ email.email }}</span></p>
-            <p class="text-md font-bold mb-5">Teléfono: <span class="font-medium">{{ email.phone }}</span></p>
+            <p class="text-md font-bold mb-5">Email: <span class="font-medium">{{ email?.email }}</span></p>
+            <p class="text-md font-bold mb-5">Teléfono: <span class="font-medium">{{ email?.phone }}</span></p>
             <p class="text-md font-bold mb-5">Nacionalidad: <span class="font-medium">{{ selectedNationality }}</span>
             </p>
           </div>
@@ -34,21 +34,21 @@
             <p class="text-md font-bold mb-5">Estado: <span class="font-medium">{{ selectedState }}</span></p>
             <p class="text-md font-bold mb-5">Ciudad: <span class="font-medium">{{ selectedCity }}</span>
             </p>
-            <p class="text-md font-bold mb-5">Calle: <span class="font-medium">{{ email.street }}</span></p>
-            <p class="text-md font-bold mb-5">Número exterior: <span class="font-medium">{{ email.outdoor_number }}</span>
+            <p class="text-md font-bold mb-5">Calle: <span class="font-medium">{{ email?.street }}</span></p>
+            <p class="text-md font-bold mb-5">Número exterior: <span class="font-medium">{{ email?.outdoor_number }}</span>
             </p>
-            <p class="text-md font-bold mb-5">Número interior: <span class="font-medium">{{ email.interior_number
+            <p class="text-md font-bold mb-5">Número interior: <span class="font-medium">{{ email?.interior_number
             }}</span>
-            <p class="text-md font-bold mb-5">CP: <span class="font-medium">{{ email.zip_code }}</span></p>
+            <p class="text-md font-bold mb-5">CP: <span class="font-medium">{{ email?.zip_code }}</span></p>
             </p>
           </div>
           <p
-            v-if="email.official_document"
+            v-if="email?.official_document"
             class="text-md font-bold mb-5"
           >Identificacion Oficial Enfrente: <span>
               <img
                 class="rounded-lg"
-                :src="email.official_document"
+                :src="email?.official_document"
                 alt="official_document"
               >
             </span>
@@ -59,12 +59,12 @@
           >Identificacion Oficial Enfrente: <span class="font-medium">No existe un documento cargado</span>
           </p>
           <p
-            v-if="email.official_document_back"
+            v-if="email?.official_document_back"
             class="text-md font-bold mb-5"
           >Identificacion Oficial Atras: <span>
               <img
                 class="rounded-lg"
-                :src="email.official_document_back"
+                :src="email?.official_document_back"
                 alt="official_document"
               >
             </span>
@@ -256,6 +256,7 @@ export default {
         });
       }
     },
+
     async getInfo() {
       this.email = [];
       const token = getUserTokenOrDefault()
@@ -270,6 +271,7 @@ export default {
 
         try {
           const response = await this.$axios.get(url, { headers });
+          console.log(response)
           this.email = response.data.app_user_profile;
           this.profile = response.data.app_user_profile;
           this.selectedCountry = this.email.country.name

@@ -1,7 +1,12 @@
 <template>
   <div v-if="status" class="inline">
     <div
-      v-if="status == 'COMING'"
+      v-if="
+        status == 'COMING' &&
+        bidStatus != 'COMING' &&
+        bidStatus != 'CLOSED PREBID' &&
+        bidStatus != 'BIDDING'
+      "
       class="bg-yellow-400 text-white rounded-full px-5 text-sm h-5 text-center w-38 whitespace-nowrap"
     >
       PRE OFERTA
@@ -13,10 +18,20 @@
       EN VIVO
     </div>
     <div
-      v-if="status == 'CLOSED'"
+      v-if="
+        status == 'CLOSED' ||
+        bidStatus == 'CLOSED PREBID' ||
+        bidStatus == 'COMING'
+      "
       class="text-white rounded-full px-5 text-sm h-5 bg-red-400 text-center w-38 whitespace-nowrap"
     >
       CERRADA
+    </div>
+    <div
+      v-if="status == 'COMING' && bidStatus == 'BIDDING'"
+      class="text-white rounded-full px-5 text-sm h-5 bg-gray-500 text-center w-38 whitespace-nowrap"
+    >
+      EN ESPERA
     </div>
   </div>
 </template>
@@ -26,6 +41,10 @@ export default {
   components: {},
   props: {
     status: {
+      type: [String],
+      required: true
+    },
+    bidStatus: {
       type: [String],
       required: true
     }
