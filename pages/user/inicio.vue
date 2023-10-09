@@ -17,15 +17,29 @@
           class="bg-white rounded-lg flex flex-col md:flex-row mb-10"
         >
           <img
-            src="../../public/image_subasta.png"
-            alt="logo"
+            v-if="item.image"
+            :src="item.image"
+            alt="foto_portada"
             class="w-full md:w-1/2 object-cover md:rounded-l-lg"
             style="height: 400px"
             loading="lazy"
           />
+          <div
+            class="w-full md:w-1/2 bg-gray-300 h-[400px] flex justify-center items-center md:rounded-l-lg"
+            v-else
+          >
+            <img
+              class="m-auto opacity-70"
+              src="../../public/image_la_silla.png"
+              alt="Default Horse"
+            />
+          </div>
           <div class="w-full md:w-1/2 flex flex-col justify-between">
             <div class="p-5">
-              <p class="text-4xl font-bold">Subasta</p>
+              <div class="flex items-center">
+                <span class="text-4xl font-bold mr-2">Subasta</span>
+                <statusBid :status="item.status" />
+              </div>
               <p class="text-sm font-medium text-slate-500">
                 Fecha de subasta:
                 <span class="font-normal">{{
@@ -57,9 +71,10 @@ import Cookie from "js-cookie"
 import axios from "axios"
 import moment from "moment"
 import Loading from "../../components/shared/Loading.vue"
+import statusBid from "../../components/bid/statusBid.vue"
 
 export default {
-  components: { Loading },
+  components: { Loading, statusBid },
   computed: {
     setUser() {
       return this.$store.state.user

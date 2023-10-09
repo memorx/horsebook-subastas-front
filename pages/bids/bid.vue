@@ -17,7 +17,7 @@
         <div class="flex items-center">
           <span class="text-2xl font-bold mr-3">Subasta la Silla</span>
           <div>
-            <horseStatus :status="horseStatus" />
+            <statusBid :status="bidStatus" />
           </div>
         </div>
         <h4 class="text-sm">🇲🇽 Monterrey, Nuevo Leon</h4>
@@ -25,13 +25,84 @@
       <div class="flex mx-5 mb-4">
         <!-- BIDDING -->
         <div
+          v-if="bidStatus == 'BIDDING' && horseStatus == 'COMING'"
+          class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
+        >
+          <div class="md:mr-2 bg-white rounded-lg">
+            <div>
+              <div class="w-full">
+                <Carousel :images="horseData.images" />
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 md:mt-0 flex-col">
+            <div class="flex-row w-full rounded-lg p-5 bg-white">
+              <div class="flex w-full bg-green p-3 text-center">
+                <span class="mr-1 text-xl font-bold mb-2">{{
+                  HorsenName
+                }}</span>
+                <div>
+                  <horseStatus :status="horseStatus" :bid-status="bidStatus" />
+                </div>
+              </div>
+              <div class="text-center w-full px-5">
+                <p class="font-bold text-sm">GANADOR PRE OFERTA</p>
+                <p class="font-bold text-sm">
+                  {{
+                    `${winner.name} ${winner.fathers_surname}` ||
+                    winner.fathers_surname
+                  }}
+                </p>
+                <p>Por la cantidad de</p>
+                <span class="font-bold text-2xl"
+                  >${{ horseData.final_amount }} USD</span
+                >
+                <div class="border-b border-gray-300 my-4"></div>
+              </div>
+              <div class="w-full rounded-t-lg px-5">
+                <p class="font-bold text-sm">SUBASTA EN VIVO</p>
+                <span class="font-bold text-sm">{{ BidDateFormat }}</span>
+                <div class="border-b border-gray-300 my-4"></div>
+              </div>
+              <div class="w-full rounded-t-lg px-5">
+                <p class="font-bold text-sm">PRE OFERTA</p>
+                <span class="font-bold text-sm"
+                  >Inicia {{ PreBidDateFormat }}</span
+                >
+              </div>
+              <div class="w-full rounded-t-lg px-5">
+                <span class="font-bold text-sm"
+                  >Termina {{ EndPreBidDateFormat }}</span
+                >
+              </div>
+              <div
+                v-if="isUserAuthenticated"
+                class="text-center texthidden md:block mt-1"
+              >
+                <nuxt-link to="/auth/sign-up">
+                  <button
+                    class="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
+                  >
+                    REGISTRATE ANTES DEL {{ BidDateFormat }}
+                  </button>
+                </nuxt-link>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
           class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
           v-if="horseStatus == 'BIDDING'"
         >
           <div class="w-full grid grid-row-2 gap-2 p-5 bg-white rounded-lg">
             <div class="grid grid-row-2">
-              <div class="bg-green px-3">
-                <h2 class="text-xl font-bold mb-2">{{ HorsenName }}</h2>
+              <div class="flex bg-green px-3">
+                <span class="mr-1 text-xl font-bold mb-2">{{
+                  HorsenName
+                }}</span>
+                <div>
+                  <horseStatus :status="horseStatus" />
+                </div>
               </div>
               <div>
                 <Carousel :images="horseData.images" />
@@ -145,8 +216,13 @@
         >
           <div class="w-full p-5 md:mr-2 bg-white rounded-lg">
             <div class="grid grid-row-2">
-              <div class="w-full bg-green p-3">
-                <h2 class="text-xl font-bold mb-2">{{ HorsenName }}</h2>
+              <div class="flex w-full bg-green p-3">
+                <span class="mr-1 text-xl font-bold mb-2">{{
+                  HorsenName
+                }}</span>
+                <div>
+                  <horseStatus :status="horseStatus" />
+                </div>
               </div>
               <div class="w-full">
                 <Carousel :images="horseData.images" />
@@ -260,8 +336,13 @@
           </div>
           <div class="mt-4 md:mt-0 flex-col">
             <div class="flex-row w-full rounded-lg p-5 bg-white">
-              <div class="w-full bg-green p-3 text-center">
-                <h2 class="text-xl font-bold mb-2">{{ HorsenName }}</h2>
+              <div class="flex w-full bg-green p-3 text-center">
+                <span class="mr-1 text-xl font-bold mb-2">{{
+                  HorsenName
+                }}</span>
+                <div>
+                  <horseStatus :status="horseStatus" :bid-status="bidStatus" />
+                </div>
               </div>
               <div class="text-center w-full px-5">
                 <p class="font-bold text-sm">PRECIO INICIAL</p>
@@ -311,9 +392,13 @@
               <div class="order-2 md:order-1">
                 <Carousel :images="horseData.images" />
               </div>
-              <div class="bg-green px-3 order-1 md:order-2">
-                <p class="text-sm text-slate-500"></p>
-                <h2 class="text-xl font-bold mb-2">{{ HorsenName }}</h2>
+              <div class="flex bg-green px-3 order-1 md:order-2">
+                <span class="mr-1 text-xl font-bold mb-2">{{
+                  HorsenName
+                }}</span>
+                <div>
+                  <horseStatus :status="horseStatus" />
+                </div>
               </div>
             </div>
             <div class="border-b border-gray-300 my-4"></div>
@@ -481,6 +566,7 @@
                   >
                     <div class="aspect-w-16 aspect-h-9 mx-5">
                       <iframe
+                        v-if="horseData.videoUrl"
                         class="aspect-content rounded-lg"
                         :src="
                           horseData.videoUrl
@@ -491,6 +577,7 @@
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
                       ></iframe>
+                      <h1 v-else>No hay video disponible</h1>
                     </div>
                   </div>
                 </div>
@@ -514,6 +601,7 @@ import SubmitAuthenticatedButton from "../../components/bid/submitAuthenticatedB
 import getUserTokenOrDefault from "../../utils/getUserTokenOrDefault"
 import modal from "../../components/bid/modal.vue"
 import horseStatus from "../../components/bid/horseStatus.vue"
+import statusBid from "../../components/bid/statusBid.vue"
 
 export default {
   components: {
@@ -524,7 +612,8 @@ export default {
     Carousel,
     SubmitAuthenticatedButton,
     modal,
-    horseStatus
+    horseStatus,
+    statusBid
   },
   data() {
     return {
@@ -869,6 +958,7 @@ export default {
           this.horseData.final_amount =
             horse.horses[this.horsePositionList].local_data.final_amount
           console.log(this.bidStatus)
+          console.log(this.horseStatus)
         })
         .catch((error) => {
           console.error(error)
