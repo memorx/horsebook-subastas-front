@@ -1,12 +1,7 @@
 <template>
   <div v-if="status" class="inline">
     <div
-      v-if="
-        status == 'COMING' &&
-        bidStatus != 'COMING' &&
-        bidStatus != 'CLOSED PREBID' &&
-        bidStatus != 'BIDDING'
-      "
+      v-if="(status == 'COMING') & (bidStatus == 'PREBID')"
       class="bg-yellow-400 text-white rounded-full px-5 text-sm h-5 text-center w-38 whitespace-nowrap"
     >
       PRE OFERTA
@@ -18,17 +13,21 @@
       EN VIVO
     </div>
     <div
-      v-if="
-        status == 'CLOSED' ||
-        bidStatus == 'CLOSED PREBID' ||
-        bidStatus == 'COMING'
-      "
+      v-if="status == 'CLOSED'"
       class="text-white rounded-full px-5 text-sm h-5 bg-red-400 text-center w-38 whitespace-nowrap"
     >
       CERRADA
     </div>
     <div
-      v-if="status == 'COMING' && bidStatus == 'BIDDING'"
+      v-if="(status == 'COMING') & (bidStatus == 'CLOSED PREBID')"
+      class="text-white rounded-full px-5 text-sm h-5 bg-[#B8BB2A] text-center w-38 whitespace-nowrap"
+    >
+      PRE OFERTA CERRADA
+    </div>
+    <div
+      v-if="
+        (status == 'COMING') & (bidStatus == 'COMING' || bidStatus == 'BIDDING')
+      "
       class="text-white rounded-full px-5 text-sm h-5 bg-gray-500 text-center w-38 whitespace-nowrap"
     >
       EN ESPERA
@@ -48,6 +47,9 @@ export default {
       type: [String],
       required: true
     }
+  },
+  mounted() {
+    console.log(`Bid: ${this.bidStatus} Horse: ${this.status}`)
   }
 }
 </script>
