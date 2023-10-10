@@ -2,7 +2,7 @@
     <div class="flex-grow tool-tip-container">
         <button
             class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full"
-            v-bind:class="{ disabled: isNotAuthenticated }"
+            v-bind:class="{ disabled: !isAuthenticated || !isAbleToBid }"
             type="button"
             @click="enableModal"
         >{{ buttonText }}</button>
@@ -14,8 +14,8 @@
 
 <script>
 import axios from 'axios';
-
 import getUserTokenOrDefault from '../../utils/getUserTokenOrDefault';
+import JWTDecode from "jwt-decode"
 
 export default {
     name: "SubmitAuthenticatedButton",
@@ -29,17 +29,32 @@ export default {
                 notLoggedIn: "Inicia sesión",
                 notAuthorized: "No estás autorizado para ofertar. Comunícate con el administrador al número: ",
             },
-            isNotAuthenticated: !this.isUserAuthenticated() || !this.isUserAbleToBid(),
-            hoverText: ''
+            isAuthenticated: null,
+            isAbleToBid: null,
+            hoverText: '',
+            userId: '',
         }
     },
     async created() {
         const adminPhone = await this.fetchAdministratorPhone()
-        this.hoverText = this.getToolTipMessage(
-            this.isUserAuthenticated,
-            this.isUserAbleToBid,
-            adminPhone
-        )
+    },
+    async mounted() {
+        await this.getUserInfo()
+
+        this.$data.isAuthenticated = this.isUserAuthenticated()
+        this.$data.isAbleToBid = this.isUserAbleToBid()
+
+        const url = `${this.$config.baseURLWS}/user-status/${this.userId}`;
+        const mountedThis = this;
+
+        this.$data.socket = await new WebSocket(url);
+
+        this.$data.socket.onmessage = (event) => {
+            const data = JSON.parse(event.data)
+            if (typeof data?.user?.status === 'boolean') {
+                this.isAbleToBid = data.user.status 
+            }
+        }
     },
     methods: {
         isUserAuthenticated() {
@@ -51,7 +66,7 @@ export default {
                 return false
             }
         },
-        isUserAbleToBid() {
+        isUserAbleToBid(update) {
             return this.$store.state.isUserAbleToBid
         },
         getToolTipMessage(isUserAuthenticated, isUserAbleToBid, adminPhone) {
@@ -67,6 +82,26 @@ export default {
         },
         getNotAuthorizedUserMessage(administratorPhone) {
             return `${this.hoverMessage.notAuthorized} ${administratorPhone}`
+        },
+        async getUserInfo() {
+            const token = getUserTokenOrDefault()
+            const decoded = JWTDecode(this.$cookies.get("access_token"))
+            const url = `${this.$config.baseURL}/users/list-app-users/?email=${decoded.email}`;
+
+            if (token) {
+                const headers = {
+                    Authorization: `Token ${token}`,
+                };
+                    const response = await this.$axios.get(url, { headers });
+                    this.userId = response.data.id;
+
+                    if (response.data.app_user_profile.bid !== this.$store.state.isUserAbleToBid) {
+                        this.$store.commit(
+                            "setIsUserAbleToBid",
+                            response.data.app_user_profile.bid
+                        )
+                    }
+            }
         },
         async fetchAdministratorPhone() {
             const url = `${this.$config.baseURL}/contact/info/`;
