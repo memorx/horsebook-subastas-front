@@ -110,7 +110,11 @@ export default {
         .then((response) => {
           response.data.map((auction) => {
             if (auction.status != "CLOSED") {
-              if (["PREBID", "BIDDING"].includes(auction.status)) {
+              if (
+                ["PREBID", "BIDDING", "COMING", "CLOSED PREBID"].includes(
+                  auction.status
+                )
+              ) {
                 this.currentAuctions.push(auction)
               } else {
                 this.nextAuctions.push(auction)

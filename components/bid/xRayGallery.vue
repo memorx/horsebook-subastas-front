@@ -1,5 +1,5 @@
 <template>
-  <div v-if="images > 0" class="gallery">
+  <div v-if="images.length > 0" class="gallery">
     <div class="flex flex-wrap justify-center">
       <div v-for="(image, index) in images" :key="index" class="m-2">
         <img

@@ -45,7 +45,7 @@
                   <horseStatus :status="horseStatus" :bid-status="bidStatus" />
                 </div>
               </div>
-              <div class="text-center w-full px-5">
+              <div v-if="winner" class="text-center w-full px-5">
                 <p class="font-bold text-sm">GANADOR PRE OFERTA</p>
                 <p class="font-bold text-sm">
                   {{
@@ -101,7 +101,7 @@
                   HorsenName
                 }}</span>
                 <div>
-                  <horseStatus :status="horseStatus" />
+                  <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
                 </div>
               </div>
               <div>
@@ -221,7 +221,7 @@
                   HorsenName
                 }}</span>
                 <div>
-                  <horseStatus :status="horseStatus" />
+                  <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
                 </div>
               </div>
               <div class="w-full">
@@ -392,13 +392,13 @@
               <div class="order-2 md:order-1">
                 <Carousel :images="horseData.images" />
               </div>
-              <div class="flex bg-green px-3 order-1 md:order-2">
+              <div class="bg-green px-3 order-1 md:order-2">
+                <div>
+                  <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
+                </div>
                 <span class="mr-1 text-xl font-bold mb-2">{{
                   HorsenName
                 }}</span>
-                <div>
-                  <horseStatus :status="horseStatus" />
-                </div>
               </div>
             </div>
             <div class="border-b border-gray-300 my-4"></div>
@@ -416,7 +416,10 @@
               ></iframe>
             </div>
           </div>
-          <div class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
+          <div
+            v-if="winner"
+            class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg"
+          >
             <div
               class="text-center w-full rounded-t-lg p-5"
               style="background-color: #b99d61"
@@ -456,6 +459,15 @@
                 />
               </div>
             </div>
+          </div>
+          <div
+            v-else
+            class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg text-center"
+          >
+            <p class="text-black font-bold text-2xl">
+              LA SUBASTA ESTÁ POR COMENZAR
+            </p>
+            <p class="text-black font-bold text-xl">Quédate al pendiente</p>
           </div>
         </div>
       </div>
@@ -746,12 +758,12 @@ export default {
         mountedThis.$data.bids.unshift(message.bid)
       }
 
-      if (message.prebid) {
-        if (mountedThis.$data.preBids.length > 20) {
-          mountedThis.$data.preBids.pop()
-        }
-        mountedThis.$data.preBids.unshift(message.bid)
-      }
+      // if (message.prebid) {
+      //   if (mountedThis.$data.preBids.length > 20) {
+      //     mountedThis.$data.preBids.pop()
+      //   }
+      //   mountedThis.$data.preBids.unshift(message.bid)
+      // }
 
       if (mountedThis.$data.bids.length > 0) {
         mountedThis.$data.lastOffer = parseInt(
