@@ -11,11 +11,21 @@
     </NuxtLink>
     <div class="flex flex-wrap">
       <!-- First Column -->
-      <div class="w-full sm:w-1/2 md:flex md:flex-col">
+      <div v-if="bidImage" class="w-full sm:w-1/2 md:flex md:flex-col">
         <img
-          src="../../../public/image_detail_horse.png"
+          :src="bidImage"
           alt="logo"
           class="hidden md:block w-full max-w-full object-cover rounded-lg md:flex-grow"
+        />
+      </div>
+      <div
+        class="w-full md:w-1/2 bg-gray-300 flex justify-center items-center md:rounded-l-lg"
+        v-else
+      >
+        <img
+          class="m-auto opacity-70"
+          src="../../../public/image_la_silla.png"
+          alt="Default Horse"
         />
       </div>
       <!-- Second Column -->
@@ -166,6 +176,7 @@
                 :status="horse.local_data.status"
                 :bid-status="bidStatus"
               />
+              <!-- <statusBid :status="horse.local_data.status" /> -->
             </div>
             <img
               v-if="getImageUrl(horse.local_data.horse_id)"
@@ -257,13 +268,14 @@ export default {
       loading: false,
       countdownSubasta: true,
       countdownPre: true,
-      bidStatus: ""
+      bidStatus: "",
+      bidImage: ""
     }
   },
   async created() {
     const itemId = this.$route.params.id
     this.id = itemId
-    await this.getDetailsAuction(itemId)
+    await this.getDetailsAuction(this.id)
   },
   mounted() {
     // Update the countdown every second
@@ -273,6 +285,33 @@ export default {
     clearInterval(this.timer)
     clearInterval(this.timer2)
   },
+  computed: {
+    shouldCallGetDetailsAuction() {
+      return this.countdownSubasta === false
+    },
+    shouldCallGetDetailsAuctionPre() {
+      return this.countdownPre === false
+    }
+  },
+  watch: {
+    shouldCallGetDetailsAuction(newValue) {
+      if (newValue) {
+        console.log("Updating Bid")
+        setTimeout(() => {
+          this.getDetailsAuction(this.id)
+        }, 1000) // 500 milliseconds = 0.5 seconds
+      }
+    },
+    shouldCallGetDetailsAuctionPre(newValue) {
+      if (newValue) {
+        console.log("Updating PreBid")
+        setTimeout(() => {
+          this.getDetailsAuction(this.id)
+        }, 1000) // 500 milliseconds = 0.5 seconds
+      }
+    }
+  },
+
   methods: {
     amountStringToInt(initial, final) {
       if (parseInt(final, 10) > parseInt(initial, 10)) {
@@ -366,14 +405,12 @@ export default {
           this.item.start_pre_bid = response.data.start_pre_bid
           this.item.horses = response.data.horses
           this.bidStatus = response.data.status
-          console.log(this.bidStatus)
+          this.bidImage = response.data.image
           this.horseData.imagesID = response.data.horses.map(
             (horse) => horse.local_data.horse_id
           )
           this.fetchImagesForAllHorses()
           this.loading = false
-          this.calculateCountdown()
-          this.calculateCountdownPre()
           this.timer = setInterval(this.calculateCountdown, 1000)
           this.timer2 = setInterval(this.calculateCountdownPre, 1000)
         })
