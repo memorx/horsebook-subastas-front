@@ -13,7 +13,7 @@
       EN VIVO
     </div>
     <div
-      v-if="(status == 'CLOSED') & (bidStatus == 'CLOSED')"
+      v-if="status == 'CLOSED'"
       class="text-white rounded-full px-5 text-sm h-5 bg-red-400 text-center w-38 whitespace-nowrap"
     >
       CERRADA
