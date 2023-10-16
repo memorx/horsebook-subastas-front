@@ -327,6 +327,13 @@ export default {
           mountedThis.socketError = message.error
           return
         }
+        if (message.horses && message.horses.length > 0) {
+          mountedThis.$data.item.horses.forEach((horse, key) => {
+            const status = message.horses.find( item => item.id === horse.local_data.id );
+            if (status)
+              mountedThis.$data.item.horses[key].local_data.status = status.status
+          });
+        }
 
         if (message.horse) {
           const key = mountedThis.$data.item.horses.findIndex( horse => message.horse.id === horse.local_data.id );
