@@ -86,8 +86,7 @@ export default {
         async getUserInfo() {
             const token = getUserTokenOrDefault()
             const decoded = JWTDecode(this.$cookies.get("access_token"))
-            const url = `${this.$config.baseURL}/users/list-app-users/?email=${decoded.email}`;
-
+            const url = `${this.$config.baseURL}/users/me`;
             if (token) {
                 const headers = {
                     Authorization: `Token ${token}`,
