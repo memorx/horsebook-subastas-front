@@ -8,16 +8,15 @@
         <img
           src="../public/image_landing.png"
           alt="logo"
-          class="w-full object-cover"
-          style="height: 90vh;"
+          class="w-full h-[90vh] object-cover"
         />
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <div>
             <p class="font-bold text-6xl text-white">
-              La calidad se hereda
+              {{ $t('landingPage.slogan') }}
             </p>
             <p class="font-light text-2xl text-white">
-              Calidad respaldada por sus resultados internacionales
+              {{ $t('landingPage.sloganSmall') }}
             </p>
             <div class="flex flex-col sm:flex-row justify-center space-x-0 sm:space-x-6 mt-6">
               <a
