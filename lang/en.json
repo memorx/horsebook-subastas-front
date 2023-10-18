@@ -1,16 +1,5 @@
-{   
-    "Topbar" : {
-        "login": "Log In",
-        "signUp": "Sign Up",
-        "SignOut": "Sign Out",
-        "Auction": "Auctions"
-    },
-    "landingPage":{
-        "slogan": "The Quality Is Inherited",
-        "sloganSmall": "Quality supported by its international results"
-    },
-    "SwitchLanguage": {
-        "spanish": "Camiar a Ingles",
-        "english": "Camiar a Espanol"
+{
+    "test": {
+        "hello": "world"
     }
 }

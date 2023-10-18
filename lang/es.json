@@ -1,16 +1,5 @@
 {
-    "Topbar" : {
-        "login": "Iniciar sesión",
-        "signUp": "Regístrate",
-        "SignOut": "Cerrar sesión",
-        "Auction": "Subastas"
-    },
-    "landingPage":{
-        "slogan": "La calidad se hereda",
-        "sloganSmall": "Calidad respaldada por sus resultados internacionales"
-    },
-    "SwitchLanguage": {
-        "spanish": "Switch to English",
-        "english": "Switch to spanish"
+    "test": {
+        "hello": "mundo"
     }
 }

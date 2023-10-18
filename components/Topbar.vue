@@ -14,7 +14,7 @@
             <div class="flex items-center space-x-4">
 
                 <div v-if="isUserAuthenticated">
-                    <nuxt-link
+                    <!-- <nuxt-link
                         :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
                         class="cursor-pointer"
                         aria-haspopup="listbox"
@@ -27,11 +27,11 @@
                         <span v-if="$i18n.locale === 'es'">{{ $t("SwitchLanguage.spanish") }}</span>
                         <span v-if="$i18n.locale === 'en'">{{ $t("SwitchLanguage.english") }}</span>
                         </span>
-                    </nuxt-link>
+                    </nuxt-link> -->
 
                     <nuxt-link to="/user/inicio">
                         <button class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black">Tus
-                            {{$t('Auction')}}
+                            Subastas
                         </button>
                     </nuxt-link>
 
@@ -39,7 +39,7 @@
                         class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
                         @click="logout"
                     >
-                    {{$t('SignOut')}}
+                        Cerrar sesión
                     </button>
 
                     <nuxt-link to="/user/perfil">
@@ -50,7 +50,7 @@
                 </div>
 
                 <div v-else class="flex justify-center align-middle items-center">
-                    <nuxt-link
+                    <!-- <nuxt-link
                         :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
                         class="cursor-pointer"
                         aria-haspopup="listbox"
@@ -63,19 +63,19 @@
                         <span v-if="$i18n.locale === 'es'">{{ $t("SwitchLanguage.spanish") }}</span>
                         <span v-if="$i18n.locale === 'en'">{{ $t("SwitchLanguage.english") }}</span>
                         </span>
-                    </nuxt-link>
+                    </nuxt-link> -->
                     <button
                         @click="login"
                         class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
                     >
-                        {{ $t('Topbar.login') }}
+                        Iniciar sesión
                     </button>
                     <nuxt-link to="/auth/sign-up">
                         <button
                             @click="login"
                             class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
                         >
-                            {{ $t('Topbar.signUp') }}
+                            Regístrate
                         </button>
                     </nuxt-link>
                 </div>
