@@ -13,10 +13,10 @@
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <div>
             <p class="font-bold text-6xl text-white">
-              {{ $t('landingPage.slogan') }}
+              La calidad se hereda
             </p>
             <p class="font-light text-2xl text-white">
-              {{ $t('landingPage.sloganSmall') }}
+              Calidad respaldada por sus resultados internacionales
             </p>
             <div class="flex flex-col sm:flex-row justify-center space-x-0 sm:space-x-6 mt-6">
               <a
