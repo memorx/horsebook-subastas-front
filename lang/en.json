@@ -1,5 +1,19 @@
 {
     "test": {
         "hello": "world"
+    },
+    "home": {
+        "main": {
+            "title": "english main title",
+            "paragraph": "english main paragraph",
+            "button": "english main button"
+        },
+        "news": {
+            "title": "english news title",
+            "paragraph": "english news paragraph"
+        },
+        "exampleTitle": "Example Title",
+        "exampleParagraph": "This is an example paragraph for div",
+        "exampleButton": "Example Button"
     }
 }

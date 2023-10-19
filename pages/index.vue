@@ -1,137 +1,78 @@
 <template>
-   <div class="bg-zinc-200" style="height: 100%;">
-      <div>
-         <div class="relative w-full text-center">
-            <img src="../public/image_landing.png" alt="logo" class="w-full object-cover" style="height: 90vh;" />
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-               <div>
-                  <p class="font-bold text-6xl text-white">
-                     La calidad se hereda
-                  </p>
-                  <p class="font-light text-2xl text-white">
-                     Calidad respaldada por sus resultados internacionales
-                  </p>
-                  <div class="flex flex-col sm:flex-row justify-center space-x-0 sm:space-x-6 mt-6">
-                     <nuxt-link v-if="!isUserAuthenticated" to="auth/sign-up/" class="button-black mb-2 sm:mb-0">
-                        <button class="bg-black text-white px-5 py-3 rounded-lg font-medium">
-                           REGÍSTRATE
-                        </button>
-                     </nuxt-link>
-                     <nuxt-link to="user/inicio" class="button-white">
-                        <button class="bg-black text-white px-5 py-3 rounded-lg font-medium">
-                           ÚLTIMA SUBASTA
-                        </button>
-                     </nuxt-link>
-                  </div>
-               </div>
+   <div class="h-auto bg-black flex justify-center px-4 sm:px-0">
+      <div class="w-11/12 flex flex-col items-center sm:space-x-4">
+         <!-- ContentTile Component -->
+         <div
+            class="w-full flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 my-12 md:my-6">
+            <div class="w-4/5 md:w-2/5 flex flex-col space-y-4 md:space-y-0">
+               <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')"
+                  :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null"
+                  @button-clicked="handleButtonClick(1)" headingLevel="1" :styles="{
+                     container: {},
+                     title: { color: 'white' },
+                     paragraph: { color: 'white' },
+                     button: { backgroundColor: '#D9D957', rounded: 'rounded' }
+                  }" />
+            </div>
+
+            <div class="w-4/5 md:w-2/5 flex flex-col space-y-4 md:space-y-0">
+               <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')"
+                  :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null"
+                  @button-clicked="handleButtonClick(1)" headingLevel="2" :styles="{
+                     container: {},
+                     title: { color: 'white' },
+                     paragraph: { color: 'white' },
+                     button: { backgroundColor: '#D9D957', rounded: 'rounded' }
+                  }" />
             </div>
          </div>
-      </div>
-      <div class="w-full my-5 text-center">
-         <p class="font-medium text-4xl leading-tight text-center">Subasta Online</p>
-         <div v-if="nextAuction">
-            <p class="text-center text-md font-bold">{{ countdown }}</p>
-         </div>
-         <div v-else>
-            <h1 class="text-center text-md font-bold">No hay subastas próximas</h1>
-         </div>
-         <img class="rounded-lg mx-auto my-5 object-cover" style="height: 400px;" src="../public/image_landing_2.png"
-            alt="logo" />
-         <div class="flex justify-center items-center">
-            <nuxt-link to="/user/inicio/">
-               <button class="bg-black text-white px-5 py-3 rounded-lg">
-                  CONOCER MÁS
-               </button>
-            </nuxt-link>
-         </div>
-      </div>
-      <div class="w-full my-5 py-5 text-center bg-white">
-         <p class="font-medium text-4xl leading-tight text-center">Noticias</p>
-         <p class="text-xl text-center">Seccion de Noticias</p>
-         <div class="md:px-20">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni vitae harum ex impedit eveniet ea maxime laborum
-            amet veniam suscipit. Repellat similique inventore iste eveniet maxime, libero id itaque non!
-         </div>
-         <div class="flex justify-center items-center my-5">
-            <nuxt-link to="auth/sign-up/"><button class="bg-black text-white px-5 py-3 rounded-lg">
-                  Leer mas
-               </button>
-            </nuxt-link>
-         </div>
+
+         <SectionTitle :titleText="$t('home.news.title')" containerClass="w-full my-0 mb-8"
+            titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase" />
+
+         <!-- next component here -->
+         <!-- <div class="w-full h-screen bg-white flex flex-row">
+            <div class="w-1/2 h-full bg-yellow-500 flex flex-col">
+               <div class="w-full h-1/2 bg-red-500 "></div>
+               <div class="w-full h-1/2 bg-green-500 "></div>
+            </div>
+            <div class="w-1/2 h-full bg-blue-500 flex flex-col justify-center items-center">
+               <div class="w-full h-1/2 bg-red-500 "></div>
+            </div>
+         </div> -->
+
+
+         <SectionTitle :titleText="$t('home.news.title')" containerClass="w-full my-0 mb-8"
+            titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase" />
+
+         <SectionTitle :titleText="$t('home.news.title')" containerClass="w-full my-0 mb-8"
+            titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase" />
       </div>
    </div>
 </template>
 
 <script>
+import ContentTile from '~/components/ContentTile.vue';
+import SectionTitle from '~/components/SectionTitle.vue';
+
 export default {
-   data() {
-      return {
-         subastas: [],
-         nextAuction: null,
-         countdown: "",
-         loading: false,
-      };
-   },
-   created() {
-      this.fetchSubastas();
-      this.updateCountdown();
-   },
-   computed: {
-      isUserAuthenticated() {
-         return this.$store.state.isAuthenticated;
-      }
+   components: {
+      ContentTile,
+      SectionTitle
    },
    methods: {
-      async fetchSubastas() {
-         this.email = [];
-         const listSubastasEndpoint = "/subastas/list-subastas/";
-         const currentDate = new Date().toISOString().slice(0, 10);
-         const url = `${this.$config.baseURL}${listSubastasEndpoint}?start_date=${currentDate}&only_subasta_data=true`;
-         this.loading = true;
-         try {
-            const response = await this.$axios.get(url);
-            this.subastas = response.data; // Assign the response data to this.subastas
-            this.loading = false;
-         } catch (error) {
-            console.log(error, "ERRORR");
-            this.loading = false;
-         }
-      },
-      updateCountdown() {
-         setInterval(() => {
-            if (this.subastas.length === 0) {
-               return;
-            }
-
-            const now = new Date().getTime();
-            let closestTime = Infinity;
-            let closestIndex = -1;
-
-            for (let i = 0; i < this.subastas.length; i++) {
-               const startBidTime = new Date(this.subastas[i].start_bid).getTime();
-               const timeDifference = startBidTime - now;
-               if (timeDifference > 0 && timeDifference < closestTime) {
-                  closestTime = timeDifference;
-                  closestIndex = i;
-               }
-            }
-
-            if (closestIndex !== -1) {
-               this.nextAuction = this.subastas[closestIndex];
-               this.updateCountdownText(closestTime);
-            } else {
-               this.nextAuction = null;
-            }
-         }, 1000);
-      },
-      updateCountdownText(timeDifference) {
-         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-         const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-         const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-         const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-         this.countdown = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-      },
+      handleButtonClick(index) {
+         // Handle button click event. For demonstration:
+         alert(`Button clicked on tile: ${index}`);
+      }
    }
 }
 </script>
+
+<style scoped>
+.h-400px {
+   height: 400px;
+}
+
+/* You can add additional styles here if needed */
+</style>
