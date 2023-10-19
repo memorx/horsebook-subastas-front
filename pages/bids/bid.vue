@@ -732,7 +732,6 @@ export default {
     const mountedThis = this
     this.$data.socket.onmessage = function (event) {
       const message = JSON.parse(event.data)
-      console.log(message)
       if (message.error) {
         mountedThis.errorMessage = message.error
         setTimeout(() => {
@@ -754,24 +753,25 @@ export default {
         if (mountedThis.$data.bids.length > 20) {
           mountedThis.$data.bids.pop()
         }
-        console.log("test")
         mountedThis.$data.bids.unshift(message.bid)
       }
-
-      // if (message.prebid) {
-      //   if (mountedThis.$data.preBids.length > 20) {
-      //     mountedThis.$data.preBids.pop()
-      //   }
-      //   mountedThis.$data.preBids.unshift(message.bid)
-      // }
 
       if (mountedThis.$data.bids.length > 0) {
         mountedThis.$data.lastOffer = parseInt(
           mountedThis.$data.bids[0]?.amount
         ).toLocaleString("en-US")
-        mountedThis.$data.formData.amount = (
-          parseInt(mountedThis.$data.bids[0]?.amount) + 1000
-        ).toLocaleString("en-US")
+        let currentValue = parseInt(
+          mountedThis.formData?.amount.replace(",", "")
+        )
+        if (currentValue >= 30000) {
+          mountedThis.$data.formData.amount = (
+            parseInt(mountedThis.$data.bids[0]?.amount) + 500
+          ).toLocaleString("en-US")
+        } else {
+          mountedThis.$data.formData.amount = (
+            parseInt(mountedThis.$data.bids[0]?.amount) + 1000
+          ).toLocaleString("en-US")
+        }
       } else if (mountedThis.horseData.final_amount) {
         mountedThis.$data.formData.amount = parseInt(
           mountedThis.horseData.final_amount,
@@ -780,25 +780,6 @@ export default {
       } else {
         mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
       }
-
-      // if (mountedThis.$data.bidStatus == "PREBID") {
-      //   if (mountedThis.$data.preBids.length > 0) {
-      //     mountedThis.$data.lastOffer = parseInt(
-      //       mountedThis.$data.preBids[0]?.amount
-      //     ).toLocaleString("en-US")
-      //     mountedThis.$data.formData.amount = (
-      //       parseInt(mountedThis.$data.preBids[0]?.amount) + 1000
-      //     ).toLocaleString("en-US")
-      //   } else if (mountedThis.horseData.final_amount) {
-      //     mountedThis.$data.formData.amount = parseInt(
-      //       mountedThis.horseData.final_amount,
-      //       10
-      //     ).toLocaleString("en-US")
-      //     console.log(mountedThis.$data.formData.amount)
-      //   } else {
-      //     mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
-      //   }
-      // }
     }
   },
   methods: {
@@ -843,12 +824,20 @@ export default {
     },
     addThousand() {
       let currentValue = parseInt(this.formData?.amount.replace(",", ""))
-      currentValue += 1000
+      if (currentValue >= 30000) {
+        currentValue += 500
+      } else {
+        currentValue += 1000
+      }
       this.formData.amount = currentValue.toLocaleString("en-US")
     },
     substractThousand() {
       let currentValue = parseInt(this.formData?.amount?.replace(",", ""))
-      currentValue -= 1000
+      if (currentValue >= 30000) {
+        currentValue -= 500
+      } else {
+        currentValue -= 1000
+      }
       this.formData.amount = currentValue.toLocaleString("en-US")
     },
     parseFetchedAmount(value) {
@@ -969,8 +958,6 @@ export default {
           //Bid Initial Amout
           this.horseData.final_amount =
             horse.horses[this.horsePositionList].local_data.final_amount
-          console.log(this.bidStatus)
-          console.log(this.horseStatus)
         })
         .catch((error) => {
           console.error(error)
