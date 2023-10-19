@@ -90,7 +90,7 @@
         </span>
         <div class="w-full text-center mt-5">
           <nuxt-link
-            to="/landingPage"
+            to="/"
             class="font-medium text-base text-black hover:text-blue-500"
             >Ingresar a subastas</nuxt-link
           >
@@ -160,7 +160,7 @@ export default {
               "setIsUserAbleToBid",
               response.data.app_user_profile.bid
             )
-            this.$router.push("/landingPage")
+            this.$router.push("/")
           }
         })
         .catch((error) => {

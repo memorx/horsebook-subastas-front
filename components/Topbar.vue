@@ -2,7 +2,7 @@
     <nav class="bg-black p-4 text-white">
         <div class="container mx-auto flex justify-between items-center">
             <!-- Logo or brand -->
-            <nuxt-link to="/landingPage">
+            <nuxt-link to="/">
                 <img
                     src="../public/image_la_silla.png"
                     alt="logo"
