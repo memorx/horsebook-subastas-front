@@ -13,6 +13,12 @@
             "paragraph": "english news paragraph",
             "button": "english news button"
         },
+        "us": {
+            "title": "english us title",
+            "subTitle": "english us subtitle",
+            "paragraph": "english us paragraph",
+            "button": "english us button"
+        },
         "exampleTitle": "Example Title",
         "exampleParagraph": "This is an example paragraph for div",
         "exampleButton": "Example Button"

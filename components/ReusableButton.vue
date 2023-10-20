@@ -44,7 +44,7 @@ export default {
     },
     methods: {
         handleClick() {
-            this.onClick();
+            this.$emit('handle-click');
         }
     }
 }

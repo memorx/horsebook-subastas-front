@@ -10,8 +10,14 @@
         },
         "news": {
             "title": "Novedades",
-            "paragraph": "Subtítulo de noticias",
-            "button": "Ver todas las noticias"
+            "paragraph": "Subtítulo de novedades",
+            "button": "Ver todas las novedades"
+        },
+        "us": {
+            "title": "Nosotros",
+            "subTitle": "Asiste al lugar de remate o de forma remota",
+            "paragraph": "lorems ipsums dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl.",
+            "button": "Ver más"
         },
         "exampleTitle": "Título de ejemplo",
         "exampleParagraph":  "Este es un párrafo de ejemplo para el div",

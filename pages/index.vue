@@ -50,8 +50,22 @@
             </div>
          </div>
 
-         <ReusableButton :buttonText="$t('home.news.button')" :onClick="someFunction" />
+         <ReusableButton :buttonText="$t('home.news.button')" @handle-click="someFunction(1)" />
          <!-- end of news section -->
+
+         <!-- US -->
+         <div class="my-8 lg:my-0 w-full lg:h-screen h-1/2 flex flex-col justify-end">
+            <SectionTitle :titleText="$t('home.us.title')" containerClass="w-full my-0 mb-8"
+            titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
+            <ContentTile :title="$t('home.us.subTitle')" :paragraph="$t('home.us.paragraph')"
+               :buttonLabel="$t('home.us.title') ? $t('home.us.title') : null"
+               @button-clicked="handleButtonClick(1)" headingLevel="1" :classOverrides="{
+                  title: 'text-white text-xs md:text-sm text-base uppercase',
+                  paragraph: 'text-white text-xs md:text-sm text-base opacity-50 ',
+                  button: 'lg:px-12 px-6 md:px-8 py-2 bg-black text-white border-1 border-yellow-500 rounded-2xl'
+            }" />
+         </div>
+
 
 
          <SectionTitle :titleText="$t('home.news.title')" containerClass="w-full my-0 mb-8"
@@ -87,6 +101,10 @@ export default {
       handleButtonClick(index) {
          // Handle button click event. For demonstration:
          alert(`Button clicked on tile: ${index}`);
+      },
+      someFunction() {
+         // Handle button click event. For demonstration:
+         alert(`Reusable Button clicked `);
       }
    },
    data() {
