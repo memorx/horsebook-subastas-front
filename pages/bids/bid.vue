@@ -742,8 +742,11 @@ export default {
       this.showModal = false
     },
     async startBidSocket() {
-      if (this.$data.socket && this.$data.socket.readyState === WebSocket.OPEN) {
-        this.$data.socket.close();
+      if (
+        this.$data.socket &&
+        this.$data.socket.readyState === WebSocket.OPEN
+      ) {
+        this.$data.socket.close()
       }
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
       this.$data.socket = new WebSocket(url)
@@ -778,9 +781,18 @@ export default {
           mountedThis.$data.lastOffer = parseInt(
             mountedThis.$data.bids[0]?.amount
           ).toLocaleString("en-US")
-          mountedThis.$data.formData.amount = (
-            parseInt(mountedThis.$data.bids[0]?.amount) + 1000
-          ).toLocaleString("en-US")
+          let currentValue = parseInt(
+            mountedThis.formData?.amount.replace(",", "")
+          )
+          if (currentValue >= 30000) {
+            mountedThis.$data.formData.amount = (
+              parseInt(mountedThis.$data.bids[0]?.amount) + 500
+            ).toLocaleString("en-US")
+          } else {
+            mountedThis.$data.formData.amount = (
+              parseInt(mountedThis.$data.bids[0]?.amount) + 1000
+            ).toLocaleString("en-US")
+          }
         } else if (mountedThis.horseData.final_amount) {
           mountedThis.$data.formData.amount = parseInt(
             mountedThis.horseData.final_amount,
@@ -789,55 +801,63 @@ export default {
         } else {
           mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
         }
-
       }
-      this.$data.socket.addEventListener('close', (event) => {
+      this.$data.socket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
-      });
+      })
     },
     async startAuctionSocket() {
-      const mountedThis = this;
-      if (this.$data.auctionSocket && this.$data.auctionSocket.readyState === WebSocket.OPEN) {
-        this.$data.auctionSocket.close();
+      const mountedThis = this
+      if (
+        this.$data.auctionSocket &&
+        this.$data.auctionSocket.readyState === WebSocket.OPEN
+      ) {
+        this.$data.auctionSocket.close()
       }
-      const url = `${this.$config.baseURLWS}/auction/${this.bidId}`;
-      this.$data.auctionSocket = new WebSocket(url);
+      const url = `${this.$config.baseURLWS}/auction/${this.bidId}`
+      this.$data.auctionSocket = new WebSocket(url)
       this.$data.auctionSocket.onmessage = function (event) {
-        const message = JSON.parse(event.data);
-        if(message.error){
+        const message = JSON.parse(event.data)
+        if (message.error) {
           mountedThis.socketError = message.error
           return
         }
         if (message.horses && message.horses.length > 0) {
-          message.horses.forEach(horse => {
-            if(horse.id == mountedThis.horseId){
+          message.horses.forEach((horse) => {
+            if (horse.id == mountedThis.horseId) {
               mountedThis.$data.horseStatus = horse.status
             }
-          });
+          })
         }
 
         if (message.horse) {
-          (mountedThis.horseId)
-          if(message.horse.id == mountedThis.horseId) {
+          mountedThis.horseId
+          if (message.horse.id == mountedThis.horseId) {
             mountedThis.$data.horseStatus = message.horse.status
             const nextHorse = message.horse.next
-            if(mountedThis.$data.horseStatus == "CLOSED")
-              mountedThis.$toast.success("La subasta de este caballo ha sido finalizada");
-              if (nextHorse) {
-                mountedThis.$router.replace({ query: {id: mountedThis.bidId, horseId: nextHorse} }).then(() => {
+            if (mountedThis.$data.horseStatus == "CLOSED")
+              mountedThis.$toast.success(
+                "La subasta de este caballo ha sido finalizada"
+              )
+            if (nextHorse) {
+              mountedThis.$router
+                .replace({
+                  query: { id: mountedThis.bidId, horseId: nextHorse }
+                })
+                .then(() => {
                   mountedThis.init()
-                });
-              }
+                })
+            }
           }
         }
-      };
-      this.$data.socket.addEventListener('close', (event) => {
+      }
+      this.$data.socket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
-      });
+      })
     },
     setInitialAmount() {
       if (this.formData?.amount) {
@@ -874,12 +894,20 @@ export default {
     },
     addThousand() {
       let currentValue = parseInt(this.formData?.amount.replace(",", ""))
-      currentValue += 1000
+      if (currentValue >= 30000) {
+        currentValue += 500
+      } else {
+        currentValue += 1000
+      }
       this.formData.amount = currentValue.toLocaleString("en-US")
     },
     substractThousand() {
       let currentValue = parseInt(this.formData?.amount?.replace(",", ""))
-      currentValue -= 1000
+      if (currentValue >= 30000) {
+        currentValue -= 500
+      } else {
+        currentValue -= 1000
+      }
       this.formData.amount = currentValue.toLocaleString("en-US")
     },
     parseFetchedAmount(value) {
@@ -928,54 +956,46 @@ export default {
       const token = getUserTokenOrDefault()
       await axios
         .get(url, {
-                headers: {
-                    Authorization: `Token ${token}`
-                } 
-            })
+          headers: {
+            Authorization: `Token ${token}`
+          }
+        })
         .then((response) => {
           const horse = response.data
           //name
-          this.HorsenName =
-            horse.external_data.name
+          this.HorsenName = horse.external_data.name
           //horse ID
           this.horseID = horse.external_data.id
           this.horseIDForm = horse.local_data.id
           //horse Description
           //genre
           this.horseData.Genre =
-            this.genreMapping[
-              horse.external_data.sex
-            ] || ""
+            this.genreMapping[horse.external_data.sex] || ""
           //Birthdate
           this.horseData.BirthDate = this.formatted(
             horse.external_data.birth_date
           )
           //color
-          this.horseData.Color =
-            horse.external_data.color
+          this.horseData.Color = horse.external_data.color
           //Weight
-          this.horseData.Weight =
-            horse.external_data.weight
+          this.horseData.Weight = horse.external_data.weight
           //Height
-          this.horseData.Height =
-            horse.external_data.height
+          this.horseData.Height = horse.external_data.height
           //Location
-          this.horseData.Location =
-            horse.external_data.location
+          this.horseData.Location = horse.external_data.location
           //Pedigree Image
-          this.horseData.Pedigree =
-            horse.local_data.pedigree
+          this.horseData.Pedigree = horse.local_data.pedigree
           //No. Register
-          this.horseData.registerNumber =
-            horse.local_data.registration_no
+          this.horseData.registerNumber = horse.local_data.registration_no
           //Hatchery
-          this.horseData.Hatchery =
-            horse.external_data.birth_location
+          this.horseData.Hatchery = horse.external_data.birth_location
           const birthDateMoment = moment(this.horseData.BirthDate, "DD/MM/YYYY")
           const today = moment()
           this.horseData.Age = today.diff(birthDateMoment, "years")
           //xRays
-          this.horseData.xRayGallery = horse.local_data.xrays.map((xray) => xray.image)
+          this.horseData.xRayGallery = horse.local_data.xrays.map(
+            (xray) => xray.image
+          )
           //Video URL
           this.horseData.videoUrl = this.extractYouTubeId(
             horse.local_data.video_url
@@ -987,8 +1007,7 @@ export default {
           //Horse Age
           this.age = this.calculateAge()
           //Bid Status
-          this.horseStatus =
-            horse.local_data.status
+          this.horseStatus = horse.local_data.status
           //Bid Initial Amout
           this.horseData.final_amount = horse.local_data.final_amount
         })

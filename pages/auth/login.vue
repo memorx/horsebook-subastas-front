@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="flex h-screen">
     <div class="w-1/2 hidden md:block">

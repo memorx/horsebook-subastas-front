@@ -8,6 +8,11 @@
         ¿Estas seguro que quieres pre ofertar?
       </h2>
       <p class="text-3xl font-bold">$ {{ amount }} USD</p>
+      <h2 class="text-sm text-gray-500">$ {{ amount }} + 10% de comision</h2>
+      <h2 class="text-sm text-gray-500">
+        Total: $
+        {{ (parseInt(amount.replace(",", "")) * 1.1).toLocaleString("en-US") }}
+      </h2>
       <div class="mt-4 flex justify-center">
         <button
           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg mr-4 transition duration-300 ease-in-out"
