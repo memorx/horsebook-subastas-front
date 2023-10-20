@@ -510,7 +510,7 @@ export default {
       }
 
       const email = decoded.email
-      const url = `${this.$config.baseURL}/users/list-app-users/?email=${email}`
+      const url = `${this.$config.baseURL}/users/me`
 
       this.loading = true
 

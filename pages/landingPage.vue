@@ -8,8 +8,7 @@
         <img
           src="../public/image_landing.png"
           alt="logo"
-          class="w-full object-cover"
-          style="height: 90vh;"
+          class="w-full h-[90vh] object-cover"
         />
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
           <div>
