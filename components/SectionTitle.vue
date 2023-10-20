@@ -1,6 +1,35 @@
+<!--
+USAGE INSTRUCTIONS FOR `SectionTitle` COMPONENT:
+
+1. **Using the component with default styles and classes**:
+Simply provide the title text.
+Example:
+<SectionTitle :titleText="'Sample Title'" />
+
+2. **Overriding default Tailwind classes**:
+Provide `containerClass` and `titleClass` to apply custom Tailwind styles.
+Example:
+<SectionTitle
+    :titleText="'Styled Title'"
+    containerClass="bg-blue-500 p-4"
+    titleClass="text-red-600 text-3xl font-medium"
+/>
+
+3. **Combining default and custom Tailwind classes**:
+Combine default and custom classes to achieve the desired design.
+Example:
+<SectionTitle
+    :titleText="'Combined Title'"
+    containerClass="w-full bg-blue-300 p-4"
+    titleClass="text-white text-5xl font-bold uppercase hover:text-red-600"
+/>
+
+This component provides flexibility in styling using Tailwind CSS.
+-->
+
 <template>
-    <div :class="containerClass" :style="computedStyles.container">
-        <h2 :class="titleClass" :style="computedStyles.title">{{ titleText }}</h2>
+    <div :class="computedContainerClass">
+        <h2 :class="computedTitleClass">{{ titleText }}</h2>
     </div>
 </template>
 
@@ -18,29 +47,19 @@ export default {
         titleClass: {
             type: String,
             default: 'text-white text-5xl font-bold uppercase'
-        },
-        styles: {
-            type: Object,
-            default: () => ({})
         }
     },
     computed: {
-        defaultStyles() {
-            return {
-                container: {
-                    backgroundColor: 'transparent'
-                },
-                title: {
-                    color: '#333',
-                }
-            };
+        computedContainerClass() {
+            return this.containerClass;
         },
-        computedStyles() {
-            const styles = { ...this.defaultStyles };
-            if (this.styles.container) styles.container = { ...styles.container, ...this.styles.container };
-            if (this.styles.title) styles.title = { ...styles.title, ...this.styles.title };
-            return styles;
+        computedTitleClass() {
+            return this.titleClass;
         }
     }
 }
 </script>
+
+<style scoped>
+/* Add any necessary CSS here if needed, although the goal is to primarily use Tailwind */
+</style>

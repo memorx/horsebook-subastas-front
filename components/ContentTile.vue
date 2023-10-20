@@ -1,5 +1,17 @@
+<!-- Usage:
+ContentTile component without any overrides (default behavior):
+<ContentTile :title="'Sample Title'" :paragraph="'This is a sample paragraph.'" :buttonLabel="'Click Me'" @button-clicked="sampleMethod" />
+
+Overriding styles with Tailwind classes:
+<ContentTile :title="'Styled Title'" :paragraph="'This paragraph has been styled.'" :buttonLabel="'Styled Button'" @button-clicked="sampleMethod" :classOverrides="{ container: 'bg-blue-500', title: 'text-red-500',paragraph: 'text-yellow-500 italic', button: 'bg-green-500 hover:bg-green-700' }"
+/>
+
+ContentTile component with only a title and paragraph (no button):
+<ContentTile :title="'Title Only'" :paragraph="'This is a sample paragraph without a button.'"/>
+-->
+
 <template>
-    <div :class="['p-4 w-11/12 sm:w-4/5 rounded-md', classOverrides.container || '']">
+    <div :class="['p-4 w-11/12 sm:w-4/5', classOverrides.container || '']">
         <component :is="`h${headingLevel}`" :class="['font-bold', classOverrides.title || '']">{{ title }}
         </component>
         <p :class="[classOverrides.paragraph || '']">{{ paragraph }}</p>

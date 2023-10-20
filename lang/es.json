@@ -10,7 +10,8 @@
         },
         "news": {
             "title": "Novedades",
-            "paragraph": "Subtítulo de noticias"
+            "paragraph": "Subtítulo de noticias",
+            "button": "Ver todas las noticias"
         },
         "exampleTitle": "Título de ejemplo",
         "exampleParagraph":  "Este es un párrafo de ejemplo para el div",

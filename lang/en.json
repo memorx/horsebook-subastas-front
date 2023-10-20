@@ -10,7 +10,8 @@
         },
         "news": {
             "title": "english news title",
-            "paragraph": "english news paragraph"
+            "paragraph": "english news paragraph",
+            "button": "english news button"
         },
         "exampleTitle": "Example Title",
         "exampleParagraph": "This is an example paragraph for div",
