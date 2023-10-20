@@ -629,6 +629,7 @@ export default {
   },
   data() {
     return {
+      auctionSocket: null,
       horseData: {
         Genre: "",
         BirthDate: "",
@@ -725,69 +726,138 @@ export default {
     }
   },
   async mounted() {
-    await this.fetchData()
     this.fetchGenres()
-    const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
-    this.$data.socket = new WebSocket(url)
-    const mountedThis = this
-    this.$data.socket.onmessage = function (event) {
-      const message = JSON.parse(event.data)
-      if (message.error) {
-        mountedThis.errorMessage = message.error
-        setTimeout(() => {
-          mountedThis.errorMessage = ""
-        }, 6000)
-        return
-      }
-      if (message.bids && message.bids.length > 0) {
-        mountedThis.winner = message.bids[0].user_profile
-        mountedThis.$data.bids = message.bids
-      }
-
-      if (message.prebids && message.prebids.length > 0) {
-        mountedThis.winner = message.prebids[0].user_profile
-        mountedThis.$data.bids = message.prebids
-      }
-
-      if (message.bid) {
-        if (mountedThis.$data.bids.length > 20) {
-          mountedThis.$data.bids.pop()
-        }
-        mountedThis.$data.bids.unshift(message.bid)
-      }
-
-      if (mountedThis.$data.bids.length > 0) {
-        mountedThis.$data.lastOffer = parseInt(
-          mountedThis.$data.bids[0]?.amount
-        ).toLocaleString("en-US")
-        let currentValue = parseInt(
-          mountedThis.formData?.amount.replace(",", "")
-        )
-        if (currentValue >= 30000) {
-          mountedThis.$data.formData.amount = (
-            parseInt(mountedThis.$data.bids[0]?.amount) + 500
-          ).toLocaleString("en-US")
-        } else {
-          mountedThis.$data.formData.amount = (
-            parseInt(mountedThis.$data.bids[0]?.amount) + 1000
-          ).toLocaleString("en-US")
-        }
-      } else if (mountedThis.horseData.final_amount) {
-        mountedThis.$data.formData.amount = parseInt(
-          mountedThis.horseData.final_amount,
-          10
-        ).toLocaleString("en-US")
-      } else {
-        mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
-      }
-    }
+    this.init()
+    this.startAuctionSocket()
   },
   methods: {
+    async init() {
+      await this.fetchData()
+      this.startBidSocket()
+    },
     enableModal() {
       this.showModal = true
     },
     disableModal() {
       this.showModal = false
+    },
+    async startBidSocket() {
+      if (
+        this.$data.socket &&
+        this.$data.socket.readyState === WebSocket.OPEN
+      ) {
+        this.$data.socket.close()
+      }
+      const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
+      this.$data.socket = new WebSocket(url)
+      const mountedThis = this
+      this.$data.socket.onmessage = function (event) {
+        const message = JSON.parse(event.data)
+        if (message.error) {
+          mountedThis.errorMessage = message.error
+          setTimeout(() => {
+            mountedThis.errorMessage = ""
+          }, 6000)
+          return
+        }
+        if (message.bids) {
+          mountedThis.winner = message.bids[0]?.user_profile
+          mountedThis.$data.bids = message.bids
+        }
+
+        if (message.prebids && message.prebids.length > 0) {
+          mountedThis.winner = message.prebids[0].user_profile
+          mountedThis.$data.bids = message.prebids
+        }
+
+        if (message.bid) {
+          if (mountedThis.$data.bids.length > 20) {
+            mountedThis.$data.bids.pop()
+          }
+          mountedThis.$data.bids.unshift(message.bid)
+        }
+
+        if (mountedThis.$data.bids.length > 0) {
+          mountedThis.$data.lastOffer = parseInt(
+            mountedThis.$data.bids[0]?.amount
+          ).toLocaleString("en-US")
+          let currentValue = parseInt(
+            mountedThis.formData?.amount.replace(",", "")
+          )
+          if (currentValue >= 30000) {
+            mountedThis.$data.formData.amount = (
+              parseInt(mountedThis.$data.bids[0]?.amount) + 500
+            ).toLocaleString("en-US")
+          } else {
+            mountedThis.$data.formData.amount = (
+              parseInt(mountedThis.$data.bids[0]?.amount) + 1000
+            ).toLocaleString("en-US")
+          }
+        } else if (mountedThis.horseData.final_amount) {
+          mountedThis.$data.formData.amount = parseInt(
+            mountedThis.horseData.final_amount,
+            10
+          ).toLocaleString("en-US")
+        } else {
+          mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
+        }
+      }
+      this.$data.socket.addEventListener("close", (event) => {
+        if (event.code === 1006) {
+          mountedThis.startBidSocket()
+        }
+      })
+    },
+    async startAuctionSocket() {
+      const mountedThis = this
+      if (
+        this.$data.auctionSocket &&
+        this.$data.auctionSocket.readyState === WebSocket.OPEN
+      ) {
+        this.$data.auctionSocket.close()
+      }
+      const url = `${this.$config.baseURLWS}/auction/${this.bidId}`
+      this.$data.auctionSocket = new WebSocket(url)
+      this.$data.auctionSocket.onmessage = function (event) {
+        const message = JSON.parse(event.data)
+        if (message.error) {
+          mountedThis.socketError = message.error
+          return
+        }
+        if (message.horses && message.horses.length > 0) {
+          message.horses.forEach((horse) => {
+            if (horse.id == mountedThis.horseId) {
+              mountedThis.$data.horseStatus = horse.status
+            }
+          })
+        }
+
+        if (message.horse) {
+          mountedThis.horseId
+          if (message.horse.id == mountedThis.horseId) {
+            mountedThis.$data.horseStatus = message.horse.status
+            const nextHorse = message.horse.next
+            if (mountedThis.$data.horseStatus == "CLOSED")
+              mountedThis.$toast.success(
+                "La subasta de este caballo ha sido finalizada"
+              )
+            if (nextHorse) {
+              mountedThis.$router
+                .replace({
+                  query: { id: mountedThis.bidId, horseId: nextHorse }
+                })
+                .then(() => {
+                  mountedThis.init()
+                })
+            }
+          }
+        }
+      }
+      this.$data.socket.addEventListener("close", (event) => {
+        if (event.code === 1006) {
+          mountedThis.startBidSocket()
+        }
+      })
     },
     setInitialAmount() {
       if (this.formData?.amount) {
@@ -881,69 +951,54 @@ export default {
         })
     },
     async fetchData() {
-      const listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}`
-      const url = `${this.$config.baseURL}${listSubastasEndpoint}`
+      let listSubastasEndpoint = `/horse/${this.horseId}/info`
+      let url = `${this.$config.baseURL}${listSubastasEndpoint}`
+      const token = getUserTokenOrDefault()
       await axios
-        .get(url)
+        .get(url, {
+          headers: {
+            Authorization: `Token ${token}`
+          }
+        })
         .then((response) => {
           const horse = response.data
           //name
-          this.HorsenName =
-            horse.horses[this.horsePositionList].external_data.name
+          this.HorsenName = horse.external_data.name
           //horse ID
-          this.horseID = horse.horses[this.horsePositionList].external_data.id
-          this.horseIDForm = horse.horses[this.horsePositionList].local_data.id
-          //prebid date
-          this.PreBidDate = horse.start_pre_bid
-          this.EndPreBidDate = horse.end_pre_bid
-          this.PreBidDateFormat = this.formatted(horse.start_pre_bid)
-          this.EndPreBidDateFormat = this.formatted(horse.end_pre_bid)
-          //bid date
-          this.BidDate = horse.start_bid
-          this.EndBidDate = horse.end_bid
-          this.BidDateFormat = this.formatted(horse.start_bid)
-          this.EndBidDateFormat = this.formatted(horse.end_bid)
+          this.horseID = horse.external_data.id
+          this.horseIDForm = horse.local_data.id
           //horse Description
           //genre
           this.horseData.Genre =
-            this.genreMapping[
-              horse.horses[this.horsePositionList]?.external_data.sex
-            ] || ""
+            this.genreMapping[horse.external_data.sex] || ""
           //Birthdate
           this.horseData.BirthDate = this.formatted(
-            horse.horses[this.horsePositionList].external_data.birth_date
+            horse.external_data.birth_date
           )
           //color
-          this.horseData.Color =
-            horse.horses[this.horsePositionList].external_data.color
+          this.horseData.Color = horse.external_data.color
           //Weight
-          this.horseData.Weight =
-            horse.horses[this.horsePositionList].external_data.weight
+          this.horseData.Weight = horse.external_data.weight
           //Height
-          this.horseData.Height =
-            horse.horses[this.horsePositionList].external_data.height
+          this.horseData.Height = horse.external_data.height
           //Location
-          this.horseData.Location =
-            horse.horses[this.horsePositionList].external_data.location
+          this.horseData.Location = horse.external_data.location
           //Pedigree Image
-          this.horseData.Pedigree =
-            horse.horses[this.horsePositionList].local_data.pedigree
+          this.horseData.Pedigree = horse.local_data.pedigree
           //No. Register
-          this.horseData.registerNumber =
-            horse.horses[this.horsePositionList].local_data.registration_no
+          this.horseData.registerNumber = horse.local_data.registration_no
           //Hatchery
-          this.horseData.Hatchery =
-            horse.horses[this.horsePositionList].external_data.birth_location
+          this.horseData.Hatchery = horse.external_data.birth_location
           const birthDateMoment = moment(this.horseData.BirthDate, "DD/MM/YYYY")
           const today = moment()
           this.horseData.Age = today.diff(birthDateMoment, "years")
           //xRays
-          this.horseData.xRayGallery = horse.horses[
-            this.horsePositionList
-          ].local_data.xrays.map((xray) => xray.image)
+          this.horseData.xRayGallery = horse.local_data.xrays.map(
+            (xray) => xray.image
+          )
           //Video URL
           this.horseData.videoUrl = this.extractYouTubeId(
-            horse.horses[this.horsePositionList].local_data.video_url
+            horse.local_data.video_url
           )
           // Live URL
           this.liveURL = this.extractYouTubeId(horse.video_url)
@@ -952,12 +1007,32 @@ export default {
           //Horse Age
           this.age = this.calculateAge()
           //Bid Status
-          this.horseStatus =
-            horse.horses[[this.horsePositionList]].local_data.status
-          this.bidStatus = horse.status
+          this.horseStatus = horse.local_data.status
           //Bid Initial Amout
-          this.horseData.final_amount =
-            horse.horses[this.horsePositionList].local_data.final_amount
+          this.horseData.final_amount = horse.local_data.final_amount
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+
+      listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}&only_subasta_data=true`
+      url = `${this.$config.baseURL}${listSubastasEndpoint}`
+      await axios
+        .get(url)
+        .then((response) => {
+          const auction = response.data
+          //TODO: get subasta info
+          //prebid date
+          this.PreBidDate = auction.start_pre_bid
+          this.EndPreBidDate = auction.end_pre_bid
+          this.PreBidDateFormat = this.formatted(auction.start_pre_bid)
+          this.EndPreBidDateFormat = this.formatted(auction.end_pre_bid)
+          //bid date
+          this.BidDate = auction.start_bid
+          this.EndBidDate = auction.end_bid
+          this.BidDateFormat = this.formatted(auction.start_bid)
+          this.EndBidDateFormat = this.formatted(auction.end_bid)
+          this.bidStatus = auction.status
         })
         .catch((error) => {
           console.error(error)
