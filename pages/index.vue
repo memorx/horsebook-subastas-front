@@ -2,9 +2,9 @@
    <div class="h-auto bg-black flex justify-center px-4 sm:px-0">
       <div class="w-11/12 flex flex-col items-center sm:space-x-4">
          <!-- Main Component -->
-         <div
-            class="lg:h-screen md:h-2/3 h-1/2 w-full flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 my-12 md:my-6">
-            <div class="w-full md:w-4/5 lg:w-1/2 flex flex-col space-y-4 md:space-y-0">
+         <div class="lg:h-screen md:h-2/3 h-1/2 w-full my-12 md:my-6 grid grid-1 md:grid-cols-2 gap-4">
+            <!-- Content on the left -->
+            <div class="flex flex-col justify-center space-y-4">
                <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')"
                   :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null"
                   @button-clicked="handleButtonClick(1)" headingLevel="1" :classOverrides="{
@@ -14,14 +14,16 @@
                   }" />
             </div>
 
-            <div class="w-4/5 md:w-2/5 flex flex-col space-y-4 md:space-y-0">
-               <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')"
-                  :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null"
-                  @button-clicked="handleButtonClick(1)" headingLevel="1" :classOverrides="{
-                     title: 'text-white text-xl',
-                     paragraph: 'text-white ',
-                     button: 'bg-custom-gold rounded'  // This assumes that `#D9D957` is approximately equivalent to `bg-custom-gold` in Tailwind's colors
+            <!-- Content on the right including the image -->
+            <div class="flex flex-col items-center justify-center space-y-4">
+               <ContentTile title="Octubre 2023" paragraph="la subasta comienza en"
+                  :buttonLabel="null"
+                  headingLevel="2" :classOverrides="{
+                     container: 'w-full flex flex-col items-center mt-4',
+                     title: 'text-custom-gold font-normal text-xl md:text-2xl lg:text-2xl uppercase font-roboto',
+                     paragraph: 'uppercase text-white text-xs md:text-sm lg:text-base',
                   }" />
+               <img src="../public/conter-home.png" alt="conter" class="w-3/6 lg:w-3/6 xl:w-2/5 h-auto object-cover" />
             </div>
          </div>
 
