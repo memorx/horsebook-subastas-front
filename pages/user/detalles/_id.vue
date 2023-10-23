@@ -276,6 +276,7 @@ export default {
     const itemId = this.$route.params.id
     this.id = itemId
     await this.getDetailsAuction(this.id)
+    this.startAuctionSocket()
   },
   mounted() {
     // Update the countdown every second
@@ -313,6 +314,39 @@ export default {
   },
 
   methods: {
+    async startAuctionSocket() {
+      const mountedThis = this;
+      if (this.$data.auctionSocket && this.$data.auctionSocket.readyState === WebSocket.OPEN) {
+        this.$data.auctionSocket.close();
+      }
+      const url = `${this.$config.baseURLWS}/auction/${this.$route.params.id}`;
+      this.$data.auctionSocket = new WebSocket(url);
+      this.$data.auctionSocket.onmessage = function (event) {
+        const message = JSON.parse(event.data);
+        if(message.error){
+          mountedThis.socketError = message.error
+          return
+        }
+        if (message.horses && message.horses.length > 0) {
+          mountedThis.$data.item.horses.forEach((horse, key) => {
+            const status = message.horses.find( item => item.id === horse.local_data.id );
+            if (status)
+              mountedThis.$data.item.horses[key].local_data.status = status.status
+          });
+        }
+
+        if (message.horse) {
+          const key = mountedThis.$data.item.horses.findIndex( horse => message.horse.id === horse.local_data.id );
+          if (key >= 0)
+            mountedThis.$data.item.horses[key].local_data.status = message.horse.status
+        }
+      };
+      this.$data.socket.addEventListener('close', (event) => {
+        if (event.code === 1006) {
+          mountedThis.startBidSocket()
+        }
+      });
+    },
     amountStringToInt(initial, final) {
       if (parseInt(final, 10) > parseInt(initial, 10)) {
         return true

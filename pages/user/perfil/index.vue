@@ -261,7 +261,7 @@ export default {
       this.email = [];
       const token = getUserTokenOrDefault()
       const decoded = JWTDecode(this.$cookies.get("access_token"));
-      const url = `${this.$config.baseURL}/users/list-app-users/?email=${decoded.email}`;
+      const url = `${this.$config.baseURL}/users/me`;
       if (token) {
         const headers = {
           Authorization: `Token ${token}`,
@@ -271,7 +271,6 @@ export default {
 
         try {
           const response = await this.$axios.get(url, { headers });
-          console.log(response)
           this.email = response.data.app_user_profile;
           this.profile = response.data.app_user_profile;
           this.selectedCountry = this.email.country.name

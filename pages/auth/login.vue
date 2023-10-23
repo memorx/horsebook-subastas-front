@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="flex h-screen">
     <div class="w-1/2 hidden md:block">
@@ -161,7 +160,6 @@ export default {
               response.data.app_user_profile.bid
             )
             this.$router.push("/landingPage")
-            console.log("holis")
           }
         })
         .catch((error) => {
