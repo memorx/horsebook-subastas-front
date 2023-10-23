@@ -163,7 +163,7 @@
                     +
                   </button>
 
-                  <div class="hidden md:block">
+                  <div class="hidden lg:block">
                     <SubmitAuthenticatedButton
                       :enable-modal="enableModal"
                       button-text="Ofertar"
@@ -752,7 +752,7 @@ export default {
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
       this.$data.socket = new ReconnectingWebSocket(url)
       const mountedThis = this
-      this.$data.socket.onmessage = function (event) {
+      this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
         if (message.error) {
           mountedThis.errorMessage = message.error
@@ -802,7 +802,7 @@ export default {
         } else {
           mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
         }
-      }
+      })
       this.$data.socket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
@@ -819,7 +819,7 @@ export default {
       }
       const url = `${this.$config.baseURLWS}/auction/${this.bidId}`
       this.$data.auctionSocket = new ReconnectingWebSocket(url)
-      this.$data.auctionSocket.onmessage = function (event) {
+      this.$data.auctionSocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
         if (message.error) {
           mountedThis.socketError = message.error
@@ -853,7 +853,7 @@ export default {
             }
           }
         }
-      }
+      })
       this.$data.socket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
