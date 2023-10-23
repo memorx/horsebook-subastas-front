@@ -38,14 +38,15 @@
                      class="p-4 flex flex-col items-start justify-center">
                      <div class="w-full relative" :style="`padding-bottom: 100%;`">
                         <!-- Aspect ratio box: Padding bottom is set to 100% to create a 1:1 ratio box -->
-                        <img :src="newsItem.image" alt="News Image"
+                        <!-- The image path would be:src="newsItem.image" -->
+                        <img src="../public/example-new-card.png"  alt="News Image"
                            class="absolute top-0 left-0 w-full h-full object-cover border-yellow-500 border-1 rounded-tl-xl rounded-br-xl">
                      </div>
                      <ContentTile :title="newsItem.title[currentLang]" :paragraph="newsItem.paragraph[currentLang]"  :buttonLabel="null"
                         headingLevel="2" :classOverrides="{
-                           container: 'p-0 w-2/3 mt-2',
-                           title: 'text-white text-base',
-                           paragraph: 'text-white',
+                           container: 'p-0 w-full mt-2',
+                           title: 'text-white text-sm md:text-base lg:text-lg uppercase font-roboto',
+                           paragraph: 'text-white text-sm md:text-base lg:text-lg font-roboto',
                         }" />
                   </div>
                </div>
@@ -114,19 +115,19 @@ export default {
          newsData: [ // Placeholder data
             {
                id: 1,
-               image: 'path_to_image1.jpg',
+               image: '../public/example-new-card.png',
                title: { en: 'English Title 1', es: 'Spanish Title 1' },
                paragraph: { en: 'English content...', es: 'Spanish content...' }
             },
             {
                id: 2,
-               image: 'path_to_image2.jpg',
+               image: '../public/example-new-card.png',
                title: { en: 'English Title 2', es: 'Spanish Title 2' },
                paragraph: { en: 'English content...', es: 'Spanish content...' }
             },
             {
                id: 3,
-               image: 'path_to_image3.jpg',
+               image: '../public/example-new-card.png',
                title: { en: 'English Title 3', es: 'Spanish Title 3' },
                paragraph: { en: 'English content...', es: 'Spanish content...' }
             }
