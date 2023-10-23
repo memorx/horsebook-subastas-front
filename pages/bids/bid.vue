@@ -614,6 +614,7 @@ import getUserTokenOrDefault from "../../utils/getUserTokenOrDefault"
 import modal from "../../components/bid/modal.vue"
 import horseStatus from "../../components/bid/horseStatus.vue"
 import statusBid from "../../components/bid/statusBid.vue"
+import ReconnectingWebSocket from "reconnecting-websocket"
 
 export default {
   components: {
@@ -749,7 +750,7 @@ export default {
         this.$data.socket.close()
       }
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
-      this.$data.socket = new WebSocket(url)
+      this.$data.socket = new ReconnectingWebSocket(url)
       const mountedThis = this
       this.$data.socket.onmessage = function (event) {
         const message = JSON.parse(event.data)
@@ -817,7 +818,7 @@ export default {
         this.$data.auctionSocket.close()
       }
       const url = `${this.$config.baseURLWS}/auction/${this.bidId}`
-      this.$data.auctionSocket = new WebSocket(url)
+      this.$data.auctionSocket = new ReconnectingWebSocket(url)
       this.$data.auctionSocket.onmessage = function (event) {
         const message = JSON.parse(event.data)
         if (message.error) {
