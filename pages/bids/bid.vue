@@ -163,7 +163,7 @@
                     +
                   </button>
 
-                  <div class="hidden md:block">
+                  <div class="hidden lg:block">
                     <SubmitAuthenticatedButton
                       :enable-modal="enableModal"
                       button-text="Ofertar"
