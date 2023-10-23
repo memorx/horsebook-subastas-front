@@ -4,13 +4,13 @@
          <!-- Main Component -->
          <div
             class="lg:h-screen md:h-2/3 h-1/2 w-full flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 my-12 md:my-6">
-            <div class="w-4/5 md:w-2/5 flex flex-col space-y-4 md:space-y-0">
+            <div class="w-full md:w-4/5 lg:w-1/2 flex flex-col space-y-4 md:space-y-0">
                <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')"
                   :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null"
                   @button-clicked="handleButtonClick(1)" headingLevel="1" :classOverrides="{
-                     title: 'text-white text-xl uppercase',
-                     paragraph: 'text-white ',
-                     button: 'bg-yellow-300 rounded'
+                     title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4',
+                     paragraph: 'text-white mb-3 md:mb-4 lg:mb-5 text-sm md:text-base lg:text-lg',
+                     button: 'bg-custom-gold text-sm md:text-base lg:text-lg'
                   }" />
             </div>
 
@@ -20,7 +20,7 @@
                   @button-clicked="handleButtonClick(1)" headingLevel="1" :classOverrides="{
                      title: 'text-white text-xl',
                      paragraph: 'text-white ',
-                     button: 'bg-yellow-300 rounded'  // This assumes that `#D9D957` is approximately equivalent to `bg-yellow-300` in Tailwind's colors
+                     button: 'bg-custom-gold rounded'  // This assumes that `#D9D957` is approximately equivalent to `bg-custom-gold` in Tailwind's colors
                   }" />
             </div>
          </div>

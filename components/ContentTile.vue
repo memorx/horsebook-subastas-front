@@ -16,7 +16,7 @@ ContentTile component with only a title and paragraph (no button):
         </component>
         <p :class="[classOverrides.paragraph || '']">{{ paragraph }}</p>
         <button v-if="buttonLabel" @click="buttonAction"
-            :class="['mt-4 px-4 py-2 bg-black text-white rounded-2xl', classOverrides.button || '']">
+            :class="['px-4 py-2 bg-black text-white rounded-3xl', classOverrides.button || '']">
             {{ buttonLabel }}
         </button>
     </div>
