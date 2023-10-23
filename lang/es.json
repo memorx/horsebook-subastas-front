@@ -16,8 +16,20 @@
         "us": {
             "title": "Nosotros",
             "subTitle": "Asiste al lugar de remate o de forma remota",
-            "paragraph": "lorems ipsums dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl. Nulla euismod, nisl sed tincidunt aliquam, nunc nisl aliquam nisl, vitae aliquam nisl nisl vitae nisl.",
+            "paragraph": "Podrás ver, escuchar y participar haciendo tus posturas en tiempo real. Organiza tu propio remate, puedes registrarte y subir los caballos que quieres subastar, deberas de pagar la comision por la publicacion del articulo y especificar las condiciones de reamte del mismo.",
             "button": "Ver más"
+        },
+        "contact": {
+            "title": "Contacto",
+            "subTitle": "¡Nos interesa saber de ti! ",
+            "paragraph": "Si tienes alguna duda de como partisapar en nuestras subastas o quieres ponerte en contacto con nosotros, envíanos un mesaje en el siguiente formularios.",
+            "button": "enviar",
+            "form": {
+                "name": "nombre",
+                "phone": "teléfono",
+                "email": "email",
+                "message": "mensajes"
+            }
         },
         "exampleTitle": "Título de ejemplo",
         "exampleParagraph":  "Este es un párrafo de ejemplo para el div",

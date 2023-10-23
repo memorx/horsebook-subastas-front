@@ -19,6 +19,18 @@
             "paragraph": "english us paragraph",
             "button": "english us button"
         },
+        "contact": {
+            "title": "english contact title",
+            "subtitle": "english contact subtitle",
+            "paragraph": "english contact paragraph",
+            "button": "submit",
+            "form": {
+                "name": "name",
+                "phone": "phone",
+                "email": "email",
+                "message": "message"
+            }
+        },
         "exampleTitle": "Example Title",
         "exampleParagraph": "This is an example paragraph for div",
         "exampleButton": "Example Button"

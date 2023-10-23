@@ -11,7 +11,7 @@ This component allows for flexibility in styling and functionality while keeping
 -->
 <template>
     <div :class="containerClass">
-        <button :class="computedButtonClass" @click="handleClick">
+        <button :type="type" :class="['lg:px-12 px-6 md:px-8 py-2 bg-black text-white border-1 border-yellow-500 rounded-2xl', buttonClass || '']" @click="handleClick">
             {{ buttonText }}
         </button>
     </div>
@@ -26,7 +26,7 @@ export default {
         },
         buttonClass: {
             type: String,
-            default: "lg:px-12 px-6 md:px-8 py-2 bg-black text-white border-1 border-yellow-500 rounded-2xl"
+            default: ''
         },
         containerClass: {
             type: String,
@@ -35,12 +35,16 @@ export default {
         onClick: {
             type: Function,
             default: () => { }
+        },
+        type: {
+            type: String,
+            default: "button"
+        },
+        buttonClass: {  // Updated prop
+            type: Object,
+            default: () => ({})
         }
-    },
-    computed: {
-        computedButtonClass() {
-            return this.buttonClass;
-        }
+
     },
     methods: {
         handleClick() {

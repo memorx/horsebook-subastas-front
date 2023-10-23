@@ -16,9 +16,8 @@
 
             <!-- Content on the right including the image -->
             <div class="flex flex-col items-center justify-center space-y-4">
-               <ContentTile title="Octubre 2023" paragraph="la subasta comienza en"
-                  :buttonLabel="null"
-                  headingLevel="2" :classOverrides="{
+               <ContentTile title="Octubre 2023" paragraph="la subasta comienza en" :buttonLabel="null" headingLevel="2"
+                  :classOverrides="{
                      container: 'w-full flex flex-col items-center mt-4',
                      title: 'text-custom-gold font-normal text-xl md:text-2xl lg:text-2xl uppercase font-roboto',
                      paragraph: 'uppercase text-white text-xs md:text-sm lg:text-base',
@@ -39,11 +38,11 @@
                      <div class="w-full relative" :style="`padding-bottom: 100%;`">
                         <!-- Aspect ratio box: Padding bottom is set to 100% to create a 1:1 ratio box -->
                         <!-- The image path would be:src="newsItem.image" -->
-                        <img src="../public/example-new-card.png"  alt="News Image"
+                        <img src="../public/example-new-card.png" alt="News Image"
                            class="absolute top-0 left-0 w-full h-full object-cover border-yellow-500 border-1 rounded-tl-xl rounded-br-xl">
                      </div>
-                     <ContentTile :title="newsItem.title[currentLang]" :paragraph="newsItem.paragraph[currentLang]"  :buttonLabel="null"
-                        headingLevel="2" :classOverrides="{
+                     <ContentTile :title="newsItem.title[currentLang]" :paragraph="newsItem.paragraph[currentLang]"
+                        :buttonLabel="null" headingLevel="2" :classOverrides="{
                            container: 'p-0 w-full mt-2',
                            title: 'text-white text-sm md:text-base lg:text-lg uppercase font-roboto',
                            paragraph: 'text-white text-sm md:text-base lg:text-lg font-roboto',
@@ -57,25 +56,64 @@
          <!-- end of news section -->
 
          <!-- US -->
-         <div class="my-8 lg:my-0 w-full lg:h-screen h-1/2 flex flex-col justify-end">
+         <div class="my-8 lg:my-0 w-full md:h-screen h-1/2 flex flex-col justify-end">
             <SectionTitle :titleText="$t('home.us.title')" containerClass="w-full my-0 mb-8"
-            titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
+               titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
             <ContentTile :title="$t('home.us.subTitle')" :paragraph="$t('home.us.paragraph')"
-               :buttonLabel="$t('home.us.title') ? $t('home.us.title') : null"
-               @button-clicked="handleButtonClick(1)" headingLevel="1" :classOverrides="{
-                  title: 'text-white text-xs md:text-sm text-base uppercase',
-                  paragraph: 'text-white text-xs md:text-sm text-base opacity-50 ',
-                  button: 'lg:px-12 px-6 md:px-8 py-2 bg-black text-white border-1 border-yellow-500 rounded-2xl'
-            }" />
+               :buttonLabel="$t('home.us.title') ? $t('home.us.title') : null" @button-clicked="handleButtonClick(1)"
+               headingLevel="2" :classOverrides="{
+                  title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4',
+                  paragraph: 'text-white mb-3 md:mb-4 lg:mb-5 text-sm md:text-base lg:text-lg',
+                  button: 'lg:px-12 px-8 md:px-8 py-2 bg-black text-white border-1 border-yellow-500 rounded-2xl'
+               }" />
          </div>
 
 
-
-         <SectionTitle :titleText="$t('home.news.title')" containerClass="w-full my-0 mb-8"
+         <!-- Contact -->
+         <SectionTitle :titleText="$t('home.contact.title')" containerClass="w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
             titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
 
-         <SectionTitle :titleText="$t('home.news.title')" containerClass="w-full my-0 mb-8 "
-            titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
+         <div class=" w-full my-2 md:my-6 grid grid-1 lg:grid-cols-2 gap-4">
+            <!-- Content on the left -->
+            <div class="flex flex-col justify-start space-y-4 w-full">
+               <ContentTile :title="$t('home.contact.subTitle')" :paragraph="$t('home.contact.paragraph')"
+                  :buttonLabel="null" headingLevel="2" :classOverrides="{
+                     container: 'lg:w-full',
+                     title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4',
+                     paragraph: 'text-white mb-3 md:mb-4 lg:mb-5 text-sm md:text-base lg:text-lg',
+                  }" />
+            </div>
+
+            <!-- Content on the right including the image -->
+            <div class="flex flex-col items-center justify-center space-y-4">
+               <!-- Form starts here -->
+               <form id="contactForm" class="w-2/3" @submit.prevent="handleSubmit">
+                  <!-- Name input -->
+                  <label for="name" class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{ $t('home.contact.form.name') }}</label>
+                  <input type="text" id="name" name="name" required autocomplete="name"
+                  class="w-full p-2 mb-2 rounded bg-[#15151A] text-white font-roboto border-[#15151A]">
+
+                  <!-- Phone input -->
+                  <label for="phone" class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{ $t('home.contact.form.phone') }}</label>
+                  <input type="tel" id="phone" name="phone" required autocomplete="tel"
+                     class="w-full p-2 mb-2 rounded bg-[#15151A] text-white font-roboto border-[#15151A]">
+
+                  <!-- Email input -->
+                  <label for="email" class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{ $t('home.contact.form.email') }}</label>
+                  <input type="email" id="email" name="email" required autocomplete="email"
+                     class="w-full p-2 mb-2 rounded bg-[#15151A] text-white font-roboto border-[#15151A]">
+
+                  <!-- Message input -->
+                  <label for="message" class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{ $t('home.contact.form.message') }}</label>
+                  <textarea id="message" name="message" required rows="4" cols="50" maxlength="500"
+                     class="w-full p-2 mb-4 rounded bg-[#15151A] text-white font-roboto border-[#15151A]"></textarea>
+
+                  <!-- Submit button -->
+                  <ReusableButton type="submit" buttonClass="uppercase" :buttonText="$t('home.contact.button')" />
+               </form>
+            </div>
+         </div>
+
       </div>
    </div>
 </template>
@@ -108,6 +146,10 @@ export default {
       someFunction() {
          // Handle button click event. For demonstration:
          alert(`Reusable Button clicked `);
+      },
+      handleSubmit() {
+         // Handle form submission. For demonstration:
+         alert('Form submitted');
       }
    },
    data() {
@@ -138,6 +180,4 @@ export default {
 }
 </script>
 
-<style scoped>
-/* You can add additional styles here if needed */
-</style>
+<style scoped>/* You can add additional styles here if needed */</style>
