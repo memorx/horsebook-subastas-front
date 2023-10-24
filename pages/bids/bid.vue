@@ -692,7 +692,9 @@ export default {
       bids: [],
       preBids: [],
       errorMessage: "",
-      winner: ""
+      winner: "",
+      isIntentionalReconnectBid: false,
+      isIntentionalReconnectAuction: false
     }
   },
   computed: {
@@ -726,12 +728,37 @@ export default {
       return 0
     }
   },
+  beforeDestroy() {
+    console.log("al salir cierra los sockets", this.bidSocket)
+    this.intentionalCloseSockets()
+  },
   async mounted() {
     this.fetchGenres()
     this.init()
     this.startAuctionSocket()
   },
   methods: {
+    async intentionalCloseSockets() {
+      console.log("Cierre intencional de los sockets")
+      this.closeBidSocket()
+      this.closeAuctionSocket()
+    },
+    async closeBidSocket() {
+      console.log("Close Bid Socket")
+      this.isIntentionalReconnectBid = true
+      if (this.socket) {
+        this.socket.close()
+      }
+      this.isIntentionalReconnectBid = false
+    },
+    async closeAuctionSocket() {
+      console.log("Close Auction Socket")
+      this.isIntentionalReconnectAuction = true
+      if (this.auctionSocket) {
+        this.auctionSocket.close()
+      }
+      this.isIntentionalReconnectAuction = false
+    },
     async init() {
       await this.fetchData()
       this.startBidSocket()
@@ -957,9 +984,9 @@ export default {
       const token = getUserTokenOrDefault()
       await axios
         .get(url, {
-          headers: {
-            Authorization: `Token ${token}`
-          }
+          // headers: {
+          //   Authorization: `Token ${token}`
+          // }
         })
         .then((response) => {
           const horse = response.data
