@@ -1,37 +1,40 @@
 <template>
-   <div class="h-auto bg-black flex justify-center px-4 sm:px-0">
+   <div class="h-auto bg-black flex justify-center md:px-4 ">
       <div class="w-11/12 flex flex-col items-center sm:space-x-4">
-         <!-- Main Component -->
-         <div class="lg:h-screen md:h-2/3 h-1/2 w-full my-12 md:my-6 grid grid-1 md:grid-cols-2 gap-4">
-            <!-- Content on the left -->
-            <div class="flex flex-col justify-center space-y-4">
+
+         <!-- Main section -->
+         <div class="h-auto md:h-1/2 lg:h-screen w-full my-12 md:my-6 grid grid-1 md:grid-cols-2 gap-4">
+            <!-- Content -->
+            <div class="order-2 md:order-1 flex flex-col items-center justify-center space-y-4 w-full md:w-auto">
                <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')"
                   :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null"
                   @button-clicked="handleButtonClick(1)" headingLevel="1" :classOverrides="{
-                     title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4',
-                     paragraph: 'text-white mb-3 md:mb-4 lg:mb-5 text-sm md:text-base lg:text-lg',
-                     button: 'bg-custom-gold text-sm md:text-base lg:text-lg'
+                     container: 'flex flex-col items-center md:items-start w-full md:w-auto',
+                     title: 'text-center md:text-start text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4',
+                     paragraph: 'text-white mb-3 md:mb-4 lg:mb-5 text-sm md:text-base lg:text-lg text-center md:text-left',
+                     button: 'bg-custom-gold text-sm md:text-base lg:text-lg uppercase text-center md:text-left mt-4 md:mt-0'
                   }" />
             </div>
 
-            <!-- Content on the right including the image -->
-            <div class="flex flex-col items-center justify-center space-y-4">
+            <!-- Image -->
+            <div class="order-1 md:order-2 flex flex-col items-center justify-center space-y-4">
                <ContentTile title="Octubre 2023" paragraph="la subasta comienza en" :buttonLabel="null" headingLevel="2"
                   :classOverrides="{
-                     container: 'w-full flex flex-col items-center mt-4',
+                     container: 'flex flex-col items-center w-full',
                      title: 'text-custom-gold font-normal text-xl md:text-2xl lg:text-2xl uppercase font-roboto',
                      paragraph: 'uppercase text-white text-xs md:text-sm lg:text-base',
                   }" />
-               <img src="../public/conter-home.png" alt="conter" class="w-3/6 lg:w-3/6 xl:w-2/5 h-auto object-cover" />
+               <img src="../public/conter-home.png" alt="conter"
+                  class="w-1/3 md:w-3/6 lg:w-3/6 xl:w-2/5 h-auto object-cover" />
             </div>
          </div>
 
          <!-- News section -->
-         <SectionTitle :titleText="$t('home.news.title')" containerClass="w-full my-0 mb-8"
+         <SectionTitle :titleText="$t('home.news.title')" containerClass="md:w-full my-0 mb-8"
             titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
 
          <div class="w-full flex justify-start">
-            <div class="w-2/3 ">
+            <div class="w-full md:w-2/3 ">
                <div :class="`grid grid-cols-1 md:grid-cols-${gridCols} gap-4 flex w-full`">
                   <div v-for="newsItem in newsData" :key="newsItem.id"
                      class="p-4 flex flex-col items-start justify-center">
@@ -52,25 +55,29 @@
             </div>
          </div>
 
-         <ReusableButton :buttonText="$t('home.news.button')" @handle-click="someFunction(1)" />
+         <ReusableButton :buttonText="$t('home.news.button')" buttonClass="text-sm md:text-base lg:text-lg uppercase"
+            @handle-click="someFunction(1)" />
          <!-- end of news section -->
 
          <!-- US -->
-         <div class="my-8 lg:my-0 w-full md:h-screen h-1/2 flex flex-col justify-end">
-            <SectionTitle :titleText="$t('home.us.title')" containerClass="w-full my-0 mb-8"
+         <div class="my-16 md:my-8 lg:my-0 w-full h-2/3 md:h-screen flex flex-col justify-end">
+            <SectionTitle :titleText="$t('home.us.title')"
+               containerClass="flex flex-col items-center md:items-start w-full my-0 md:mb-8"
                titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
             <ContentTile :title="$t('home.us.subTitle')" :paragraph="$t('home.us.paragraph')"
                :buttonLabel="$t('home.us.title') ? $t('home.us.title') : null" @button-clicked="handleButtonClick(1)"
                headingLevel="2" :classOverrides="{
-                  title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4',
-                  paragraph: 'text-white mb-3 md:mb-4 lg:mb-5 text-sm md:text-base lg:text-lg',
-                  button: 'lg:px-12 px-8 md:px-8 py-2 bg-black text-white border-1 border-yellow-500 rounded-2xl'
+                  container: 'flex flex-col items-center w-full md:w-11/12 md:items-start ',
+                  title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4 text-center md:text-left',
+                  paragraph: 'text-white mb-4 md:mb-5 lg:mb-6 text-sm md:text-base lg:text-lg text-center md:text-left',
+                  button: 'lg:px-12 px-8 md:px-8 py-2 bg-black text-white border-1 border-yellow-500 rounded-2xl uppercase text-sm md:text-base lg:text-lg'
                }" />
          </div>
 
 
          <!-- Contact -->
-         <SectionTitle :titleText="$t('home.contact.title')" containerClass="w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
+         <SectionTitle :titleText="$t('home.contact.title')"
+            containerClass="flex flex-col items-center md:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
             titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
 
          <div class=" w-full my-2 md:my-6 grid grid-1 lg:grid-cols-2 gap-4">
@@ -78,38 +85,47 @@
             <div class="flex flex-col justify-start space-y-4 w-full">
                <ContentTile :title="$t('home.contact.subTitle')" :paragraph="$t('home.contact.paragraph')"
                   :buttonLabel="null" headingLevel="2" :classOverrides="{
-                     container: 'lg:w-full',
-                     title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4',
-                     paragraph: 'text-white mb-3 md:mb-4 lg:mb-5 text-sm md:text-base lg:text-lg',
+                     container: 'w-full sm:w-full md:w-2/3 lg:w-full ',
+                     title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4 text-center md:text-left',
+                     paragraph: 'text-white mb-3 md:mb-4 lg:mb-5 text-sm md:text-base lg:text-lg text-center md:text-left',
                   }" />
             </div>
 
             <!-- Content on the right including the image -->
-            <div class="flex flex-col items-center justify-center space-y-4">
+            <div class="flex flex-col lg:items-center lg:justify-center space-y-4">
                <!-- Form starts here -->
-               <form id="contactForm" class="w-2/3" @submit.prevent="handleSubmit">
+               <form id="contactForm" class="w-full md:w-2/3 p-4" @submit.prevent="handleSubmit">
                   <!-- Name input -->
-                  <label for="name" class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{ $t('home.contact.form.name') }}</label>
+                  <label for="name"
+                     class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{
+                        $t('home.contact.form.name') }}</label>
                   <input type="text" id="name" name="name" required autocomplete="name"
-                  class="w-full p-2 mb-2 rounded bg-[#15151A] text-white font-roboto border-[#15151A]">
+                     class="w-full p-2 mb-2 rounded bg-[#15151A] text-white font-roboto border-[#15151A]">
 
                   <!-- Phone input -->
-                  <label for="phone" class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{ $t('home.contact.form.phone') }}</label>
+                  <label for="phone"
+                     class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{
+                        $t('home.contact.form.phone') }}</label>
                   <input type="tel" id="phone" name="phone" required autocomplete="tel"
                      class="w-full p-2 mb-2 rounded bg-[#15151A] text-white font-roboto border-[#15151A]">
 
                   <!-- Email input -->
-                  <label for="email" class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{ $t('home.contact.form.email') }}</label>
+                  <label for="email"
+                     class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{
+                        $t('home.contact.form.email') }}</label>
                   <input type="email" id="email" name="email" required autocomplete="email"
                      class="w-full p-2 mb-2 rounded bg-[#15151A] text-white font-roboto border-[#15151A]">
 
                   <!-- Message input -->
-                  <label for="message" class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{ $t('home.contact.form.message') }}</label>
+                  <label for="message"
+                     class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{
+                        $t('home.contact.form.message') }}</label>
                   <textarea id="message" name="message" required rows="4" cols="50" maxlength="500"
                      class="w-full p-2 mb-4 rounded bg-[#15151A] text-white font-roboto border-[#15151A]"></textarea>
 
                   <!-- Submit button -->
-                  <ReusableButton type="submit" buttonClass="uppercase" :buttonText="$t('home.contact.button')" />
+                  <ReusableButton type="submit" containerClass="w-full flex flex-col items-center md:w-auto md:items-start"
+                     buttonClass="uppercase text-sm md:text-base lg:text-lg" :buttonText="$t('home.contact.button')" />
                </form>
             </div>
          </div>

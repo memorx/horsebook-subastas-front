@@ -41,8 +41,8 @@ export default {
             default: "button"
         },
         buttonClass: {  // Updated prop
-            type: Object,
-            default: () => ({})
+            type: String,
+            default: ""
         }
 
     },
