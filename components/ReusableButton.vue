@@ -11,7 +11,7 @@ This component allows for flexibility in styling and functionality while keeping
 -->
 <template>
     <div :class="containerClass">
-        <button :type="type" :class="['lg:px-12 px-6 md:px-8 py-2 bg-black text-white border-1 border-yellow-500 rounded-2xl', buttonClass || '']" @click="handleClick">
+        <button :type="type" :class="['lg:px-12 px-6 md:px-8 py-2 bg-black text-white border-1 border-custom-gold rounded-2xl', buttonClass || '']" @click="handleClick">
             {{ buttonText }}
         </button>
     </div>

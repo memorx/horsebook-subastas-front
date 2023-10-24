@@ -21,7 +21,7 @@
         },
         "contact": {
             "title": "english contact title",
-            "subtitle": "english contact subtitle",
+            "subTitle": "english contact subtitle",
             "paragraph": "english contact paragraph",
             "button": "submit",
             "form": {

@@ -33,24 +33,54 @@
          <SectionTitle :titleText="$t('home.news.title')" containerClass="md:w-full my-0 mb-8"
             titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
 
-         <div class="w-full flex justify-start">
-            <div class="w-full md:w-2/3 ">
-               <div :class="`grid grid-cols-1 md:grid-cols-${gridCols} gap-4 flex w-full`">
-                  <div v-for="newsItem in newsData" :key="newsItem.id"
-                     class="p-4 flex flex-col items-start justify-center">
-                     <div class="w-full relative" :style="`padding-bottom: 100%;`">
-                        <!-- Aspect ratio box: Padding bottom is set to 100% to create a 1:1 ratio box -->
-                        <!-- The image path would be:src="newsItem.image" -->
-                        <img src="../public/example-new-card.png" alt="News Image"
-                           class="absolute top-0 left-0 w-full h-full object-cover border-yellow-500 border-1 rounded-tl-xl rounded-br-xl">
-                     </div>
-                     <ContentTile :title="newsItem.title[currentLang]" :paragraph="newsItem.paragraph[currentLang]"
-                        :buttonLabel="null" headingLevel="2" :classOverrides="{
-                           container: 'p-0 w-full mt-2',
-                           title: 'text-white text-sm md:text-base lg:text-lg uppercase font-roboto',
-                           paragraph: 'text-white text-sm md:text-base lg:text-lg font-roboto',
-                        }" />
+         <div class="w-full flex md:flex-row flex-col h-auto items-center">
+            <div class="flex w-full md:w-1/2 flex-col">
+               <div
+                  class="p-4 flex flex-col items-start justify-center">
+                  <div class="w-full relative" :style="`padding-bottom: 100%;`">
+                     <!-- Aspect ratio box: Padding bottom is set to 100% to create a 1:1 ratio box -->
+                     <!-- The image path would be:src="newsItem.image" -->
+                     <img src="../public/example-new-card.png" alt="News Image"
+                        class="absolute top-0 left-0 w-full h-full object-cover border-custom-gold border-2 rounded-tl-xl rounded-br-xl">
                   </div>
+                  <ContentTile :title="newsData[0].title[currentLang]" :paragraph="newsData[0].paragraph[currentLang]"
+                     :buttonLabel="null" headingLevel="2" :classOverrides="{
+                        container: 'p-0 w-full mt-2',
+                        title: 'text-white text-sm md:text-base lg:text-lg uppercase font-roboto',
+                        paragraph: 'text-white text-sm md:text-base lg:text-lg font-roboto',
+                     }" />
+               </div>
+               <div
+                  class="p-4 flex flex-col items-start justify-center">
+                  <div class="w-full relative" :style="`padding-bottom: 100%;`">
+                     <!-- Aspect ratio box: Padding bottom is set to 100% to create a 1:1 ratio box -->
+                     <!-- The image path would be:src="newsItem.image" -->
+                     <img src="../public/example-new-card.png" alt="News Image"
+                        class="absolute top-0 left-0 w-full h-full object-cover border-custom-gold border-2 rounded-tl-xl rounded-br-xl">
+                  </div>
+                  <ContentTile :title="newsData[1].title[currentLang]" :paragraph="newsData[1].paragraph[currentLang]"
+                     :buttonLabel="null" headingLevel="2" :classOverrides="{
+                        container: 'p-0 w-full mt-2',
+                        title: 'text-white text-sm md:text-base lg:text-lg uppercase font-roboto',
+                        paragraph: 'text-white text-sm md:text-base lg:text-lg font-roboto',
+                     }" />
+               </div>
+            </div>
+            <div class="flex w-full md:w-1/2 flex-col items-center justify-center ">
+               <div
+                  class="p-4 flex flex-col items-start justify-center w-full">
+                  <div class="w-full relative" :style="`padding-bottom: 100%;`">
+                     <!-- Aspect ratio box: Padding bottom is set to 100% to create a 1:1 ratio box -->
+                     <!-- The image path would be:src="newsItem.image" -->
+                     <img src="../public/example-new-card.png" alt="News Image"
+                        class="absolute top-0 left-0 w-full h-full object-cover border-custom-gold border-2 rounded-tl-xl rounded-br-xl">
+                  </div>
+                  <ContentTile :title="newsData[2].title[currentLang]" :paragraph="newsData[2].paragraph[currentLang]"
+                     :buttonLabel="null" headingLevel="2" :classOverrides="{
+                        container: 'p-0 w-full mt-2',
+                        title: 'text-white text-sm md:text-base lg:text-lg uppercase font-roboto',
+                        paragraph: 'text-white text-sm md:text-base lg:text-lg font-roboto',
+                     }" />
                </div>
             </div>
          </div>
@@ -70,7 +100,7 @@
                   container: 'flex flex-col items-center w-full md:w-11/12 md:items-start ',
                   title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4 text-center md:text-left',
                   paragraph: 'text-white mb-4 md:mb-5 lg:mb-6 text-sm md:text-base lg:text-lg text-center md:text-left',
-                  button: 'lg:px-12 px-8 md:px-8 py-2 bg-black text-white border-1 border-yellow-500 rounded-2xl uppercase text-sm md:text-base lg:text-lg'
+                  button: 'lg:px-12 px-8 md:px-8 py-2 bg-black text-white border-1 border-custom-gold rounded-2xl uppercase text-sm md:text-base lg:text-lg'
                }" />
          </div>
 
@@ -125,7 +155,7 @@
 
                   <!-- Submit button -->
                   <ReusableButton type="submit" containerClass="w-full flex flex-col items-center md:w-auto md:items-start"
-                     buttonClass="uppercase text-sm md:text-base lg:text-lg" :buttonText="$t('home.contact.button')" />
+                     buttonClass="uppercase text-sm md:text-base lg:text-l " :buttonText="$t('home.contact.button')" />
                </form>
             </div>
          </div>
