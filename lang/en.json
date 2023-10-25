@@ -43,5 +43,10 @@
         "contact": "contact us",
         "logIn": "log in",
         "signUp": "sign up"
+    },
+    "footer": {
+        "navigate": "navigate",
+        "email":"email",
+        "phone":"phone"
     }
 }
