@@ -34,5 +34,14 @@
         "exampleTitle": "Example Title",
         "exampleParagraph": "This is an example paragraph for div",
         "exampleButton": "Example Button"
+    },
+    "topBar": {
+        "home": "home",
+        "bids": "bids",
+        "news": "news",
+        "us": "about us",
+        "contact": "contact us",
+        "logIn": "log in",
+        "signUp": "sign up"
     }
 }

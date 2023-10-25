@@ -34,5 +34,14 @@
         "exampleTitle": "Título de ejemplo",
         "exampleParagraph":  "Este es un párrafo de ejemplo para el div",
         "exampleButton": "Botón de ejemplo"
+    },
+    "topBar": {
+        "home": "inicio",
+        "bids": "subastas",
+        "news": "novedades",
+        "us": "nosotros",
+        "contact": "contacto",
+        "logIn": "login",
+        "signUp": "registrarse"
     }
 }
