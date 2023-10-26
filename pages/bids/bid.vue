@@ -461,7 +461,7 @@
             </div>
           </div>
           <div
-            v-else
+            v-else-if="bidStatus == 'CLOSED PREBID'"
             class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg text-center"
           >
             <p class="text-black font-bold text-2xl">
@@ -771,13 +771,13 @@ export default {
     },
     async startBidSocket() {
       if (
-        this.$data.socket &&
-        this.$data.socket.readyState === WebSocket.OPEN
+        this.socket &&
+        this.socket.readyState === WebSocket.OPEN
       ) {
-        this.$data.socket.close()
+        this.socket.close()
       }
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
-      this.$data.socket = new ReconnectingWebSocket(url)
+      this.socket = new ReconnectingWebSocket(url)
       const mountedThis = this
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
@@ -830,7 +830,7 @@ export default {
           mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
         }
       })
-      this.$data.socket.addEventListener("close", (event) => {
+      this.socket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
@@ -881,7 +881,7 @@ export default {
           }
         }
       })
-      this.$data.socket.addEventListener("close", (event) => {
+      this.auctionSocket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
@@ -1075,7 +1075,7 @@ export default {
       event.preventDefault()
       const submittedAmount = parseInt(this.formData.amount.replace(",", ""))
       const user = JSON.parse(localStorage.getItem("setUser"))
-      this.$data.socket.send(
+      this.socket.send(
         JSON.stringify({
           bid_info: {
             amount: submittedAmount

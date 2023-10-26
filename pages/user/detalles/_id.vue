@@ -169,7 +169,8 @@
         >
           <NuxtLink
             class="buttonDetails"
-            :to="`/bids/bid?id=${id}&horsePositionList=${index}&horseId=${horse.local_data.id}`"
+            target="_blank"
+            :to="{ name: '/bids/bid', params: {id: id, horsePositionList: index, horseId: horse.local_data.id }}"
           >
             <div class="px-1 py-1">
               <horseStatus
@@ -316,12 +317,12 @@ export default {
   methods: {
     async startAuctionSocket() {
       const mountedThis = this;
-      if (this.$data.auctionSocket && this.$data.auctionSocket.readyState === WebSocket.OPEN) {
-        this.$data.auctionSocket.close();
+      if (this.auctionSocket && this.auctionSocket.readyState === WebSocket.OPEN) {
+        this.auctionSocket.close();
       }
       const url = `${this.$config.baseURLWS}/auction/${this.$route.params.id}`;
-      this.$data.auctionSocket = new WebSocket(url);
-      this.$data.auctionSocket.onmessage = function (event) {
+      this.auctionSocket = new WebSocket(url);
+      this.auctionSocket.onmessage = function (event) {
         const message = JSON.parse(event.data);
         if(message.error){
           mountedThis.socketError = message.error
@@ -341,7 +342,7 @@ export default {
             mountedThis.$data.item.horses[key].local_data.status = message.horse.status
         }
       };
-      this.$data.socket.addEventListener('close', (event) => {
+      this.auctionSocket.addEventListener('close', (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
