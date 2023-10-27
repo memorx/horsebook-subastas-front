@@ -167,10 +167,9 @@
           v-for="(horse, index) in item.horses"
           :key="horse.id"
         >
-          <NuxtLink
+          <nuxt-link
             class="buttonDetails"
-            target="_blank"
-            :to="{ name: '/bids/bid', params: {id: id, horsePositionList: index, horseId: horse.local_data.id }}"
+            :to="{ name: `bids-bid___${currentLang}`, query: {'id': id, 'horsePositionList': index, 'horseId': horse.local_data.id }}"
           >
             <div class="px-1 py-1">
               <horseStatus
@@ -227,7 +226,7 @@
                 Ingresar
               </button>
             </div>
-          </NuxtLink>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -270,7 +269,8 @@ export default {
       countdownSubasta: true,
       countdownPre: true,
       bidStatus: "",
-      bidImage: ""
+      bidImage: "",
+      currentLang: this.$i18n.locale,
     }
   },
   async created() {
