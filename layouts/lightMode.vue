@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div :class="`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] bg-black`">
-            <!-- Your TopBar Component bg-[url('/home-bg.jpg')] -->
-            <Topbar />
+        <div :class="`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] bg-light-mode`">
+            <!-- Your TopBar Component -->
+            <Topbar layoutMode="lightMode" />
 
             <!-- This will be replaced by the page content -->
             <Nuxt />
         </div>
-        <Footer />
+        <Footer layoutMode="lightMode" />
     </div>
 </template>
 

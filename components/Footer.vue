@@ -1,5 +1,5 @@
 <template>
-    <footer class="bg-black p-6 text-white">
+    <footer :class="['p-6', backgroundColor, textColor]">
         <div class="container mx-auto grid grid-cols-4 gap-8">
 
             <!-- 1. Logo -->
@@ -54,19 +54,31 @@
 
 <script>
 export default {
-    methods: {
-        activePage(route) {
-            return this.$route.path === route;
+    props:{
+        layoutMode: {
+            type: String,
+            default: 'default'
         }
     },
     computed: {
+        backgroundColor() {
+            return this.layoutMode === 'lightMode' ? 'bg-light-mode' : 'bg-black';
+        },
+        textColor() {
+            return this.layoutMode === 'lightMode' ? 'text-black' : 'text-white';
+        },
         activePageClass() {
             return (route) => {
-                return this.$route.path === route ? 'text-custom-gold' : 'text-white';
+                return this.$route.path === route ? 'text-custom-gold' : this.layoutMode === 'lightMode' ? 'text-black' : 'text-white';
             }
         },
         classTittleSection() {
             return "font-roboto font-bold mb-3 capitalize"
+        }
+    },
+    methods: {
+        activePage(route) {
+            return this.$route.path === route;
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
-    <nav class="bg-black p-4 text-white">
-        <div class="container mx-auto flex justify-between items-center">
+    <nav :class="['p-4', textColor]">
+        <div class="container mx-auto flex justify-between items-center bg-transparent">
             <!-- Logo or brand -->
             <nuxt-link to="/">
                 <img src="../public/image_la_silla.png" alt="logo" style="width: 40px;">
@@ -26,18 +26,18 @@
                     </nuxt-link> -->
 
                     <nuxt-link to="/user/inicio">
-                        <button class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black">Tus
+                        <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black">Tus
                             Subastas
                         </button>
                     </nuxt-link>
 
-                    <button class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black"
+                    <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black"
                         @click="logout">
                         Cerrar sesión
                     </button>
 
                     <nuxt-link to="/user/perfil">
-                        <button class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black">
+                        <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black">
                             <i class="fas fa-user fa-lg"></i>
                         </button>
                     </nuxt-link>
@@ -49,8 +49,8 @@
                         <div class="flex space-x-3 lg:space-x-4 uppercase text-xs font-roboto">
                             <nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link>
                             <nuxt-link :class="activePageClass('/bids')" to="/bids">{{ $t('topBar.bids') }}</nuxt-link>
-                            <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link>
-                            <nuxt-link :class="activePageClass('/news')" to="/news">{{ $t('topBar.news') }}</nuxt-link>
+                            <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link>
+                            <nuxt-link :class="activePageClass('/news')" to="/news">{{ $t('topBar.news') }}</nuxt-link> -->
                             <nuxt-link :class="activePageClass('/contact')" to="/contact">{{ $t('topBar.contact')
                             }}</nuxt-link>
                         </div>
@@ -89,6 +89,12 @@ import Cookies from "js-cookie";
 import ReusableButton from './ReusableButton.vue'
 
 export default {
+    props: {
+        texColor: {
+            type: String,
+            default: 'text-white'
+        }
+    },
     comments: {
         ReusableButton
     },
@@ -119,9 +125,12 @@ export default {
         },
         activePageClass() {
             return (route) => {
-                return this.$route.path === route ? 'text-custom-gold' : 'text-white';
+                return this.$route.path === route ? 'text-custom-gold' : this.texColor;
             }
-        }
+        },
+        textColor() {
+            return this.texColor ;
+        },
     }
 }
 </script>

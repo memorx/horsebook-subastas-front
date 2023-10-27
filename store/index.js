@@ -3,7 +3,8 @@ export const state = () => ({
   singUpData: {},
   setUser: {},
   horseDetails: {},
-  userInformation: {}
+  userInformation: {},
+  bgImage: ''
 });
 
 export const mutations = {
@@ -32,5 +33,8 @@ export const mutations = {
     state.setUser = "";
     state.setSingUpData = "";
     state.isAuthenticated = false;
+  },
+  setBgImage(state, image) {
+    state.bgImage = image;
   }
 };

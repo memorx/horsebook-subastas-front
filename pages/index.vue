@@ -1,5 +1,5 @@
 <template>
-   <div class="h-auto bg-black flex justify-center md:px-4 ">
+   <div class="h-auto flex justify-center md:px-4 bg-transparent ">
       <div class="w-11/12 flex flex-col items-center sm:space-x-4">
 
          <!-- Main section -->
@@ -170,6 +170,9 @@ import SectionTitle from '~/components/SectionTitle.vue';
 import ReusableButton from '~/components/ReusableButton.vue';
 
 export default {
+   mounted() {
+      this.$store.commit('setBgImage', 'home-bg.jpg');
+   },
    components: {
       ContentTile,
       SectionTitle,
