@@ -56,6 +56,11 @@ export default {
     this.$data.socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
       if (typeof data?.user?.status === "boolean") {
+        if (data.user.status) {
+          this.$toast.success("Ha sido aprobado para ofertar");
+        } else {
+          this.$toast.error("Ha sido rechazado para ofertar");
+        }
         this.isAbleToBid = data.user.status
       }
     }
@@ -106,6 +111,7 @@ export default {
           }
           const response = await this.$axios.get(url, { headers })
           this.userId = response.data.id
+          console.log("User ID: ", this.userId);
 
           if (
             response.data.app_user_profile.bid !==

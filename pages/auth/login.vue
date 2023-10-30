@@ -124,6 +124,7 @@ export default {
       await this.$axios
         .$post(url, formData, { headers })
         .then((response) => {
+          console.log(response);
           if (response.token) {
             const HMACSHA256 = (stringToSign, secret) => {
               const crypto = require("crypto")
@@ -153,12 +154,18 @@ export default {
             this.$store.commit("authenticate", true)
             this.$store.commit("setUser", {
               email: this.login.email,
-              token: response.token
+              token: response.token,
+              id: `${response.data.id}`,
             })
             this.$store.commit(
               "setIsUserAbleToBid",
               response.data.app_user_profile.bid
             )
+            console.log('Websocket initializing');
+            if (this.$store.state.isAuthenticated && this.$store.state.user.id) {
+                this.$store.dispatch('initializeWebSocket');
+                // console.log('Websocket initialized');
+            }
             this.$router.push("/landingPage")
           }
         })

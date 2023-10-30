@@ -164,17 +164,17 @@
                   </button>
 
                   <div class="hidden lg:block">
-                    <SubmitAuthenticatedButton
+                    <!-- <SubmitAuthenticatedButton
                       :enable-modal="enableModal"
                       button-text="Ofertar"
-                    />
+                    /> -->
                   </div>
                 </div>
                 <div class="lg:hidden text-center mt-5 w-full">
-                  <SubmitAuthenticatedButton
+                  <!-- <SubmitAuthenticatedButton
                     :enable-modal="enableModal"
                     button-text="Ofertar"
-                  />
+                  /> -->
                 </div>
               </form>
               <div>
@@ -277,17 +277,17 @@
                   </button>
 
                   <div class="hidden md:block">
-                    <SubmitAuthenticatedButton
+                    <!-- <SubmitAuthenticatedButton
                       :enable-modal="enableModal"
                       button-text="Pre Ofertar"
-                    />
+                    /> -->
                   </div>
                 </div>
                 <div class="lg:hidden text-center mt-5 w-full">
-                  <SubmitAuthenticatedButton
+                  <!-- <SubmitAuthenticatedButton
                     :enable-modal="enableModal"
                     button-text="Pre Ofertar"
-                  />
+                  /> -->
                 </div>
               </form>
               <div>
