@@ -46,14 +46,17 @@
               >
               <input
                 v-model="form.password"
-                type="password"
+                :type="passwordFieldType"
                 required
                 @input="handlePasswordInput"
                 @focus="form.isPasswordFocused = true"
                 @blur="form.isPasswordFocused = false"
                 class="rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar contraseña"
+                placeholder="Enter password"
               />
+              <button type="button" @click="togglePasswordVisibility">
+                {{ showPasswordText }}
+              </button>
               <div v-if="form.isPasswordFocused" class="text-red-500 text-sm">
                 {{ form.passwordValidationMessage }}
               </div>
@@ -72,7 +75,7 @@
               >
               <input
                 v-model="form.confirmPassword"
-                type="password"
+                :type="passwordFieldType"
                 required
                 @input="validatePasswordMatch"
                 class="rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -84,17 +87,19 @@
             </div>
           </div>
           <!-- Nombre -->
-          <div class="flex flex-col w-full mb-3">
-            <label for="name" class="text-black-600 font-medium">Nombres</label>
-            <input
-              v-model="form.name"
-              required
-              class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              placeholder="Ingresar nombres"
-            />
-          </div>
           <!-- Apellidos -->
           <div class="flex space-x-4 w-full mb-3">
+            <div class="flex flex-col w-1/2">
+              <label for="name" class="text-black-600 font-medium"
+                >Nombres</label
+              >
+              <input
+                v-model="form.name"
+                required
+                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                placeholder="Ingresar nombres"
+              />
+            </div>
             <!-- Apellido Paterno Input -->
             <div class="flex flex-col w-1/2">
               <label for="fathers_surname" class="text-black-600 font-medium"
@@ -107,30 +112,14 @@
                 placeholder="Ingresar apellido paterno"
               />
             </div>
-
-            <!-- Apellido Materno Input -->
-            <div class="flex flex-col w-1/2">
-              <label
-                for="mothers_maiden_name"
-                class="text-black-600 font-medium"
-                >Apellido Materno</label
-              >
-              <input
-                v-model="form.mothers_maiden_name"
-                required
-                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar apellido materno"
-              />
-            </div>
           </div>
           <!-- País y Estado Input -->
           <div class="flex w-full space-x-4">
-            <!-- <div class="flex flex-col w-1/2">
+            <div class="flex flex-col w-full">
               <div>
-                <label
-                  for="country"
-                  class="text-black-600 font-medium"
-                >País</label>
+                <label for="country" class="text-black-600 font-medium"
+                  >País</label
+                >
                 <select
                   required
                   v-if="form.countries.length > 0"
@@ -148,7 +137,7 @@
                 </select>
                 <div v-else>Loading countries...</div>
               </div>
-            </div> -->
+            </div>
             <!-- Estado Input -->
             <!-- <div class="flex flex-col w-1/2">
               <label
@@ -528,13 +517,28 @@ export default {
         outdoor_number: "",
         indoor_number: "",
         street: ""
-      }
+      },
+      showPassword: false
+    }
+  },
+  computed: {
+    passwordFieldType() {
+      return this.showPassword ? "text" : "password"
+    },
+    showPasswordText() {
+      return this.showPassword ? "Ocultar Contraseña " : "Mostrar Contraseña"
     }
   },
   mounted() {
     this.fetchCountries()
   },
   methods: {
+    handlePasswordInput() {
+      // Handle input logic here
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword
+    },
     updateSelectedCountryCode() {
       const selectedCountryObject = this.form.countries.find(
         (country) => country.name === this.form.selectedCountry
@@ -589,19 +593,9 @@ export default {
     validatePassword() {
       const password = this.form.password
       const isLengthValid = password.length >= 8
-      const hasDigit = /\d/.test(password)
-      const hasSpecialCharacter = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(
-        password
-      )
       this.form.passwordValidationMessage = isLengthValid
         ? ""
         : "La contraseña debe tener al menos 8 caracteres."
-      this.form.digitValidationMessage = hasDigit
-        ? ""
-        : "La contraseña debe contener al menos un dígito."
-      this.form.specialCharacterValidationMessage = hasSpecialCharacter
-        ? ""
-        : "La contraseña debe contener al menos un carácter especial."
     },
     handleSubmit() {
       if (this.form.password !== this.form.confirmPassword) {
@@ -612,13 +606,7 @@ export default {
       const username = this.form.email.split("@")[0]
       const password = this.form.password
       const isValidPassword =
-        !password.includes(username) &&
-        !password.includes(this.form.name) &&
-        !password.includes(this.form.fathers_surname) &&
-        !password.includes(this.form.mothers_maiden_name) &&
         password.length >= 8 &&
-        password !== "password" &&
-        password !== "123456" &&
         passwordPattern.test(password) &&
         this.form.password === this.form.confirmPassword
       if (!isValidPassword) {
