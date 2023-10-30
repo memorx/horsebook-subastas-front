@@ -8,6 +8,9 @@
             "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus rutrum, nunc eu luctus aliquam, nisi lectus volutpat ante, a elementum lorem mi ac nisl. Praesent congue risus id.",
             "button": "Ver todos los caballos"
         },
+        "bid": {
+            "MainTitle": "Subastas"
+        },
         "news": {
             "title": "Novedades",
             "paragraph": "Subtítulo de novedades",

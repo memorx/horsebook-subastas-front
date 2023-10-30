@@ -29,80 +29,55 @@
             </div>
          </div>
 
-         <!-- News section -->
-         <SectionTitle :titleText="$t('home.news.title')" containerClass="md:w-full my-0 mb-8"
+         <!-- Bid -->
+         <SectionTitle :titleText="$t('home.bid.MainTitle')"
+            containerClass="flex flex-col items-center md:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
             titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
 
-         <div class="w-full flex md:flex-row flex-col h-auto items-center">
-            <div class="flex w-full md:w-1/2 flex-col">
-               <div
-                  class="p-4 flex flex-col items-start justify-center">
-                  <div class="w-full relative" :style="`padding-bottom: 100%;`">
-                     <!-- Aspect ratio box: Padding bottom is set to 100% to create a 1:1 ratio box -->
-                     <!-- The image path would be:src="newsItem.image" -->
-                     <img src="../public/example-new-card.png" alt="News Image"
-                        class="absolute top-0 left-0 w-full h-full object-cover border-custom-gold border-2 rounded-tl-xl rounded-br-xl">
+         <!-- Cards Container -->
+         <div class="flex justify-center w-full h-auto mt-8">
+            <div class="grid grid-cols-1 grid-rows-2 gap-12 w-11/12 h-full">
+               <!-- Card 1 -->
+               <div class="bg-white flex items-start justify-center shadow-lg rounded-xl border-2 border-custom-gold">
+                  <!-- Image part -->
+                  <div class="w-1/2 flex items-center justify-center">
+                     <img src="../public/example-new-card.png" alt="Image 1" class="w-full h-full object-cover rounded-xl">
                   </div>
-                  <ContentTile :title="newsData[0].title[currentLang]" :paragraph="newsData[0].paragraph[currentLang]"
-                     :buttonLabel="null" headingLevel="2" :classOverrides="{
-                        container: 'p-0 w-full mt-2',
-                        title: 'text-white text-sm md:text-base lg:text-lg uppercase font-roboto',
-                        paragraph: 'text-white text-sm md:text-base lg:text-lg font-roboto',
-                     }" />
+
+                  <!-- Content part -->
+                  <div class="w-1/2 flex items-center justify-start px-12 py-4">
+                     <div>
+                        <!-- Placeholder content, replace with your content -->
+                        <h2 class="font-roboto uppercase font-extrabold text-xl">remate</h2>
+                        <p class="font-roboto capital font-bold text-lg">La Silla  1er Semana</p>
+
+                        <div class="py-4">
+                           <p class="font-roboto capital font-bold text-base text-[#575757]">0 lotes</p>
+                           <p>hola mundo</p>
+                        </div>
+                     </div>
+                  </div>
                </div>
-               <div
-                  class="p-4 flex flex-col items-start justify-center">
-                  <div class="w-full relative" :style="`padding-bottom: 100%;`">
-                     <!-- Aspect ratio box: Padding bottom is set to 100% to create a 1:1 ratio box -->
-                     <!-- The image path would be:src="newsItem.image" -->
-                     <img src="../public/example-new-card.png" alt="News Image"
-                        class="absolute top-0 left-0 w-full h-full object-cover border-custom-gold border-2 rounded-tl-xl rounded-br-xl">
+
+               <!-- Card 2 -->
+               <div class="bg-white flex items-start justify-center shadow-lg rounded-xl border-2 border-custom-gold">
+                  <!-- Image part -->
+                  <div class="w-1/2 flex items-center justify-center">
+                     <img src="../public/example-new-card.png" alt="Image 2" class="w-full h-full object-cover rounded-xl">
                   </div>
-                  <ContentTile :title="newsData[1].title[currentLang]" :paragraph="newsData[1].paragraph[currentLang]"
-                     :buttonLabel="null" headingLevel="2" :classOverrides="{
-                        container: 'p-0 w-full mt-2',
-                        title: 'text-white text-sm md:text-base lg:text-lg uppercase font-roboto',
-                        paragraph: 'text-white text-sm md:text-base lg:text-lg font-roboto',
-                     }" />
-               </div>
-            </div>
-            <div class="flex w-full md:w-1/2 flex-col items-center justify-center ">
-               <div
-                  class="p-4 flex flex-col items-start justify-center w-full">
-                  <div class="w-full relative" :style="`padding-bottom: 100%;`">
-                     <!-- Aspect ratio box: Padding bottom is set to 100% to create a 1:1 ratio box -->
-                     <!-- The image path would be:src="newsItem.image" -->
-                     <img src="../public/example-new-card.png" alt="News Image"
-                        class="absolute top-0 left-0 w-full h-full object-cover border-custom-gold border-2 rounded-tl-xl rounded-br-xl">
+
+                  <!-- Content part -->
+                  <div class="w-1/2 flex items-center justify-center p-4">
+                     <div>
+                        <!-- Placeholder content, replace with your content -->
+                        <h2 class="font-bold text-xl mb-4">Card 2 Title</h2>
+                        <p>Card 2 content goes here.</p>
+                     </div>
                   </div>
-                  <ContentTile :title="newsData[2].title[currentLang]" :paragraph="newsData[2].paragraph[currentLang]"
-                     :buttonLabel="null" headingLevel="2" :classOverrides="{
-                        container: 'p-0 w-full mt-2',
-                        title: 'text-white text-sm md:text-base lg:text-lg uppercase font-roboto',
-                        paragraph: 'text-white text-sm md:text-base lg:text-lg font-roboto',
-                     }" />
                </div>
             </div>
          </div>
 
-         <ReusableButton :buttonText="$t('home.news.button')" buttonClass="text-sm md:text-base lg:text-lg uppercase text-white"
-            @handle-click="someFunction(1)" />
-         <!-- end of news section -->
-
-         <!-- US -->
-         <div class="my-16 md:my-8 lg:my-0 w-full h-2/3 md:h-screen flex flex-col justify-end">
-            <SectionTitle :titleText="$t('home.us.title')"
-               containerClass="flex flex-col items-center md:items-start w-full my-0 md:mb-8"
-               titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
-            <ContentTile :title="$t('home.us.subTitle')" :paragraph="$t('home.us.paragraph')"
-               :buttonLabel="$t('home.us.title') ? $t('home.us.title') : null" @button-clicked="handleButtonClick(1)"
-               headingLevel="2" :classOverrides="{
-                  container: 'flex flex-col items-center w-full md:w-11/12 md:items-start ',
-                  title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4 text-center md:text-left',
-                  paragraph: 'text-white mb-4 md:mb-5 lg:mb-6 text-sm md:text-base lg:text-lg text-center md:text-left',
-                  button: 'lg:px-12 px-8 md:px-8 py-2 bg-black text-white border-1 border-custom-gold rounded-2xl uppercase text-sm md:text-base lg:text-lg'
-               }" />
-         </div>
 
 
          <!-- Contact -->
@@ -154,7 +129,8 @@
                      class="w-full p-2 mb-4 rounded bg-[#15151A] text-white font-roboto border-[#15151A]"></textarea>
 
                   <!-- Submit button -->
-                  <ReusableButton type="submit" containerClass="w-full flex flex-col items-center md:w-auto md:items-start text-white"
+                  <ReusableButton type="submit"
+                     containerClass="w-full flex flex-col items-center md:w-auto md:items-start text-white"
                      buttonClass="uppercase text-sm md:text-base lg:text-l " :buttonText="$t('home.contact.button')" />
                </form>
             </div>
@@ -233,4 +209,6 @@ export default {
 }
 </script>
 
-<style scoped>/* You can add additional styles here if needed */</style>
+<style scoped>
+/* You can add additional styles here if needed */
+</style>

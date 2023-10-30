@@ -8,6 +8,9 @@
             "paragraph": "english main paragraph",
             "button": "english main button"
         },
+        "bid": {
+            "MainTitle": "english bid title"
+        },
         "news": {
             "title": "english news title",
             "paragraph": "english news paragraph",
