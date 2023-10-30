@@ -85,7 +85,7 @@
             </div>
          </div>
 
-         <ReusableButton :buttonText="$t('home.news.button')" buttonClass="text-sm md:text-base lg:text-lg uppercase"
+         <ReusableButton :buttonText="$t('home.news.button')" buttonClass="text-sm md:text-base lg:text-lg uppercase text-white"
             @handle-click="someFunction(1)" />
          <!-- end of news section -->
 
@@ -154,7 +154,7 @@
                      class="w-full p-2 mb-4 rounded bg-[#15151A] text-white font-roboto border-[#15151A]"></textarea>
 
                   <!-- Submit button -->
-                  <ReusableButton type="submit" containerClass="w-full flex flex-col items-center md:w-auto md:items-start"
+                  <ReusableButton type="submit" containerClass="w-full flex flex-col items-center md:w-auto md:items-start text-white"
                      buttonClass="uppercase text-sm md:text-base lg:text-l " :buttonText="$t('home.contact.button')" />
                </form>
             </div>
@@ -170,9 +170,13 @@ import SectionTitle from '~/components/SectionTitle.vue';
 import ReusableButton from '~/components/ReusableButton.vue';
 
 export default {
-   mounted() {
-      this.$store.commit('setBgImage', 'home-bg.jpg');
-   },
+   layout: 'default',
+   // mounted() {
+   //    // set the background image for this page
+   //    this.$store.commit('setBgImage', 'home-bg.jpg');
+   //    // set the textColor on Topbar component
+   //    this.$store.commit('setTextColorTopBar', 'text-black');
+   // },
    components: {
       ContentTile,
       SectionTitle,

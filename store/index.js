@@ -4,7 +4,8 @@ export const state = () => ({
   setUser: {},
   horseDetails: {},
   userInformation: {},
-  bgImage: ''
+  bgImage: '',
+  textColorTopBar: '',
 });
 
 export const mutations = {
@@ -36,5 +37,8 @@ export const mutations = {
   },
   setBgImage(state, image) {
     state.bgImage = image;
-  }
+  },
+  setTextColorTopBar(state, color) {
+    state.textColorTopBar = color;
+  },
 };

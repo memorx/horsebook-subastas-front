@@ -58,7 +58,7 @@
                         <!-- Sign Up / Log in-->
                         <div class="flex flex-row mx-6 gap-6 w-[275px]">
                             <ReusableButton :buttonText="$t('topBar.signUp')"
-                                buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full"
+                                :buttonClass="['text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full', textColor]"
                                 containerClass="w-1/2" :onClick="navigateToSignUp" />
 
                             <ReusableButton :buttonText="$t('topBar.logIn')"
@@ -89,13 +89,20 @@ import Cookies from "js-cookie";
 import ReusableButton from './ReusableButton.vue'
 
 export default {
-    props: {
-        texColor: {
-            type: String,
-            default: 'text-white'
-        }
+    computed: {
+        isUserAuthenticated() {
+            return this.$store.state.isAuthenticated;
+        },
+        activePageClass() {
+            return (route) => {
+                return this.$route.path === route ? 'text-custom-gold' : this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white' ;
+            }
+        },
+        textColor() {
+            return this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white' ;
+        },
     },
-    comments: {
+    components: {
         ReusableButton
     },
     methods: {
@@ -118,19 +125,6 @@ export default {
             localStorage.removeItem("setUser");
             this.$router.push('/')
         }
-    },
-    computed: {
-        isUserAuthenticated() {
-            return this.$store.state.isAuthenticated;
-        },
-        activePageClass() {
-            return (route) => {
-                return this.$route.path === route ? 'text-custom-gold' : this.texColor;
-            }
-        },
-        textColor() {
-            return this.texColor ;
-        },
     }
 }
 </script>
