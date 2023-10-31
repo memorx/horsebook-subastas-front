@@ -124,6 +124,7 @@ export default {
       await this.$axios
         .$post(url, formData, { headers })
         .then((response) => {
+          console.log(response);
           if (response.token) {
             const HMACSHA256 = (stringToSign, secret) => {
               const crypto = require("crypto")
@@ -140,6 +141,7 @@ export default {
             const claims = {
               email: this.login.email,
               token: response.token,
+              id: `${response.data.id}`,
               isAbleToBid: response.data.app_user_profile.bid || false
             }
             const encodedPlayload = btoa(JSON.stringify(claims))
@@ -153,7 +155,8 @@ export default {
             this.$store.commit("authenticate", true)
             this.$store.commit("setUser", {
               email: this.login.email,
-              token: response.token
+              token: response.token,
+              id: `${response.data.id}`,
             })
             this.$store.commit(
               "setIsUserAbleToBid",

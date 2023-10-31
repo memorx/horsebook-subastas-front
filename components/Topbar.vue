@@ -30,8 +30,8 @@
                     </nuxt-link> -->
 
                     <nuxt-link to="/user/inicio">
-                        <button class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black">Tus
-                            Subastas
+                        <button class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black">
+                            Tus Subastas
                         </button>
                     </nuxt-link>
 
@@ -95,6 +95,7 @@ export default {
         logout() {
             this.$store.commit('authenticate', false);
             this.$store.commit('clearUserData');
+            this.$store.commit("closeWebSocket");
             Cookies.remove('access_token');
             localStorage.removeItem("setUser");
             this.$router.push('/')

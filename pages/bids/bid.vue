@@ -149,7 +149,7 @@
                   </button>
                   <input
                     type="text"
-                    class="border rounded-md flex-grow"
+                    class="border rounded-md flex-grow w-1/4"
                     autofocus
                     id="amount"
                     required
