@@ -203,7 +203,7 @@
                   ref="detailsBid"
                   :bidId="bidId"
                   :horseID="horseID"
-                  :bids="this.$data.bids"
+                  :bids="this.bids"
                 />
               </div>
             </div>
@@ -349,7 +349,7 @@
                   ref="detailsBid"
                   :bidId="bidId"
                   :horseID="horseID"
-                  :bids="this.$data.bids"
+                  :bids="this.bids"
                 />
               </div>
             </div>
@@ -488,7 +488,7 @@
                   ref="detailsBid"
                   :bidId="bidId"
                   :horseID="horseID"
-                  :bids="this.$data.bids"
+                  :bids="this.bids"
                 />
               </div>
             </div>
@@ -846,13 +846,13 @@ export default {
     },
     async startBidSocket() {
       if (
-        this.$data.socket &&
-        this.$data.socket.readyState === WebSocket.OPEN
+        this.socket &&
+        this.socket.readyState === WebSocket.OPEN
       ) {
-        this.$data.socket.close()
+        this.socket.close()
       }
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
-      this.$data.socket = new ReconnectingWebSocket(url)
+      this.socket = new ReconnectingWebSocket(url)
       const mountedThis = this
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
@@ -865,47 +865,47 @@ export default {
         }
         if (message.bids) {
           mountedThis.winner = message.bids[0]?.user_profile
-          mountedThis.$data.bids = message.bids
+          mountedThis.bids = message.bids
         }
 
         if (message.prebids && message.prebids.length > 0) {
           mountedThis.winner = message.prebids[0].user_profile
-          mountedThis.$data.bids = message.prebids
+          mountedThis.bids = message.prebids
         }
 
         if (message.bid) {
-          if (mountedThis.$data.bids.length > 20) {
-            mountedThis.$data.bids.pop()
+          if (mountedThis.bids.length > 20) {
+            mountedThis.bids.pop()
           }
-          mountedThis.$data.bids.unshift(message.bid)
+          mountedThis.bids.unshift(message.bid)
         }
 
-        if (mountedThis.$data.bids.length > 0) {
-          mountedThis.$data.lastOffer = parseInt(
-            mountedThis.$data.bids[0]?.amount
+        if (mountedThis.bids.length > 0) {
+          mountedThis.lastOffer = parseInt(
+            mountedThis.bids[0]?.amount
           ).toLocaleString("en-US")
           let currentValue = parseInt(
             mountedThis.formData?.amount.replace(",", "")
           )
           if (currentValue >= 30000) {
-            mountedThis.$data.formData.amount = (
-              parseInt(mountedThis.$data.bids[0]?.amount) + 500
+            mountedThis.formData.amount = (
+              parseInt(mountedThis.bids[0]?.amount) + 500
             ).toLocaleString("en-US")
           } else {
-            mountedThis.$data.formData.amount = (
-              parseInt(mountedThis.$data.bids[0]?.amount) + 1000
+            mountedThis.formData.amount = (
+              parseInt(mountedThis.bids[0]?.amount) + 1000
             ).toLocaleString("en-US")
           }
         } else if (mountedThis.horseData.final_amount) {
-          mountedThis.$data.formData.amount = parseInt(
+          mountedThis.formData.amount = parseInt(
             mountedThis.horseData.final_amount,
             10
           ).toLocaleString("en-US")
         } else {
-          mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
+          mountedThis.formData.amount = (1000).toLocaleString("en-US")
         }
       })
-      this.$data.socket.addEventListener("close", (event) => {
+      this.socket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
@@ -914,14 +914,14 @@ export default {
     async startAuctionSocket() {
       const mountedThis = this
       if (
-        this.$data.auctionSocket &&
-        this.$data.auctionSocket.readyState === WebSocket.OPEN
+        this.auctionSocket &&
+        this.auctionSocket.readyState === WebSocket.OPEN
       ) {
-        this.$data.auctionSocket.close()
+        this.auctionSocket.close()
       }
       const url = `${this.$config.baseURLWS}/auction/${this.bidId}`
-      this.$data.auctionSocket = new ReconnectingWebSocket(url)
-      this.$data.auctionSocket.addEventListener("message", (event) => {
+      this.auctionSocket = new ReconnectingWebSocket(url)
+      this.auctionSocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
         if (message.error) {
           mountedThis.socketError = message.error
@@ -930,7 +930,7 @@ export default {
         if (message.horses && message.horses.length > 0) {
           message.horses.forEach((horse) => {
             if (horse.id == mountedThis.horseId) {
-              mountedThis.$data.horseStatus = horse.status
+              mountedThis.horseStatus = horse.status
             }
           })
         }
@@ -938,9 +938,9 @@ export default {
         if (message.horse) {
           mountedThis.horseId
           if (message.horse.id == mountedThis.horseId) {
-            mountedThis.$data.horseStatus = message.horse.status
+            mountedThis.horseStatus = message.horse.status
             const nextHorse = message.horse.next
-            if (mountedThis.$data.horseStatus == "CLOSED")
+            if (mountedThis.horseStatus == "CLOSED")
               mountedThis.$toast.success(
                 "La subasta de este caballo ha sido finalizada"
               )
@@ -956,7 +956,7 @@ export default {
           }
         }
       })
-      this.$data.socket.addEventListener("close", (event) => {
+      this.socket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
@@ -1151,7 +1151,7 @@ export default {
       event.preventDefault()
       const submittedAmount = parseInt(this.formData.amount.replace(",", ""))
       const user = JSON.parse(localStorage.getItem("setUser"))
-      this.$data.socket.send(
+      this.socket.send(
         JSON.stringify({
           bid_info: {
             amount: submittedAmount
