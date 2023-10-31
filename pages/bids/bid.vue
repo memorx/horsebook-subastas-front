@@ -153,6 +153,8 @@
                     autofocus
                     id="amount"
                     required
+                    @focus="removeCommas"
+                    @blur="addCommas"
                     v-model="formData.amount"
                   />
                   <button
@@ -296,8 +298,8 @@
                     autofocus
                     id="amount"
                     required
-                    :value="formData.amount"
-                    @input="updateAmount"
+                    v-model="formData.amount"
+                    @change="updateAmount"
                     @focus="disableSync"
                     @blur="enableSync"
                   />
@@ -779,6 +781,14 @@ export default {
     this.startAuctionSocket()
   },
   methods: {
+    removeCommas(e) {
+      document.getElementById('amount').type = "number"
+      this.formData.amount = this.formData.amount.replace(/,/g, "")
+    },
+    addCommas(e) {
+      this.formData.amount = parseFloat(this.formData.amount).toLocaleString()
+      document.getElementById('amount').type = "text"
+    },
     updateAmount(event) {
       if (this.isSyncEnabled) {
         this.formData.amount = event.target.value
@@ -786,9 +796,11 @@ export default {
     },
     disableSync() {
       this.isSyncEnabled = false
+      this.removeCommas()
     },
     enableSync() {
       this.isSyncEnabled = true
+      this.addCommas()
     },
     calculateCountdown() {
       const now = new Date()

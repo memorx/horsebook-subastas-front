@@ -13,7 +13,7 @@
             <!-- Navigation items -->
             <div class="flex items-center space-x-4">
 
-                <div v-if="isUserAuthenticated">
+                <div v-if="isUserAuthenticated" class="flex justify-center align-middle items-center">
                     <!-- <nuxt-link
                         :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
                         class="cursor-pointer"
@@ -30,9 +30,9 @@
                     </nuxt-link> -->
 
                     <nuxt-link to="/user/inicio">
-                        <button class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black">
+                        <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex">
                             Tus Subastas
-                        </button>
+                        </div>
                     </nuxt-link>
 
                     <button
@@ -43,9 +43,10 @@
                     </button>
 
                     <nuxt-link to="/user/perfil">
-                        <button class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black">
-                            <i class="fas fa-user fa-lg"></i>
-                        </button>
+                        <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex justify-center align-middle items-center">
+                            <i class="fas fa-user fa-lg p-2"></i>
+                            <p>{{ username }}</p>
+                        </div>
                     </nuxt-link>
                 </div>
 
@@ -88,7 +89,18 @@
 import Cookies from "js-cookie";
 
 export default {
+    data () {
+        return {
+            username: ""
+        }
+    },
+    mounted () {
+        this.getuserMail()
+    },
     methods: {
+        getuserMail() {
+           this.username = JSON.parse(localStorage.getItem("setUser")).user
+        },
         login() {
             this.$router.push('/auth/login')
         },
