@@ -253,15 +253,15 @@
               >Teléfono</label
             >
             <div class="flex space-x-0 w-full">
-              <!-- <div
+              <div
                 class="rounded-l-md px-4 py-2 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               >
                 <span class="font-medium">+{{ form.selectedDialCode }}</span>
-              </div> -->
+              </div>
               <input
                 v-model="form.phone"
                 required
-                class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                class="w-full rounded-r-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 placeholder="Ingresar teléfono"
               />
             </div>
