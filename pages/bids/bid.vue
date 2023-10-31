@@ -231,7 +231,7 @@
           </div>
           <div class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
             <div
-              class="text-center w-full rounded-t-lg p-5"
+              class="text-center w-full p-5 rounded-t-md"
               style="background-color: #b99d61"
             >
               <p class="text-white font-bold text-sm">PRE OFERTA MAS ALTA</p>
@@ -247,6 +247,36 @@
                   {{ parseInt(horseData.final_amount).toLocaleString("en-US") }}
                   USD
                 </p>
+              </div>
+            </div>
+            <div class="flex justify-center rounded-t-md">
+              <div class="mx-10 md:mx-0 my-10">
+                <div class="md:flex md:items-center">
+                  <div class="mx-5">
+                    <p class="text-center text-5xl mb-2 font-bold">
+                      {{ bidTime.days }}
+                    </p>
+                    <p class="text-center text-black">Días</p>
+                  </div>
+                  <div class="mx-5">
+                    <p class="text-center text-5xl mb-2 font-bold">
+                      {{ bidTime.hours }}
+                    </p>
+                    <p class="text-center text-black">Horas</p>
+                  </div>
+                  <div class="mx-5">
+                    <p class="text-center text-5xl mb-2 font-bold">
+                      {{ bidTime.minutes }}
+                    </p>
+                    <p class="text-center text-black">Minutos</p>
+                  </div>
+                  <div class="mx-5">
+                    <p class="text-center text-5xl mb-2 font-bold">
+                      {{ bidTime.seconds }}
+                    </p>
+                    <p class="text-center text-black">Segundos</p>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="px-5 mt-5">
@@ -266,7 +296,10 @@
                     autofocus
                     id="amount"
                     required
-                    v-model="formData.amount"
+                    :value="formData.amount"
+                    @input="updateAmount"
+                    @focus="disableSync"
+                    @blur="enableSync"
                   />
                   <button
                     class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
@@ -630,6 +663,13 @@ export default {
   },
   data() {
     return {
+      isSyncEnabled: true,
+      bidTime: {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+      },
       auctionSocket: null,
       horseData: {
         Genre: "",
@@ -729,6 +769,7 @@ export default {
     }
   },
   beforeDestroy() {
+    clearInterval(this.timer)
     console.log("al salir cierra los sockets", this.bidSocket)
     this.intentionalCloseSockets()
   },
@@ -738,6 +779,40 @@ export default {
     this.startAuctionSocket()
   },
   methods: {
+    updateAmount(event) {
+      if (this.isSyncEnabled) {
+        this.formData.amount = event.target.value
+      }
+    },
+    disableSync() {
+      this.isSyncEnabled = false
+    },
+    enableSync() {
+      this.isSyncEnabled = true
+    },
+    calculateCountdown() {
+      const now = new Date()
+      const targetDate = new Date(this.EndPreBidDate)
+      const timeDifference = targetDate - now
+
+      if (timeDifference <= 0) {
+        this.countdownSubasta = false
+        clearInterval(this.timer)
+      } else {
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+        const hours = Math.floor(
+          (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        )
+        const minutes = Math.floor(
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+        )
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
+        this.bidTime.days = days
+        this.bidTime.hours = hours
+        this.bidTime.minutes = minutes
+        this.bidTime.seconds = seconds
+      }
+    },
     async intentionalCloseSockets() {
       console.log("Cierre intencional de los sockets")
       this.closeBidSocket()
@@ -1061,6 +1136,7 @@ export default {
           this.BidDateFormat = this.formatted(auction.start_bid)
           this.EndBidDateFormat = this.formatted(auction.end_bid)
           this.bidStatus = auction.status
+          this.timer = setInterval(this.calculateCountdown, 1000)
         })
         .catch((error) => {
           console.error(error)
