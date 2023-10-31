@@ -1,17 +1,10 @@
 <template>
   <div class="flex-grow tool-tip-container">
-    <button
-      class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full"
-      v-bind:class="{ disabled: !isAuthenticated || !isAbleToBid }"
-      type="button"
-      @click="enableModal"
-    >
+    <button class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full"
+      v-bind:class="{ disabled: !isAuthenticated || !isAbleToBid }" type="button" @click="enableModal">
       {{ buttonText }}
     </button>
-    <span
-      v-bind:class="{ show: !isAuthenticated || !isAbleToBid }"
-      class="tool-tip-text"
-    >
+    <span v-bind:class="{ show: !isAuthenticated || !isAbleToBid }" class="tool-tip-text">
       <p>{{ hoverText }}</p>
     </span>
   </div>
@@ -38,40 +31,18 @@ export default {
       isAuthenticated: null,
       isAbleToBid: null,
       hoverText: "",
-      userId: ""
+      userId: "",
+      adminPhone: "",
     }
   },
   async created() {},
   async mounted() {
-    await this.getUserInfo()
-
-    this.$data.isAuthenticated = this.isUserAuthenticated()
-    this.$data.isAbleToBid = this.isUserAbleToBid()
-
-    const url = `${this.$config.baseURLWS}/user-status/${this.userId}`
-    const mountedThis = this
-
-    this.$data.socket = await new WebSocket(url)
-
-    this.$data.socket.onmessage = (event) => {
-      const data = JSON.parse(event.data)
-      if (typeof data?.user?.status === "boolean") {
-        if (data.user.status) {
-          this.$toast.success("Ha sido aprobado para ofertar");
-        } else {
-          this.$toast.error("Ha sido rechazado para ofertar");
-        }
-        this.isAbleToBid = data.user.status
-      }
-    }
-
-    const adminPhone = await this.fetchAdministratorPhone()
-
-    this.$data.hoverText = this.getToolTipMessage(
-      this.$data.isAuthenticated,
-      this.$data.isAbleToBid,
-      adminPhone
-    )
+    this.updateStatusUser()
+  },
+  watch: {
+    // watch for changes in the user state
+    '$store.state.isAuthenticated': 'updateStatusUser',
+    '$store.state.isUserAbleToBid': 'updateStatusUser'
   },
   methods: {
     isUserAuthenticated() {
@@ -99,32 +70,6 @@ export default {
     getNotAuthorizedUserMessage(administratorPhone) {
       return `${this.hoverMessage.notAuthorized} ${administratorPhone}`
     },
-    async getUserInfo() {
-      const token = getUserTokenOrDefault()
-      if (JWTDecode(this.$cookies.get("access_token"))) {
-        const decoded = JWTDecode(this.$cookies.get("access_token"))
-        const url = `${this.$config.baseURL}/users/list-app-users/?email=${decoded.email}`
-
-        if (token) {
-          const headers = {
-            Authorization: `Token ${token}`
-          }
-          const response = await this.$axios.get(url, { headers })
-          this.userId = response.data.id
-          console.log("User ID: ", this.userId);
-
-          if (
-            response.data.app_user_profile.bid !==
-            this.$store.state.isUserAbleToBid
-          ) {
-            this.$store.commit(
-              "setIsUserAbleToBid",
-              response.data.app_user_profile.bid
-            )
-          }
-        }
-      }
-    },
     async fetchAdministratorPhone() {
       const url = `${this.$config.baseURL}/contact/info/`
       const token = getUserTokenOrDefault()
@@ -148,7 +93,19 @@ export default {
       } else {
         return ""
       }
-    }
+    },
+    updateStatusUser() {
+      // update the user data
+      this.$data.isAuthenticated = this.isUserAuthenticated()
+      this.$data.isAbleToBid = this.isUserAbleToBid()
+
+      // changes the hover text
+      this.$data.hoverText = this.getToolTipMessage(
+        this.$data.isAuthenticated,
+        this.$data.isAbleToBid,
+        this.$data.adminPhone
+      )
+    },
   }
 }
 </script>

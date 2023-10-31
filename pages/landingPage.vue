@@ -19,23 +19,23 @@
               Calidad respaldada por sus resultados internacionales
             </p>
             <div class="flex flex-col sm:flex-row justify-center space-x-0 sm:space-x-6 mt-6">
-              <a
+              <nuxt-link
                 v-if="!isUserAuthenticated"
-                href="auth/sign-up/"
+                to="auth/sign-up/"
                 class="button-black mb-2 sm:mb-0"
               >
                 <button class="bg-black text-white px-5 py-3 rounded-lg font-medium">
                   REGÍSTRATE
                 </button>
-              </a>
-              <a
-                href="user/inicio"
+              </nuxt-link>
+              <nuxt-link
+                to="user/inicio"
                 class="button-white"
               >
                 <button class="bg-black text-white px-5 py-3 rounded-lg font-medium">
                   ÚLTIMA SUBASTA
                 </button>
-              </a>
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -71,10 +71,10 @@
         amet veniam suscipit. Repellat similique inventore iste eveniet maxime, libero id itaque non!
       </div>
       <div class="flex justify-center items-center my-5">
-        <a href="auth/sign-up/"><button class="bg-black text-white px-5 py-3 rounded-lg">
+        <nuxt-link to="auth/sign-up/"><button class="bg-black text-white px-5 py-3 rounded-lg">
             Leer mas
           </button>
-        </a>
+        </nuxt-link>
       </div>
     </div>
   </div>

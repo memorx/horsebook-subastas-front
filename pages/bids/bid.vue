@@ -149,7 +149,7 @@
                   </button>
                   <input
                     type="text"
-                    class="border rounded-md flex-grow"
+                    class="border rounded-md flex-grow w-1/4"
                     autofocus
                     id="amount"
                     required
@@ -164,17 +164,17 @@
                   </button>
 
                   <div class="hidden lg:block">
-                    <!-- <SubmitAuthenticatedButton
+                    <SubmitAuthenticatedButton
                       :enable-modal="enableModal"
                       button-text="Ofertar"
-                    /> -->
+                    />
                   </div>
                 </div>
                 <div class="lg:hidden text-center mt-5 w-full">
-                  <!-- <SubmitAuthenticatedButton
+                  <SubmitAuthenticatedButton
                     :enable-modal="enableModal"
                     button-text="Ofertar"
-                  /> -->
+                  />
                 </div>
               </form>
               <div>
@@ -277,17 +277,17 @@
                   </button>
 
                   <div class="hidden md:block">
-                    <!-- <SubmitAuthenticatedButton
+                    <SubmitAuthenticatedButton
                       :enable-modal="enableModal"
                       button-text="Pre Ofertar"
-                    /> -->
+                    />
                   </div>
                 </div>
                 <div class="lg:hidden text-center mt-5 w-full">
-                  <!-- <SubmitAuthenticatedButton
+                  <SubmitAuthenticatedButton
                     :enable-modal="enableModal"
                     button-text="Pre Ofertar"
-                  /> -->
+                  />
                 </div>
               </form>
               <div>

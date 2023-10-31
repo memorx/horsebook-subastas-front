@@ -141,6 +141,7 @@ export default {
             const claims = {
               email: this.login.email,
               token: response.token,
+              id: `${response.data.id}`,
               isAbleToBid: response.data.app_user_profile.bid || false
             }
             const encodedPlayload = btoa(JSON.stringify(claims))
@@ -161,11 +162,6 @@ export default {
               "setIsUserAbleToBid",
               response.data.app_user_profile.bid
             )
-            console.log('Websocket initializing');
-            if (this.$store.state.isAuthenticated && this.$store.state.user.id) {
-                this.$store.dispatch('initializeWebSocket');
-                // console.log('Websocket initialized');
-            }
             this.$router.push("/landingPage")
           }
         })

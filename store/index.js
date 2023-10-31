@@ -1,5 +1,9 @@
+import JWTDecode from "jwt-decode"
+import Cookie from "js-cookie"
+
 export const state = () => ({
   isAuthenticated: false,
+  isUserAbleToBid: false,
   singUpData: {},
   setUser: {},
   horseDetails: {},
@@ -36,27 +40,59 @@ export const mutations = {
   },
   setWebSocket(state, socket) {
     state.websocket = socket
+  },
+  closeWebSocket(state) {
+    if (state.websocket) {
+      state.websocket.close()
+      state.websocket = null
+    }
   }
 }
 
 export const actions = {
-  async initializeWebSocket({ commit, state }) {
-    // if a WebSocket already exists, don't create a new one.
-    // if (state.websocket) return;
-
-    console.log("initializeWebSocket", state);
+  async initializeWebSocketUserStatus({ commit, state }) {
     // set the user id in the store & set state of
     if (!state.websocket && state.isAuthenticated && state.user.id) {
-      console.log("inside initializeWebSocket");
+      console.log("websocket inside")
       const url = `${this.$config.baseURLWS}/user-status/${state.user.id}`
-      console.log("url", url);
       const socket = await new WebSocket(url)
 
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data)
-        console.log("data", data);
+        // console.log("data", data)
         if (typeof data?.user?.status === "boolean") {
+          // update the cookie
+          const decoded = JWTDecode(this.$cookies.get("access_token"))
+          const HMACSHA256 = (stringToSign, secret) => {
+            const crypto = require("crypto")
+            return crypto
+              .createHmac("sha256", secret)
+              .update(stringToSign)
+              .digest("base64")
+          }
+          const header = {
+            alg: "HS256",
+            typ: "JWT"
+          }
+          const encodedHeaders = btoa(JSON.stringify(header))
+          const claims = {
+            email: decoded.email,
+            token: decoded.token,
+            id: decoded.id,
+            isAbleToBid: data.user.status
+          }
+          const encodedPlayload = btoa(JSON.stringify(claims))
+          const signature = HMACSHA256(
+            `${encodedHeaders}.${encodedPlayload}`,
+            "mysecret"
+          )
+          const encodedSignature = btoa(signature)
+          const jwt = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
+          Cookie.set("access_token", jwt)
+
+          // update the store
           commit("setIsUserAbleToBid", data.user.status)
+          // console.log("data.user.status", data.user.status);
         }
       }
 
