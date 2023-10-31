@@ -37,6 +37,11 @@ export default {
   },
   async created() {},
   async mounted() {
+    // call the admin phone in the mounted hook, so just one call is made
+    const adminPhone = await this.fetchAdministratorPhone()
+    // update the admin phone
+    this.$data.adminPhone = adminPhone
+    // update the user status
     this.updateStatusUser()
   },
   watch: {
