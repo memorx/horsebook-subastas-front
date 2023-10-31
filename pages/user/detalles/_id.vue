@@ -316,32 +316,32 @@ export default {
   methods: {
     async startAuctionSocket() {
       const mountedThis = this;
-      if (this.$data.auctionSocket && this.$data.auctionSocket.readyState === WebSocket.OPEN) {
-        this.$data.auctionSocket.close();
+      if (this.auctionSocket && this.auctionSocket.readyState === WebSocket.OPEN) {
+        this.auctionSocket.close();
       }
       const url = `${this.$config.baseURLWS}/auction/${this.$route.params.id}`;
-      this.$data.auctionSocket = new WebSocket(url);
-      this.$data.auctionSocket.onmessage = function (event) {
+      this.auctionSocket = new WebSocket(url);
+      this.auctionSocket.onmessage = function (event) {
         const message = JSON.parse(event.data);
         if(message.error){
           mountedThis.socketError = message.error
           return
         }
         if (message.horses && message.horses.length > 0) {
-          mountedThis.$data.item.horses.forEach((horse, key) => {
+          mountedthis.item.horses.forEach((horse, key) => {
             const status = message.horses.find( item => item.id === horse.local_data.id );
             if (status)
-              mountedThis.$data.item.horses[key].local_data.status = status.status
+              mountedthis.item.horses[key].local_data.status = status.status
           });
         }
 
         if (message.horse) {
-          const key = mountedThis.$data.item.horses.findIndex( horse => message.horse.id === horse.local_data.id );
+          const key = mountedthis.item.horses.findIndex( horse => message.horse.id === horse.local_data.id );
           if (key >= 0)
-            mountedThis.$data.item.horses[key].local_data.status = message.horse.status
+            mountedthis.item.horses[key].local_data.status = message.horse.status
         }
       };
-      this.$data.socket.addEventListener('close', (event) => {
+      this.auctionSocket.addEventListener('close', (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
