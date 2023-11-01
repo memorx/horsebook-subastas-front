@@ -14,52 +14,60 @@
         <div
           v-for="item in currentAuctions"
           :key="item.id"
-          class="bg-white rounded-lg flex flex-col md:flex-row mb-10"
+          class="bg-white rounded-lg"
         >
-          <img
-            v-if="item.image"
-            :src="item.image"
-            alt="foto_portada"
-            class="w-full md:w-1/2 object-cover md:rounded-l-lg"
-            style="height: 400px"
-            loading="lazy"
-          />
-          <div
-            class="w-full md:w-1/2 bg-gray-300 h-[400px] flex justify-center items-center md:rounded-l-lg"
-            v-else
+          <NuxtLink
+            :to="'/user/detalles/' + item.id"
+            @click.prevent="goToDetails(item.id)"
+            class="flex flex-col md:flex-row mb-10"
           >
             <img
-              class="m-auto opacity-70"
-              src="../../public/image_la_silla.png"
-              alt="Default Horse"
+              v-if="item.image"
+              :src="item.image"
+              alt="foto_portada"
+              class="w-full md:w-1/2 object-cover md:rounded-l-lg"
+              style="height: 400px"
+              loading="lazy"
             />
-          </div>
-          <div class="w-full md:w-1/2 flex flex-col justify-between">
-            <div class="p-5">
-              <div class="flex items-center">
-                <span class="text-4xl font-bold mr-2">Subasta</span>
-                <statusBid :status="item.status" />
-              </div>
-              <p class="text-sm font-medium text-slate-500">
-                Fecha de subasta:
-                <span class="font-normal">{{
-                  new Date(item.start_bid).toLocaleString()
-                }}</span>
-              </p>
-              <div class="border-b border-gray-300 my-3"></div>
-              <p class="mb-5">{{ item.notes !== "null" ? item.notes : "" }}</p>
-              <div class="text-center mt-auto">
-                <NuxtLink
-                  :to="'/user/detalles/' + item.id"
-                  @click.prevent="goToDetails(item.id)"
-                >
-                  <button class="bg-black py-3 px-5 text-white rounded-lg">
-                    Ingresar a Subasta
-                  </button>
-                </NuxtLink>
+            <div
+              class="w-full md:w-1/2 bg-gray-300 h-[400px] flex justify-center items-center md:rounded-l-lg"
+              v-else
+            >
+              <img
+                class="m-auto opacity-70"
+                src="../../public/image_la_silla.png"
+                alt="Default Horse"
+              />
+            </div>
+            <div class="w-full md:w-1/2 flex flex-col justify-between">
+              <div class="p-5">
+                <div class="flex items-center">
+                  <span class="text-4xl font-bold mr-2">Subasta</span>
+                  <statusBid :status="item.status" />
+                </div>
+                <p class="text-sm font-medium text-slate-500">
+                  Fecha de subasta:
+                  <span class="font-normal">{{
+                    new Date(item.start_bid).toLocaleString()
+                  }}</span>
+                </p>
+                <div class="border-b border-gray-300 my-3"></div>
+                <p class="mb-5">
+                  {{ item.notes !== "null" ? item.notes : "" }}
+                </p>
+                <div class="text-center mt-auto">
+                  <NuxtLink
+                    :to="'/user/detalles/' + item.id"
+                    @click.prevent="goToDetails(item.id)"
+                  >
+                    <button class="bg-black py-3 px-5 text-white rounded-lg">
+                      Ingresar a Subasta
+                    </button>
+                  </NuxtLink>
+                </div>
               </div>
             </div>
-          </div>
+          </NuxtLink>
         </div>
       </div>
     </div>

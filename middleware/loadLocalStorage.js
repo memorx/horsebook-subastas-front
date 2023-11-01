@@ -25,7 +25,8 @@ const retrieveUserInformationOrDefault = (app) => {
     isAuthenticated: true,
     token: decodedObject.token,
     user: decodedObject.email,
-    isAbleToBid: decodedObject.isAbleToBid
+    id: decodedObject.id,
+    isAbleToBid: decodedObject.isAbleToBid || false
   }
 }
 

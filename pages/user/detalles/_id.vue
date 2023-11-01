@@ -167,9 +167,9 @@
           v-for="(horse, index) in item.horses"
           :key="horse.id"
         >
-          <nuxt-link
+          <NuxtLink
             class="buttonDetails"
-            :to="{ name: `bids-bid___${currentLang}`, query: {'id': id, 'horsePositionList': index, 'horseId': horse.local_data.id }}"
+            :to="`/bids/bid/?id=${id}&horsePositionList=${index}&horseId=${horse.local_data.id}`"
           >
             <div class="px-1 py-1">
               <horseStatus
@@ -226,7 +226,7 @@
                 Ingresar
               </button>
             </div>
-          </nuxt-link>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -269,8 +269,7 @@ export default {
       countdownSubasta: true,
       countdownPre: true,
       bidStatus: "",
-      bidImage: "",
-      currentLang: this.$i18n.locale,
+      bidImage: ""
     }
   },
   async created() {
@@ -329,17 +328,17 @@ export default {
           return
         }
         if (message.horses && message.horses.length > 0) {
-          mountedThis.$data.item.horses.forEach((horse, key) => {
+          mountedthis.item.horses.forEach((horse, key) => {
             const status = message.horses.find( item => item.id === horse.local_data.id );
             if (status)
-              mountedThis.$data.item.horses[key].local_data.status = status.status
+              mountedthis.item.horses[key].local_data.status = status.status
           });
         }
 
         if (message.horse) {
-          const key = mountedThis.$data.item.horses.findIndex( horse => message.horse.id === horse.local_data.id );
+          const key = mountedthis.item.horses.findIndex( horse => message.horse.id === horse.local_data.id );
           if (key >= 0)
-            mountedThis.$data.item.horses[key].local_data.status = message.horse.status
+            mountedthis.item.horses[key].local_data.status = message.horse.status
         }
       };
       this.auctionSocket.addEventListener('close', (event) => {
