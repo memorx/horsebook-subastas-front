@@ -153,9 +153,9 @@
                     autofocus
                     id="amount"
                     required
-                    @focus="removeCommas"
-                    @blur="addCommas"
-                    v-model="formData.amount"
+                    @focus="updateEditAmount(true)"
+                    @blur="updateEditAmount(false)"
+                    v-model="inputAmount"
                   />
                   <button
                     class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
@@ -298,10 +298,9 @@
                     autofocus
                     id="amount"
                     required
-                    v-model="formData.amount"
-                    @change="updateAmount"
-                    @focus="disableSync"
-                    @blur="enableSync"
+                    v-model="inputAmount"
+                    @focus="updateEditAmount(true)"
+                    @blur="updateEditAmount(false)"
                   />
                   <button
                     class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
@@ -736,7 +735,10 @@ export default {
       errorMessage: "",
       winner: "",
       isIntentionalReconnectBid: false,
-      isIntentionalReconnectAuction: false
+      isIntentionalReconnectAuction: false,
+      isEditingAmount: false,
+      firstUpdateAmount: true,
+      inputAmount: ""
     }
   },
   computed: {
@@ -781,6 +783,10 @@ export default {
     this.startAuctionSocket()
   },
   methods: {
+    updateEditAmount(value) {
+      this.isEditingAmount = value
+      console.log("inputAmount", this.inputAmount)
+    },
     removeCommas(e) {
       document.getElementById('amount').type = "number"
       this.formData.amount = this.formData.amount.replace(/,/g, "")
@@ -796,11 +802,11 @@ export default {
     },
     disableSync() {
       this.isSyncEnabled = false
-      this.removeCommas()
+      // this.removeCommas()
     },
     enableSync() {
       this.isSyncEnabled = true
-      this.addCommas()
+      // this.addCommas()
     },
     calculateCountdown() {
       const now = new Date()
@@ -892,6 +898,11 @@ export default {
           mountedThis.bids.unshift(message.bid)
         }
 
+        // only update the initial amount if the user has not edited the input
+        if(this.firstUpdateAmount) {
+          this.isEditingAmount = false
+        }
+
         if (mountedThis.bids.length > 0) {
           mountedThis.lastOffer = parseInt(
             mountedThis.bids[0]?.amount
@@ -899,22 +910,50 @@ export default {
           let currentValue = parseInt(
             mountedThis.formData?.amount.replace(",", "")
           )
+          if(!this.isEditingAmount) {
+            let InputValue = parseInt( mountedThis.inputAmount.replace(",", ""))
+          }
           if (currentValue >= 30000) {
             mountedThis.formData.amount = (
               parseInt(mountedThis.bids[0]?.amount) + 500
             ).toLocaleString("en-US")
+            if(!this.isEditingAmount ) {
+              mountedThis.inputAmount = (
+                parseInt(mountedThis.bids[0]?.amount) + 500
+              ).toLocaleString("en-US")
+            }
           } else {
             mountedThis.formData.amount = (
               parseInt(mountedThis.bids[0]?.amount) + 1000
             ).toLocaleString("en-US")
+            if(!this.isEditingAmount ) {
+              mountedThis.inputAmount = (
+                parseInt(mountedThis.bids[0]?.amount) + 1000
+              ).toLocaleString("en-US")
+            }
           }
         } else if (mountedThis.horseData.final_amount) {
           mountedThis.formData.amount = parseInt(
             mountedThis.horseData.final_amount,
             10
           ).toLocaleString("en-US")
+          if(!this.isEditingAmount ) {
+            mountedThis.inputAmount = parseInt(
+              mountedThis.horseData.final_amount,
+              10
+            ).toLocaleString("en-US")
+          }
         } else {
           mountedThis.formData.amount = (1000).toLocaleString("en-US")
+          if(!this.isEditingAmount ) {
+            mountedThis.inputAmount = (1000).toLocaleString("en-US")
+          }
+        }
+
+        // after made the first update, don't trigger again if the user is focus on the input
+        if(this.firstUpdateAmount) {
+          this.firstUpdateAmount = false
+          this.isEditingAmount = true
         }
       })
       this.socket.addEventListener("close", (event) => {
@@ -1162,11 +1201,12 @@ export default {
     submitForm(event) {
       event.preventDefault()
       const submittedAmount = parseInt(this.formData.amount.replace(",", ""))
+      const submittedAmountInput = parseInt(this.inputAmount.replace(",", ""))
       const user = JSON.parse(localStorage.getItem("setUser"))
       this.socket.send(
         JSON.stringify({
           bid_info: {
-            amount: submittedAmount
+            amount: submittedAmountInput
           },
           sender: {
             email: user.user

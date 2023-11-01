@@ -99,7 +99,7 @@ export default {
     },
     methods: {
         getuserMail() {
-           this.username = JSON.parse(localStorage.getItem("setUser")).user
+            this.username = JSON.parse(localStorage.getItem("setUser"))?.user
         },
         login() {
             this.$router.push('/auth/login')
