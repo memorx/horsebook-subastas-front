@@ -149,11 +149,13 @@
                   </button>
                   <input
                     type="text"
-                    class="border rounded-md flex-grow"
+                    class="border rounded-md flex-grow w-1/4"
                     autofocus
                     id="amount"
                     required
-                    v-model="formData.amount"
+                    @focus="updateEditAmount(true)"
+                    @blur="updateEditAmount(false)"
+                    v-model="inputAmount"
                   />
                   <button
                     class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
@@ -203,7 +205,7 @@
                   ref="detailsBid"
                   :bidId="bidId"
                   :horseID="horseID"
-                  :bids="this.$data.bids"
+                  :bids="this.bids"
                 />
               </div>
             </div>
@@ -231,7 +233,7 @@
           </div>
           <div class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
             <div
-              class="text-center w-full rounded-t-lg p-5"
+              class="text-center w-full p-5 rounded-t-md"
               style="background-color: #b99d61"
             >
               <p class="text-white font-bold text-sm">PRE OFERTA MAS ALTA</p>
@@ -247,6 +249,36 @@
                   {{ parseInt(horseData.final_amount).toLocaleString("en-US") }}
                   USD
                 </p>
+              </div>
+            </div>
+            <div class="flex justify-center rounded-t-md">
+              <div class="mx-10 md:mx-0 my-10">
+                <div class="md:flex md:items-center">
+                  <div class="mx-5">
+                    <p class="text-center text-5xl mb-2 font-bold">
+                      {{ bidTime.days }}
+                    </p>
+                    <p class="text-center text-black">Días</p>
+                  </div>
+                  <div class="mx-5">
+                    <p class="text-center text-5xl mb-2 font-bold">
+                      {{ bidTime.hours }}
+                    </p>
+                    <p class="text-center text-black">Horas</p>
+                  </div>
+                  <div class="mx-5">
+                    <p class="text-center text-5xl mb-2 font-bold">
+                      {{ bidTime.minutes }}
+                    </p>
+                    <p class="text-center text-black">Minutos</p>
+                  </div>
+                  <div class="mx-5">
+                    <p class="text-center text-5xl mb-2 font-bold">
+                      {{ bidTime.seconds }}
+                    </p>
+                    <p class="text-center text-black">Segundos</p>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="px-5 mt-5">
@@ -266,7 +298,9 @@
                     autofocus
                     id="amount"
                     required
-                    v-model="formData.amount"
+                    v-model="inputAmount"
+                    @focus="updateEditAmount(true)"
+                    @blur="updateEditAmount(false)"
                   />
                   <button
                     class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
@@ -316,7 +350,7 @@
                   ref="detailsBid"
                   :bidId="bidId"
                   :horseID="horseID"
-                  :bids="this.$data.bids"
+                  :bids="this.bids"
                 />
               </div>
             </div>
@@ -455,7 +489,7 @@
                   ref="detailsBid"
                   :bidId="bidId"
                   :horseID="horseID"
-                  :bids="this.$data.bids"
+                  :bids="this.bids"
                 />
               </div>
             </div>
@@ -630,6 +664,13 @@ export default {
   },
   data() {
     return {
+      isSyncEnabled: true,
+      bidTime: {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+      },
       auctionSocket: null,
       horseData: {
         Genre: "",
@@ -694,7 +735,10 @@ export default {
       errorMessage: "",
       winner: "",
       isIntentionalReconnectBid: false,
-      isIntentionalReconnectAuction: false
+      isIntentionalReconnectAuction: false,
+      isEditingAmount: false,
+      firstUpdateAmount: true,
+      inputAmount: ""
     }
   },
   computed: {
@@ -729,6 +773,7 @@ export default {
     }
   },
   beforeDestroy() {
+    clearInterval(this.timer)
     console.log("al salir cierra los sockets", this.bidSocket)
     this.intentionalCloseSockets()
   },
@@ -738,6 +783,54 @@ export default {
     this.startAuctionSocket()
   },
   methods: {
+    updateEditAmount(value) {
+      this.isEditingAmount = value
+      console.log("inputAmount", this.inputAmount)
+    },
+    removeCommas(e) {
+      document.getElementById('amount').type = "number"
+      this.formData.amount = this.formData.amount.replace(/,/g, "")
+    },
+    addCommas(e) {
+      this.formData.amount = parseFloat(this.formData.amount).toLocaleString()
+      document.getElementById('amount').type = "text"
+    },
+    updateAmount(event) {
+      if (this.isSyncEnabled) {
+        this.formData.amount = event.target.value
+      }
+    },
+    disableSync() {
+      this.isSyncEnabled = false
+      // this.removeCommas()
+    },
+    enableSync() {
+      this.isSyncEnabled = true
+      // this.addCommas()
+    },
+    calculateCountdown() {
+      const now = new Date()
+      const targetDate = new Date(this.EndPreBidDate)
+      const timeDifference = targetDate - now
+
+      if (timeDifference <= 0) {
+        this.countdownSubasta = false
+        clearInterval(this.timer)
+      } else {
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+        const hours = Math.floor(
+          (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        )
+        const minutes = Math.floor(
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+        )
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
+        this.bidTime.days = days
+        this.bidTime.hours = hours
+        this.bidTime.minutes = minutes
+        this.bidTime.seconds = seconds
+      }
+    },
     async intentionalCloseSockets() {
       console.log("Cierre intencional de los sockets")
       this.closeBidSocket()
@@ -771,13 +864,13 @@ export default {
     },
     async startBidSocket() {
       if (
-        this.$data.socket &&
-        this.$data.socket.readyState === WebSocket.OPEN
+        this.socket &&
+        this.socket.readyState === WebSocket.OPEN
       ) {
-        this.$data.socket.close()
+        this.socket.close()
       }
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
-      this.$data.socket = new ReconnectingWebSocket(url)
+      this.socket = new ReconnectingWebSocket(url)
       const mountedThis = this
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
@@ -790,47 +883,80 @@ export default {
         }
         if (message.bids) {
           mountedThis.winner = message.bids[0]?.user_profile
-          mountedThis.$data.bids = message.bids
+          mountedThis.bids = message.bids
         }
 
         if (message.prebids && message.prebids.length > 0) {
           mountedThis.winner = message.prebids[0].user_profile
-          mountedThis.$data.bids = message.prebids
+          mountedThis.bids = message.prebids
         }
 
         if (message.bid) {
-          if (mountedThis.$data.bids.length > 20) {
-            mountedThis.$data.bids.pop()
+          if (mountedThis.bids.length > 20) {
+            mountedThis.bids.pop()
           }
-          mountedThis.$data.bids.unshift(message.bid)
+          mountedThis.bids.unshift(message.bid)
         }
 
-        if (mountedThis.$data.bids.length > 0) {
-          mountedThis.$data.lastOffer = parseInt(
-            mountedThis.$data.bids[0]?.amount
+        // only update the initial amount if the user has not edited the input
+        if(this.firstUpdateAmount) {
+          this.isEditingAmount = false
+        }
+
+        if (mountedThis.bids.length > 0) {
+          mountedThis.lastOffer = parseInt(
+            mountedThis.bids[0]?.amount
           ).toLocaleString("en-US")
           let currentValue = parseInt(
             mountedThis.formData?.amount.replace(",", "")
           )
+          if(!this.isEditingAmount) {
+            let InputValue = parseInt( mountedThis.inputAmount.replace(",", ""))
+          }
           if (currentValue >= 30000) {
-            mountedThis.$data.formData.amount = (
-              parseInt(mountedThis.$data.bids[0]?.amount) + 500
+            mountedThis.formData.amount = (
+              parseInt(mountedThis.bids[0]?.amount) + 500
             ).toLocaleString("en-US")
+            if(!this.isEditingAmount ) {
+              mountedThis.inputAmount = (
+                parseInt(mountedThis.bids[0]?.amount) + 500
+              ).toLocaleString("en-US")
+            }
           } else {
-            mountedThis.$data.formData.amount = (
-              parseInt(mountedThis.$data.bids[0]?.amount) + 1000
+            mountedThis.formData.amount = (
+              parseInt(mountedThis.bids[0]?.amount) + 1000
             ).toLocaleString("en-US")
+            if(!this.isEditingAmount ) {
+              mountedThis.inputAmount = (
+                parseInt(mountedThis.bids[0]?.amount) + 1000
+              ).toLocaleString("en-US")
+            }
           }
         } else if (mountedThis.horseData.final_amount) {
-          mountedThis.$data.formData.amount = parseInt(
+          mountedThis.formData.amount = parseInt(
             mountedThis.horseData.final_amount,
             10
           ).toLocaleString("en-US")
+          if(!this.isEditingAmount ) {
+            mountedThis.inputAmount = parseInt(
+              mountedThis.horseData.final_amount,
+              10
+            ).toLocaleString("en-US")
+          }
         } else {
-          mountedThis.$data.formData.amount = (1000).toLocaleString("en-US")
+          mountedThis.formData.amount = (1000).toLocaleString("en-US")
+          if(!this.isEditingAmount ) {
+            mountedThis.inputAmount = (1000).toLocaleString("en-US")
+          }
+        }
+
+        // after made the first update, don't trigger again if the user is focus on the input
+        if(this.firstUpdateAmount) {
+          this.firstUpdateAmount = false
+          this.isEditingAmount = true
         }
       })
-      this.$data.socket.addEventListener("close", (event) => {
+      this.socket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
@@ -839,14 +965,14 @@ export default {
     async startAuctionSocket() {
       const mountedThis = this
       if (
-        this.$data.auctionSocket &&
-        this.$data.auctionSocket.readyState === WebSocket.OPEN
+        this.auctionSocket &&
+        this.auctionSocket.readyState === WebSocket.OPEN
       ) {
-        this.$data.auctionSocket.close()
+        this.auctionSocket.close()
       }
       const url = `${this.$config.baseURLWS}/auction/${this.bidId}`
-      this.$data.auctionSocket = new ReconnectingWebSocket(url)
-      this.$data.auctionSocket.addEventListener("message", (event) => {
+      this.auctionSocket = new ReconnectingWebSocket(url)
+      this.auctionSocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
         if (message.error) {
           mountedThis.socketError = message.error
@@ -855,7 +981,7 @@ export default {
         if (message.horses && message.horses.length > 0) {
           message.horses.forEach((horse) => {
             if (horse.id == mountedThis.horseId) {
-              mountedThis.$data.horseStatus = horse.status
+              mountedThis.horseStatus = horse.status
             }
           })
         }
@@ -863,9 +989,9 @@ export default {
         if (message.horse) {
           mountedThis.horseId
           if (message.horse.id == mountedThis.horseId) {
-            mountedThis.$data.horseStatus = message.horse.status
+            mountedThis.horseStatus = message.horse.status
             const nextHorse = message.horse.next
-            if (mountedThis.$data.horseStatus == "CLOSED")
+            if (mountedThis.horseStatus == "CLOSED")
               mountedThis.$toast.success(
                 "La subasta de este caballo ha sido finalizada"
               )
@@ -881,7 +1007,7 @@ export default {
           }
         }
       })
-      this.$data.socket.addEventListener("close", (event) => {
+      this.socket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
@@ -1061,6 +1187,7 @@ export default {
           this.BidDateFormat = this.formatted(auction.start_bid)
           this.EndBidDateFormat = this.formatted(auction.end_bid)
           this.bidStatus = auction.status
+          this.timer = setInterval(this.calculateCountdown, 1000)
         })
         .catch((error) => {
           console.error(error)
@@ -1074,11 +1201,12 @@ export default {
     submitForm(event) {
       event.preventDefault()
       const submittedAmount = parseInt(this.formData.amount.replace(",", ""))
+      const submittedAmountInput = parseInt(this.inputAmount.replace(",", ""))
       const user = JSON.parse(localStorage.getItem("setUser"))
-      this.$data.socket.send(
+      this.socket.send(
         JSON.stringify({
           bid_info: {
-            amount: submittedAmount
+            amount: submittedAmountInput
           },
           sender: {
             email: user.user

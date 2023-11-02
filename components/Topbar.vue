@@ -9,7 +9,7 @@
             <!-- Navigation items -->
             <div class="flex items-center space-x-4">
 
-                <div v-if="isUserAuthenticated">
+                <div v-if="isUserAuthenticated" class="flex justify-center align-middle items-center">
                     <!-- <nuxt-link
                         :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
                         class="cursor-pointer"
@@ -26,9 +26,9 @@
                     </nuxt-link> -->
 
                     <nuxt-link to="/user/inicio">
-                        <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black">Tus
-                            Subastas
-                        </button>
+                        <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex">
+                            Tus Subastas
+                        </div>
                     </nuxt-link>
 
                     <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black"
@@ -37,9 +37,10 @@
                     </button>
 
                     <nuxt-link to="/user/perfil">
-                        <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black">
-                            <i class="fas fa-user fa-lg"></i>
-                        </button>
+                        <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex justify-center align-middle items-center">
+                            <i class="fas fa-user fa-lg p-2"></i>
+                            <p>{{ username }}</p>
+                        </div>
                     </nuxt-link>
                 </div>
 
@@ -89,6 +90,17 @@ import Cookies from "js-cookie";
 import ReusableButton from './ReusableButton.vue'
 
 export default {
+    components: {
+        ReusableButton
+    },
+    mounted () {
+        this.getuserMail()
+    },
+    data () {
+        return {
+            username: ""
+        }
+    },
     computed: {
         isUserAuthenticated() {
             return this.$store.state.isAuthenticated;
@@ -102,10 +114,10 @@ export default {
             return this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white' ;
         },
     },
-    components: {
-        ReusableButton
-    },
     methods: {
+        getuserMail() {
+            this.username = JSON.parse(localStorage.getItem("setUser"))?.user
+        },
         activePage(route) {
             return this.$route.path === route;
         },
@@ -121,6 +133,7 @@ export default {
         logout() {
             this.$store.commit('authenticate', false);
             this.$store.commit('clearUserData');
+            this.$store.commit("closeWebSocket");
             Cookies.remove('access_token');
             localStorage.removeItem("setUser");
             this.$router.push('/')
