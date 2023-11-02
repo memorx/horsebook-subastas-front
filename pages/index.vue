@@ -7,8 +7,8 @@
             <!-- Content -->
             <div class="order-2 md:order-1 flex flex-col items-center justify-center space-y-4 w-full md:w-auto">
                <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')"
-                  :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null"
-                  @button-clicked="handleButtonClick(1)" headingLevel="1" :classOverrides="{
+                  :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null" @button-clicked="handleShowBids"
+                  headingLevel="1" :classOverrides="{
                      container: 'flex flex-col items-center md:items-start w-full md:w-auto',
                      title: 'text-center md:text-start text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4',
                      paragraph: 'text-white mb-3 md:mb-4 lg:mb-5 text-sm md:text-base lg:text-lg text-center md:text-left',
@@ -30,7 +30,7 @@
          </div>
 
          <!-- Bid -->
-         <SectionTitle :titleText="$t('home.bid.MainTitle')"
+         <SectionTitle :titleText="$t('home.bid.MainTitle')" ref="bidSection"
             containerClass="flex flex-col items-center md:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
             titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
 
@@ -49,7 +49,7 @@
                      <div>
                         <!-- Placeholder content, replace with your content -->
                         <h2 class="font-roboto uppercase font-extrabold text-xl">remate</h2>
-                        <p class="font-roboto capital font-bold text-lg">La Silla  1er Semana</p>
+                        <p class="font-roboto capital font-bold text-lg">La Silla 1er Semana</p>
 
                         <div class="py-4">
                            <p class="font-roboto capital font-bold text-base text-[#575757]">0 lotes</p>
@@ -81,7 +81,7 @@
 
 
          <!-- Contact -->
-         <SectionTitle :titleText="$t('home.contact.title')"
+         <SectionTitle ref="contactSection" :titleText="$t('home.contact.title')"
             containerClass="flex flex-col items-center md:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
             titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
 
@@ -158,29 +158,6 @@ export default {
       SectionTitle,
       ReusableButton
    },
-   computed: {
-      gridCols() {
-         // Get the square root of the number of cards to determine grid columns
-         return Math.ceil(Math.sqrt(this.newsData.length));
-      },
-      currentLang() {
-         return this.$i18n.locale;  // This assumes you're using the vue-i18n package
-      },
-   },
-   methods: {
-      handleButtonClick(index) {
-         // Handle button click event. For demonstration:
-         alert(`Button clicked on tile: ${index}`);
-      },
-      someFunction() {
-         // Handle button click event. For demonstration:
-         alert(`Reusable Button clicked `);
-      },
-      handleSubmit() {
-         // Handle form submission. For demonstration:
-         alert('Form submitted');
-      }
-   },
    data() {
       return {
          newsData: [ // Placeholder data
@@ -204,6 +181,47 @@ export default {
             }
             // ... Add as many items as required for testing
          ]
+      }
+   },
+   computed: {
+      gridCols() {
+         // Get the square root of the number of cards to determine grid columns
+         return Math.ceil(Math.sqrt(this.newsData.length));
+      },
+      currentLang() {
+         return this.$i18n.locale;  // This assumes you're using the vue-i18n package
+      },
+      scrollIntoContactClicked() {
+         return this.$store.state.scrollIntoContact;
+      }
+   },
+   methods: {
+      handleButtonClick(index) {
+         // Handle button click event. For demonstration:
+         alert(`Button clicked on tile: ${index}`);
+      },
+      someFunction() {
+         // Handle button click event. For demonstration:
+         alert(`Reusable Button clicked `);
+      },
+      handleSubmit() {
+         // Handle form submission. For demonstration:
+         alert('Form submitted');
+      },
+      handleShowBids() {
+         this.$refs.bidSection.$el.scrollIntoView({
+            behavior: 'smooth'
+         });
+      }
+   },
+   watch: {
+      scrollIntoContactClicked(newVal) {
+         if (newVal) {
+            this.$refs.contactSection.$el.scrollIntoView({
+               behavior: 'smooth'
+            });
+            this.$store.commit('setScrollIntoContact', false);
+         }
       }
    }
 }

@@ -31,29 +31,32 @@
                         </div>
                     </nuxt-link>
 
-                    <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black"
-                        @click="logout">
+                    <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black" @click="logout">
                         Cerrar sesión
                     </button>
 
                     <nuxt-link to="/user/perfil">
-                        <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex justify-center align-middle items-center">
+                        <div
+                            class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex justify-center align-middle items-center">
                             <i class="fas fa-user fa-lg p-2"></i>
                             <p>{{ username }}</p>
                         </div>
                     </nuxt-link>
                 </div>
 
-                <div v-else >
+                <div v-else>
                     <!--web/ipad Navigation items -->
                     <div class=" hidden md:flex justify-center align-middle items-center ">
                         <div class="flex space-x-3 lg:space-x-4 uppercase text-xs font-roboto">
                             <nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link>
-                            <nuxt-link :class="activePageClass('/bids')" to="/bids">{{ $t('topBar.bids') }}</nuxt-link>
+                            <nuxt-link :class="activePageClass('/bids')" to="/bids">{{
+                                $t('topBar.bids') }}</nuxt-link>
                             <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link>
                             <nuxt-link :class="activePageClass('/news')" to="/news">{{ $t('topBar.news') }}</nuxt-link> -->
-                            <nuxt-link :class="activePageClass('/contact')" to="/contact">{{ $t('topBar.contact')
-                            }}</nuxt-link>
+                            <button v-if="this.$route.path === '/'" class="uppercase text-xs font-roboto" @click="handleScrollIntoContact">
+                                {{ $t('topBar.contact') }}
+                            </button>
+                            <nuxt-link v-if="this.$route.path !== '/'" :class="activePageClass('/contact')" to="/contact">{{ $t('topBar.contact')}}</nuxt-link>
                         </div>
 
                         <!-- Sign Up / Log in-->
@@ -93,10 +96,10 @@ export default {
     components: {
         ReusableButton
     },
-    mounted () {
+    mounted() {
         this.getuserMail()
     },
-    data () {
+    data() {
         return {
             username: ""
         }
@@ -107,11 +110,11 @@ export default {
         },
         activePageClass() {
             return (route) => {
-                return this.$route.path === route ? 'text-custom-gold' : this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white' ;
+                return this.$route.path === route ? 'text-custom-gold' : this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
             }
         },
         textColor() {
-            return this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white' ;
+            return this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
         },
     },
     methods: {
@@ -137,6 +140,9 @@ export default {
             Cookies.remove('access_token');
             localStorage.removeItem("setUser");
             this.$router.push('/')
+        },
+        handleScrollIntoContact() {
+            this.$store.dispatch('scrollIntoContact', true)
         }
     }
 }

@@ -4,9 +4,9 @@
     },
     "home": {
         "main": {
-            "title": "¡Falta poco para nustra proxima subasta!",
+            "title": "Bienvenido",
             "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus rutrum, nunc eu luctus aliquam, nisi lectus volutpat ante, a elementum lorem mi ac nisl. Praesent congue risus id.",
-            "button": "Ver todos los caballos"
+            "button": "ver subastas"
         },
         "bid": {
             "MainTitle": "Subastas"

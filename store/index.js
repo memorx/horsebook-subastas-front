@@ -10,7 +10,8 @@ export const state = () => ({
   userInformation: {},
   bgImage: '',
   textColorTopBar: '',
-  websocket: null
+  websocket: null,
+  scrollIntoContact: false
 });
 
 export const mutations = {
@@ -54,6 +55,9 @@ export const mutations = {
       state.websocket.close()
       state.websocket = null
     }
+  },
+  setScrollIntoContact(state, value) {
+    state.scrollIntoContact = value
   }
 };
 
@@ -107,6 +111,9 @@ export const actions = {
       // Store the created websocket instance in the Vuex state
       commit("setWebSocket", socket)
     }
+  },
+  scrollIntoContact({ commit }, value) {
+    commit("setScrollIntoContact", value)
   }
   // ... other actions
 }
