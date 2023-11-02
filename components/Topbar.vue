@@ -59,7 +59,7 @@
                         <!-- Sign Up / Log in-->
                         <div class="flex flex-row mx-6 gap-6 w-[275px]">
                             <ReusableButton :buttonText="$t('topBar.signUp')"
-                                :buttonClass="['text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full', textColor]"
+                                :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full ${textColor}`"
                                 containerClass="w-1/2" :onClick="navigateToSignUp" />
 
                             <ReusableButton :buttonText="$t('topBar.logIn')"

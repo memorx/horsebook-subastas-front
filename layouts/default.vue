@@ -63,6 +63,7 @@ export default {
             }
         },
         async getUserInfo() {
+            if (!this.$cookies.get("access_token")) return
             const decoded = JWTDecode(this.$cookies.get("access_token"))
             const url = `${this.$config.baseURL}/users/list-app-users/?email=${decoded.email}`
 
