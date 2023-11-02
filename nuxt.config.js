@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 export default {
-
+  components: true,
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
   ssr: false,
@@ -32,6 +32,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/vuetoastnotification.js',
+    { src: '~/plugins/vue-confetti.js', mode: 'client' },
   ],
 
   // router middleware

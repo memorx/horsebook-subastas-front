@@ -1,5 +1,6 @@
 <template>
   <div class="bg-zinc-200 py-5 lg:px-20">
+    <button @click="startConfetti()">Confetti</button>
     <modal
       v-show="showModal"
       :amount="formData?.amount"
@@ -137,6 +138,7 @@
               >
             </div>
             <div class="px-5 mt-5">
+
               <p class="text-sm font-bold">OFERTAR POR ESTE LOTE</p>
               <form @submit="submitForm">
                 <div class="flex items-center space-x-2">
@@ -633,6 +635,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -660,7 +663,7 @@ export default {
     SubmitAuthenticatedButton,
     modal,
     horseStatus,
-    statusBid
+    statusBid,
   },
   data() {
     return {
@@ -738,7 +741,8 @@ export default {
       isIntentionalReconnectAuction: false,
       isEditingAmount: false,
       firstUpdateAmount: true,
-      inputAmount: ""
+      inputAmount: "",
+      showConfetti: false,
     }
   },
   computed: {
@@ -783,6 +787,9 @@ export default {
     this.startAuctionSocket()
   },
   methods: {
+    startConfetti() {
+      this.$confetti.start()
+    },
     updateEditAmount(value) {
       this.isEditingAmount = value
       console.log("inputAmount", this.inputAmount)
@@ -1007,7 +1014,7 @@ export default {
           }
         }
       })
-      this.socket.addEventListener("close", (event) => {
+      this.auctionSocket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
