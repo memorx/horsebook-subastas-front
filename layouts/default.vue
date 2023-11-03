@@ -33,7 +33,7 @@ import Cookie from "js-cookie"
 
 export default {
     beforeMount() {
-        if (this.$route.path === '/') {
+        if (this.$route.path === '/' && !Cookie.get('videoPlayed')) {
             this.showVideo = true;
         } else {
             this.showVideo = false;
@@ -146,6 +146,9 @@ export default {
         closeVideo() {
             this.showVideo = false; // hides the video and close button
             this.$refs.videoPlayer.pause(); // stops the video playback
+
+            // Set the cookie to remember the video has been played
+            Cookie.set('videoPlayed', 'true', { expires: 365 }); // set it to expire in 365 days. Adjust as needed.
         },
         playVideo() {
             this.$refs.videoPlayer.play();
