@@ -1,23 +1,44 @@
 <template>
     <div>
-        <div :class="`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] bg-black`">
-            <!-- Your TopBar Component bg-[url('/home-bg.jpg')] -->
-            <Topbar />
-
-            <!-- This will be replaced by the page content -->
-            <Nuxt />
+        <!-- Parent div with black background -->
+        <div v-if="showVideo" class="fixed z-30 inset-0 w-screen h-screen bg-black">
+            <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline>
+                <source src="/video-home.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <ReusableButton
+                containerClass="mb-12 w-full fixed z-50 bottom-5 md:w-auto text-white left-1/2 transform -translate-x-1/2"
+                buttonClass="uppercase text-sm md:text-base lg:text-l " :onClick="closeVideo"
+                :buttonText="$t('home.video.button')" />
         </div>
-        <Footer />
+
+        <div v-else>
+            <div :class="`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] bg-black`">
+                <!-- Your TopBar Component bg-[url('/home-bg.jpg')] -->
+                <Topbar />
+
+                <!-- This will be replaced by the page content -->
+                <Nuxt />
+            </div>
+            <Footer />
+        </div>
     </div>
 </template>
 
 <script>
 import Topbar from '~/components/Topbar.vue';
-import Footer from '../components/Footer.vue';
+import Footer from '~/components/Footer.vue';
 import JWTDecode from "jwt-decode"
 import Cookie from "js-cookie"
 
 export default {
+    beforeMount() {
+        if (this.$route.path === '/') {
+            this.showVideo = true;
+        } else {
+            this.showVideo = false;
+        }
+    },
     async mounted() {
         await this.getUserInfo()
         this.checkAndInitializeWebSocket();
@@ -40,6 +61,11 @@ export default {
     components: {
         Topbar,
         Footer
+    },
+    data() {
+        return {
+            showVideo: true
+        }
     },
     computed: {
         bgImage() {
@@ -116,6 +142,13 @@ export default {
                     )
                 }
             }
+        },
+        closeVideo() {
+            this.showVideo = false; // hides the video and close button
+            this.$refs.videoPlayer.pause(); // stops the video playback
+        },
+        playVideo() {
+            this.$refs.videoPlayer.play();
         }
     },
 };

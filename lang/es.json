@@ -34,6 +34,9 @@
                 "message": "mensajes"
             }
         },
+        "video": {
+            "button": "Entrar"
+        },
         "exampleTitle": "Título de ejemplo",
         "exampleParagraph":  "Este es un párrafo de ejemplo para el div",
         "exampleButton": "Botón de ejemplo"
