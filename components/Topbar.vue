@@ -1,6 +1,7 @@
 <template>
     <nav :class="['p-4', textColor]">
-        <div class="container mx-auto flex justify-between items-center bg-transparent">
+        <!-- Web Navigation -->
+        <div class="container mx-auto hidden lg:flex justify-between items-center bg-transparent">
             <!-- Logo or brand -->
             <nuxt-link to="/">
                 <img src="../public/image_la_silla.png" alt="logo" style="width: 40px;">

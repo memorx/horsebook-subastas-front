@@ -2,13 +2,13 @@
     <div>
         <!-- Parent div with black background -->
         <div v-if="showVideo" class="fixed z-30 inset-0 w-screen h-screen bg-black">
-            <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline>
+            <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
                 <source src="/video-home.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <ReusableButton
-                containerClass="mb-12 w-full fixed z-50 bottom-5 md:w-auto text-white left-1/2 transform -translate-x-1/2"
-                buttonClass="uppercase text-sm md:text-base lg:text-l " :onClick="closeVideo"
+                containerClass="mb-12 fixed z-50 bottom-5 w-auto text-white left-1/2 transform -translate-x-1/2"
+                buttonClass="uppercase text-sm md:text-base lg:text-lg" :onClick="closeVideo"
                 :buttonText="$t('home.video.button')" />
         </div>
 
