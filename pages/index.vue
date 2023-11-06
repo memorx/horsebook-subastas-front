@@ -2,8 +2,8 @@
    <div class="h-auto flex justify-center md:px-4 bg-transparent ">
       <div class="w-11/12 flex flex-col items-center sm:space-x-4">
 
-         <!-- Main section -->
-         <div class="h-auto md:h-1/2 lg:h-screen w-full my-12 md:my-6 grid grid-1 md:grid-cols-2 gap-4">
+         <!-- Main section web -->
+         <div class="hidden md:grid  h-auto md:h-1/2 lg:h-screen w-full my-12 md:my-6 grid-1 md:grid-cols-2 gap-4">
             <!-- Content -->
             <div class="order-2 md:order-1 flex flex-col items-center justify-center space-y-4 w-full md:w-auto">
                <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')"
@@ -29,49 +29,150 @@
             </div>
          </div>
 
+         <!-- Main section mobile -->
+         <div class="grid md:hidden h-auto w-full my-12 grid-1 gap-4">
+            <!-- Content -->
+            <div class="order-2 flex flex-col items-center justify-center space-y-4 w-full ">
+               <ContentTile title="" :paragraph="$t('home.main.paragraph')"
+                  :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null" @button-clicked="handleShowBids"
+                  headingLevel="1" :classOverrides="{
+                     container: 'flex flex-col items-center w-full',
+                     title: 'text-center text-white text-xl uppercase font-roboto my-2',
+                     paragraph: 'text-white mb-3 text-sm text-center',
+                     button: 'bg-custom-gold text-sm uppercase text-center'
+                  }" />
+            </div>
+
+            <!-- Image -->
+            <div class="order-1 flex flex-col items-center justify-center space-y-4">
+               <h2 class="text-center text-white text-4xl uppercase font-roboto my-0">{{$t('home.main.title')}}</h2>
+               <ContentTile title="Octubre 2023" paragraph="la subasta comienza en" :buttonLabel="null" headingLevel="2"
+                  :classOverrides="{
+                     container: 'flex flex-col items-center w-full',
+                     title: 'text-custom-gold font-normal text-xl uppercase font-roboto',
+                     paragraph: 'uppercase text-white text-xs',
+                  }" />
+               <img src="../public/conter-home.png" alt="conter"
+                  class="w-1/3  h-auto object-cover" />
+            </div>
+         </div>
+
          <!-- Bid -->
          <SectionTitle :titleText="$t('home.bid.MainTitle')" ref="bidSection"
-            containerClass="flex flex-col items-center md:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
+            containerClass="flex flex-col items-center lg:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
             titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
 
          <!-- Cards Container -->
          <div class="flex justify-center w-full h-auto mt-8">
             <div class="grid grid-cols-1 grid-rows-2 gap-12 w-11/12 h-full">
                <!-- Card 1 -->
-               <div class="bg-white flex items-start justify-center shadow-lg rounded-xl border-2 border-custom-gold">
+               <div
+                  class="bg-white flex flex-col lg:items-start lg:justify-center lg:flex-row shadow-lg rounded-xl border-2 border-custom-gold">
                   <!-- Image part -->
-                  <div class="w-1/2 flex items-center justify-center">
-                     <img src="../public/example-new-card.png" alt="Image 1" class="w-full h-full object-cover rounded-xl">
+                  <div class="w-full lg:w-1/2 h-full flex items-center justify-center">
+                     <img src="../public/white-horse.png" alt="Image 1" class="w-full h-full object-cover rounded-xl">
                   </div>
 
                   <!-- Content part -->
-                  <div class="w-1/2 flex items-center justify-start px-12 py-4">
-                     <div>
-                        <!-- Placeholder content, replace with your content -->
-                        <h2 class="font-roboto uppercase font-extrabold text-xl">remate</h2>
-                        <p class="font-roboto capital font-bold text-lg">La Silla 1er Semana</p>
+                  <div class="w-full lg:w-1/2 flex items-center justify-start px-12 py-4 h-full">
+                     <div class="flex flex-col w-full h-full justify-between">
+                        <div class="xl:mt-6">
+                           <!-- Placeholder content, replace with your content -->
+                           <h2 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">remate</h2>
+                           <p class="font-roboto capital font-bold text-sm lg:text-base xl:text-lg">La Silla 1er Semana</p>
 
-                        <div class="py-4">
-                           <p class="font-roboto capital font-bold text-base text-[#575757]">0 lotes</p>
-                           <p>hola mundo</p>
+                           <div class="py-2 lg:py-3 xl:py-4">
+                              <div class="flex items-center">
+                                 <img src="../public/message-icon.png" alt="lot" class="mr-2 h-3 w-3">
+                                 <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">0 lotes</p>
+                              </div>
+                              <div class="flex items-center">
+                                 <img src="../public/location-icon.png" alt="location" class="mr-2 h-3 w-3">
+                                 <p class="font-roboto capital font-bold text-sm text-[#575757]">México / Monterrey</p>
+                              </div>
+                           </div>
+
+                           <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">remate en vivo
+                           </h3>
+                           <div class="py-2 lg:py-3 xl:py-4 flex items-center">
+                              <img src="../public/calendar-icon.png" alt="date" class="mr-2 h-3 w-3">
+                              <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">Sabado 11/11 18:00
+                                 HS</p>
+                           </div>
+
+                           <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">Preofertas</h3>
+                           <div class="py-2 lg:py-3 xl:py-4">
+                              <div class="flex items-center">
+                                 <img src="../public/green-calendar-icon.png" alt="start-date" class="mr-2 h-3 w-3">
+                                 <p class="font-roboto capital font-bold text-sm uppercase">Inicio: Lunes 11/11 10:00 HS
+                                 </p>
+                              </div>
+                              <div class="flex items-center">
+                                 <img src="../public/cancel-icon.png" alt="end-date" class="mr-2 h-3 w-3">
+                                 <p class="font-roboto capital font-bold text-sm uppercase">Fin: Viernes 17/11 18:00 HS</p>
+                              </div>
+                           </div>
                         </div>
+
+                        <ReusableButton buttonText="participar en remate"
+                           buttonClass="w-full bg-[#BDBDBD] text-white border-0 uppercase extrabold text-base lg:text-xl"
+                           containerClass="w-full" :onClick="someFunction" />
                      </div>
                   </div>
                </div>
 
                <!-- Card 2 -->
-               <div class="bg-white flex items-start justify-center shadow-lg rounded-xl border-2 border-custom-gold">
+               <div
+                  class="bg-white flex flex-col lg:items-start lg:justify-center lg:flex-row shadow-lg rounded-xl border-2 border-custom-gold">
                   <!-- Image part -->
-                  <div class="w-1/2 flex items-center justify-center">
-                     <img src="../public/example-new-card.png" alt="Image 2" class="w-full h-full object-cover rounded-xl">
+                  <div class="w-full lg:w-1/2 h-full flex items-center justify-center">
+                     <img src="../public/white-horse-2.png" alt="Image 2" class="w-full h-full object-cover rounded-xl">
                   </div>
 
                   <!-- Content part -->
-                  <div class="w-1/2 flex items-center justify-center p-4">
-                     <div>
-                        <!-- Placeholder content, replace with your content -->
-                        <h2 class="font-bold text-xl mb-4">Card 2 Title</h2>
-                        <p>Card 2 content goes here.</p>
+                  <div class="w-full lg:w-1/2 flex items-center justify-start px-12 py-4 h-full">
+                     <div class="flex flex-col w-full h-full justify-between">
+                        <div class="xl:mt-6">
+                           <!-- Placeholder content, replace with your content -->
+                           <h2 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">remate</h2>
+                           <p class="font-roboto capital font-bold text-sm lg:text-base xl:text-lg">La Silla 2da Semana</p>
+
+                           <div class="py-2 lg:py-3 xl:py-4">
+                              <div class="flex items-center">
+                                 <img src="../public/message-icon.png" alt="lot" class="mr-2 h-3 w-3">
+                                 <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">0 lotes</p>
+                              </div>
+                              <div class="flex items-center">
+                                 <img src="../public/location-icon.png" alt="location" class="mr-2 h-3 w-3">
+                                 <p class="font-roboto capital font-bold text-sm text-[#575757]">México / Monterrey</p>
+                              </div>
+                           </div>
+
+                           <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">remate en vivo
+                           </h3>
+                           <div class="py-2 lg:py-3 xl:py-4 flex items-center">
+                              <img src="../public/calendar-icon.png" alt="date" class="mr-2 h-3 w-3">
+                              <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">Sabado 11/11 18:00
+                                 HS</p>
+                           </div>
+
+                           <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">Preofertas</h3>
+                           <div class="py-2 lg:py-3 xl:py-4">
+                              <div class="flex items-center">
+                                 <img src="../public/green-calendar-icon.png" alt="start-date" class="mr-2 h-3 w-3">
+                                 <p class="font-roboto capital font-bold text-sm uppercase">Inicio: Lunes 11/11 10:00 HS
+                                 </p>
+                              </div>
+                              <div class="flex items-center">
+                                 <img src="../public/cancel-icon.png" alt="end-date" class="mr-2 h-3 w-3">
+                                 <p class="font-roboto capital font-bold text-sm uppercase">Fin: Viernes 17/11 18:00 HS</p>
+                              </div>
+                           </div>
+                        </div>
+
+                        <ReusableButton buttonText="participar en remate"
+                           buttonClass="w-full bg-[#BDBDBD] text-white border-0 uppercase extrabold text-base lg:text-xl"
+                           containerClass="w-full" :onClick="someFunction" />
                      </div>
                   </div>
                </div>
@@ -82,12 +183,12 @@
 
          <!-- Contact -->
          <SectionTitle ref="contactSection" :titleText="$t('home.contact.title')"
-            containerClass="flex flex-col items-center md:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
+            containerClass="flex flex-col items-center lg:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
             titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
 
          <div class=" w-full my-2 md:my-6 grid grid-1 lg:grid-cols-2 gap-4">
             <!-- Content on the left -->
-            <div class="flex flex-col justify-start space-y-4 w-full">
+            <div class="flex flex-col items-center justify-start space-y-4 w-full">
                <ContentTile :title="$t('home.contact.subTitle')" :paragraph="$t('home.contact.paragraph')"
                   :buttonLabel="null" headingLevel="2" :classOverrides="{
                      container: 'w-full sm:w-full md:w-2/3 lg:w-full ',
@@ -97,7 +198,7 @@
             </div>
 
             <!-- Content on the right including the image -->
-            <div class="flex flex-col lg:items-center lg:justify-center space-y-4">
+            <div class="flex flex-col items-center justify-center space-y-4">
                <!-- Form starts here -->
                <form id="contactForm" class="w-full md:w-2/3 p-4" @submit.prevent="handleSubmit">
                   <!-- Name input -->

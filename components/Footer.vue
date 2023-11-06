@@ -1,6 +1,6 @@
 <template>
     <footer :class="['p-6', backgroundColor, textColor]">
-        <div class="container mx-auto grid grid-cols-4 gap-8">
+        <div class="hidden lg:grid container mx-auto grid-cols-4 gap-8">
 
             <!-- 1. Logo -->
             <div>
