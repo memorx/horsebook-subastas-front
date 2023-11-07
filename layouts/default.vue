@@ -6,8 +6,7 @@
                 <source src="/video-home.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <ReusableButton
-                containerClass="mb-12 fixed z-50 bottom-5 w-auto text-white left-1/2 transform -translate-x-1/2"
+            <ReusableButton containerClass="mb-12 fixed z-50 bottom-5 w-auto text-white left-1/2 transform -translate-x-1/2"
                 buttonClass="uppercase text-sm md:text-base lg:text-lg" :onClick="closeVideo"
                 :buttonText="$t('home.video.button')" />
         </div>
@@ -15,7 +14,12 @@
         <div v-else>
             <div :class="`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] bg-black`">
                 <!-- Your TopBar Component bg-[url('/home-bg.jpg')] -->
-                <Topbar />
+
+                <Topbar :toggleMenu="handleMenu" :isMobileMenuOpen="isMobileMenuOpen" />
+                <!-- Mobile Menu Overlay -->
+                <div v-if="isMobileMenuOpen" ref="mobileMenu" class="lg:hidden fixed inset-y-0 right-0 bg-black z-50 w-2/3 bg-gradient-to-b from-[#353535] to-[#000000]">
+                    <MobileMenu />
+                </div>
 
                 <!-- This will be replaced by the page content -->
                 <Nuxt />
@@ -28,6 +32,7 @@
 <script>
 import Topbar from '~/components/Topbar.vue';
 import Footer from '~/components/Footer.vue';
+import MobileMenu from '~/components/MobileMenu.vue';
 import JWTDecode from "jwt-decode"
 import Cookie from "js-cookie"
 
@@ -53,6 +58,10 @@ export default {
             });
         }
     },
+    destroyed() {
+        // Remove the click event listener when the component is destroyed
+        document.removeEventListener('click', this.handleClickOutside);
+    },
     watch: {
         '$store.state.isAuthenticated': 'checkAndInitializeWebSocket',
         '$store.state.user': 'checkAndInitializeWebSocket',
@@ -60,11 +69,13 @@ export default {
     },
     components: {
         Topbar,
-        Footer
+        Footer,
+        MobileMenu
     },
     data() {
         return {
-            showVideo: true
+            showVideo: true,
+            isMobileMenuOpen: false,
         }
     },
     computed: {
@@ -152,7 +163,26 @@ export default {
         },
         playVideo() {
             this.$refs.videoPlayer.play();
-        }
+        },
+        handleMenu() {
+            this.isMobileMenuOpen = !this.isMobileMenuOpen;
+
+            // Ensure that we add/remove event listener after the DOM has been updated
+            this.$nextTick(() => {
+                if (this.isMobileMenuOpen) {
+                    document.addEventListener('click', this.handleClickOutside, true);
+                } else {
+                    document.removeEventListener('click', this.handleClickOutside, true);
+                }
+            });
+        },
+        handleClickOutside(event) {
+            // Check if mobileMenu exists and if the click is outside of it
+            if (this.isMobileMenuOpen && this.$refs.mobileMenu && !this.$refs.mobileMenu.contains(event.target)) {
+                this.isMobileMenuOpen = false;
+                document.removeEventListener('click', this.handleClickOutside, true);
+            }
+        },
     },
 };
 

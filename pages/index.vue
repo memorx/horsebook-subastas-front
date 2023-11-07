@@ -248,12 +248,12 @@ import ReusableButton from '~/components/ReusableButton.vue';
 
 export default {
    layout: 'default',
-   // mounted() {
-   //    // set the background image for this page
-   //    this.$store.commit('setBgImage', 'home-bg.jpg');
-   //    // set the textColor on Topbar component
-   //    this.$store.commit('setTextColorTopBar', 'text-black');
-   // },
+   mounted() {
+      // set the background image for this page
+      // this.$store.commit('setBgImage', 'home-bg.jpg');
+      // set the textColor on Topbar component
+      // this.$store.commit('setTextColorTopBar', 'text-black');
+   },
    components: {
       ContentTile,
       SectionTitle,
