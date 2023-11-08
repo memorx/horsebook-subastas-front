@@ -18,7 +18,7 @@
                 <Topbar :toggleMenu="handleMenu" :isMobileMenuOpen="isMobileMenuOpen" />
                 <!-- Mobile Menu Overlay -->
                 <div v-if="isMobileMenuOpen" ref="mobileMenu" class="lg:hidden fixed inset-y-0 right-0 bg-black z-50 w-2/3 bg-gradient-to-b from-[#353535] to-[#000000]">
-                    <MobileMenu />
+                    <MobileMenu @handle-close-menu="hanldeCloseMenu" />
                 </div>
 
                 <!-- This will be replaced by the page content -->
@@ -183,6 +183,9 @@ export default {
                 document.removeEventListener('click', this.handleClickOutside, true);
             }
         },
+        hanldeCloseMenu(){
+            this.isMobileMenuOpen = false;
+        }
     },
 };
 
