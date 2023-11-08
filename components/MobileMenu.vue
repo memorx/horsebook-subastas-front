@@ -17,21 +17,23 @@
             <nav class="flex flex-col justify-center  w-full px-4">
                 <ul class="flex flex-col space-y-8 uppercase">
                     <li>
-                        <nuxt-link :class="activePageClass('/')" to="/">
+                        <nuxt-link :class="activePageClass('/')" to="/" @click.native="closeMenu">
                             {{ $t('topBar.home') }}
                         </nuxt-link>
                     </li>
                     <li>
-                        <nuxt-link :class="activePageClass('/bids')" to="/bids">
+                        <nuxt-link :class="activePageClass('/bids')" to="/bids" @click.native="closeMenu">
                             {{ $t('topBar.bids') }}
                         </nuxt-link>
                     </li>
                     <li>
-                        <button v-if="this.$route.path === '/'"  :class="[activePageClass('/contact'),'uppercase font-roboto']" @click="handleScrollIntoContact">
+                        <button v-if="this.$route.path === '/'"
+                            :class="[activePageClass('/contact'), 'uppercase font-roboto']" @click="handleScrollIntoContact">
                             {{ $t('topBar.contact') }}
                         </button>
-                        <nuxt-link v-if="this.$route.path !== '/'" :class="activePageClass('/contact')" to="/contact">{{
-                            $t('topBar.contact') }}</nuxt-link>
+                        <nuxt-link v-if="this.$route.path !== '/'" :class="activePageClass('/contact')" to="/contact"
+                            @click.native="closeMenu">{{
+                                $t('topBar.contact') }}</nuxt-link>
                     </li>
                 </ul>
             </nav>
@@ -76,11 +78,15 @@ export default {
     },
     methods: {
         navigateToLogin() {
+            this.$emit('handle-close-menu')
             this.$router.push('/auth/login')
         },
         handleScrollIntoContact() {
             this.$emit('handle-close-menu')
             this.$store.dispatch('scrollIntoContact', true)
+        },
+        closeMenu() {
+            this.$emit('handle-close-menu');
         },
     }
 };

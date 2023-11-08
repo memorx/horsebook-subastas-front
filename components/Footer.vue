@@ -1,11 +1,13 @@
 <template>
     <footer :class="['p-6', backgroundColor, textColor]">
+        <!--Web footer-->
         <div class="hidden lg:grid container mx-auto grid-cols-4 gap-8">
 
             <!-- 1. Logo -->
             <div>
                 <nuxt-link to="/">
                     <img src="../public/image_la_silla.png" alt="logo" style="width: 60px;">
+                    <p class="text-xs">© 2023 STUDBOOK LA SILLA. A.C.</p>
                 </nuxt-link>
             </div>
 
@@ -15,27 +17,25 @@
                 <ul class="font-roboto capitalize">
                     <li><nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link></li>
                     <li><nuxt-link :class="activePageClass('/bids')" to="/bids">{{ $t('topBar.bids') }}</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/news')" to="/news">{{ $t('topBar.news') }}</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/contact')" to="/contact">{{ $t('topBar.contact') }}</nuxt-link>
-                    </li>
+                    <li><nuxt-link :class="activePageClass('/contact')" to="/contact">{{ $t('topBar.contact') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">registro</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">login</nuxt-link></li>
                 </ul>
             </div>
 
-            <!-- 3. Contact Us + Policies -->
+            <!-- 3. Contact Us -->
             <div>
                 <h3 :class="classTittleSection">Contact Us</h3>
                 <div class="font-robotom capitalize">
-                    <p>123 Main St, City, Country</p>
-                    <p>{{ $t('footer.email') }}: <span class="normal-case">lasilla@hipicolasilla.com</span></p>
-                    <p>{{ $t('footer.phone') }}: +52 81 81550100</p>
+                    <p><span class="normal-case">lasilla@hipicolasilla.com</span></p>
+                    <p>+52 81 81550100</p>
                 </div>
 
-                <h3 :class="[classTittleSection, 'mt-6']">Policies</h3>
+                <!-- <h3 :class="[classTittleSection, 'mt-6']">Policies</h3>
                 <ul>
                     <li><nuxt-link to="/terms">Terms & Conditions</nuxt-link></li>
                     <li><nuxt-link to="/privacy">Privacy Policy</nuxt-link></li>
-                </ul>
+                </ul> -->
             </div>
 
             <!-- 4. Follow Us + Social Icons -->
@@ -49,12 +49,43 @@
             </div>
 
         </div>
+        <!--Mobile footer-->
+        <div class="lg:hidden flex flex-wrap justify-between  px-4">
+            <!-- Logo -->
+            <div class="w-full mb-6 text-center">
+                <nuxt-link to="/">
+                    <img src="../public/image_la_silla.png" alt="logo" class="mx-auto" style="width: 60px;">
+                    <p class="text-xs">© 2023 STUDBOOK LA SILLA. A.C.</p>
+                </nuxt-link>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="w-1/2 mb-6">
+                <h3 :class="classTittleSection">{{ $t('footer.navigate') }}</h3>
+                <ul class="font-roboto capitalize">
+                    <li><nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/bids')" to="/bids">{{ $t('topBar.bids') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/contact')" to="/contact">{{ $t('topBar.contact') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">registro</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">login</nuxt-link></li>
+                </ul>
+            </div>
+
+            <!-- Contact Us -->
+            <div class="w-1/2 mb-6">
+                <h3 :class="classTittleSection">Contacto</h3>
+                <div class="font-roboto capitalize">
+                    <p><span class="normal-case">lasilla@hipicolasilla.com</span></p>
+                    <p>+52 81 81550100</p>
+                </div>
+            </div>
+        </div>
     </footer>
 </template>
 
 <script>
 export default {
-    props:{
+    props: {
         layoutMode: {
             type: String,
             default: 'default'
