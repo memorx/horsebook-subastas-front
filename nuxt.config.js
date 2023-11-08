@@ -20,7 +20,9 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css' }
+      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap' }
+
     ]
   },
 
@@ -55,31 +57,6 @@ export default {
     '@nuxtjs/google-fonts'
   ],
 
-  // Google Fonts
-  googleFonts: {
-    families: {
-      // a simple name
-      Roboto: true,
-
-      // a name with spaces
-      'Josefin+Sans': true,
-
-      // specific font weights
-      Lato: [100, 300],
-
-      // advanced
-      Raleway: {
-        // weights
-        wght: [100, 400],
-        // italic
-        ital: [100]
-      },
-
-      Nunito: {
-        wght: [300, 400, 700, 800, 900]
-      }
-    }
-  },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios

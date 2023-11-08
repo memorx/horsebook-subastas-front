@@ -1,0 +1,120 @@
+<template>
+    <footer :class="['p-6', backgroundColor, textColor]">
+        <!--Web footer-->
+        <div class="hidden lg:grid container mx-auto grid-cols-4 gap-8">
+
+            <!-- 1. Logo -->
+            <div>
+                <nuxt-link to="/">
+                    <img src="../public/image_la_silla.png" alt="logo" style="width: 60px;">
+                    <p class="text-xs">© 2023 STUDBOOK LA SILLA. A.C.</p>
+                </nuxt-link>
+            </div>
+
+            <!-- 2. Navigation Links -->
+            <div>
+                <h3 :class="classTittleSection">{{ $t('footer.navigate') }}</h3>
+                <ul class="font-roboto capitalize">
+                    <li><nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/bids')" to="/bids">{{ $t('topBar.bids') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/contact')" to="/contact">{{ $t('topBar.contact') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">registro</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">login</nuxt-link></li>
+                </ul>
+            </div>
+
+            <!-- 3. Contact Us -->
+            <div>
+                <h3 :class="classTittleSection">Contacto</h3>
+                <div class="font-robotom capitalize">
+                    <p><span class="normal-case">lasilla@hipicolasilla.com</span></p>
+                    <p>+52 81 81550100</p>
+                </div>
+
+                <!-- <h3 :class="[classTittleSection, 'mt-6']">Policies</h3>
+                <ul>
+                    <li><nuxt-link to="/terms">Terms & Conditions</nuxt-link></li>
+                    <li><nuxt-link to="/privacy">Privacy Policy</nuxt-link></li>
+                </ul> -->
+            </div>
+
+            <!-- 4. Follow Us + Social Icons -->
+            <div>
+                <h3 :class="classTittleSection">Siguenos</h3>
+                <div class="flex space-x-4">
+                    <i class="fab fa-instagram fa-2x"></i>
+                    <i class="fab fa-facebook fa-2x"></i>
+                    <i class="fab fa-youtube fa-2x"></i>
+                </div>
+            </div>
+
+        </div>
+        <!--Mobile footer-->
+        <div class="lg:hidden flex flex-wrap justify-between  px-4">
+            <!-- Logo -->
+            <div class="w-full mb-6 text-center">
+                <nuxt-link to="/">
+                    <img src="../public/image_la_silla.png" alt="logo" class="mx-auto" style="width: 60px;">
+                    <p class="text-xs">© 2023 STUDBOOK LA SILLA. A.C.</p>
+                </nuxt-link>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="w-1/2 mb-6">
+                <h3 :class="classTittleSection">{{ $t('footer.navigate') }}</h3>
+                <ul class="font-roboto capitalize">
+                    <li><nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/bids')" to="/bids">{{ $t('topBar.bids') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/contact')" to="/contact">{{ $t('topBar.contact') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">registro</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">login</nuxt-link></li>
+                </ul>
+            </div>
+
+            <!-- Contact Us -->
+            <div class="w-1/2 mb-6">
+                <h3 :class="classTittleSection">Contacto</h3>
+                <div class="font-roboto capitalize">
+                    <p><span class="normal-case">lasilla@hipicolasilla.com</span></p>
+                    <p>+52 81 81550100</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</template>
+
+<script>
+export default {
+    props: {
+        layoutMode: {
+            type: String,
+            default: 'default'
+        }
+    },
+    computed: {
+        backgroundColor() {
+            return this.layoutMode === 'lightMode' ? 'bg-light-mode' : 'bg-black';
+        },
+        textColor() {
+            return this.layoutMode === 'lightMode' ? 'text-black' : 'text-white';
+        },
+        activePageClass() {
+            return (route) => {
+                return this.$route.path === route ? 'text-custom-gold' : this.layoutMode === 'lightMode' ? 'text-black' : 'text-white';
+            }
+        },
+        classTittleSection() {
+            return "font-roboto font-bold mb-3 capitalize"
+        }
+    },
+    methods: {
+        activePage(route) {
+            return this.$route.path === route;
+        }
+    }
+}
+</script>
+
+<style scoped>
+/* Add any extra styling for the footer here */
+</style>

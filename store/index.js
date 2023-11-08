@@ -8,8 +8,11 @@ export const state = () => ({
   setUser: {},
   horseDetails: {},
   userInformation: {},
-  websocket: null
-})
+  bgImage: '',
+  textColorTopBar: '',
+  websocket: null,
+  scrollIntoContact: false
+});
 
 export const mutations = {
   authenticate(state, value) {
@@ -34,9 +37,15 @@ export const mutations = {
     localStorage.setItem("setInfo", JSON.stringify(info))
   },
   clearUserData(state) {
-    state.setUser = ""
-    state.setSingUpData = ""
-    state.isAuthenticated = false
+    state.setUser = "";
+    state.setSingUpData = "";
+    state.isAuthenticated = false;
+  },
+  setBgImage(state, image) {
+    state.bgImage = image;
+  },
+  setTextColorTopBar(state, color) {
+    state.textColorTopBar = color;
   },
   setWebSocket(state, socket) {
     state.websocket = socket
@@ -46,8 +55,11 @@ export const mutations = {
       state.websocket.close()
       state.websocket = null
     }
+  },
+  setScrollIntoContact(state, value) {
+    state.scrollIntoContact = value
   }
-}
+};
 
 export const actions = {
   async initializeWebSocketUserStatus({ commit, state }) {
@@ -99,6 +111,10 @@ export const actions = {
       // Store the created websocket instance in the Vuex state
       commit("setWebSocket", socket)
     }
+  },
+  scrollIntoContact({ commit }, value) {
+    commit("setScrollIntoContact", value)
   }
   // ... other actions
 }
+
