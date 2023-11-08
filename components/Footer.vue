@@ -25,7 +25,7 @@
 
             <!-- 3. Contact Us -->
             <div>
-                <h3 :class="classTittleSection">Contact Us</h3>
+                <h3 :class="classTittleSection">Contacto</h3>
                 <div class="font-robotom capitalize">
                     <p><span class="normal-case">lasilla@hipicolasilla.com</span></p>
                     <p>+52 81 81550100</p>
@@ -40,7 +40,7 @@
 
             <!-- 4. Follow Us + Social Icons -->
             <div>
-                <h3 :class="classTittleSection">Follow Us</h3>
+                <h3 :class="classTittleSection">Siguenos</h3>
                 <div class="flex space-x-4">
                     <i class="fab fa-instagram fa-2x"></i>
                     <i class="fab fa-facebook fa-2x"></i>
