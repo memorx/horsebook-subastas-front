@@ -6,9 +6,7 @@
     />
     <div>
       <div class="text-center my-5">
-        <p class="text-2xl md:text-4xl font-bold">
-          Bienvenido {{ setUser?.user || "Invitado" }}
-        </p>
+        <p class="text-2xl md:text-4xl font-bold">Bienvenido a tus subastas</p>
       </div>
       <div>
         <div
