@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 export default {
-
+  components: true,
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
   ssr: false,
@@ -32,6 +32,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/vuetoastnotification.js',
+    { src: '~/plugins/vue-confetti.js', mode: 'client' },
   ],
 
   // router middleware
@@ -106,7 +107,8 @@ export default {
     apiToken: process.env.API_TOKEN || '0119158e9e647cc58e9c895fa08316b2a5b03df4',
     baseURL: process.env.BASE_URL || "https://subastas-api-preprod.alluxi.com/api",
     baseURLWS: process.env.BASE_URLWS || "wss://subastas-api-preprod.alluxi.com/ws",
-    baseLaSilla: "https://www.horsebooklasilla.com/api"
+    baseLaSilla: "https://www.horsebooklasilla.com/api",
+    callbackValidateEmail: process.env.CALLBACK_VALIDATE_EMAIL || "http://horsebook-subastas-front-stage.s3-website-us-east-1.amazonaws.com/auth/sign-up/validate-email-and-login/",
   },
 
   //config i18n
