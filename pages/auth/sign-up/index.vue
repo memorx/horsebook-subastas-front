@@ -654,6 +654,7 @@ export default {
       let formData = new FormData()
       formData.append("email", data.email)
       formData.append("password", data.password)
+      formData.append("callback", this.$config.callbackValidateEmail)
       formData.append("name", data.name)
       formData.append("mothers_maiden_name", data.mothers_maiden_name)
       formData.append("fathers_surname", data.fathers_surname)
