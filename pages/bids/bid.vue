@@ -1,9 +1,8 @@
 <template>
   <div class="bg-zinc-200 py-5 lg:px-20">
-    <button @click="startConfetti()">Confetti</button>
     <modal
       v-show="showModal"
-      :amount="formData?.amount"
+      :amount="manualInputAmount ? manualInputAmount : inputAmount"
       :submitForm="submitForm"
       :disableModal="disableModal"
       :status="horseStatus"
@@ -138,7 +137,6 @@
               >
             </div>
             <div class="px-5 mt-5">
-
               <p class="text-sm font-bold">OFERTAR POR ESTE LOTE</p>
               <form @submit="submitForm">
                 <div class="flex items-center space-x-2">
@@ -149,15 +147,21 @@
                   >
                     -
                   </button>
+                  <p
+                    @click="showManualInputAmount()"
+                    v-show="!showInput"
+                    class="border border-black rounded-md flex-grow w-1/4 h-10 flex items-center justify-center"
+                  >
+                    {{ inputAmount }}
+                  </p>
                   <input
-                    type="text"
+                    ref="manualInputAmount"
+                    v-show="showInput"
+                    name="amountInput"
+                    type="number"
+                    v-model="manualInputAmount"
+                    @blur="assignManualInputAmount()"
                     class="border rounded-md flex-grow w-1/4"
-                    autofocus
-                    id="amount"
-                    required
-                    @focus="updateEditAmount(true)"
-                    @blur="updateEditAmount(false)"
-                    v-model="inputAmount"
                   />
                   <button
                     class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
@@ -255,6 +259,7 @@
             </div>
             <div class="flex justify-center rounded-t-md">
               <div class="mx-10 md:mx-0 my-10">
+                <p>Tiempo restante</p>
                 <div class="md:flex md:items-center">
                   <div class="mx-5">
                     <p class="text-center text-5xl mb-2 font-bold">
@@ -294,15 +299,21 @@
                   >
                     -
                   </button>
+                  <p
+                    @click="showManualInputAmount()"
+                    v-show="!showInput"
+                    class="border border-black rounded-md flex-grow w-1/4 h-10 flex items-center justify-center"
+                  >
+                    {{ inputAmount }}
+                  </p>
                   <input
-                    type="text"
-                    class="border rounded-md flex-grow"
-                    autofocus
-                    id="amount"
-                    required
-                    v-model="inputAmount"
-                    @focus="updateEditAmount(true)"
-                    @blur="updateEditAmount(false)"
+                    ref="manualInputAmount"
+                    v-show="showInput"
+                    name="amountInput"
+                    type="number"
+                    v-model="manualInputAmount"
+                    @blur="assignManualInputAmount()"
+                    class="border rounded-md flex-grow w-1/4"
                   />
                   <button
                     class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
@@ -311,7 +322,6 @@
                   >
                     +
                   </button>
-
                   <div class="hidden md:block">
                     <SubmitAuthenticatedButton
                       :enable-modal="enableModal"
@@ -508,26 +518,42 @@
         </div>
       </div>
       <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
-        <div class="mb-4">
-          <span class="text-2xl font-bold">Estadisticas</span>
-        </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <div class="mr-4">
-            <span class="font-bold text-gray-700">Genero:</span>
-            <span class="text-gray-600">{{ horseData.Genre || "NA" }}</span>
+            <span class="font-bold text-gray-700">Fecha de nacimiento:</span>
+            <span class="text-gray-600">{{ horseData.birthDate || "NA" }}</span>
           </div>
-
           <div class="mr-4">
             <span class="font-bold text-gray-700">Edad:</span>
             <span class="text-gray-600">{{ horseData.Age || "NA" }}</span>
             <span class="text-gray-600">años</span>
           </div>
-          <div class="mr-4">
-            <span class="font-bold text-gray-700">Color:</span>
-            <span class="text-gray-600">{{ horseData.Color || "NA" }}</span>
-          </div>
 
           <div class="mr-4">
+            <span class="font-bold text-gray-700">No. Registro:</span>
+            <span class="text-gray-600">{{
+              horseData.registerNumber || "NA"
+            }}</span>
+          </div>
+          <div class="mr-4">
+            <span class="font-bold text-gray-700">Alzada:</span>
+            <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
+            <span class="text-gray-600">m</span>
+          </div>
+          <div class="mr-4">
+            <span class="font-bold text-gray-700">Genero:</span>
+            <span class="text-gray-600">{{ horseData.Genre || "NA" }}</span>
+          </div>
+          <div class="mr-4">
+            <span class="font-bold text-gray-700">Criadero:</span>
+            <span class="text-gray-600">{{ horseData.Hatchery || "NA" }}</span>
+          </div>
+          <!-- <div class="mr-4">
+            <span class="font-bold text-gray-700">Color:</span>
+            <span class="text-gray-600">{{ horseData.Color || "NA" }}</span>
+          </div> -->
+
+          <!-- <div class="mr-4">
             <span class="font-bold text-gray-700">Peso:</span>
             <span class="text-gray-600">{{ horseData.Weight || "NA" }}</span>
             <span class="text-gray-600">kg</span>
@@ -537,17 +563,7 @@
             <span class="font-bold text-gray-700">Altura:</span>
             <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
             <span class="text-gray-600">m</span>
-          </div>
-
-          <div class="mr-4">
-            <span class="font-bold text-gray-700">Ubicacion:</span>
-            <span class="text-gray-600">{{ horseData.Location || "NA" }}</span>
-          </div>
-
-          <div class="mr-4">
-            <span class="font-bold text-gray-700">Criadero:</span>
-            <span class="text-gray-600">{{ horseData.Hatchery || "NA" }}</span>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
@@ -555,6 +571,12 @@
           <span class="text-2xl font-bold">Pedigree</span>
         </div>
         <Pedigree :link="horseData.Pedigree" />
+        <p v-if="horseData.horseTelex">
+          Revisa los datos en
+          <a class="text-blue-400" :href="horseData.horseTelex" target="_blank"
+            >Horse Telex</a
+          >
+        </p>
       </div>
     </div>
     <div class="mb-4 p-5 rounded-lg">
@@ -635,7 +657,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 <script>
@@ -663,10 +684,12 @@ export default {
     SubmitAuthenticatedButton,
     modal,
     horseStatus,
-    statusBid,
+    statusBid
   },
   data() {
     return {
+      showInput: false,
+      manualInputAmount: "",
       isSyncEnabled: true,
       bidTime: {
         days: 0,
@@ -690,7 +713,8 @@ export default {
         xRayGallery: [],
         images: [],
         videoUrl: "",
-        final_amount: ""
+        final_amount: "",
+        horseTelex: ""
       },
       bidStatus: "",
       liveURL: "",
@@ -724,13 +748,18 @@ export default {
       genders: "",
       genreMapping: {
         null: "",
-        0: "Macho Completo",
-        1: "Hembra",
-        2: "Macho Castrado",
-        3: "Semental",
-        4: "Nano",
-        5: "Yegua Madre",
-        6: "Portadora"
+        0: "Potranca",
+        1: "Vacía",
+        2: "Gestante",
+        3: "Portadora",
+        4: "Donadora",
+        5: "Nana",
+        6: "Potro",
+        7: "Entero",
+        8: "Semental",
+        9: "Semental aprobado",
+        10: "Castrado",
+        11: "Nano"
       },
       socket: null,
       bids: [],
@@ -742,7 +771,8 @@ export default {
       isEditingAmount: false,
       firstUpdateAmount: true,
       inputAmount: "",
-      showConfetti: false,
+      horseExternalId: "",
+      winnerEmail: ""
     }
   },
   computed: {
@@ -780,6 +810,7 @@ export default {
     clearInterval(this.timer)
     console.log("al salir cierra los sockets", this.bidSocket)
     this.intentionalCloseSockets()
+    this.$confetti.stop()
   },
   async mounted() {
     this.fetchGenres()
@@ -787,20 +818,40 @@ export default {
     this.startAuctionSocket()
   },
   methods: {
-    startConfetti() {
-      this.$confetti.start()
+    async winnerConfetti() {
+      console.log("Estatus cerrado confeti")
+      await this.fetchWinner()
+      console.log(this.winnerEmail)
+      console.log(this.$store.state.user.user)
+      if (this.winnerEmail == this.$store.state.user.user) {
+        console.log("USER CORRECTO")
+        this.$confetti.start()
+        setTimeout(() => {}, 5000)
+      }
+    },
+    showManualInputAmount() {
+      this.manualInputAmount = this.inputAmount
+      this.showInput = true
+      this.$nextTick(() => {
+        this.$refs.manualInputAmount.focus()
+      })
+    },
+    assignManualInputAmount() {
+      this.showInput = false
+      if (this.inputAmount <= this.manualInputAmount)
+        this.amountBase = this.manualInputAmount
     },
     updateEditAmount(value) {
       this.isEditingAmount = value
       console.log("inputAmount", this.inputAmount)
     },
     removeCommas(e) {
-      document.getElementById('amount').type = "number"
+      document.getElementById("amount").type = "number"
       this.formData.amount = this.formData.amount.replace(/,/g, "")
     },
     addCommas(e) {
       this.formData.amount = parseFloat(this.formData.amount).toLocaleString()
-      document.getElementById('amount').type = "text"
+      document.getElementById("amount").type = "text"
     },
     updateAmount(event) {
       if (this.isSyncEnabled) {
@@ -861,6 +912,7 @@ export default {
     },
     async init() {
       await this.fetchData()
+      this.winnerConfetti()
       this.startBidSocket()
     },
     enableModal() {
@@ -870,10 +922,7 @@ export default {
       this.showModal = false
     },
     async startBidSocket() {
-      if (
-        this.socket &&
-        this.socket.readyState === WebSocket.OPEN
-      ) {
+      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
         this.socket.close()
       }
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}`
@@ -890,6 +939,7 @@ export default {
         }
         if (message.bids) {
           mountedThis.winner = message.bids[0]?.user_profile
+          console.log("Message Bid", message.bids[0])
           mountedThis.bids = message.bids
         }
 
@@ -906,7 +956,7 @@ export default {
         }
 
         // only update the initial amount if the user has not edited the input
-        if(this.firstUpdateAmount) {
+        if (this.firstUpdateAmount) {
           this.isEditingAmount = false
         }
 
@@ -917,23 +967,23 @@ export default {
           let currentValue = parseInt(
             mountedThis.formData?.amount.replace(",", "")
           )
-          if(!this.isEditingAmount) {
-            let InputValue = parseInt( mountedThis.inputAmount.replace(",", ""))
+          if (!this.isEditingAmount) {
+            let InputValue = parseInt(mountedThis.inputAmount.replace(",", ""))
           }
           if (currentValue >= 30000) {
-            mountedThis.formData.amount = (
+            mountedThis.inputAmount = (
               parseInt(mountedThis.bids[0]?.amount) + 500
             ).toLocaleString("en-US")
-            if(!this.isEditingAmount ) {
+            if (!this.isEditingAmount) {
               mountedThis.inputAmount = (
                 parseInt(mountedThis.bids[0]?.amount) + 500
               ).toLocaleString("en-US")
             }
           } else {
-            mountedThis.formData.amount = (
+            mountedThis.inputAmount = (
               parseInt(mountedThis.bids[0]?.amount) + 1000
             ).toLocaleString("en-US")
-            if(!this.isEditingAmount ) {
+            if (!this.isEditingAmount) {
               mountedThis.inputAmount = (
                 parseInt(mountedThis.bids[0]?.amount) + 1000
               ).toLocaleString("en-US")
@@ -944,7 +994,7 @@ export default {
             mountedThis.horseData.final_amount,
             10
           ).toLocaleString("en-US")
-          if(!this.isEditingAmount ) {
+          if (!this.isEditingAmount) {
             mountedThis.inputAmount = parseInt(
               mountedThis.horseData.final_amount,
               10
@@ -952,13 +1002,13 @@ export default {
           }
         } else {
           mountedThis.formData.amount = (1000).toLocaleString("en-US")
-          if(!this.isEditingAmount ) {
+          if (!this.isEditingAmount) {
             mountedThis.inputAmount = (1000).toLocaleString("en-US")
           }
         }
 
         // after made the first update, don't trigger again if the user is focus on the input
-        if(this.firstUpdateAmount) {
+        if (this.firstUpdateAmount) {
           this.firstUpdateAmount = false
           this.isEditingAmount = true
         }
@@ -998,10 +1048,12 @@ export default {
           if (message.horse.id == mountedThis.horseId) {
             mountedThis.horseStatus = message.horse.status
             const nextHorse = message.horse.next
-            if (mountedThis.horseStatus == "CLOSED")
+            if (mountedThis.horseStatus == "CLOSED") {
               mountedThis.$toast.success(
                 "La subasta de este caballo ha sido finalizada"
               )
+            }
+            this.winnerConfetti()
             if (nextHorse) {
               mountedThis.$router
                 .replace({
@@ -1054,22 +1106,26 @@ export default {
       }
     },
     addThousand() {
-      let currentValue = parseInt(this.formData?.amount.replace(",", ""))
+      console.log("adding")
+      // let currentValue = parseInt(this.formData?.amount.replace(",", ""))
+      let currentValue = parseInt(this.inputAmount.replace(",", ""))
+      console.log(currentValue)
       if (currentValue >= 30000) {
         currentValue += 500
       } else {
         currentValue += 1000
       }
-      this.formData.amount = currentValue.toLocaleString("en-US")
+      this.inputAmount = currentValue.toLocaleString("en-US")
     },
     substractThousand() {
-      let currentValue = parseInt(this.formData?.amount?.replace(",", ""))
+      console.log("substracting")
+      let currentValue = parseInt(this.inputAmount.replace(",", ""))
       if (currentValue >= 30000) {
         currentValue -= 500
       } else {
         currentValue -= 1000
       }
-      this.formData.amount = currentValue.toLocaleString("en-US")
+      this.inputAmount = currentValue.toLocaleString("en-US")
     },
     parseFetchedAmount(value) {
       let lastOfferInt = parseInt(value?.replace(",", ""))
@@ -1111,6 +1167,33 @@ export default {
           console.error(error)
         })
     },
+    async fetchWinner() {
+      let winnerEndpoint = "/subastas/prebid-winner/"
+      let url = `${this.$config.baseURL}${winnerEndpoint}`
+
+      let params = {
+        subasta_id: this.bidId,
+        horse_id: this.horseID,
+        pre_bid: this.horseStatus === "CLOSED" ? "false" : "true"
+      }
+      const token = getUserTokenOrDefault()
+
+      await axios
+        .get(url, {
+          headers: {
+            Authorization: `Token ${token}`
+          },
+          params: params
+        })
+        .then((response) => {
+          this.winnerEmail = response.data.user_profile.email
+        })
+        .catch((error) => {
+          // Handle errors
+          console.error("Error fetching winner:", error)
+        })
+    },
+
     async fetchData() {
       let listSubastasEndpoint = `/horse/${this.horseId}/info`
       let url = `${this.$config.baseURL}${listSubastasEndpoint}`
@@ -1127,6 +1210,7 @@ export default {
           this.HorsenName = horse.external_data.name
           //horse ID
           this.horseID = horse.external_data.id
+          console.log("ID ExTERNO", this.horseID)
           this.horseIDForm = horse.local_data.id
           //horse Description
           //genre
@@ -1171,6 +1255,7 @@ export default {
           this.horseStatus = horse.local_data.status
           //Bid Initial Amout
           this.horseData.final_amount = horse.local_data.final_amount
+          this.horseData.horseTelex = horse.local_data.horsetelex_url
         })
         .catch((error) => {
           console.error(error)
@@ -1208,18 +1293,34 @@ export default {
     submitForm(event) {
       event.preventDefault()
       const submittedAmount = parseInt(this.formData.amount.replace(",", ""))
-      const submittedAmountInput = parseInt(this.inputAmount.replace(",", ""))
-      const user = JSON.parse(localStorage.getItem("setUser"))
-      this.socket.send(
-        JSON.stringify({
-          bid_info: {
-            amount: submittedAmountInput
-          },
-          sender: {
-            email: user.user
-          }
-        })
-      )
+      if (this.manualInputAmount) {
+        const submittedAmountInput = parseInt(this.manualInputAmount)
+        const user = JSON.parse(localStorage.getItem("setUser"))
+        this.socket.send(
+          JSON.stringify({
+            bid_info: {
+              amount: submittedAmountInput
+            },
+            sender: {
+              email: user.user
+            }
+          })
+        )
+        this.manualInputAmount = ""
+      } else {
+        const submittedAmountInput = parseInt(this.inputAmount.replace(",", ""))
+        const user = JSON.parse(localStorage.getItem("setUser"))
+        this.socket.send(
+          JSON.stringify({
+            bid_info: {
+              amount: submittedAmountInput
+            },
+            sender: {
+              email: user.user
+            }
+          })
+        )
+      }
     }
   }
 }
