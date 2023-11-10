@@ -89,7 +89,6 @@ export default {
       };
       const body = {
         "email": this.singUpData.email,
-        "callback": this.$config.callbackValidateEmail
       }
       await this.$axios.$post(url, body, { headers })
         .then((response) => {
