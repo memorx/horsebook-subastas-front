@@ -108,7 +108,6 @@ export default {
     baseURL: process.env.BASE_URL || "https://subastas-api-preprod.alluxi.com/api",
     baseURLWS: process.env.BASE_URLWS || "wss://subastas-api-preprod.alluxi.com/ws",
     baseLaSilla: "https://www.horsebooklasilla.com/api",
-    callbackValidateEmail: process.env.CALLBACK_VALIDATE_EMAIL || "http://horsebook-subastas-front-stage.s3-website-us-east-1.amazonaws.com/auth/sign-up/validate-email-and-login/",
   },
 
   //config i18n
