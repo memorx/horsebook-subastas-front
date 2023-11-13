@@ -77,7 +77,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
+    <!-- <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
       <p class="text-xl text-white font-bold">SEGURIDAD</p>
       <NuxtLink to="/user/perfil/editar">
         <button
@@ -87,10 +87,10 @@
           <i class="fas fa-pencil-alt mr-2 text-blue-500"></i> Cambiar contraseña
         </button>
       </NuxtLink>
-    </div>
-    <div class="bg-white rounded-b-lg p-6 md:p-10 mb-5">
+    </div> -->
+    <!-- <div class="bg-white rounded-b-lg p-6 md:p-10 mb-5">
       <p class="text-md font-bold mb-5">Contraseña: <span class="font-light">**********</span></p>
-    </div>
+    </div> -->
     <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
       <p class="text-xl text-white font-bold">Historial de Subastas</p>
       <div>

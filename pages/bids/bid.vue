@@ -821,8 +821,6 @@ export default {
     async winnerConfetti() {
       console.log("Estatus cerrado confeti")
       await this.fetchWinner()
-      console.log(this.winnerEmail)
-      console.log(this.$store.state.user.user)
       if (this.winnerEmail == this.$store.state.user.user) {
         console.log("USER CORRECTO")
         this.$confetti.start()
@@ -938,13 +936,11 @@ export default {
           return
         }
         if (message.bids) {
-          mountedThis.winner = message.bids[0]?.user_profile
           console.log("Message Bid", message.bids[0])
           mountedThis.bids = message.bids
         }
 
         if (message.prebids && message.prebids.length > 0) {
-          mountedThis.winner = message.prebids[0].user_profile
           mountedThis.bids = message.prebids
         }
 
@@ -1187,6 +1183,8 @@ export default {
         })
         .then((response) => {
           this.winnerEmail = response.data.user_profile.email
+          this.winner = response.data.user_profile
+          console.log("GANADOR", this.winner)
         })
         .catch((error) => {
           // Handle errors
