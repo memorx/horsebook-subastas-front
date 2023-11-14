@@ -28,6 +28,15 @@
                         <span v-if="$i18n.locale === 'en'">{{ $t("SwitchLanguage.english") }}</span>
                         </span>
                     </nuxt-link> -->
+                    <a @click="goToCurrenAuction()" v-if="idCurrenBid"
+                    class="text-white hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
+                        fill="none" />
+                    </svg>
+                    Subasta En Vivo
+                    </a>
 
                     <nuxt-link to="/user/inicio">
                         <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex">
@@ -41,13 +50,12 @@
                     >
                         Cerrar sesión
                     </button>
-
                     <nuxt-link to="/user/perfil">
                         <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex justify-center align-middle items-center">
                             <i class="fas fa-user fa-lg p-2"></i>
-                            <p>{{ username }}</p>
                         </div>
                     </nuxt-link>
+
                 </div>
 
                 <div v-else class="flex justify-center align-middle items-center">
@@ -84,18 +92,28 @@
         </div>
     </nav>
 </template>
-  
+
 <script>
 import Cookies from "js-cookie";
+import JWTDecode from 'jwt-decode'
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export default {
     data () {
         return {
-            username: ""
+            username: "",
+            idCurrenBid: 0,
+            socket: null, // Socket para auction
+            isIntentionalReconnectAuction: false,
         }
     },
     mounted () {
-        this.getuserMail()
+        this.getuserMail();
+        this.intentionalCloseSockets();
+        this.startSocket();
+    },
+    beforeDestroy() {
+        this.intentionalCloseSockets();
     },
     methods: {
         getuserMail() {
@@ -111,7 +129,77 @@ export default {
             Cookies.remove('access_token');
             localStorage.removeItem("setUser");
             this.$router.push('/')
-        }
+        },
+
+        async intentionalCloseSockets() {
+            this.closeAuctionSocket();
+            },
+            async closeAuctionSocket() {
+            this.isIntentionalReconnectAuction = true;
+            if (this.socket) {
+                this.socket.close();
+            }
+            this.isIntentionalReconnectAuction = false;
+
+        },
+
+        async startSocket() {
+            // WebSocket for auction
+            const auctionUrl = `${this.$config.baseURLWS}/auctions`;
+
+            this.auctionSocket = new ReconnectingWebSocket(auctionUrl);
+
+            this.auctionSocket.addEventListener('open', (event) => {
+                console.log('Conexión abierta:', event);
+            });
+
+            this.auctionSocket.addEventListener('message', (event) => {
+                const message = JSON.parse(event.data);
+                if (message.error) {
+                console.log(message.error);
+                }
+                if (message.auctions && message.auctions.length > 0) {
+                this.$data.idCurrenBid = message.auctions[0].id
+                }
+
+            });
+
+            this.auctionSocket.addEventListener('close', (event) => {
+                console.log('Conexión cerrada auction socket:', event);
+            });
+
+            this.auctionSocket.addEventListener('error', (error) => {
+                console.error('Error de conexión auction socket:', error);
+            });
+
+        },
+        async goToCurrenAuction() {
+            this.idCurrenBid = 0;
+            await this.getCurrentAuction()
+            if(this.idCurrenBid) {
+                let path = `/user/detalles/${this.idCurrenBid}`
+                this.$router.push({ path: path })
+            }
+        },
+        async getCurrentAuction() {
+            const url = `${this.$config.baseURL}/subastas/current-auction`
+            const decoded = JWTDecode(this.$cookies.get('access_token'))
+            this.loading = true
+            await this.$axios
+                .get(url, {
+                    headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: 'Token' + ' ' + decoded.token,
+                    },
+                })
+                .then((response) => {
+                response = response.data
+                this.idCurrenBid = response.id
+                })
+                .catch((error) => {
+                console.log(error)
+            })
+        },
     },
     computed: {
         isUserAuthenticated() {
@@ -120,9 +208,23 @@ export default {
     }
 }
 </script>
-  
-<style scoped>
-/* Add any extra styling here */
-</style>
 
-  
+<style>
+.fill-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    fill: red;
+  }
+
+  50% {
+    fill: transparent;
+  }
+
+  100% {
+    fill: red;
+  }
+}
+</style>

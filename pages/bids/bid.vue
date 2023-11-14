@@ -819,12 +819,12 @@ export default {
   },
   methods: {
     async winnerConfetti() {
-      console.log("Estatus cerrado confeti")
       await this.fetchWinner()
-      if (this.winnerEmail == this.$store.state.user.user) {
-        console.log("USER CORRECTO")
-        this.$confetti.start()
-        setTimeout(() => {}, 5000)
+      if (this.horseStatus == "CLOSED" || this.horseStatus == "CLOSED PREBID") {
+        if (this.winnerEmail == this.$store.state.user.user) {
+          this.$confetti.start()
+          setTimeout(() => {}, 5000)
+        }
       }
     },
     showManualInputAmount() {
@@ -1059,6 +1059,17 @@ export default {
                   mountedThis.init()
                 })
             }
+          }
+        }
+
+        if (message.prebid) {
+          console.log()
+          if (message.prebid.horse.id == mountedThis.horseId) {
+            const now = new Date()
+            mountedThis.EndPreBidDate = new Date(message.prebid.horse.end_pre_bid)
+            mountedThis.calculateCountdown()
+
+            console.log("ACTUALIZADO EL TIMER")
           }
         }
       })
