@@ -1061,6 +1061,17 @@ export default {
             }
           }
         }
+
+        if (message.prebid) {
+          console.log()
+          if (message.prebid.horse.id == mountedThis.horseId) {
+            const now = new Date()
+            mountedThis.EndPreBidDate = new Date(message.prebid.horse.end_pre_bid)
+            mountedThis.calculateCountdown()
+
+            console.log("ACTUALIZADO EL TIMER")
+          }
+        }
       })
       this.auctionSocket.addEventListener("close", (event) => {
         if (event.code === 1006) {
