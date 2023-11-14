@@ -819,12 +819,12 @@ export default {
   },
   methods: {
     async winnerConfetti() {
-      console.log("Estatus cerrado confeti")
       await this.fetchWinner()
-      if (this.winnerEmail == this.$store.state.user.user) {
-        console.log("USER CORRECTO")
-        this.$confetti.start()
-        setTimeout(() => {}, 5000)
+      if (this.horseStatus == "CLOSED" || this.horseStatus == "CLOSED PREBID") {
+        if (this.winnerEmail == this.$store.state.user.user) {
+          this.$confetti.start()
+          setTimeout(() => {}, 5000)
+        }
       }
     },
     showManualInputAmount() {
