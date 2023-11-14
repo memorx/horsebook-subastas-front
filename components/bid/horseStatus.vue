@@ -1,7 +1,7 @@
 <template>
   <div v-if="status" class="inline">
     <div
-      v-if="(status == 'COMING') & (bidStatus == 'PREBID')"
+      v-if="status == 'PREBID'"
       class="bg-yellow-400 text-white rounded-full px-5 text-sm h-5 text-center w-38 whitespace-nowrap"
     >
       PRE OFERTA
@@ -19,15 +19,13 @@
       CERRADA
     </div>
     <div
-      v-if="(status == 'COMING') & (bidStatus == 'CLOSED PREBID')"
+      v-if="status == 'CLOSED PREBID'"
       class="text-white rounded-full px-5 text-sm h-5 bg-[#B8BB2A] text-center w-38 whitespace-nowrap"
     >
       PRE OFERTA CERRADA
     </div>
     <div
-      v-if="
-        (status == 'COMING') & (bidStatus == 'COMING' || bidStatus == 'BIDDING')
-      "
+      v-if="status == 'COMING'"
       class="text-white rounded-full px-5 text-sm h-5 bg-gray-500 text-center w-38 whitespace-nowrap"
     >
       EN ESPERA
