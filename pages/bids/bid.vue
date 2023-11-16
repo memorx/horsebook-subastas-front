@@ -1265,6 +1265,7 @@ export default {
           //Bid Initial Amout
           this.horseData.final_amount = horse.local_data.final_amount
           this.horseData.horseTelex = horse.local_data.horsetelex_url
+          this.EndPreBidDate = horse.local_data.end_pre_bid
         })
         .catch((error) => {
           console.error(error)
@@ -1279,7 +1280,6 @@ export default {
           //TODO: get subasta info
           //prebid date
           this.PreBidDate = auction.start_pre_bid
-          this.EndPreBidDate = auction.end_pre_bid
           this.PreBidDateFormat = this.formatted(auction.start_pre_bid)
           this.EndPreBidDateFormat = this.formatted(auction.end_pre_bid)
           //bid date
