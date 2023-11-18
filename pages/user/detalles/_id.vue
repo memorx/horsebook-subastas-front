@@ -6,7 +6,7 @@
     />
     <NuxtLink :to="`/user/inicio/`">
       <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-        Atras
+        Listado de Subastas
       </button>
     </NuxtLink>
     <div class="flex flex-wrap">
