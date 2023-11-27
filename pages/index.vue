@@ -313,18 +313,31 @@ export default {
          this.$refs.bidSection.$el.scrollIntoView({
             behavior: 'smooth'
          });
+      },
+      scrollToContactSection() {
+         this.$refs.contactSection.$el.scrollIntoView({
+            behavior: 'smooth'
+         });
       }
    },
    watch: {
-      scrollIntoContactClicked(newVal) {
-         if (newVal) {
-            this.$refs.contactSection.$el.scrollIntoView({
-               behavior: 'smooth'
-            });
+      '$store.state.scrollIntoContact'(newValue) {
+         if (newValue) {
+            this.scrollToContactSection();
             this.$store.commit('setScrollIntoContact', false);
          }
       }
-   }
+   },
+   // watch: {
+   //    scrollIntoContactClicked(newVal) {
+   //       if (newVal) {
+   //          this.$refs.contactSection.$el.scrollIntoView({
+   //             behavior: 'smooth'
+   //          });
+   //          this.$store.commit('setScrollIntoContact', false);
+   //       }
+   //    }
+   // }
 }
 </script>
 

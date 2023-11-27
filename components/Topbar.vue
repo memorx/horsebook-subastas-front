@@ -225,23 +225,20 @@ export default {
             this.$router.push('/')
         },
         async handleScrollIntoContact() {
+            if (this.$route.path !== '/') {
+                await this.$router.push('/');
+
+            }
             if (this.$route.path === '/') {
-                this.$store.dispatch('scrollIntoContact', true)
-            } else {
-                await this.$router.push('/')
-                this
+                this.$store.commit('setScrollIntoContact', true);
+            } else
+            {
+                setTimeout(() => {
+                    this.$store.commit('setScrollIntoContact', true);
+                }, 1000);
             }
         },
     },
-    watch: {
-        $route(to, from) {
-            if (to.path === '/') {
-                this.moveToHome = true
-            } else {
-                this.moveToHome = false
-            }
-        }
-    }
 }
 </script>
 
