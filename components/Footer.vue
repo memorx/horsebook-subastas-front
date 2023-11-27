@@ -85,22 +85,20 @@
 
 <script>
 export default {
-    props: {
-        layoutMode: {
-            type: String,
-            default: 'default'
+    data() {
+        return {
         }
     },
     computed: {
         backgroundColor() {
-            return this.layoutMode === 'lightMode' ? 'bg-light-mode' : 'bg-black';
+            return this.$store.state.layoutMode === 'lightMode' ? 'bg-light-mode' : 'bg-black';
         },
         textColor() {
-            return this.layoutMode === 'lightMode' ? 'text-black' : 'text-white';
+            return  this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
         },
         activePageClass() {
             return (route) => {
-                return this.$route.path === route ? 'text-custom-gold' : this.layoutMode === 'lightMode' ? 'text-black' : 'text-white';
+                return this.$route.path === route ? 'text-custom-gold' : this.textColor ;
             }
         },
         classTittleSection() {
@@ -110,7 +108,7 @@ export default {
     methods: {
         activePage(route) {
             return this.$route.path === route;
-        }
+        },
     }
 }
 </script>

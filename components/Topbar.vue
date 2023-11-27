@@ -1,7 +1,7 @@
 <template>
     <nav :class="['p-4 lg:from-transparent', textColor, gradientMobileColor]">
         <!-- Web Navigation -->
-        <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent">
+        <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent" >
             <!-- Logo or brand -->
             <nuxt-link to="/">
                 <img src="../public/image_la_silla.png" alt="logo" style="width: 40px;">
@@ -87,7 +87,7 @@
         </div>
 
         <!-- Mobile Navigation -->
-        <div class="lg:hidden flex container mx-auto justify-between items-center">
+        <div class="lg:hidden flex container mx-auto justify-between items-center ">
 
             <!-- Navigation items -->
             <div class="flex items-center justify-between w-full">
@@ -167,6 +167,12 @@ export default {
     },
     mounted() {
         this.getuserMail()
+        //  listen for resize events
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize(); // Call it initially to set the width
+    },
+    destroyed() {
+        window.removeEventListener('resize', this.handleResize);
     },
     props: {
         toggleMenu: {
@@ -181,7 +187,8 @@ export default {
     data() {
         return {
             username: "",
-            moveToHome: false
+            moveToHome: false,
+            windowWidth: window.innerWidth,
         }
     },
     computed: {
@@ -190,17 +197,23 @@ export default {
         },
         activePageClass() {
             return (route) => {
-                return this.$route.path === route ? 'text-custom-gold' : this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
+                return this.$route.path === route ? 'text-custom-gold' : this.textColor;
             }
         },
+        isMobile() {
+            return this.windowWidth <= 768; // Your mobile breakpoint
+        },
         textColor() {
-            return this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
+            return   this.isMobile ? 'text-white' : this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
         },
         gradientMobileColor() {
             return 'bg-gradient-to-b from-[#353535] to-[#000000]'
-        }
+        },
     },
     methods: {
+        handleResize() {
+            this.windowWidth = window.innerWidth;
+        },
         getuserMail() {
             this.username = JSON.parse(localStorage.getItem("setUser"))?.user
         },

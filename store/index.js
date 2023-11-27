@@ -11,7 +11,8 @@ export const state = () => ({
   bgImage: '',
   textColorTopBar: '',
   websocket: null,
-  scrollIntoContact: false
+  scrollIntoContact: false,
+  layoutMode: 'default',
 });
 
 export const mutations = {
@@ -58,7 +59,10 @@ export const mutations = {
   },
   setScrollIntoContact(state, value) {
     state.scrollIntoContact = value
-  }
+  },
+  setLayoutMode(state, mode) {
+    state.layoutMode = mode;
+  },
 };
 
 export const actions = {

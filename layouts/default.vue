@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Parent div with black background -->
-        <div v-if="showVideo" class="fixed z-30 inset-0 w-screen h-screen bg-black">
+        <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
             <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
                 <source src="/video-home.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -12,12 +12,13 @@
         </div>
 
         <div v-else>
-            <div :class="`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] bg-black`">
+            <div :class="[`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] `, bgLayoutMode]">
                 <!-- Your TopBar Component bg-[url('/home-bg.jpg')] -->
 
                 <Topbar :toggleMenu="handleMenu" :isMobileMenuOpen="isMobileMenuOpen" />
                 <!-- Mobile Menu Overlay -->
-                <div v-if="isMobileMenuOpen" ref="mobileMenu" class="lg:hidden fixed inset-y-0 right-0 bg-black z-50 w-2/3 bg-gradient-to-b from-[#353535] to-[#000000]">
+                <div v-if="isMobileMenuOpen" ref="mobileMenu"
+                    :class="['lg:hidden fixed inset-y-0 right-0  z-50 w-2/3 bg-gradient-to-b from-[#353535] to-[#000000] bg-black']">
                     <MobileMenu @handle-close-menu="hanldeCloseMenu" />
                 </div>
 
@@ -59,7 +60,7 @@ export default {
             });
         }
         // show welcome modal if the video has been played
-        if (this.showWelcomeModal && this.showVideo ) {
+        if (this.showWelcomeModal && this.showVideo) {
             this.showWelcomeModalMethod();
         }
     },
@@ -87,14 +88,17 @@ export default {
     computed: {
         bgImage() {
             return this.$store.state.bgImage;
+        },
+        bgLayoutMode() {
+            return this.$store.state.layoutMode === 'lightMode' ? 'bg-light-mode' : 'bg-black';
         }
     },
     methods: {
         showWelcomeModalMethod() {
             Swal.fire({
-                title: this.$i18n.locale === 'es' ?  'Bienvenido a HorseBook Subastas': 'Welcome to HorseBook Auctions',
-                text: this.$i18n.locale === 'es' ?  'Tu mensaje de bienvenida aquí': 'Your welcome message here',
-                confirmButtonText: this.$i18n.locale === 'es' ?  'Cerrar': 'Close',
+                title: this.$i18n.locale === 'es' ? 'Bienvenido a HorseBook Subastas' : 'Welcome to HorseBook Auctions',
+                text: this.$i18n.locale === 'es' ? 'Tu mensaje de bienvenida aquí' : 'Your welcome message here',
+                confirmButtonText: this.$i18n.locale === 'es' ? 'Cerrar' : 'Close',
                 confirmButtonColor: '#3085d6',
                 allowOutsideClick: false,
             }).then((result) => {
@@ -218,7 +222,7 @@ export default {
                 document.removeEventListener('click', this.handleClickOutside, true);
             }
         },
-        hanldeCloseMenu(){
+        hanldeCloseMenu() {
             this.isMobileMenuOpen = false;
         }
     },

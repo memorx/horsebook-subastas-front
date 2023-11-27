@@ -328,16 +328,6 @@ export default {
          }
       }
    },
-   // watch: {
-   //    scrollIntoContactClicked(newVal) {
-   //       if (newVal) {
-   //          this.$refs.contactSection.$el.scrollIntoView({
-   //             behavior: 'smooth'
-   //          });
-   //          this.$store.commit('setScrollIntoContact', false);
-   //       }
-   //    }
-   // }
 }
 </script>
 
