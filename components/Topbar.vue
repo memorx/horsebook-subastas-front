@@ -54,12 +54,9 @@
                                 $t('topBar.bids') }}</nuxt-link>
                             <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link>
                             <nuxt-link :class="activePageClass('/news')" to="/news">{{ $t('topBar.news') }}</nuxt-link> -->
-                            <button v-if="this.$route.path === '/'" class="uppercase text-xs font-roboto"
-                                @click="handleScrollIntoContact">
+                            <button class="uppercase text-xs font-roboto" @click="handleScrollIntoContact">
                                 {{ $t('topBar.contact') }}
                             </button>
-                            <nuxt-link v-if="this.$route.path !== '/'" :class="activePageClass('/contact')" to="/contact">{{
-                                $t('topBar.contact') }}</nuxt-link>
                         </div>
 
                         <!-- Sign Up / Log in-->
@@ -118,12 +115,14 @@
                         </nuxt-link> -->
 
                         <nuxt-link to="/user/inicio">
-                            <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex">
+                            <div
+                                class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex">
                                 Tus Subastas
                             </div>
                         </nuxt-link>
 
-                        <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black" @click="logout">
+                        <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black"
+                            @click="logout">
                             Cerrar sesión
                         </button>
 
@@ -181,7 +180,8 @@ export default {
     },
     data() {
         return {
-            username: ""
+            username: "",
+            moveToHome: false
         }
     },
     computed: {
@@ -224,9 +224,23 @@ export default {
             localStorage.removeItem("setUser");
             this.$router.push('/')
         },
-        handleScrollIntoContact() {
-            this.$store.dispatch('scrollIntoContact', true)
+        async handleScrollIntoContact() {
+            if (this.$route.path === '/') {
+                this.$store.dispatch('scrollIntoContact', true)
+            } else {
+                await this.$router.push('/')
+                this
+            }
         },
+    },
+    watch: {
+        $route(to, from) {
+            if (to.path === '/') {
+                this.moveToHome = true
+            } else {
+                this.moveToHome = false
+            }
+        }
     }
 }
 </script>

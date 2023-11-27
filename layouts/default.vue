@@ -35,10 +35,11 @@ import Footer from '~/components/Footer.vue';
 import MobileMenu from '~/components/MobileMenu.vue';
 import JWTDecode from "jwt-decode"
 import Cookie from "js-cookie"
+import Swal from 'sweetalert2';
 
 export default {
     beforeMount() {
-        if (this.$route.path === '/' && !Cookie.get('videoPlayed')) {
+        if (!Cookie.get('videoPlayed')) {
             this.showVideo = true;
         } else {
             this.showVideo = false;
@@ -56,6 +57,10 @@ export default {
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'Entendido'
             });
+        }
+        // show welcome modal if the video has been played
+        if (this.showWelcomeModal && this.showVideo ) {
+            this.showWelcomeModalMethod();
         }
     },
     destroyed() {
@@ -76,6 +81,7 @@ export default {
         return {
             showVideo: true,
             isMobileMenuOpen: false,
+            showWelcomeModal: !Cookie.get('videoPlayed')
         }
     },
     computed: {
@@ -84,6 +90,35 @@ export default {
         }
     },
     methods: {
+        showWelcomeModalMethod() {
+            Swal.fire({
+                title: this.$i18n.locale === 'es' ?  'Bienvenido a HorseBook Subastas': 'Welcome to HorseBook Auctions',
+                text: this.$i18n.locale === 'es' ?  'Tu mensaje de bienvenida aquí': 'Your welcome message here',
+                confirmButtonText: this.$i18n.locale === 'es' ?  'Cerrar': 'Close',
+                confirmButtonColor: '#3085d6',
+                allowOutsideClick: false,
+            }).then((result) => {
+                this.handleWelcomeModalClose();
+            })
+        },
+        handleWelcomeModalClose() {
+            this.showWelcomeModal = false;
+            this.playVideoWithSound();
+        },
+        handleWelcomeModalClose() {
+            this.showWelcomeModal = false;
+            this.playVideoWithSound();
+            console.log('Closing welcome modal');
+        },
+        playVideoWithSound() {
+            console.log('Playing video with sound');
+            if (this.showVideo) {
+                const videoPlayer = this.$refs.videoPlayer;
+                videoPlayer.muted = false;
+                videoPlayer.play();
+                console.log('Playing video with sound');
+            }
+        },
         checkAndInitializeWebSocket() {
             console.log('Checking and initializing websocket');
             if (this.$store.state.isAuthenticated && this.$store.state.user.id) {
