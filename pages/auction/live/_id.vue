@@ -1,185 +1,286 @@
 <template>
-  <div class="bg-zinc-200 py-5 lg:px-5 md:px-3">
-    <modal
-      v-show="showModal"
-      :amount="manualInputAmount ? manualInputAmount : inputAmount"
-      :submitForm="submitForm"
-      :disableModal="disableModal"
-      :status="horseStatus"
-    />
+  <div>
     <Loading
-      v-if="loading"
-      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
-    />
-    <NuxtLink :to="`/`">
-      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-        ← Inicio
-      </button>
-    </NuxtLink>
-    <div class="flex flex-wrap">
-      <!-- First Column -->
-      <div class="w-full sm:w-1/2 md:flex md:flex-col">
-        <div v-if="videoUrl" class="w-full md:flex md:flex-col">
-          <div class="mb-4 sm:mb-0 p-0 mx-5 pb-5">
-          <iframe
-            class="aspect-content rounded-lg h-96 w-full"
-            :src="`https://www.youtube.com/embed/${extractYouTubeId(videoUrl)}`"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-          </div>
-          <div v-if="horseID">
-            <div class="mb-4 sm:mb-0 p-0 mx-5 flex flex-col">
-              <h2 class="text-xl font-bold">
-                Galería de: {{ HorsenName }}
-              </h2>
-              <div>
-                <div class="w-full">
-                  <Carousel :images="horseData.images" />
+        v-if="loading"
+        class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+      />
+    <div v-if="bidStatus == 'BIDDING' && loading == false" class="bg-zinc-200 py-5 lg:px-5 md:px-3">
+      <modal
+        v-show="showModal"
+        :amount="manualInputAmount ? manualInputAmount : inputAmount"
+        :submitForm="submitForm"
+        :disableModal="disableModal"
+        :status="horseStatus"
+      />
+
+      <NuxtLink :to="`/`">
+        <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
+          ← Inicio
+        </button>
+      </NuxtLink>
+      <div class="flex flex-wrap">
+        <!-- First Column -->
+        <div class="w-full sm:w-1/2 md:flex md:flex-col">
+          <div v-if="videoUrl" class="w-full md:flex md:flex-col">
+            <div class="mb-4 sm:mb-0 p-0 mx-5 pb-5">
+            <iframe
+              class="aspect-content rounded-lg h-96 w-full"
+              :src="`https://www.youtube.com/embed/${extractYouTubeId(videoUrl)}`"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+            </div>
+            <transition name="fade">
+              <div v-if="horseID" class="fade">
+                <div class="mb-4 sm:mb-0 p-0 mx-5 flex flex-col">
+                  <h2 class="text-xl font-bold">
+                    Galería de: {{ HorsenName }}
+                  </h2>
+                  <div>
+                    <div class="w-full">
+                      <Carousel :images="horseData.images" />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-
+            </transition>
           </div>
+
         </div>
-
-      </div>
-      <!-- Second Column -->
-      <div class="w-full sm:w-1/2 md:flex md:flex-col">
-        <!-- First Row in the second column -->
-        <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
-          <div class="flex items-center">
-            <h2 class="text-2xl font-bold mb-1 mr-3">Subasta</h2>
-            <statusBid :status="bidStatus" />
-          </div>
-          <h4 class="text-sm mb-4">
-            🇲🇽 Monterrey, Nuevo Leon
-            <span class="text-xl font-bold mb-2 mr-1 ml-4">{{
-              item.horses.length
-            }}</span>
-            <span>{{ item.horses.length == 1 ? "Caballo" : "Caballos" }}</span>
-          </h4>
-
-          <div v-if="horseID" class="text-lg font-bold flex flex-col md:flex-row">
-            Caballo en subasta: <span class="text-2xl text-red-500">{{ HorsenName }}</span>
-            <NuxtLink :to="`/bids/bid/?id=${bidId}&horsePositionList=0&horseId=${horseID}`" class="font-normal mt-1 ml-3">
-              Ver Detalles
-            </NuxtLink>
-
-          </div>
-        </div>
-        <!-- Second Row in the second column -->
-        <div class="bg-white mx-5 rounded-lg md:flex-grow">
-
-          <div v-if="!horseID" class="p-8">
-              <h2 class="font-bold text-3xl mx-auto text-center">
-                  QUÉDATE CON NOSOTROS SEGUIMOS CON LA SUBASTA EN VIVO
-              </h2>
-          </div>
-          <div v-else class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
-            <div
-              class="text-center w-full rounded-t-lg p-5"
-              style="background-color: #b99d61"
-            >
-              <p class="text-white font-bold text-sm">OFERTA MAS ALTA</p>
-              <span v-if="lastOffer" class="text-white font-bold text-2xl"
-                >${{ lastOffer }} USD</span
-              >
-              <span v-else class="text-white font-bold text-2xl"
-                >SE EL PRIMERO EN OFERTAR</span
-              >
+        <!-- Second Column -->
+        <div class="w-full sm:w-1/2 md:flex md:flex-col">
+          <!-- First Row in the second column -->
+          <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
+            <div class="flex items-center">
+              <h2 class="text-2xl font-bold mb-1 mr-3">Subasta</h2>
+              <statusBid :status="bidStatus" />
             </div>
-            <div class="px-5 mt-5">
-              <p class="text-sm font-bold">OFERTAR POR ESTE LOTE</p>
-              <form @submit="submitForm">
-                <div class="flex items-center space-x-2">
-                  <button
-                    class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
-                    type="button"
-                    @click="substractThousand"
-                  >
-                    -
-                  </button>
-                  <p
-                    @click="showManualInputAmount()"
-                    v-show="!showInput"
-                    class="border border-black rounded-md flex-grow w-1/4 h-10 flex items-center justify-center"
-                  >
-                    {{ inputAmount }}
-                  </p>
-                  <input
-                    ref="manualInputAmount"
-                    v-show="showInput"
-                    name="amountInput"
-                    type="number"
-                    v-model="manualInputAmount"
-                    @blur="assignManualInputAmount()"
-                    class="border rounded-md flex-grow w-1/4"
-                  />
-                  <button
-                    class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
-                    type="button"
-                    @click="addThousand"
-                  >
-                    +
-                  </button>
+            <h4 class="text-sm mb-4">
+              🇲🇽 Monterrey, Nuevo Leon
+              <span class="text-xl font-bold mb-2 mr-1 ml-4">{{
+                item.horses.length
+              }}</span>
+              <span>{{ item.horses.length == 1 ? "Caballo" : "Caballos" }}</span>
+            </h4>
+            <transition name="fade">
+              <div v-if="horseID" class="fade text-lg font-bold flex flex-col md:flex-row">
+                Caballo en subasta: <span class="text-2xl text-red-500">{{ HorsenName }}</span>
+              </div>
+            </transition>
+          </div>
+          <!-- Second Row in the second column -->
+          <div class="bg-white mx-5 rounded-lg md:flex-grow">
+            <transition name="fade">
+              <div v-if="!horseID" class="fade p-8">
+                  <h2 v-if="yourAreTheWinner" class="font-bold text-4xl mx-auto text-center text-green-700 pb-6">
+                      FELICIDADES HAS GANADO LA SUBASTA DE <span class="text-black"> {{ wonHorse }} </span> POR ${{ lastOffer }} USD
+                  </h2>
+                  <h2 v-if="!yourAreTheWinner && horseStatus == 'CLOSED'" class="font-bold text-4xl mx-auto text-center text-red-700 pb-6">
+                    <span class="text-black">{{ winnerName }} </span> HA GANADO LA SUBASTA DE <span class="text-black"> {{ wonHorse }} </span> POR ${{ lastOffer }} USD
+                  </h2>
+                  <h2 class="font-bold text-3xl mx-auto text-center text-yellow-600">
+                      QUÉDATE CON NOSOTROS SEGUIMOS CON LA SUBASTA EN VIVO
+                  </h2>
+              </div>
 
-                  <div class="hidden lg:block">
-                    <SubmitAuthenticatedButton
-                      :enable-modal="enableModal"
-                      button-text="Ofertar"
+
+              <div v-else class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
+                <div
+                  class="text-center w-full rounded-t-lg p-5"
+                  style="background-color: #b99d61"
+                >
+                  <p class="text-white font-bold text-sm">OFERTA MAS ALTA</p>
+                  <span v-if="lastOffer" class="text-white font-bold text-2xl"
+                    >${{ lastOffer }} USD</span
+                  >
+                  <span v-else class="text-white font-bold text-2xl"
+                    >SE EL PRIMERO EN OFERTAR</span
+                  >
+                </div>
+                <div class="px-5 mt-5">
+                  <p class="text-sm font-bold">OFERTAR POR ESTE LOTE</p>
+                  <form @submit="submitForm">
+                    <div class="flex items-center space-x-2">
+                      <button
+                        class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
+                        type="button"
+                        @click="substractThousand"
+                      >
+                        -
+                      </button>
+                      <p
+                        @click="showManualInputAmount()"
+                        v-show="!showInput"
+                        class="border border-black rounded-md flex-grow w-1/4 h-10 flex items-center justify-center"
+                      >
+                        {{ inputAmount }}
+                      </p>
+                      <input
+                        ref="manualInputAmount"
+                        v-show="showInput"
+                        name="amountInput"
+                        type="number"
+                        v-model="manualInputAmount"
+                        @blur="assignManualInputAmount()"
+                        class="border rounded-md flex-grow w-1/4"
+                      />
+                      <button
+                        class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
+                        type="button"
+                        @click="addThousand"
+                      >
+                        +
+                      </button>
+
+                      <div class="hidden lg:block">
+                        <SubmitAuthenticatedButton
+                          :enable-modal="enableModal"
+                          button-text="Ofertar"
+                        />
+                      </div>
+                    </div>
+                    <div class="lg:hidden text-center mt-5 w-full">
+                      <SubmitAuthenticatedButton
+                        :enable-modal="enableModal"
+                        button-text="Ofertar"
+                      />
+                    </div>
+                  </form>
+                  <div>
+                    <div
+                      v-if="successMessage"
+                      class="bg-green-100 text-green-800 p-4 my-4 rounded-lg shadow-md"
+                    >
+                      {{ successMessage }}
+                    </div>
+                    <div
+                      v-if="errorMessage"
+                      class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
+                    >
+                      {{ errorMessage }}
+                    </div>
+                  </div>
+                </div>
+                <div v-if="bids.length > 0">
+                  <div class="mx-5">
+                    <div class="border-b border-gray-300 my-4"></div>
+                    <p class="text-sm font-bold">OFERTAS</p>
+                  </div>
+                  <div class="px-4" style="flex: 5">
+                    <Bids
+                      ref="detailsBid"
+                      :bidId="bidId"
+                      :horseID="horseID"
+                      :bids="this.bids"
                     />
                   </div>
                 </div>
-                <div class="lg:hidden text-center mt-5 w-full">
-                  <SubmitAuthenticatedButton
-                    :enable-modal="enableModal"
-                    button-text="Ofertar"
-                  />
-                </div>
-              </form>
-              <div>
-                <div
-                  v-if="successMessage"
-                  class="bg-green-100 text-green-800 p-4 my-4 rounded-lg shadow-md"
-                >
-                  {{ successMessage }}
-                </div>
-                <div
-                  v-if="errorMessage"
-                  class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
-                >
-                  {{ errorMessage }}
-                </div>
               </div>
-            </div>
-            <div v-if="bids.length > 0">
-              <div class="mx-5">
-                <div class="border-b border-gray-300 my-4"></div>
-                <p class="text-sm font-bold">OFERTAS</p>
+            </transition>
+  <!-- TERMINA-->
+          </div>
+        </div>
+      </div>
+      <transition name="fade">
+        <div v-if="horseID" class="fade flex flex-col">
+          <div class="mt-4 bg-white p-5 mx-5 rounded-lg">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div class="mr-4">
+                <span class="font-bold text-gray-700">Fecha de nacimiento:</span>
+                <span class="text-gray-600">{{ horseData.birthDate || "NA" }}</span>
               </div>
-              <div class="px-4" style="flex: 5">
-                <Bids
-                  ref="detailsBid"
-                  :bidId="bidId"
-                  :horseID="horseID"
-                  :bids="this.bids"
-                />
+              <div class="mr-4">
+                <span class="font-bold text-gray-700">Edad:</span>
+                <span class="text-gray-600">{{ horseData.Age || "NA" }}</span>
+                <span class="text-gray-600">años</span>
+              </div>
+
+              <div class="mr-4">
+                <span class="font-bold text-gray-700">No. Registro:</span>
+                <span class="text-gray-600">{{
+                  horseData.registerNumber || "NA"
+                }}</span>
+              </div>
+              <div class="mr-4">
+                <span class="font-bold text-gray-700">Alzada:</span>
+                <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
+                <span class="text-gray-600">m</span>
+              </div>
+              <div class="mr-4">
+                <span class="font-bold text-gray-700">Genero:</span>
+                <span class="text-gray-600">{{ horseData.Genre || "NA" }}</span>
+              </div>
+              <div class="mr-4">
+                <span class="font-bold text-gray-700">Criadero:</span>
+                <span class="text-gray-600">{{ horseData.Hatchery || "NA" }}</span>
               </div>
             </div>
           </div>
+          <div class="mt-4 bg-white p-5 mx-5 rounded-lg">
+            <div class="mb-4">
+              <span class="text-2xl font-bold">Pedigree</span>
+            </div>
+            <Pedigree :link="horseData.Pedigree" />
+            <p v-if="horseData.horseTelex">
+              Revisa los datos en
+              <a class="text-blue-400" :href="horseData.horseTelex" target="_blank"
+                >Horse Telex</a
+              >
+            </p>
+          </div>
+          <div class="mt-4 flex flex-col md:flex-row -mx-4">
+            <div style="flex: 7">
+            <div class="flex flex-wrap">
+              <div class="w-full">
+                <!-- Tabs -->
 
+                <div
+                  class="relative flex flex-col min-w-0 break-words w-full mb-6 rounded"
+                >
+                  <div class="px-4 flex-auto">
+                    <div class="tab-content tab-space">
+                      <div
+                        class="mb-4 bg-white p-5 mx-5 rounded-lg"
+                      >
+                        <div class="mb-4">
+                          <span class="text-2xl font-bold">Rayos X</span>
+                        </div>
+                        <p>
+                          <xRayGallery :images="horseData.xRayGallery" />
+                        </p>
+                      </div>
 
-
-<!-- TERMINA-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </transition>
+
     </div>
-    <div>
-
-
-
+    <div v-else-if="bidStatus == 'CLOSED'" class="flex md:flex-col m-1 md:m-20 gap-4">
+      <h2 class="font-bold text-3xl mx-auto text-center text-yellow-600 md:w-[600px]">
+          LA SUBASTA HA TERMINADO, GRACIAS POR TU PREFERENCIA, ESPERA NOTICIAS DE NOSOTROS PARA LA SIGUIENTE.
+      </h2>
+      <NuxtLink :to="`/`" class="w-44 mx-auto">
+        <button class="bg-gray-500 text-white px-4 py-2 rounded-md mb-5 w-44">
+          ← Inicio
+        </button>
+      </NuxtLink>
+    </div>
+    <div v-else-if="bidStatus != ''" class="flex md:flex-col m-1 md:m-20 gap-4">
+      <h2 class="font-bold text-3xl mx-auto text-center text-red-600 md:w-[600px]">
+          LA SUBASTA NO ESTÁ DISPONIBLE
+      </h2>
+      <NuxtLink :to="`/`" class="w-44 mx-auto">
+        <button class="bg-gray-500 text-white px-4 py-2 rounded-md mb-5 w-44">
+          ← Inicio
+        </button>
+      </NuxtLink>
     </div>
 
   </div>
@@ -222,10 +323,6 @@ export default {
         start_bid: "",
         start_pre_bid: ""
       },
-      horseData: {
-        imagesObject: {},
-        imagesID: []
-      },
       formData: {
         subasta_id: "",
         horse_id: "",
@@ -252,7 +349,9 @@ export default {
         seconds: 0
       },
       auctionSocket: null,
+      horse: {},
       horseData: {
+        imagesObject: {},
         Genre: "",
         BirthDate: "",
         Color: "",
@@ -270,12 +369,11 @@ export default {
         final_amount: "",
         horseTelex: ""
       },
-      bidStatus: "",
       liveURL: "",
       HorsenName: "",
-      lastOffer: "",
       intial_pre_bid_amount: "",
       horseID: "",
+      externalHorseID: "",
       PreBidDate: "",
       EndPreBidDate: "",
       PreBidDateFormat: "",
@@ -314,11 +412,13 @@ export default {
       preBids: [],
       errorMessage: "",
       winner: "",
+      winnerName: "",
       isEditingAmount: false,
       firstUpdateAmount: true,
       inputAmount: "",
-      horseExternalId: "",
-      winnerEmail: ""
+      winnerEmail: "",
+      wonHorse: "",
+      yourAreTheWinner: false,
 
 
     }
@@ -328,7 +428,6 @@ export default {
     this.bidId = auctionId
     await this.getDetailsAuction()
     this.startAuctionSocket()
-    this.startBidSocket()
   },
   mounted() {
     // Update the countdown every second
@@ -338,36 +437,31 @@ export default {
     clearInterval(this.timer)
     clearInterval(this.timer2)
     this.intentionalCloseSockets()
-  },
-
-  computed: {
-    shouldCallGetDetailsAuction() {
-      return this.countdownSubasta === false
-    },
-    shouldCallGetDetailsAuctionPre() {
-      return this.countdownPre === false
-    }
-  },
-  watch: {
-    shouldCallGetDetailsAuction(newValue) {
-      if (newValue) {
-        console.log("Updating Bid")
-        setTimeout(() => {
-          this.getDetailsAuction()
-        }, 1000) // 500 milliseconds = 0.5 seconds
-      }
-    },
-    shouldCallGetDetailsAuctionPre(newValue) {
-      if (newValue) {
-        console.log("Updating PreBid")
-        setTimeout(() => {
-          this.getDetailsAuction()
-        }, 1000) // 500 milliseconds = 0.5 seconds
-      }
-    }
+    this.$confetti.stop()
   },
 
   methods: {
+
+    async winnerConfetti() {
+      await this.fetchWinner()
+      this.wonHorse = this.HorsenName
+
+      if (this.winnerEmail == this.$store.state.user.user) {
+        this.$confetti.start()
+        this.yourAreTheWinner = true
+        setTimeout(() => {}, 5000)
+      } else {
+        this.yourAreTheWinner = false
+        let winnerName = this.winner.name + ' ' + this.winner.fathers_surname
+        if(winnerName === 'IN PERSON') {
+          this.winnerName = 'EN PERSONA'
+        } else if(this.winner.name == 'Call') {
+          this.winnerName = 'EN LLAMADA'
+        } else {
+          this.winnerName = this.winner.name
+        }
+      }
+    },
 
     showManualInputAmount() {
       this.manualInputAmount = this.inputAmount
@@ -461,53 +555,68 @@ export default {
           this.isEditingAmount = false
         }
 
+        console.warn('PASA POR EL BID SOCKET')
+
+        console.log('Bid message', message)
+        console.log('this.horse',this.horse)
+
         if (this.bids.length > 0) {
+          console.log('si hay length en this.bids')
+
           this.lastOffer = parseInt(
             this.bids[0]?.amount
           ).toLocaleString("en-US")
-          let currentValue = parseInt(
-            this.formData?.amount.replace(",", "")
-          )
-          if (!this.isEditingAmount) {
-            let InputValue = parseInt(this.inputAmount.replace(",", ""))
-          }
+
+
+          let currentValue = parseInt(this.bids[0]?.amount)
+
+          console.error("Revisar currentValue", currentValue);
           if (currentValue >= 30000) {
+            console.log('es mayor de 30mil')
             this.inputAmount = (
-              parseInt(this.bids[0]?.amount) + 500
+              currentValue + 500
             ).toLocaleString("en-US")
-            if (!this.isEditingAmount) {
-              this.inputAmount = (
-                parseInt(this.bids[0]?.amount) + 500
-              ).toLocaleString("en-US")
-            }
+
+
           } else if(this.bids[0]?.amount) {
 
             this.inputAmount = (
-              parseInt(this.bids[0]?.amount) + 1000
+              currentValue + 1000
             ).toLocaleString("en-US")
-            if (!this.isEditingAmount) {
-              this.inputAmount = (
-                parseInt(this.bids[0]?.amount) + 1000
-              ).toLocaleString("en-US")
-            }
-          }
-        } else if (this.horseData.final_amount) {
-          this.formData.amount = parseInt(
-            this.horseData.final_amount + 1000,
-            10
-          ).toLocaleString("en-US")
-          if (!this.isEditingAmount) {
-            this.inputAmount = parseInt(
-              this.horseData.final_amount + 1000,
-              10
-            ).toLocaleString("en-US")
+
           }
         } else {
-          this.formData.amount = (1000).toLocaleString("en-US")
-          if (!this.isEditingAmount) {
-            this.inputAmount = (1000).toLocaleString("en-US")
+          if (this.horseData.final_amount != "") {
+
+            console.log('entra a horse con final amount '+this.horseData.final_amount)
+            this.formData.amount = (parseInt(
+              this.horseData.final_amount,
+              10
+            ) + 1000).toLocaleString("en-US")
+
+            this.lastOffer = parseInt(
+              this.horseData.final_amount
+            ).toLocaleString("en-US")
+
+
+            console.log('this.formData.amount',this.formData.amount)
+            if (!this.isEditingAmount) {
+
+              this.inputAmount = (parseInt(
+                this.horseData.final_amount,
+                10
+              ) + 1000).toLocaleString("en-US")
+
+              console.log('se asigna el inputAmount al iniciar el caballo', this.inputAmount)
+            }
+
+          } else {
+            this.formData.amount = (1000).toLocaleString("en-US")
+            if (!this.isEditingAmount) {
+              this.inputAmount = (1000).toLocaleString("en-US")
           }
         }
+      }
 
         // after made the first update, don't trigger again if the user is focus on the input
         if (this.firstUpdateAmount) {
@@ -525,7 +634,7 @@ export default {
     async startAuctionSocket() {
 
       const url = `${this.$config.baseURLWS}/auction/${this.bidId}`;
-      this.auctionSocket = new WebSocket(url);
+      this.auctionSocket = new ReconnectingWebSocket(url);
 
       this.auctionSocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data);
@@ -533,35 +642,55 @@ export default {
           this.socketError = message.error
           return
         }
+
+        console.warn('PASA POR AUCTION SOCKET')
+
         console.log('MESANJE AUCTION', message)
         if (message.horses && message.horses.length > 0) {
           this.item.horses.forEach((horse, key) => {
             const curHorse = message.horses.find( item => item.status === 'BIDDING' );
             if(curHorse.id != this.horseID){
               this.horseID = curHorse.id
-              this.fetchData()
+              this.$confetti.stop()
+              this.wonHorse = ""
+              this.winner = ""
               this.closeBidSocket()
-              this.startBidSocket()
+              this.fetchData()
             }
           });
         }
 
+
         if (message.horse) {
           const horse = message.horse;
-
+          console.warn('trae caballo',horse)
+          console.warn('id, this.horseID, status',horse.id, this.horseID,horse.status)
           if (horse.id === this.horseID && horse.status === 'CLOSED') {
             // El horse actual se ha cerrado, restablecer horseID y cerrar el socket.
+            this.horseStatus = 'CLOSED'
+            this.winnerConfetti()
+            console.warn('reinicia y cierra el socket')
             this.horseID = null;
             this.closeBidSocket();
           } else if (horse.status === 'BIDDING') {
+            console.warn('Abre otro caballo')
             // El horse actual está en proceso de subasta, actualizar horseID, fetch data y reiniciar el socket.
             this.horseID = horse.id;
-            this.fetchData();
+            this.$confetti.stop();
+            this.wonHorse = ""
+            this.winner = ""
+            this.firstUpdateAmount = true
+            this.isEditingAmount = false
             this.closeBidSocket();
-            this.startBidSocket();
+            this.fetchData();
           }
         }
 
+        if (message.auction) {
+          if(message.auction.status == 'CLOSED') {
+
+          }
+        }
 
       });
     },
@@ -579,13 +708,13 @@ export default {
 
     async fetchHorseImages() {
     try {
-      const response = await this.$axios.get(`${this.$config.baseLaSilla}/horses/${this.horseID}/images`);
+      const response = await this.$axios.get(`${this.$config.baseLaSilla}/horses/${this.externalHorseID}/images`);
 
       if (Array.isArray(response.data) && response.data.length > 0) {
         const images = response.data.map((imageObj) => imageObj.url)
         this.horseData.images = images
       } else {
-        console.warn("No images found in the response for horse: ", this.horseID);
+        console.warn("No images found in the response for horse: ", this.externalHorseID);
       }
     } catch (error) {
       console.error(error);
@@ -606,17 +735,15 @@ export default {
           this.bidStatus = response.data.status
           this.bidImage = response.data.image
           this.videoUrl = response.data.video_url
-
-
           this.loading = false
-          this.timer = setInterval(this.calculateCountdown, 1000)
-          this.timer2 = setInterval(this.calculateCountdownPre, 1000)
+
         })
         .catch((error) => {
           console.log(error)
           this.loading = false
         })
     },
+
     showHorseDetails(horse) {
       this.$set(horse, "showDetails", !horse.showDetails)
     },
@@ -655,17 +782,7 @@ export default {
       }
       this.inputAmount = currentValue.toLocaleString("en-US")
     },
-    parseFetchedAmount(value) {
-      let lastOfferInt = parseInt(value?.replace(",", ""))
-      lastOfferInt += 1000
-      const lastOfferStr = lastOfferInt.toLocaleString("en-US")
-      return lastOfferStr
-    },
-    preloadAmount() {
-      const lastOffer = this.lastOffer
-      const lastOfferStr = this.formData?.amount.toLocaleString("en-US")
-      return lastOfferStr
-    },
+
     toggleTabs: function (tabNumber) {
       this.openTab = tabNumber
     },
@@ -677,12 +794,7 @@ export default {
       const dateformat = moment(date).format("DD/MM/YYYY")
       return dateformat
     },
-    handleFormSubmitted() {
-      this.$refs.detailsBid.getDetailsBid(this.bidId, this.horseID)
-    },
-    updateLastOffer(offer) {
-      this.lastOffer = offer
-    },
+
     fetchGenres() {
       const genreEndpoint = "/horses/gender-age"
       const url = `${this.$config.baseLaSilla}${genreEndpoint}`
@@ -728,92 +840,77 @@ export default {
       let listSubastasEndpoint = `/horse/${this.horseID}/info`
       let url = `${this.$config.baseURL}${listSubastasEndpoint}`
       const token = getUserTokenOrDefault()
-      await axios
-        .get(url, {
-        })
-        .then((response) => {
-          const horse = response.data
-          //name
-          this.HorsenName = horse.external_data.name
-          //horse ID
-          this.horseID = horse.external_data.id
-          console.log("ID ExTERNO", this.horseID)
-          this.horseIDForm = horse.local_data.id
-          //horse Description
-          //genre
-          this.horseData.Genre =
-            this.genreMapping[horse.external_data.sex] || ""
-          //Birthdate
-          this.horseData.BirthDate = this.formatted(
-            horse.external_data.birth_date
-          )
-          //color
-          this.horseData.Color = horse.external_data.color
-          //Weight
-          this.horseData.Weight = horse.external_data.weight
-          //Height
-          this.horseData.Height = horse.external_data.height
-          //Location
-          this.horseData.Location = horse.external_data.location
-          //Pedigree Image
-          this.horseData.Pedigree = horse.local_data.pedigree
-          //No. Register
-          this.horseData.registerNumber = horse.local_data.registration_no
-          //Hatchery
-          this.horseData.Hatchery = horse.external_data.birth_location
-          const birthDateMoment = moment(this.horseData.BirthDate, "DD/MM/YYYY")
-          const today = moment()
-          this.horseData.Age = today.diff(birthDateMoment, "years")
-          //xRays
-          this.horseData.xRayGallery = horse.local_data.xrays.map(
-            (xray) => xray.image
-          )
-          //Video URL
-          this.horseData.videoUrl = this.extractYouTubeId(
-            horse.local_data.video_url
-          )
-          // Live URL
-          this.liveURL = this.extractYouTubeId(horse.video_url)
-          //Horse Images
-          this.fetchHorseImages()
-          //Horse Age
-          this.age = this.calculateAge()
-          //Bid Status
-          this.horseStatus = horse.local_data.status
-          //Bid Initial Amout
-          this.horseData.final_amount = horse.local_data.final_amount
-          this.inputAmount = (
-              parseInt(horse.local_data.final_amount + 1000)
-            ).toLocaleString("en-US")
-          this.horseData.horseTelex = horse.local_data.horsetelex_url
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+      console.log('fetch horse data')
+      try{
+        let response = await axios
+          .get(url, { })
+          console.log('respomse', response)
+            const horse = response.data
+            this.horse = horse
+            //name
+            this.HorsenName = horse.external_data.name
+            //horse ID
+            this.externalHorseID = horse.external_data.id
+            console.log("ID ExTERNO", this.externalHorseID)
+            this.horseIDForm = horse.local_data.id
+            //horse Description
+            //genre
+            this.horseData.Genre =
+              this.genreMapping[horse.external_data.sex] || ""
+            //Birthdate
+            this.horseData.BirthDate = this.formatted(
+              horse.external_data.birth_date
+            )
+            //color
+            this.horseData.Color = horse.external_data.color
+            //Weight
+            this.horseData.Weight = horse.external_data.weight
+            //Height
+            this.horseData.Height = horse.external_data.height
+            //Location
+            this.horseData.Location = horse.external_data.location
+            //Pedigree Image
+            this.horseData.Pedigree = horse.local_data.pedigree
+            //No. Register
+            this.horseData.registerNumber = horse.local_data.registration_no
+            //Hatchery
+            this.horseData.Hatchery = horse.external_data.birth_location
+            const birthDateMoment = moment(this.horseData.BirthDate, "DD/MM/YYYY")
+            const today = moment()
+            this.horseData.Age = today.diff(birthDateMoment, "years")
+            //xRays
+            this.horseData.xRayGallery = horse.local_data.xrays.map(
+              (xray) => xray.image
+            )
+            //Video URL
+            this.horseData.videoUrl = this.extractYouTubeId(
+              horse.local_data.video_url
+            )
+            // Live URL
+            this.liveURL = this.extractYouTubeId(horse.video_url)
+            //Horse Images
+            this.fetchHorseImages()
+            //Horse Age
+            this.age = this.calculateAge()
+            //Bid Status
+            this.horseStatus = horse.local_data.status
+            //Bid Initial Amout
+            this.horseData.final_amount = horse.local_data.final_amount
+            this.inputAmount = (
+                parseInt(horse.local_data.final_amount + 1000)
+              ).toLocaleString("en-US")
+            this.horseData.horseTelex = horse.local_data.horsetelex_url
+            console.log('horse antes de starbidsocket', this.horse)
+            this.startBidSocket()
 
-      listSubastasEndpoint = `/subastas/list-subastas/?id=${this.bidId}&only_subasta_data=true`
-      url = `${this.$config.baseURL}${listSubastasEndpoint}`
-      await axios
-        .get(url)
-        .then((response) => {
-          const auction = response.data
-          //TODO: get subasta info
-          //prebid date
-          this.PreBidDate = auction.start_pre_bid
-          this.EndPreBidDate = auction.end_pre_bid
-          this.PreBidDateFormat = this.formatted(auction.start_pre_bid)
-          this.EndPreBidDateFormat = this.formatted(auction.end_pre_bid)
-          //bid date
-          this.BidDate = auction.start_bid
-          this.EndBidDate = auction.end_bid
-          this.BidDateFormat = this.formatted(auction.start_bid)
-          this.EndBidDateFormat = this.formatted(auction.end_bid)
-          this.bidStatus = auction.status
-          this.timer = setInterval(this.calculateCountdown, 1000)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+      }catch(e) {
+        console.log(e)
+      }
+      console.log('fin fetch horse data')
+
+
+
+
     },
     statusOffer(BidDate) {
       const CurrentDate = new Date()
@@ -856,3 +953,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  /* styles.css */
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 3s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
+
+</style>
