@@ -819,12 +819,12 @@ export default {
   },
   methods: {
     async winnerConfetti() {
-      console.log("Estatus cerrado confeti")
       await this.fetchWinner()
-      if (this.winnerEmail == this.$store.state.user.user) {
-        console.log("USER CORRECTO")
-        this.$confetti.start()
-        setTimeout(() => {}, 5000)
+      if (this.horseStatus == "CLOSED" || this.horseStatus == "CLOSED PREBID") {
+        if (this.winnerEmail == this.$store.state.user.user) {
+          this.$confetti.start()
+          setTimeout(() => {}, 5000)
+        }
       }
     },
     showManualInputAmount() {
@@ -1061,6 +1061,17 @@ export default {
             }
           }
         }
+
+        if (message.prebid) {
+          console.log()
+          if (message.prebid.horse.id == mountedThis.horseId) {
+            const now = new Date()
+            mountedThis.EndPreBidDate = new Date(message.prebid.horse.end_pre_bid)
+            mountedThis.calculateCountdown()
+
+            console.log("ACTUALIZADO EL TIMER")
+          }
+        }
       })
       this.auctionSocket.addEventListener("close", (event) => {
         if (event.code === 1006) {
@@ -1254,6 +1265,7 @@ export default {
           //Bid Initial Amout
           this.horseData.final_amount = horse.local_data.final_amount
           this.horseData.horseTelex = horse.local_data.horsetelex_url
+          this.EndPreBidDate = horse.local_data.end_pre_bid
         })
         .catch((error) => {
           console.error(error)
@@ -1268,7 +1280,6 @@ export default {
           //TODO: get subasta info
           //prebid date
           this.PreBidDate = auction.start_pre_bid
-          this.EndPreBidDate = auction.end_pre_bid
           this.PreBidDateFormat = this.formatted(auction.start_pre_bid)
           this.EndPreBidDateFormat = this.formatted(auction.end_pre_bid)
           //bid date
