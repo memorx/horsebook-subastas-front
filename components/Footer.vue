@@ -1,5 +1,5 @@
 <template>
-    <footer :class="['p-6', backgroundColor, textColor]">
+    <footer :class="['p-6', backgroundColor, textColor, borderColor]">
         <!--Web footer-->
         <div class="hidden lg:grid container mx-auto grid-cols-4 gap-8">
 
@@ -39,7 +39,7 @@
             </div>
 
             <!-- 4. Follow Us + Social Icons -->
-            <div>
+            <div >
                 <h3 :class="classTittleSection">Siguenos</h3>
                 <div class="flex space-x-4">
                     <i class="fab fa-instagram fa-2x"></i>
@@ -103,6 +103,9 @@ export default {
         },
         classTittleSection() {
             return "font-roboto font-bold mb-3 capitalize"
+        },
+        borderColor() {
+            return this.$store.state.layoutMode === 'lightMode' ? 'border-custom-gold border-t' : '';
         }
     },
     methods: {
