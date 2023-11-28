@@ -157,6 +157,8 @@ export default {
               "setIsUserAbleToBid",
               response.data.app_user_profile.bid
             )
+            this.$store.dispatch('initializeWebSocketUserStatus')
+
             this.$router.push("/landingPage")
           }
 
