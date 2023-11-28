@@ -12,7 +12,17 @@
 
             <!-- Navigation items -->
             <div class="flex items-center space-x-4">
-
+                <div class="flex justify-right">
+                    <a @click="goToCurrenAuction()" v-if="idCurrenBid"
+                    class="text-white hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
+                        fill="none" />
+                    </svg>
+                    Subasta En Vivo
+                    </a>
+                </div>
                 <div v-if="isUserAuthenticated" class="flex justify-center align-middle items-center">
                     <!-- <nuxt-link
                         :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
@@ -28,15 +38,7 @@
                         <span v-if="$i18n.locale === 'en'">{{ $t("SwitchLanguage.english") }}</span>
                         </span>
                     </nuxt-link> -->
-                    <a @click="goToCurrenAuction()" v-if="idCurrenBid"
-                    class="text-white hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                        class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
-                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
-                        fill="none" />
-                    </svg>
-                    Subasta En Vivo
-                    </a>
+
 
                     <nuxt-link to="/user/inicio">
                         <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex">
@@ -95,7 +97,6 @@
 
 <script>
 import Cookies from "js-cookie";
-import JWTDecode from 'jwt-decode'
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export default {
@@ -156,10 +157,10 @@ export default {
             this.auctionSocket.addEventListener('message', (event) => {
                 const message = JSON.parse(event.data);
                 if (message.error) {
-                console.log(message.error);
+                    console.log(message.error);
                 }
-                if (message.auctions && message.auctions.length > 0) {
-                this.$data.idCurrenBid = message.auctions[0].id
+                if (message.auction?.id) {
+                    this.$data.idCurrenBid = message.auction.id
                 }
 
             });
@@ -174,31 +175,11 @@ export default {
 
         },
         async goToCurrenAuction() {
-            this.idCurrenBid = 0;
-            await this.getCurrentAuction()
+
             if(this.idCurrenBid) {
-                let path = `/user/detalles/${this.idCurrenBid}`
+                let path = `/auction/live/${this.idCurrenBid}`
                 this.$router.push({ path: path })
             }
-        },
-        async getCurrentAuction() {
-            const url = `${this.$config.baseURL}/subastas/current-auction`
-            const decoded = JWTDecode(this.$cookies.get('access_token'))
-            this.loading = true
-            await this.$axios
-                .get(url, {
-                    headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: 'Token' + ' ' + decoded.token,
-                    },
-                })
-                .then((response) => {
-                response = response.data
-                this.idCurrenBid = response.id
-                })
-                .catch((error) => {
-                console.log(error)
-            })
         },
     },
     computed: {
