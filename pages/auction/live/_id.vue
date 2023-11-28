@@ -348,7 +348,6 @@ export default {
         minutes: 0,
         seconds: 0
       },
-      auctionSocket: null,
       horse: {},
       horseData: {
         imagesObject: {},
@@ -687,9 +686,7 @@ export default {
         }
 
         if (message.auction) {
-          if(message.auction.status == 'CLOSED') {
-
-          }
+            this.bidStatus = message.auction.status;
         }
 
       });
