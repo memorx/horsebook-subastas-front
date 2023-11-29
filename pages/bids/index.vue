@@ -35,7 +35,7 @@
                         <div
                             class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity">
                             <button
-                                class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105  text-[8px] md:text-xl xl:text-2xl">
+                                class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105  text-[8px] md:text-xl xl:text-xl">
                                 {{ isUserAuthenticated ? 'Ofertar' : 'REGÍSTRATE PARA OFERTAR' }}
                             </button>
                         </div>
