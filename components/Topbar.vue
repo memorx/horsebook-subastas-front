@@ -9,7 +9,17 @@
 
             <!-- Navigation items -->
             <div class="flex items-center space-x-4">
-
+                <div class="flex justify-right">
+                    <a @click="goToCurrenAuction()" v-if="idCurrenBid"
+                    class="text-white hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
+                        fill="none" />
+                    </svg>
+                    Subasta En Vivo
+                    </a>
+                </div>
                 <div v-if="isUserAuthenticated" class="flex justify-center align-middle items-center">
                     <!-- <nuxt-link
                         :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
@@ -26,6 +36,7 @@
                         </span>
                     </nuxt-link> -->
 
+
                     <nuxt-link to="/user/inicio">
                         <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex">
                             Tus Subastas
@@ -35,14 +46,13 @@
                     <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black" @click="logout">
                         Cerrar sesión
                     </button>
-
                     <nuxt-link to="/user/perfil">
                         <div
                             class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex justify-center align-middle items-center">
                             <i class="fas fa-user fa-lg p-2"></i>
-                            <p>{{ username }}</p>
                         </div>
                     </nuxt-link>
+
                 </div>
 
                 <div v-else>
@@ -160,20 +170,9 @@
 <script>
 import Cookies from "js-cookie";
 import ReusableButton from "~/components/ReusableButton.vue";
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export default {
-    components: {
-        ReusableButton
-    },
-    mounted() {
-        this.getuserMail()
-        //  listen for resize events
-        window.addEventListener('resize', this.handleResize);
-        this.handleResize(); // Call it initially to set the width
-    },
-    destroyed() {
-        window.removeEventListener('resize', this.handleResize);
-    },
     props: {
         toggleMenu: {
             type: Function,
@@ -184,12 +183,27 @@ export default {
             required: true
         }
     },
-    data() {
+    data () {
         return {
             username: "",
+            idCurrenBid: 0,
+            socket: null, // Socket para auction
+            isIntentionalReconnectAuction: false,
             moveToHome: false,
             windowWidth: window.innerWidth,
         }
+    },
+    mounted () {
+        this.getuserMail();
+        this.intentionalCloseSockets();
+        this.startSocket();
+        //  listen for resize events
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize(); // Call it initially to set the width
+    },
+    beforeDestroy() {
+        this.intentionalCloseSockets();
+        window.removeEventListener('resize', this.handleResize);
     },
     computed: {
         isUserAuthenticated() {
@@ -244,17 +258,81 @@ export default {
             }
             if (this.$route.path === '/') {
                 this.$store.commit('setScrollIntoContact', true);
-            } else
-            {
+            } else {
                 setTimeout(() => {
                     this.$store.commit('setScrollIntoContact', true);
                 }, 1000);
+            }
+        },
+        async intentionalCloseSockets() {
+            this.closeAuctionSocket();
+        },
+        async closeAuctionSocket() {
+            this.isIntentionalReconnectAuction = true;
+            if (this.socket) {
+                this.socket.close();
+            }
+            this.isIntentionalReconnectAuction = false;
+
+        },
+        async startSocket() {
+            // WebSocket for auction
+            const auctionUrl = `${this.$config.baseURLWS}/auctions`;
+
+            this.auctionSocket = new ReconnectingWebSocket(auctionUrl);
+
+            this.auctionSocket.addEventListener('open', (event) => {
+                console.log('Conexión abierta:', event);
+            });
+
+            this.auctionSocket.addEventListener('message', (event) => {
+                const message = JSON.parse(event.data);
+                if (message.error) {
+                    console.log(message.error);
+                }
+                if (message.auction?.id) {
+                    this.$data.idCurrenBid = message.auction.id
+                }
+
+            });
+
+            this.auctionSocket.addEventListener('close', (event) => {
+                console.log('Conexión cerrada auction socket:', event);
+            });
+
+            this.auctionSocket.addEventListener('error', (error) => {
+                console.error('Error de conexión auction socket:', error);
+            });
+
+        },
+        async goToCurrenAuction() {
+
+            if (this.idCurrenBid) {
+                let path = `/auction/live/${this.idCurrenBid}`
+                this.$router.push({ path: path })
             }
         },
     },
 }
 </script>
 
-<style scoped>
-/* Add any extra styling here */
+
+<style>
+.fill-pulse {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        fill: red;
+    }
+
+    50% {
+        fill: transparent;
+    }
+
+    100% {
+        fill: red;
+    }
+}
 </style>
