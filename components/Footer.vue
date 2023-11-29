@@ -1,5 +1,5 @@
 <template>
-    <footer :class="['p-6', backgroundColor, textColor, borderColor]">
+    <footer :class="['p-10', backgroundColor, textColor, borderColor]">
         <!--Web footer-->
         <div class="hidden lg:grid container mx-auto grid-cols-4 gap-8">
 
