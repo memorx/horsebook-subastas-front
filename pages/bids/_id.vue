@@ -3,7 +3,9 @@
         <div class="flex-grow bg-[#EDEDED] rounded-lg mb-4 h-[2000px] ">
             <div class="w full h-auto mx-6 my-4 md:my-8">
                 <button
-                    class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
+                    class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
+                    @click="() => this.$router.back()"
+                >
                     <span class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"><img
                             src="../../public/arrow-black.png" /></span>Regresar
                 </button>
@@ -27,6 +29,48 @@
                     class="absolute z-10 cursor-pointer w-5 md:w-12 lg:w-14 top-[50%] right-0 rotate-180"
                     src="../../public/arrow-gray.png" />
                 <img :src="currentImage" alt="" class="w-full h-1/3 md:h-1/2 lg:h-screen object-cover rounded-xl">
+            </div>
+            <!--video, description and bid table -->
+            <div class="hidden lg:flex w-full h-screen px-6 my-6">
+                <div class="h1/2 w-1/2">
+                    <video ref="videoPlayer" class="w-full h-1/2 object-fit  pr-6" controls autoplay muted playsinline loop>
+                        <source src="/video-home.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="w-full h-1/2 pr-6 pb-8 flex flex-col justify-end items-start">
+                        <h3 class="text-2xl xl:tex-3xl font-bold">Descripción corta</h3>
+                        <p class="my-4">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin elementum, eros ac posuere rhoncus, tellus nibh consectetur urna, vel pharetra neque est id mi.
+                        </p>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin elementum, eros ac posuere rhoncus, tellus nibh consectetur urna, vel pharetra neque est id mi.
+                        </p>
+                    </div>
+                </div>
+                <!--table bid-->
+                <div class="h-full w-1/2 bg-white rounded-xl font-roboto">
+                    <div class="w-full h-1/6 flex justify-center items-center border-b-1">
+                        <h3 class="text-2xl xl:tex-3xl font-bold text-center">OFERTAR POR ESTE LOTE</h3>
+                    </div>
+                    <div class="h-4/6 w-full flex flex-col justify-center items-center">
+                        <h4 class="text-lg">Regístrate  para poder ofertar en las subastas.</h4>
+                        <ReusableButton
+                            containerClass="w-auto bg-custom-gold text-white rounded-xl my-2"
+                            buttonClass="uppercase text-lg xl:text-xl" :onClick="() => this.$router.push('/auth/sign-up')"
+                            buttonText="registrarme" />
+                    </div>
+                    <div class="h-1/6 w-full border-t-1 p-4 flex flex-row justify-between items-center">
+                        <input type="number" class="w-1/2 h-full mr-4 text-center font-bold text-[#A7A7A7] rounded-xl" placeholder="0">
+                        <ReusableButton
+                            containerClass="w-1/2 h-full flex justify-center text-center bg-[#D9D9D9] text-[#A7A7A7] rounded-xl my-2"
+                            buttonClass="uppercase text-lg xl:text-xl border-none"
+                            buttonText="ofertar"
+                            :onClick="() => this.$router.push('/auth/sign-up')"
+                        />
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
