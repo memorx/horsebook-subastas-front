@@ -624,7 +624,7 @@
                     }"
                   >
                     <p>
-                      <xRayGallery :images="horseData.xRayGallery" />
+                      <xRayGallery :images="horseData.xRayGallery" :horse_id="horseId"/>
                     </p>
                   </div>
                   <div
