@@ -171,13 +171,7 @@
             class="buttonDetails"
             :to="`/bids/bid/?id=${id}&horsePositionList=${index}&horseId=${horse.local_data.id}`"
           >
-            <div class="px-1 py-1">
-              <horseStatus
-                :status="horse.local_data.status"
-                :bid-status="bidStatus"
-              />
-              <!-- <statusBid :status="horse.local_data.status" /> -->
-            </div>
+
             <img
               v-if="getImageUrl(horse.local_data.horse_id)"
               :src="getImageUrl(horse.local_data.horse_id)"
@@ -194,7 +188,12 @@
                 alt="Default Horse"
               />
             </div>
-
+            <div class="px-5 py-2">
+              <horseStatus
+                :status="horse.local_data.status"
+                :bid-status="bidStatus"
+              />
+            </div>
             <p class="text-xl font-bold my-2 mx-6">
               {{ horse.external_data.name }}
             </p>

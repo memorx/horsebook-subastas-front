@@ -23,204 +23,11 @@
         <h4 class="text-sm">🇲🇽 Monterrey, Nuevo Leon</h4>
       </div>
       <div class="flex mx-5 mb-4">
-        <!-- BIDDING -->
-        <div
-          v-if="bidStatus == 'BIDDING' && horseStatus == 'COMING'"
-          class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
-        >
-          <div class="md:mr-2 bg-white rounded-lg">
-            <div>
-              <div class="w-full">
-                <Carousel :images="horseData.images" />
-              </div>
-            </div>
-          </div>
-          <div class="mt-4 md:mt-0 flex-col">
-            <div class="flex-row w-full rounded-lg p-5 bg-white">
-              <div class="flex w-full bg-green p-3 text-center">
-                <span class="mr-1 text-xl font-bold mb-2">{{
-                  HorsenName
-                }}</span>
-                <div>
-                  <horseStatus :status="horseStatus" :bid-status="bidStatus" />
-                </div>
-              </div>
-              <div v-if="winner" class="text-center w-full px-5">
-                <p class="font-bold text-sm">GANADOR PRE OFERTA</p>
-                <p class="font-bold text-sm">
-                  {{
-                    `${winner.name} ${winner.fathers_surname}` ||
-                    winner.fathers_surname
-                  }}
-                </p>
-                <p>Por la cantidad de</p>
-                <span class="font-bold text-2xl"
-                  >${{ horseData.final_amount }} USD</span
-                >
-                <div class="border-b border-gray-300 my-4"></div>
-              </div>
-              <div class="w-full rounded-t-lg px-5">
-                <p class="font-bold text-sm">SUBASTA EN VIVO</p>
-                <span class="font-bold text-sm">{{ BidDateFormat }}</span>
-                <div class="border-b border-gray-300 my-4"></div>
-              </div>
-              <div class="w-full rounded-t-lg px-5">
-                <p class="font-bold text-sm">PRE OFERTA</p>
-                <span class="font-bold text-sm"
-                  >Inicia {{ PreBidDateFormat }}</span
-                >
-              </div>
-              <div class="w-full rounded-t-lg px-5">
-                <span class="font-bold text-sm"
-                  >Termina {{ EndPreBidDateFormat }}</span
-                >
-              </div>
-              <div
-                v-if="isUserAuthenticated"
-                class="text-center texthidden md:block mt-1"
-              >
-                <nuxt-link to="/auth/sign-up">
-                  <button
-                    class="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
-                  >
-                    REGISTRATE ANTES DEL {{ BidDateFormat }}
-                  </button>
-                </nuxt-link>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
-          v-if="horseStatus == 'BIDDING'"
-        >
-          <div class="w-full grid grid-row-2 gap-2 p-5 bg-white rounded-lg">
-            <div class="grid grid-row-2">
-              <div class="flex bg-green px-3">
-                <span class="mr-1 text-xl font-bold mb-2">{{
-                  HorsenName
-                }}</span>
-                <div>
-                  <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
-                </div>
-              </div>
-              <div>
-                <Carousel :images="horseData.images" />
-              </div>
-            </div>
-            <div class="border-b border-gray-300 my-4"></div>
-            <div class="aspect-w-16 aspect-h-9">
-              <iframe
-                class="aspect-content rounded-lg"
-                :src="
-                  horseData.videoUrl
-                    ? `https://www.youtube.com/embed/${liveURL}`
-                    : `https://www.youtube.com/embed/ivGNj_t6S2c`
-                "
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </div>
-          <div class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
-            <div
-              class="text-center w-full rounded-t-lg p-5"
-              style="background-color: #b99d61"
-            >
-              <p class="text-white font-bold text-sm">OFERTA MAS ALTA</p>
-              <span v-if="lastOffer" class="text-white font-bold text-2xl"
-                >${{ lastOffer }} USD</span
-              >
-              <span v-else class="text-white font-bold text-2xl"
-                >SE EL PRIMERO EN OFERTAR</span
-              >
-            </div>
-            <div class="px-5 mt-5">
-              <p class="text-sm font-bold">OFERTAR POR ESTE LOTE</p>
-              <form @submit="submitForm">
-                <div class="flex items-center space-x-2">
-                  <button
-                    class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
-                    type="button"
-                    @click="substractThousand"
-                  >
-                    -
-                  </button>
-                  <p
-                    @click="showManualInputAmount()"
-                    v-show="!showInput"
-                    class="border border-black rounded-md flex-grow w-1/4 h-10 flex items-center justify-center"
-                  >
-                    {{ inputAmount }}
-                  </p>
-                  <input
-                    ref="manualInputAmount"
-                    v-show="showInput"
-                    name="amountInput"
-                    type="number"
-                    v-model="manualInputAmount"
-                    @blur="assignManualInputAmount()"
-                    class="border rounded-md flex-grow w-1/4"
-                  />
-                  <button
-                    class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
-                    type="button"
-                    @click="addThousand"
-                  >
-                    +
-                  </button>
 
-                  <div class="hidden lg:block">
-                    <SubmitAuthenticatedButton
-                      :enable-modal="enableModal"
-                      button-text="Ofertar"
-                    />
-                  </div>
-                </div>
-                <div class="lg:hidden text-center mt-5 w-full">
-                  <SubmitAuthenticatedButton
-                    :enable-modal="enableModal"
-                    button-text="Ofertar"
-                  />
-                </div>
-              </form>
-              <div>
-                <div
-                  v-if="successMessage"
-                  class="bg-green-100 text-green-800 p-4 my-4 rounded-lg shadow-md"
-                >
-                  {{ successMessage }}
-                </div>
-                <div
-                  v-if="errorMessage"
-                  class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
-                >
-                  {{ errorMessage }}
-                </div>
-              </div>
-            </div>
-            <div v-if="bids.length > 0">
-              <div class="mx-5">
-                <div class="border-b border-gray-300 my-4"></div>
-                <p class="text-sm font-bold">OFERTAS</p>
-                <div class="border-b border-gray-300 my-4"></div>
-              </div>
-              <div class="px-4" style="flex: 5">
-                <Bids
-                  ref="detailsBid"
-                  :bidId="bidId"
-                  :horseID="horseID"
-                  :bids="this.bids"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
         <!-- PRE BID -->
         <div
           class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
-          v-if="bidStatus == 'PREBID'"
+
         >
           <div class="w-full p-5 md:mr-2 bg-white rounded-lg">
             <div class="grid grid-row-2">
@@ -237,7 +44,7 @@
               </div>
             </div>
           </div>
-          <div class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
+          <div v-if="bidStatus == 'PREBID' && horseStatus == 'PREBID'" class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
             <div
               class="text-center w-full p-5 rounded-t-md"
               style="background-color: #b99d61"
@@ -367,39 +174,43 @@
               </div>
             </div>
           </div>
-        </div>
-        <!-- COMING -->
-        <div
-          class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
-          v-if="bidStatus == 'COMING'"
-        >
-          <div class="md:mr-2 bg-white rounded-lg">
-            <div>
-              <div class="w-full">
-                <Carousel :images="horseData.images" />
-              </div>
+          <div v-if="bidStatus == 'BIDDING' && horseStatus == 'BIDDING'" class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg text-center">
+            <p class="text-black font-bold text-2xl pt-8 px-10">
+              LA SUBASTA DE ESTE CABALLO ESTÁ EN VIVO
+            </p>
+            <p class="text-black font-bold text-xl pt-5">
+              <NuxtLink :to="`/auction/live/${bidId}`">
+              <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
+                Ir a la Subasta
+              </button>
+            </NuxtLink>
+            </p>
+          </div>
+          <div v-if="horseStatus == 'CLOSED PREBID'" class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg text-center">
+            <p class="text-black font-bold text-2xl pt-8 px-10">
+              LA SUBASTA DE ESTE CABALLO ESTÁ POR COMENZAR
+            </p>
+            <p v-if="bidStatus == 'BIDDING'" class="text-black font-bold text-xl pt-5">
+              <NuxtLink :to="`/auction/live/${bidId}`">
+              <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
+                Ir a la Subasta
+              </button>
+            </NuxtLink>
+            </p>
+            <div v-else class="text-black font-bold text-xl pt-5">
+              Quédate al pendiente
             </div>
           </div>
-          <div class="mt-4 md:mt-0 flex-col">
-            <div class="flex-row w-full rounded-lg p-5 bg-white">
-              <div class="flex w-full bg-green p-3 text-center">
-                <span class="mr-1 text-xl font-bold mb-2">{{
-                  HorsenName
-                }}</span>
-                <div>
-                  <horseStatus :status="horseStatus" :bid-status="bidStatus" />
-                </div>
-              </div>
-              <div class="text-center w-full px-5">
+          <div v-if="horseStatus =='COMMING' && bidStatus == 'COMMING'" class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg text-center">
+
+            <p class="text-black font-bold text-2xl pt-8 px-10">
+              LA PREOFERTA DE ESTE CABALLO ESTÁ POR COMENZAR
+            </p>
+            <div class="text-center w-full px-5 pt-8">
                 <p class="font-bold text-sm">PRECIO INICIAL</p>
                 <span class="font-bold text-2xl"
                   >${{ horseData.final_amount }} USD</span
                 >
-                <div class="border-b border-gray-300 my-4"></div>
-              </div>
-              <div class="w-full rounded-t-lg px-5">
-                <p class="font-bold text-sm">SUBASTA EN VIVO</p>
-                <span class="font-bold text-sm">{{ BidDateFormat }}</span>
                 <div class="border-b border-gray-300 my-4"></div>
               </div>
               <div class="w-full rounded-t-lg px-5">
@@ -413,6 +224,12 @@
                   >Termina {{ EndPreBidDateFormat }}</span
                 >
               </div>
+              <div class="w-full rounded-t-lg px-5">
+                <div class="border-b border-gray-300 my-4"></div>
+                <p class="font-bold text-sm">SUBASTA EN VIVO</p>
+                <span class="font-bold text-sm">{{ BidDateFormat }}</span>
+
+              </div>
               <div
                 v-if="isUserAuthenticated"
                 class="text-center texthidden md:block mt-1"
@@ -425,97 +242,13 @@
                   </button>
                 </nuxt-link>
               </div>
-            </div>
+
           </div>
+
         </div>
-        <!-- CLOSED OR CLOSED PREBID-->
-        <div
-          class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
-          v-if="horseStatus == 'CLOSED' || bidStatus == 'CLOSED PREBID'"
-        >
-          <div class="w-full grid grid-row-2 gap-2 p-5 bg-white rounded-lg">
-            <div class="grid grid-cols-2">
-              <div class="order-2 md:order-1">
-                <Carousel :images="horseData.images" />
-              </div>
-              <div class="bg-green px-3 order-1 md:order-2">
-                <div>
-                  <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
-                </div>
-                <span class="mr-1 text-xl font-bold mb-2">{{
-                  HorsenName
-                }}</span>
-              </div>
-            </div>
-            <div class="border-b border-gray-300 my-4"></div>
-            <div class="aspect-w-16 aspect-h-9">
-              <iframe
-                class="aspect-content rounded-lg"
-                :src="
-                  horseData.videoUrl
-                    ? `https://www.youtube.com/embed/${liveURL}`
-                    : `https://www.youtube.com/embed/ivGNj_t6S2c`
-                "
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              ></iframe>
-            </div>
-          </div>
-          <div
-            v-if="winner"
-            class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg"
-          >
-            <div
-              class="text-center w-full rounded-t-lg p-5"
-              style="background-color: #b99d61"
-            >
-              <p class="text-white font-bold text-2xl">GANADOR</p>
-              <p class="text-white font-bold text-xl">
-                {{ winner.name || winner.fathers_surname }}
-              </p>
-            </div>
-            <div class="px-5 mt-5">
-              <div>
-                <div
-                  v-if="successMessage"
-                  class="bg-green-100 text-green-800 p-4 my-4 rounded-lg shadow-md"
-                >
-                  {{ successMessage }}
-                </div>
-                <div
-                  v-if="errorMessage"
-                  class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
-                >
-                  {{ errorMessage }}
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="mx-5">
-                <p class="text-sm font-bold">HISTORIAL DE OFERTAS</p>
-                <div class="border-b border-gray-300 my-4"></div>
-              </div>
-              <div class="px-4" style="flex: 5">
-                <Bids
-                  ref="detailsBid"
-                  :bidId="bidId"
-                  :horseID="horseID"
-                  :bids="this.bids"
-                />
-              </div>
-            </div>
-          </div>
-          <div
-            v-else
-            class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg text-center"
-          >
-            <p class="text-black font-bold text-2xl">
-              LA SUBASTA ESTÁ POR COMENZAR
-            </p>
-            <p class="text-black font-bold text-xl">Quédate al pendiente</p>
-          </div>
-        </div>
+
+
+
       </div>
       <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -624,7 +357,7 @@
                     }"
                   >
                     <p>
-                      <xRayGallery :images="horseData.xRayGallery" />
+                      <xRayGallery :images="horseData.xRayGallery" :horse_id="horseId"/>
                     </p>
                   </div>
                   <div
@@ -808,7 +541,6 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.timer)
-    console.log("al salir cierra los sockets", this.bidSocket)
     this.intentionalCloseSockets()
     this.$confetti.stop()
   },
@@ -841,7 +573,6 @@ export default {
     },
     updateEditAmount(value) {
       this.isEditingAmount = value
-      console.log("inputAmount", this.inputAmount)
     },
     removeCommas(e) {
       document.getElementById("amount").type = "number"
@@ -888,12 +619,10 @@ export default {
       }
     },
     async intentionalCloseSockets() {
-      console.log("Cierre intencional de los sockets")
       this.closeBidSocket()
       this.closeAuctionSocket()
     },
     async closeBidSocket() {
-      console.log("Close Bid Socket")
       this.isIntentionalReconnectBid = true
       if (this.socket) {
         this.socket.close()
@@ -901,7 +630,6 @@ export default {
       this.isIntentionalReconnectBid = false
     },
     async closeAuctionSocket() {
-      console.log("Close Auction Socket")
       this.isIntentionalReconnectAuction = true
       if (this.auctionSocket) {
         this.auctionSocket.close()
@@ -936,7 +664,6 @@ export default {
           return
         }
         if (message.bids) {
-          console.log("Message Bid", message.bids[0])
           mountedThis.bids = message.bids
         }
 
@@ -1050,6 +777,11 @@ export default {
               )
             }
             this.winnerConfetti()
+
+            if (mountedThis.horseStatus == "BIDDING") {
+              this.$confetti.stop()
+            }
+
             if (nextHorse) {
               mountedThis.$router
                 .replace({
@@ -1059,17 +791,18 @@ export default {
                   mountedThis.init()
                 })
             }
+
+            if (message.auction) {
+              this.bidStatus = message.auction.status;
+            }
           }
         }
 
         if (message.prebid) {
-          console.log()
           if (message.prebid.horse.id == mountedThis.horseId) {
             const now = new Date()
             mountedThis.EndPreBidDate = new Date(message.prebid.horse.end_pre_bid)
             mountedThis.calculateCountdown()
-
-            console.log("ACTUALIZADO EL TIMER")
           }
         }
       })
@@ -1113,10 +846,8 @@ export default {
       }
     },
     addThousand() {
-      console.log("adding")
       // let currentValue = parseInt(this.formData?.amount.replace(",", ""))
       let currentValue = parseInt(this.inputAmount.replace(",", ""))
-      console.log(currentValue)
       if (currentValue >= 30000) {
         currentValue += 500
       } else {
@@ -1125,7 +856,6 @@ export default {
       this.inputAmount = currentValue.toLocaleString("en-US")
     },
     substractThousand() {
-      console.log("substracting")
       let currentValue = parseInt(this.inputAmount.replace(",", ""))
       if (currentValue >= 30000) {
         currentValue -= 500
@@ -1177,10 +907,9 @@ export default {
     async fetchWinner() {
       let winnerEndpoint = "/subastas/prebid-winner/"
       let url = `${this.$config.baseURL}${winnerEndpoint}`
-
       let params = {
         subasta_id: this.bidId,
-        horse_id: this.horseID,
+        horse_id: this.horseId,
         pre_bid: this.horseStatus === "CLOSED" ? "false" : "true"
       }
       const token = getUserTokenOrDefault()
@@ -1195,7 +924,6 @@ export default {
         .then((response) => {
           this.winnerEmail = response.data.user_profile.email
           this.winner = response.data.user_profile
-          console.log("GANADOR", this.winner)
         })
         .catch((error) => {
           // Handle errors
@@ -1219,7 +947,6 @@ export default {
           this.HorsenName = horse.external_data.name
           //horse ID
           this.horseID = horse.external_data.id
-          console.log("ID ExTERNO", this.horseID)
           this.horseIDForm = horse.local_data.id
           //horse Description
           //genre
