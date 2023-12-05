@@ -791,10 +791,6 @@ export default {
                   mountedThis.init()
                 })
             }
-
-            if (message.auction) {
-              this.bidStatus = message.auction.status;
-            }
           }
         }
 
@@ -804,6 +800,10 @@ export default {
             mountedThis.EndPreBidDate = new Date(message.prebid.horse.end_pre_bid)
             mountedThis.calculateCountdown()
           }
+        }
+
+        if (message.auction) {
+          this.bidStatus = message.auction.status;
         }
       })
       this.auctionSocket.addEventListener("close", (event) => {
