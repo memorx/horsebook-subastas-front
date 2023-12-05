@@ -541,7 +541,6 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.timer)
-    console.log("al salir cierra los sockets", this.bidSocket)
     this.intentionalCloseSockets()
     this.$confetti.stop()
   },
@@ -574,7 +573,6 @@ export default {
     },
     updateEditAmount(value) {
       this.isEditingAmount = value
-      console.log("inputAmount", this.inputAmount)
     },
     removeCommas(e) {
       document.getElementById("amount").type = "number"
@@ -621,12 +619,10 @@ export default {
       }
     },
     async intentionalCloseSockets() {
-      console.log("Cierre intencional de los sockets")
       this.closeBidSocket()
       this.closeAuctionSocket()
     },
     async closeBidSocket() {
-      console.log("Close Bid Socket")
       this.isIntentionalReconnectBid = true
       if (this.socket) {
         this.socket.close()
@@ -634,7 +630,6 @@ export default {
       this.isIntentionalReconnectBid = false
     },
     async closeAuctionSocket() {
-      console.log("Close Auction Socket")
       this.isIntentionalReconnectAuction = true
       if (this.auctionSocket) {
         this.auctionSocket.close()
@@ -669,7 +664,6 @@ export default {
           return
         }
         if (message.bids) {
-          console.log("Message Bid", message.bids[0])
           mountedThis.bids = message.bids
         }
 
@@ -768,7 +762,6 @@ export default {
           message.horses.forEach((horse) => {
             if (horse.id == mountedThis.horseId) {
               mountedThis.horseStatus = horse.status
-              console.log('asignando status', horse.status, mountedThis.horseStatus)
             }
           })
         }
@@ -798,11 +791,14 @@ export default {
                   mountedThis.init()
                 })
             }
+
+            if (message.auction) {
+              this.bidStatus = message.auction.status;
+            }
           }
         }
 
         if (message.prebid) {
-          console.log()
           if (message.prebid.horse.id == mountedThis.horseId) {
             const now = new Date()
             mountedThis.EndPreBidDate = new Date(message.prebid.horse.end_pre_bid)
@@ -852,7 +848,6 @@ export default {
     addThousand() {
       // let currentValue = parseInt(this.formData?.amount.replace(",", ""))
       let currentValue = parseInt(this.inputAmount.replace(",", ""))
-      console.log(currentValue)
       if (currentValue >= 30000) {
         currentValue += 500
       } else {
@@ -929,7 +924,6 @@ export default {
         .then((response) => {
           this.winnerEmail = response.data.user_profile.email
           this.winner = response.data.user_profile
-          console.log("GANADOR", this.winner)
         })
         .catch((error) => {
           // Handle errors
@@ -953,7 +947,6 @@ export default {
           this.HorsenName = horse.external_data.name
           //horse ID
           this.horseID = horse.external_data.id
-          console.log("ID ExTERNO", this.horseID)
           this.horseIDForm = horse.local_data.id
           //horse Description
           //genre
@@ -996,7 +989,6 @@ export default {
           this.age = this.calculateAge()
           //Bid Status
           this.horseStatus = horse.local_data.status
-          console.log('horseStatus', this.horseStatus)
           //Bid Initial Amout
           this.horseData.final_amount = horse.local_data.final_amount
           this.horseData.horseTelex = horse.local_data.horsetelex_url

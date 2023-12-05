@@ -330,15 +330,12 @@ export default {
           return
         }
         if (message.horses && message.horses.length > 0) {
-          console.log('trae los caballos')
           mountedthis.item.horses.forEach((horse, key) => {
             const status = message.horses.find(
               (item) => item.id === horse.local_data.id
             )
             if (status)
               mountedthis.item.horses[key].local_data.status = status.status
-            console.log('horse', mountedthis.item.horses[key])
-            console.log('status', status.status)
           })
         }
 
