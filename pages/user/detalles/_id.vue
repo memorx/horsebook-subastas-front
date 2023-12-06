@@ -6,7 +6,7 @@
     />
     <NuxtLink :to="`/user/inicio/`">
       <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-        Atras
+        Listado de Subastas
       </button>
     </NuxtLink>
     <div class="flex flex-wrap">
@@ -315,37 +315,74 @@ export default {
 
   methods: {
     async startAuctionSocket() {
-      const mountedThis = this;
-      if (this.auctionSocket && this.auctionSocket.readyState === WebSocket.OPEN) {
-        this.auctionSocket.close();
+      const mountedThis = this
+      if (
+        this.auctionSocket &&
+        this.auctionSocket.readyState === WebSocket.OPEN
+      ) {
+        this.auctionSocket.close()
       }
-      const url = `${this.$config.baseURLWS}/auction/${this.$route.params.id}`;
-      this.auctionSocket = new WebSocket(url);
+      const url = `${this.$config.baseURLWS}/auction/${this.$route.params.id}`
+      this.auctionSocket = new WebSocket(url)
       this.auctionSocket.onmessage = function (event) {
-        const message = JSON.parse(event.data);
-        if(message.error){
+        const message = JSON.parse(event.data)
+        if (message.error) {
           mountedThis.socketError = message.error
           return
         }
         if (message.horses && message.horses.length > 0) {
           mountedthis.item.horses.forEach((horse, key) => {
-            const status = message.horses.find( item => item.id === horse.local_data.id );
+            const status = message.horses.find(
+              (item) => item.id === horse.local_data.id
+            )
             if (status)
               mountedthis.item.horses[key].local_data.status = status.status
-          });
+          })
         }
 
         if (message.horse) {
-          const key = mountedthis.item.horses.findIndex( horse => message.horse.id === horse.local_data.id );
+          const key = mountedthis.item.horses.findIndex(
+            (horse) => message.horse.id === horse.local_data.id
+          )
           if (key >= 0)
-            mountedthis.item.horses[key].local_data.status = message.horse.status
+            mountedthis.item.horses[key].local_data.status =
+              message.horse.status
         }
-      };
-      this.auctionSocket.addEventListener('close', (event) => {
+
+        if (message.prebid) {
+          if (message.prebid.auction.id == this.horseID) {
+            const now = new Date()
+            const targetDate = new Date(message.prebid.auction.end_pre_bid)
+            const timeDifference = targetDate - now
+
+            if (timeDifference <= 0) {
+              this.countdownPre = false
+              clearInterval(this.timer2)
+            } else {
+              const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+              const hours = Math.floor(
+                (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+              )
+              const minutes = Math.floor(
+                (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+              )
+              const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
+            }
+
+            this.preBidTime.days = days
+            this.preBidTime.hours = hours
+            this.preBidTime.minutes = minutes
+            this.preBidTime.seconds = seconds
+
+            console.log("ACTUALIZADO EL TIMER")
+          }
+        }
+      }
+      this.auctionSocket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()
         }
-      });
+      })
     },
     amountStringToInt(initial, final) {
       if (parseInt(final, 10) > parseInt(initial, 10)) {

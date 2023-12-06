@@ -13,7 +13,7 @@
               </tr>
             </thead>
             <tbody style="font-size: 13px">
-              <tr v-for="(bid, index) in bids" :key="bid?.id">
+              <tr v-if="index < 20" v-for="(bid, index) in bids" :key="bid?.id">
                 <td class="table-cell border-y text-center">
                   {{
                     (bid?.user_profile?.name ?? "") +

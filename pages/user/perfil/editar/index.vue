@@ -82,16 +82,15 @@
         <div class="flex flex-col">
           <label class="text-black-600 font-medium pr-2">Nacionalidad:</label>
           <select
-            @change="updateSelectedNationalityCode"
-            v-if="nationalities.length > 0 || this.nationality"
-            v-model="selectedNationality"
+            v-if="nationalities.length > 0"
+            v-model="selectedNationalityCode"
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
-            <option value="">{{ nationality }}</option>
+            <option value="" class="text-gray-500 text-center" disabled>Selecciona tu nacionalidad</option>
             <option
               v-for="nationality in nationalities"
               :key="nationality.code"
-              :value="nationality.name"
+              :value="nationality.code"
             >
               {{ nationality.name }}
             </option>
@@ -100,16 +99,16 @@
         <div class="flex flex-col">
           <label for="country" class="text-black-600 font-medium">País:</label>
           <select
-            v-if="countries.length > 0 || this.country"
-            v-model="selectedCountry"
-            @change="updateSelectedCountryCode"
+            v-if="countries.length > 0"
+            v-model="selectedCountryCode"
+            @change="() => { fetchStates() }"
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
-            <option value="">{{ this.country }}</option>
+            <option value="" class="text-gray-500 text-center" disabled>Selecciona el país</option>
             <option
               v-for="country in countries"
               :key="country.code"
-              :value="country.name"
+              :value="country.code"
             >
               {{ country.name }}
             </option>
@@ -119,13 +118,13 @@
         <div class="flex flex-col">
           <label for="state" class="text-black-600 font-medium">Estado:</label>
           <select
-            v-if="states.length > 0 || this.state"
-            @change="updateSelectedStateCode"
-            v-model="selectedState"
+            v-if="states.length > 0"
+            @change="() => { fetchCities() }"
+            v-model="selectedStateCode"
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
-            <option value="" selected>{{ this.state }}</option>
-            <option v-for="state in states" :key="state.id" :value="state.name">
+            <option value="" class="text-gray-500 text-center" disabled>Selecciona el estado</option>
+            <option v-for="state in states" :key="state.id" :value="state.id">
               {{ state.name }}
             </option>
           </select>
@@ -138,13 +137,12 @@
         <div class="flex flex-col">
           <label for="state" class="text-black-600 font-medium">Ciudad:</label>
           <select
-            v-if="cities.length > 0 || this.municipalitie"
-            @change="updateSelectedCityCode"
-            v-model="selectedCity"
+            v-if="cities.length > 0"
+            v-model="selectedCityCode"
             class="w-full rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
-            <option value="" selected>{{ this.municipalitie }}</option>
-            <option v-for="city in cities" :key="city.id" :value="city.name">
+            <option value="" class="text-gray-500 text-center" disabled>Selecciona la ciudad</option>
+            <option v-for="city in cities" :key="city.id" :value="city.id">
               {{ city.name }}
             </option>
           </select>
@@ -309,50 +307,6 @@ export default {
       const selectedFile = event.target.files[0]
       this.official_document_back = selectedFile
       this.$refs.fileInput.value = ""
-    },
-    updateSelectedCountryCode() {
-      const selectedCountryObject = this.countries.find(
-        (country) => country.name === this.selectedCountry
-      )
-      if (selectedCountryObject) {
-        this.selectedCountryCode = selectedCountryObject.code
-        this.selectedDialCode = selectedCountryObject.dial_code
-        this.fetchStates()
-      } else {
-        this.selectedCountryCode = this.profile.country.code
-        this.selectedDialCode = ""
-      }
-    },
-    updateSelectedNationalityCode() {
-      const selectedNationalityObject = this.nationalities.find(
-        (nationality) => nationality.name === this.selectedNationality
-      )
-      if (selectedNationalityObject) {
-        this.selectedNationalityCode = selectedNationalityObject.code
-      } else {
-        this.selectedNationalityCode = this.profile.nationality.code
-      }
-    },
-    updateSelectedStateCode() {
-      const selectedStateObject = this.states.find(
-        (state) => state.name === this.selectedState
-      )
-      if (selectedStateObject) {
-        this.selectedStateCode = selectedStateObject.id
-        this.fetchCities()
-      } else {
-        this.selectedStateCode = this.profile.state.id
-      }
-    },
-    updateSelectedCityCode() {
-      const selectedCityObject = this.cities.find(
-        (city) => city.name === this.selectedCity
-      )
-      if (selectedCityObject) {
-        this.selectedCityCode = selectedCityObject.id
-      } else {
-        this.selectedCityCode = this.profile.municipalitie.id
-      }
     },
     fetchCountries() {
       const endpoint = "/countries"
@@ -528,18 +482,31 @@ export default {
           this.official_document_back =
             this.profile.official_document_back || null
           this.country = this.profile.country ? this.profile.country.name : null
+          if (this.country){
+            this.selectedCountryCode = this.profile.country.code
+            this.fetchStates()
+          }
           this.dial_code = this.profile.country
             ? this.profile.country.dial_code
             : null
           this.state = this.profile.state ? this.profile.state.name : null
+          if (this.state) {
+            this.selectedStateCode =this.profile.state.id
+            this.fetchCities()
+          }
           this.municipalitie = this.profile.municipalitie
             ? this.profile.municipalitie.name
             : null
+          if (this.municipalitie)
+            this.selectedCityCode = this.profile.municipalitie.id
           this.phone = this.profile.phone || null
           this.birth_date = this.profile.birth_date || null
-          this.nationality = this.profile.nationality
+          this.nationality = this.selectedNationality = this.profile.nationality
             ? this.profile.nationality.name
             : null
+          if (this.nationality) {
+            this.selectedNationalityCode = this.profile.nationality.code
+          }
           this.street = this.profile.street || null
           this.outdoor_number = this.profile.outdoor_number || null
           this.interior_number = this.profile.interior_number || null

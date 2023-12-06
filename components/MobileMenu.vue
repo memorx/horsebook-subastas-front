@@ -72,7 +72,7 @@ export default {
     computed: {
         activePageClass() {
             return (route) => {
-                return this.$route.path === route ? 'text-custom-gold' : this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
+                return this.$route.path === route ? 'text-custom-gold' : this.$store.state.textColorTopBar ?  `text-white lg:${this.$store.state.textColorTopBar}` : 'text-white';
             }
         },
     },

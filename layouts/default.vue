@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Parent div with black background -->
-        <div v-if="showVideo" class="fixed z-30 inset-0 w-screen h-screen bg-black">
+        <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
             <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
                 <source src="/video-home.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -12,12 +12,13 @@
         </div>
 
         <div v-else>
-            <div :class="`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] bg-black`">
+            <div :class="[`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] `, bgLayoutMode]">
                 <!-- Your TopBar Component bg-[url('/home-bg.jpg')] -->
 
                 <Topbar :toggleMenu="handleMenu" :isMobileMenuOpen="isMobileMenuOpen" />
                 <!-- Mobile Menu Overlay -->
-                <div v-if="isMobileMenuOpen" ref="mobileMenu" class="lg:hidden fixed inset-y-0 right-0 bg-black z-50 w-2/3 bg-gradient-to-b from-[#353535] to-[#000000]">
+                <div v-if="isMobileMenuOpen" ref="mobileMenu"
+                    :class="['lg:hidden fixed inset-y-0 right-0  z-50 w-2/3 bg-gradient-to-b from-[#353535] to-[#000000] bg-black']">
                     <MobileMenu @handle-close-menu="hanldeCloseMenu" />
                 </div>
 
@@ -35,10 +36,11 @@ import Footer from '~/components/Footer.vue';
 import MobileMenu from '~/components/MobileMenu.vue';
 import JWTDecode from "jwt-decode"
 import Cookie from "js-cookie"
+import Swal from 'sweetalert2';
 
 export default {
     beforeMount() {
-        if (this.$route.path === '/' && !Cookie.get('videoPlayed')) {
+        if (!Cookie.get('videoPlayed')) {
             this.showVideo = true;
         } else {
             this.showVideo = false;
@@ -56,6 +58,10 @@ export default {
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'Entendido'
             });
+        }
+        // show welcome modal if the video has been played
+        if (this.showWelcomeModal && this.showVideo) {
+            this.showWelcomeModalMethod();
         }
     },
     destroyed() {
@@ -76,14 +82,47 @@ export default {
         return {
             showVideo: true,
             isMobileMenuOpen: false,
+            showWelcomeModal: !Cookie.get('videoPlayed')
         }
     },
     computed: {
         bgImage() {
             return this.$store.state.bgImage;
+        },
+        bgLayoutMode() {
+            return this.$store.state.layoutMode === 'lightMode' ? 'bg-light-mode' : 'bg-black';
         }
     },
     methods: {
+        showWelcomeModalMethod() {
+            Swal.fire({
+                title: this.$i18n.locale === 'es' ? 'Bienvenido a HorseBook Subastas' : 'Welcome to HorseBook Auctions',
+                text: this.$i18n.locale === 'es' ? 'Tu mensaje de bienvenida aquí' : 'Your welcome message here',
+                confirmButtonText: this.$i18n.locale === 'es' ? 'Cerrar' : 'Close',
+                confirmButtonColor: '#3085d6',
+                allowOutsideClick: false,
+            }).then((result) => {
+                this.handleWelcomeModalClose();
+            })
+        },
+        handleWelcomeModalClose() {
+            this.showWelcomeModal = false;
+            this.playVideoWithSound();
+        },
+        handleWelcomeModalClose() {
+            this.showWelcomeModal = false;
+            this.playVideoWithSound();
+            console.log('Closing welcome modal');
+        },
+        playVideoWithSound() {
+            console.log('Playing video with sound');
+            if (this.showVideo) {
+                const videoPlayer = this.$refs.videoPlayer;
+                videoPlayer.muted = false;
+                videoPlayer.play();
+                console.log('Playing video with sound');
+            }
+        },
         checkAndInitializeWebSocket() {
             console.log('Checking and initializing websocket');
             if (this.$store.state.isAuthenticated && this.$store.state.user.id) {
@@ -183,7 +222,7 @@ export default {
                 document.removeEventListener('click', this.handleClickOutside, true);
             }
         },
-        hanldeCloseMenu(){
+        hanldeCloseMenu() {
             this.isMobileMenuOpen = false;
         }
     },

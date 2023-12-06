@@ -1,7 +1,7 @@
 <template>
     <nav :class="['p-4 lg:from-transparent', textColor, gradientMobileColor]">
         <!-- Web Navigation -->
-        <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent">
+        <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent" >
             <!-- Logo or brand -->
             <nuxt-link to="/">
                 <img src="../public/image_la_silla.png" alt="logo" style="width: 40px;">
@@ -9,7 +9,17 @@
 
             <!-- Navigation items -->
             <div class="flex items-center space-x-4">
-
+                <div class="flex justify-right">
+                    <a @click="goToCurrenAuction()" v-if="idCurrenBid"
+                    class="text-white hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
+                        fill="none" />
+                    </svg>
+                    Subasta En Vivo
+                    </a>
+                </div>
                 <div v-if="isUserAuthenticated" class="flex justify-center align-middle items-center">
                     <!-- <nuxt-link
                         :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
@@ -26,6 +36,7 @@
                         </span>
                     </nuxt-link> -->
 
+
                     <nuxt-link to="/user/inicio">
                         <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex">
                             Tus Subastas
@@ -35,14 +46,13 @@
                     <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black" @click="logout">
                         Cerrar sesión
                     </button>
-
                     <nuxt-link to="/user/perfil">
                         <div
                             class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex justify-center align-middle items-center">
                             <i class="fas fa-user fa-lg p-2"></i>
-                            <p>{{ username }}</p>
                         </div>
                     </nuxt-link>
+
                 </div>
 
                 <div v-else>
@@ -54,12 +64,9 @@
                                 $t('topBar.bids') }}</nuxt-link>
                             <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link>
                             <nuxt-link :class="activePageClass('/news')" to="/news">{{ $t('topBar.news') }}</nuxt-link> -->
-                            <button v-if="this.$route.path === '/'" class="uppercase text-xs font-roboto"
-                                @click="handleScrollIntoContact">
+                            <button class="uppercase text-xs font-roboto" @click="handleScrollIntoContact">
                                 {{ $t('topBar.contact') }}
                             </button>
-                            <nuxt-link v-if="this.$route.path !== '/'" :class="activePageClass('/contact')" to="/contact">{{
-                                $t('topBar.contact') }}</nuxt-link>
                         </div>
 
                         <!-- Sign Up / Log in-->
@@ -90,7 +97,7 @@
         </div>
 
         <!-- Mobile Navigation -->
-        <div class="lg:hidden flex container mx-auto justify-between items-center">
+        <div class="lg:hidden flex container mx-auto justify-between items-center ">
 
             <!-- Navigation items -->
             <div class="flex items-center justify-between w-full">
@@ -118,12 +125,14 @@
                         </nuxt-link> -->
 
                         <nuxt-link to="/user/inicio">
-                            <div class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex">
+                            <div
+                                class="font-bold bg-black text-white py-2 px-4 rounded hover:bg-white hover:text-black flex">
                                 Tus Subastas
                             </div>
                         </nuxt-link>
 
-                        <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black" @click="logout">
+                        <button class="font-bold bg-black py-2 px-4 rounded hover:bg-white hover:text-black"
+                            @click="logout">
                             Cerrar sesión
                         </button>
 
@@ -161,14 +170,9 @@
 <script>
 import Cookies from "js-cookie";
 import ReusableButton from "~/components/ReusableButton.vue";
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export default {
-    components: {
-        ReusableButton
-    },
-    mounted() {
-        this.getuserMail()
-    },
     props: {
         toggleMenu: {
             type: Function,
@@ -179,10 +183,27 @@ export default {
             required: true
         }
     },
-    data() {
+    data () {
         return {
-            username: ""
+            username: "",
+            idCurrenBid: 0,
+            socket: null, // Socket para auction
+            isIntentionalReconnectAuction: false,
+            moveToHome: false,
+            windowWidth: window.innerWidth,
         }
+    },
+    mounted () {
+        this.getuserMail();
+        this.intentionalCloseSockets();
+        this.startSocket();
+        //  listen for resize events
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize(); // Call it initially to set the width
+    },
+    beforeDestroy() {
+        this.intentionalCloseSockets();
+        window.removeEventListener('resize', this.handleResize);
     },
     computed: {
         isUserAuthenticated() {
@@ -190,17 +211,23 @@ export default {
         },
         activePageClass() {
             return (route) => {
-                return this.$route.path === route ? 'text-custom-gold' : this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
+                return this.$route.path === route ? 'text-custom-gold' : this.textColor;
             }
         },
+        isMobile() {
+            return this.windowWidth <= 768; // Your mobile breakpoint
+        },
         textColor() {
-            return this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
+            return   this.isMobile ? 'text-white' : this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
         },
         gradientMobileColor() {
             return 'bg-gradient-to-b from-[#353535] to-[#000000]'
-        }
+        },
     },
     methods: {
+        handleResize() {
+            this.windowWidth = window.innerWidth;
+        },
         getuserMail() {
             this.username = JSON.parse(localStorage.getItem("setUser"))?.user
         },
@@ -224,13 +251,88 @@ export default {
             localStorage.removeItem("setUser");
             this.$router.push('/')
         },
-        handleScrollIntoContact() {
-            this.$store.dispatch('scrollIntoContact', true)
+        async handleScrollIntoContact() {
+            if (this.$route.path !== '/') {
+                await this.$router.push('/');
+
+            }
+            if (this.$route.path === '/') {
+                this.$store.commit('setScrollIntoContact', true);
+            } else {
+                setTimeout(() => {
+                    this.$store.commit('setScrollIntoContact', true);
+                }, 1000);
+            }
         },
-    }
+        async intentionalCloseSockets() {
+            this.closeAuctionSocket();
+        },
+        async closeAuctionSocket() {
+            this.isIntentionalReconnectAuction = true;
+            if (this.socket) {
+                this.socket.close();
+            }
+            this.isIntentionalReconnectAuction = false;
+
+        },
+        async startSocket() {
+            // WebSocket for auction
+            const auctionUrl = `${this.$config.baseURLWS}/auctions`;
+
+            this.auctionSocket = new ReconnectingWebSocket(auctionUrl);
+
+            this.auctionSocket.addEventListener('open', (event) => {
+                console.log('Conexión abierta:', event);
+            });
+
+            this.auctionSocket.addEventListener('message', (event) => {
+                const message = JSON.parse(event.data);
+                if (message.error) {
+                    console.log(message.error);
+                }
+                if (message.auction?.id) {
+                    this.$data.idCurrenBid = message.auction.id
+                }
+
+            });
+
+            this.auctionSocket.addEventListener('close', (event) => {
+                console.log('Conexión cerrada auction socket:', event);
+            });
+
+            this.auctionSocket.addEventListener('error', (error) => {
+                console.error('Error de conexión auction socket:', error);
+            });
+
+        },
+        async goToCurrenAuction() {
+
+            if (this.idCurrenBid) {
+                let path = `/auction/live/${this.idCurrenBid}`
+                this.$router.push({ path: path })
+            }
+        },
+    },
 }
 </script>
 
-<style scoped>
-/* Add any extra styling here */
+
+<style>
+.fill-pulse {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        fill: red;
+    }
+
+    50% {
+        fill: transparent;
+    }
+
+    100% {
+        fill: red;
+    }
+}
 </style>
