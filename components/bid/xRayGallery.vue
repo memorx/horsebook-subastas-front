@@ -25,13 +25,16 @@
 </template>
 
 <script>
+import axios from 'axios'
 import JSZip from "jszip"
+import JWTDecode from "jwt-decode"
 import { saveAs } from "file-saver"
 
 export default {
   name: "xRayGallery",
   props: {
-    images: Array
+    images: Array,
+    horse_id: String
   },
   methods: {
     async downloadImage() {
@@ -49,6 +52,16 @@ export default {
       // Generate the zip and trigger the download
       const zipBlob = await zip.generateAsync({ type: "blob" })
       saveAs(zipBlob, "xrayImages.zip")
+      const decoded = JWTDecode(this.$cookies.get("access_token"))
+      const url = `${this.$config.baseURL}/xray/download-email/`
+      axios.get(url, {
+        params: {
+          horse_id: this.horse_id
+        }, headers: {
+          Authorization: `Token ${decoded.token}`
+        }}).catch((error) => {
+          console.log(error)
+        })
     }
   }
 }

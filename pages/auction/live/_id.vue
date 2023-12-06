@@ -101,7 +101,7 @@
                 <div class="px-5 mt-5">
                   <p class="text-sm font-bold">OFERTAR POR ESTE LOTE</p>
                   <form @submit="submitForm">
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center space-x-2 mb-5">
                       <button
                         class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
                         type="button"
@@ -476,7 +476,6 @@ export default {
     },
     updateEditAmount(value) {
       this.isEditingAmount = value
-      console.log("inputAmount", this.inputAmount)
     },
     removeCommas(e) {
       document.getElementById("amount").type = "number"
@@ -507,18 +506,15 @@ export default {
     },
 
     async intentionalCloseSockets() {
-      console.log("Cierre intencional de los sockets")
       this.closeBidSocket()
       this.closeAuctionSocket()
     },
     async closeBidSocket() {
-      console.log("Close Bid Socket")
       if (this.socket) {
         this.socket.close()
       }
     },
     async closeAuctionSocket() {
-      console.log("Close Auction Socket")
       if (this.auctionSocket) {
         this.auctionSocket.close()
       }
@@ -538,7 +534,6 @@ export default {
           return
         }
         if (message.bids) {
-          console.log("Message Bid", message.bids[0])
           this.bids = message.bids
         }
 
@@ -554,13 +549,8 @@ export default {
           this.isEditingAmount = false
         }
 
-        console.warn('PASA POR EL BID SOCKET')
-
-        console.log('Bid message', message)
-        console.log('this.horse',this.horse)
 
         if (this.bids.length > 0) {
-          console.log('si hay length en this.bids')
 
           this.lastOffer = parseInt(
             this.bids[0]?.amount
@@ -571,7 +561,6 @@ export default {
 
           console.error("Revisar currentValue", currentValue);
           if (currentValue >= 30000) {
-            console.log('es mayor de 30mil')
             this.inputAmount = (
               currentValue + 500
             ).toLocaleString("en-US")
@@ -587,7 +576,6 @@ export default {
         } else {
           if (this.horseData.final_amount != "") {
 
-            console.log('entra a horse con final amount '+this.horseData.final_amount)
             this.formData.amount = (parseInt(
               this.horseData.final_amount,
               10
@@ -597,16 +585,12 @@ export default {
               this.horseData.final_amount
             ).toLocaleString("en-US")
 
-
-            console.log('this.formData.amount',this.formData.amount)
             if (!this.isEditingAmount) {
 
               this.inputAmount = (parseInt(
                 this.horseData.final_amount,
                 10
               ) + 1000).toLocaleString("en-US")
-
-              console.log('se asigna el inputAmount al iniciar el caballo', this.inputAmount)
             }
 
           } else {
@@ -642,9 +626,6 @@ export default {
           return
         }
 
-        console.warn('PASA POR AUCTION SOCKET')
-
-        console.log('MESANJE AUCTION', message)
         if (message.horses && message.horses.length > 0) {
           this.item.horses.forEach((horse, key) => {
             const curHorse = message.horses.find( item => item.status === 'BIDDING' );
@@ -662,17 +643,13 @@ export default {
 
         if (message.horse) {
           const horse = message.horse;
-          console.warn('trae caballo',horse)
-          console.warn('id, this.horseID, status',horse.id, this.horseID,horse.status)
           if (horse.id === this.horseID && horse.status === 'CLOSED') {
             // El horse actual se ha cerrado, restablecer horseID y cerrar el socket.
             this.horseStatus = 'CLOSED'
             this.winnerConfetti()
-            console.warn('reinicia y cierra el socket')
             this.horseID = null;
             this.closeBidSocket();
           } else if (horse.status === 'BIDDING') {
-            console.warn('Abre otro caballo')
             // El horse actual está en proceso de subasta, actualizar horseID, fetch data y reiniciar el socket.
             this.horseID = horse.id;
             this.$confetti.stop();
@@ -758,10 +735,7 @@ export default {
       }
     },
     addThousand() {
-      console.log("adding")
-      // let currentValue = parseInt(this.formData?.amount.replace(",", ""))
       let currentValue = parseInt(this.inputAmount.replace(",", ""))
-      console.log(currentValue)
       if (currentValue >= 30000) {
         currentValue += 500
       } else {
@@ -770,7 +744,6 @@ export default {
       this.inputAmount = currentValue.toLocaleString("en-US")
     },
     substractThousand() {
-      console.log("substracting")
       let currentValue = parseInt(this.inputAmount.replace(",", ""))
       if (currentValue >= 30000) {
         currentValue -= 500
@@ -825,7 +798,6 @@ export default {
         .then((response) => {
           this.winnerEmail = response.data.user_profile.email
           this.winner = response.data.user_profile
-          console.log("GANADOR", this.winner)
         })
         .catch((error) => {
           // Handle errors
@@ -837,18 +809,15 @@ export default {
       let listSubastasEndpoint = `/horse/${this.horseID}/info`
       let url = `${this.$config.baseURL}${listSubastasEndpoint}`
       const token = getUserTokenOrDefault()
-      console.log('fetch horse data')
       try{
         let response = await axios
           .get(url, { })
-          console.log('respomse', response)
             const horse = response.data
             this.horse = horse
             //name
             this.HorsenName = horse.external_data.name
             //horse ID
             this.externalHorseID = horse.external_data.id
-            console.log("ID ExTERNO", this.externalHorseID)
             this.horseIDForm = horse.local_data.id
             //horse Description
             //genre
@@ -897,18 +866,13 @@ export default {
                 parseInt(horse.local_data.final_amount + 1000)
               ).toLocaleString("en-US")
             this.horseData.horseTelex = horse.local_data.horsetelex_url
-            console.log('horse antes de starbidsocket', this.horse)
             this.startBidSocket()
 
       }catch(e) {
         console.log(e)
       }
-      console.log('fin fetch horse data')
-
-
-
-
     },
+
     statusOffer(BidDate) {
       const CurrentDate = new Date()
       const StartBid = new Date(BidDate)
