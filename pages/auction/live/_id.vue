@@ -173,6 +173,7 @@
                       :bidId="bidId"
                       :horseID="horseID"
                       :bids="this.bids"
+                      :hasBid="this.hasBid"
                     />
                   </div>
                 </div>
@@ -418,8 +419,7 @@ export default {
       winnerEmail: "",
       wonHorse: "",
       yourAreTheWinner: false,
-
-
+      hasBid: false,
     }
   },
   async created() {
@@ -521,8 +521,8 @@ export default {
     },
 
     async startBidSocket() {
-
-      const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseID}`
+      const token = getUserTokenOrDefault()
+      const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseID}/?token=${token}`
       this.socket = new ReconnectingWebSocket(url)
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
@@ -535,6 +535,10 @@ export default {
         }
         if (message.bids) {
           this.bids = message.bids
+        }
+
+        if (message.has_bid) {
+          mountedThis.hasBid = message.has_bid
         }
 
         if (message.bid) {
