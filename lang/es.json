@@ -1,5 +1,58 @@
 {
     "test": {
         "hello": "mundo"
+    },
+    "home": {
+        "main": {
+            "title": "Bienvenido",
+            "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus rutrum, nunc eu luctus aliquam, nisi lectus volutpat ante, a elementum lorem mi ac nisl. Praesent congue risus id.",
+            "button": "ver subastas"
+        },
+        "bid": {
+            "MainTitle": "Subastas"
+        },
+        "news": {
+            "title": "Novedades",
+            "paragraph": "Subtítulo de novedades",
+            "button": "Ver todas las novedades"
+        },
+        "us": {
+            "title": "Nosotros",
+            "subTitle": "Asiste al lugar de remate o de forma remota",
+            "paragraph": "Podrás ver, escuchar y participar haciendo tus posturas en tiempo real. Organiza tu propio remate, puedes registrarte y subir los caballos que quieres subastar, deberas de pagar la comision por la publicacion del articulo y especificar las condiciones de reamte del mismo.",
+            "button": "Ver más"
+        },
+        "contact": {
+            "title": "Contacto",
+            "subTitle": "¡Nos interesa saber de ti! ",
+            "paragraph": "Si tienes alguna duda de como partisapar en nuestras subastas o quieres ponerte en contacto con nosotros, envíanos un mesaje en el siguiente formularios.",
+            "button": "enviar",
+            "form": {
+                "name": "nombre",
+                "phone": "teléfono",
+                "email": "email",
+                "message": "mensajes"
+            }
+        },
+        "video": {
+            "button": "Entrar"
+        },
+        "exampleTitle": "Título de ejemplo",
+        "exampleParagraph":  "Este es un párrafo de ejemplo para el div",
+        "exampleButton": "Botón de ejemplo"
+    },
+    "topBar": {
+        "home": "inicio",
+        "bids": "subastas",
+        "news": "novedades",
+        "us": "nosotros",
+        "contact": "contacto",
+        "logIn": "login",
+        "signUp": "registrarse"
+    },
+    "footer": {
+        "navigate": "navegación",
+        "email": "email",
+        "phone": "teléfono"
     }
 }

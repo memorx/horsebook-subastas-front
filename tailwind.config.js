@@ -15,7 +15,9 @@ module.exports = {
         'gray-text': '#929292',
         'gray-bg': '#F0F0F0',
         'gray-disabled': '#F2F2F2',
-        'red-form': '#CF4343'
+        'red-form': '#CF4343',
+        'custom-gold': '#BFA753',
+        'light-mode': '#E3E4E5'
       },
       borderWidth: {
         1: '1px'
@@ -24,7 +26,8 @@ module.exports = {
         futura: ['Arial', 'sans-serif'],
         arial: ['Arial', 'sans-serif'],
         aeonik: ['Aeonik', 'sans-serif'],
-        montserrat: ['Montserrat', 'sans-serif']
+        montserrat: ['Montserrat', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
 
       },
       screens: {
@@ -37,9 +40,6 @@ module.exports = {
         '20': '5rem', // Ajusta este valor según sea necesario
       }
     }
-  },
-  variants: {
-    extend: {}
   },
   plugins: [
     require('@tailwindcss/forms'),
