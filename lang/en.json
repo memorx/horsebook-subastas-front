@@ -1,5 +1,58 @@
 {
     "test": {
         "hello": "world"
+    },
+    "home": {
+        "main": {
+            "title": "english main title",
+            "paragraph": "english main paragraph",
+            "button": "english main button"
+        },
+        "bid": {
+            "MainTitle": "english bid title"
+        },
+        "news": {
+            "title": "english news title",
+            "paragraph": "english news paragraph",
+            "button": "english news button"
+        },
+        "us": {
+            "title": "english us title",
+            "subTitle": "english us subtitle",
+            "paragraph": "english us paragraph",
+            "button": "english us button"
+        },
+        "contact": {
+            "title": "english contact title",
+            "subTitle": "english contact subtitle",
+            "paragraph": "english contact paragraph",
+            "button": "submit",
+            "form": {
+                "name": "name",
+                "phone": "phone",
+                "email": "email",
+                "message": "message"
+            }
+        },
+        "video": {
+            "button": "watch video"
+        },
+        "exampleTitle": "Example Title",
+        "exampleParagraph": "This is an example paragraph for div",
+        "exampleButton": "Example Button"
+    },
+    "topBar": {
+        "home": "home",
+        "bids": "bids",
+        "news": "news",
+        "us": "about us",
+        "contact": "contact us",
+        "logIn": "log in",
+        "signUp": "sign up"
+    },
+    "footer": {
+        "navigate": "navigate",
+        "email":"email",
+        "phone":"phone"
     }
 }

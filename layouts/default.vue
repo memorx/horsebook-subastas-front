@@ -1,32 +1,54 @@
 <template>
     <div>
-        <!-- Your TopBar Component -->
-        <Topbar />
+        <!-- Parent div with black background -->
+        <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
+            <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
+                <source src="/video-home.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <ReusableButton containerClass="mb-12 fixed z-50 bottom-5 w-auto text-white left-1/2 transform -translate-x-1/2"
+                buttonClass="uppercase text-sm md:text-base lg:text-lg" :onClick="closeVideo"
+                :buttonText="$t('home.video.button')" />
+        </div>
 
-        <!-- This will be replaced by the page content -->
-        <Nuxt />
+        <div v-else>
+            <div :class="[`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] `, bgLayoutMode]">
+                <!-- Your TopBar Component bg-[url('/home-bg.jpg')] -->
+
+                <Topbar :toggleMenu="handleMenu" :isMobileMenuOpen="isMobileMenuOpen" />
+                <!-- Mobile Menu Overlay -->
+                <div v-if="isMobileMenuOpen" ref="mobileMenu"
+                    :class="['lg:hidden fixed inset-y-0 right-0  z-50 w-2/3 bg-gradient-to-b from-[#353535] to-[#000000] bg-black']">
+                    <MobileMenu @handle-close-menu="hanldeCloseMenu" />
+                </div>
+
+                <!-- This will be replaced by the page content -->
+                <Nuxt />
+            </div>
+            <Footer />
+        </div>
     </div>
 </template>
 
 <script>
 import Topbar from '~/components/Topbar.vue';
+import Footer from '~/components/Footer.vue';
+import MobileMenu from '~/components/MobileMenu.vue';
 import JWTDecode from "jwt-decode"
 import Cookie from "js-cookie"
+import Swal from 'sweetalert2';
 
 export default {
+    beforeMount() {
+        if (!Cookie.get('videoPlayed')) {
+            this.showVideo = true;
+        } else {
+            this.showVideo = false;
+        }
+    },
     async mounted() {
         await this.getUserInfo()
         this.checkAndInitializeWebSocket();
-    },
-    watch: {
-        '$store.state.isAuthenticated': 'checkAndInitializeWebSocket',
-        '$store.state.user': 'checkAndInitializeWebSocket',
-        '$store.state.isUserAbleToBid': 'displayToast'
-    },
-    components: {
-        Topbar
-    },
-    mounted() {
         if (!window.WebSocket) {
             this.$swal.fire({
                 title: 'Actualiza tu navegador',
@@ -37,8 +59,70 @@ export default {
                 confirmButtonText: 'Entendido'
             });
         }
+        // show welcome modal if the video has been played
+        if (this.showWelcomeModal && this.showVideo) {
+            this.showWelcomeModalMethod();
+        }
+    },
+    destroyed() {
+        // Remove the click event listener when the component is destroyed
+        document.removeEventListener('click', this.handleClickOutside);
+    },
+    watch: {
+        '$store.state.isAuthenticated': 'checkAndInitializeWebSocket',
+        '$store.state.user': 'checkAndInitializeWebSocket',
+        '$store.state.isUserAbleToBid': 'displayToast'
+    },
+    components: {
+        Topbar,
+        Footer,
+        MobileMenu
+    },
+    data() {
+        return {
+            showVideo: true,
+            isMobileMenuOpen: false,
+            showWelcomeModal: !Cookie.get('videoPlayed')
+        }
+    },
+    computed: {
+        bgImage() {
+            return this.$store.state.bgImage;
+        },
+        bgLayoutMode() {
+            return this.$store.state.layoutMode === 'lightMode' ? 'bg-light-mode' : 'bg-black';
+        }
     },
     methods: {
+        showWelcomeModalMethod() {
+            Swal.fire({
+                title: this.$i18n.locale === 'es' ? 'Bienvenido a HorseBook Subastas' : 'Welcome to HorseBook Auctions',
+                text: this.$i18n.locale === 'es' ? 'Tu mensaje de bienvenida aquí' : 'Your welcome message here',
+                confirmButtonText: this.$i18n.locale === 'es' ? 'Cerrar' : 'Close',
+                confirmButtonColor: '#3085d6',
+                allowOutsideClick: false,
+            }).then((result) => {
+                this.handleWelcomeModalClose();
+            })
+        },
+        handleWelcomeModalClose() {
+            this.showWelcomeModal = false;
+            this.playVideoWithSound();
+        },
+        handleWelcomeModalClose() {
+            this.showWelcomeModal = false;
+            this.playVideoWithSound();
+            console.log('Closing welcome modal');
+        },
+        playVideoWithSound() {
+            console.log('Playing video with sound');
+            if (this.showVideo) {
+                const videoPlayer = this.$refs.videoPlayer;
+                videoPlayer.muted = false;
+                videoPlayer.play();
+                console.log('Playing video with sound');
+            }
+        },
         checkAndInitializeWebSocket() {
             console.log('Checking and initializing websocket');
             if (this.$store.state.isAuthenticated && this.$store.state.user.id) {
@@ -55,6 +139,7 @@ export default {
             }
         },
         async getUserInfo() {
+            if (!this.$cookies.get("access_token")) return
             const decoded = JWTDecode(this.$cookies.get("access_token"))
             const url = `${this.$config.baseURL}/users/list-app-users/?email=${decoded.email}`
 
@@ -107,8 +192,40 @@ export default {
                     )
                 }
             }
+        },
+        closeVideo() {
+            this.showVideo = false; // hides the video and close button
+            this.$refs.videoPlayer.pause(); // stops the video playback
+
+            // Set the cookie to remember the video has been played
+            Cookie.set('videoPlayed', 'true', { expires: 365 }); // set it to expire in 365 days. Adjust as needed.
+        },
+        playVideo() {
+            this.$refs.videoPlayer.play();
+        },
+        handleMenu() {
+            this.isMobileMenuOpen = !this.isMobileMenuOpen;
+
+            // Ensure that we add/remove event listener after the DOM has been updated
+            this.$nextTick(() => {
+                if (this.isMobileMenuOpen) {
+                    document.addEventListener('click', this.handleClickOutside, true);
+                } else {
+                    document.removeEventListener('click', this.handleClickOutside, true);
+                }
+            });
+        },
+        handleClickOutside(event) {
+            // Check if mobileMenu exists and if the click is outside of it
+            if (this.isMobileMenuOpen && this.$refs.mobileMenu && !this.$refs.mobileMenu.contains(event.target)) {
+                this.isMobileMenuOpen = false;
+                document.removeEventListener('click', this.handleClickOutside, true);
+            }
+        },
+        hanldeCloseMenu() {
+            this.isMobileMenuOpen = false;
         }
     },
-
 };
+
 </script>
