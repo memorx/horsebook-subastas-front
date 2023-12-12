@@ -17,16 +17,34 @@
             </div>
 
             <!-- Image -->
-            <div class="order-1 md:order-2 flex flex-col items-center justify-center space-y-4">
-               <ContentTile title="Octubre 2023" paragraph="la subasta comienza en" :buttonLabel="null" headingLevel="2"
-                  :classOverrides="{
-                     container: 'flex flex-col items-center w-full',
-                     title: 'text-custom-gold font-normal text-xl md:text-2xl lg:text-2xl uppercase font-roboto',
-                     paragraph: 'uppercase text-white text-xs md:text-sm lg:text-base',
-                  }" />
-               <img src="../public/conter-home.png" alt="conter"
-                  class="w-1/3 md:w-3/6 lg:w-3/6 xl:w-2/5 h-auto object-cover" />
-            </div>
+            <button :to="'/'" @click="goToAuctionDetail(nextAuction)" exact class="order-1 md:order-2 flex flex-col items-center justify-center space-y-4" :class="(nextAuction?.status == 'BIDDING') ? 'animate-blink' : ''">
+
+                  <ContentTile :title="nextAuction?.notes"
+                     :paragraph="(nextAuction?.status == 'BIDDING') ? 'subasta en vivo' : 'la subasta comienza en'" :buttonLabel="null" headingLevel="2"
+                     :classOverrides="{
+                        container: 'flex flex-col items-center w-full',
+                        title: 'text-custom-gold font-normal text-xl md:text-2xl lg:text-2xl uppercase font-roboto',
+                        paragraph: 'uppercase text-white text-xs md:text-sm lg:text-base',
+                     }" />
+
+                     <div class="grid grid-rows-5 grid-cols-1 gap-2 text-white cron-bg object-cover">
+
+                        <div class="row-span-3"></div>
+
+                        <div class="row-span-1 grid grid-cols-3 gap-4 pt-6 text-2xl">
+                           <div class="text-center pl-5">{{ bidTime.days }}</div>
+                           <div class="text-center">{{ bidTime.hours }}</div>
+                           <div class="text-center pr-5">{{ bidTime.minutes }}</div>
+                        </div>
+
+                        <div class="row-span-1 grid grid-cols-3 gap-4 pt-5">
+                           <div class="text-center pl-5">Días</div>
+                           <div class="text-center">Horas</div>
+                           <div class="text-center pr-5">Minutos</div>
+                        </div>
+                     </div>
+
+            </button>
          </div>
 
          <!-- Main section mobile -->
@@ -66,7 +84,7 @@
          <div class="flex justify-center w-full h-auto mt-8">
             <div class="grid grid-cols-1 grid-rows-2 gap-12 w-11/12 h-full">
                <!-- Card 1 -->
-               <div
+               <div v-for="auction in otherAuctions"
                   class="bg-white flex flex-col lg:items-start lg:justify-center lg:flex-row shadow-lg rounded-xl border-2 border-custom-gold">
                   <!-- Image part -->
                   <div class="w-full lg:w-1/2 h-full flex items-center justify-center">
@@ -78,13 +96,21 @@
                      <div class="flex flex-col w-full h-full justify-between">
                         <div class="xl:mt-6">
                            <!-- Placeholder content, replace with your content -->
-                           <h2 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">remate</h2>
-                           <p class="font-roboto capital font-bold text-sm lg:text-base xl:text-lg">La Silla 1er Semana</p>
+                           <h2 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl flex flex-row gap-10">
+                              remate
+                              <statusBid :status="auction.status" />
+                           </h2>
+                           <p class="font-roboto capital font-bold text-sm lg:text-base xl:text-lg pt-2">
+                              {{ auction.notes }}
+                           </p>
 
                            <div class="py-2 lg:py-3 xl:py-4">
                               <div class="flex items-center">
                                  <img src="../public/message-icon.png" alt="lot" class="mr-2 h-3 w-3">
-                                 <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">0 lotes</p>
+                                 <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">
+                                    {{ auction.horses?.length }}
+                                    lotes
+                                 </p>
                               </div>
                               <div class="flex items-center">
                                  <img src="../public/location-icon.png" alt="location" class="mr-2 h-3 w-3">
@@ -92,87 +118,39 @@
                               </div>
                            </div>
 
-                           <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">remate en vivo
+                           <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">
+                              remate en vivo
                            </h3>
                            <div class="py-2 lg:py-3 xl:py-4 flex items-center">
                               <img src="../public/calendar-icon.png" alt="date" class="mr-2 h-3 w-3">
-                              <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">Sabado 11/11 18:00
-                                 HS</p>
+                              <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">
+                                 {{ formatDate(auction.start_bid) }}
+                              </p>
                            </div>
 
                            <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">Preofertas</h3>
                            <div class="py-2 lg:py-3 xl:py-4">
                               <div class="flex items-center">
                                  <img src="../public/green-calendar-icon.png" alt="start-date" class="mr-2 h-3 w-3">
-                                 <p class="font-roboto capital font-bold text-sm uppercase">Inicio: Lunes 11/11 10:00 HS
+                                 <p class="font-roboto capital font-bold text-sm uppercase">
+                                    Inicio:
+                                    {{ formatDate(auction.start_pre_bid) }}
                                  </p>
                               </div>
                               <div class="flex items-center">
                                  <img src="../public/cancel-icon.png" alt="end-date" class="mr-2 h-3 w-3">
-                                 <p class="font-roboto capital font-bold text-sm uppercase">Fin: Viernes 17/11 18:00 HS</p>
-                              </div>
-                           </div>
-                        </div>
-
-                        <ReusableButton buttonText="participar en remate"
-                           buttonClass="w-full bg-[#BDBDBD] text-white border-0 uppercase extrabold text-base lg:text-xl"
-                           containerClass="w-full" :onClick="someFunction" />
-                     </div>
-                  </div>
-               </div>
-
-               <!-- Card 2 -->
-               <div
-                  class="bg-white flex flex-col lg:items-start lg:justify-center lg:flex-row shadow-lg rounded-xl border-2 border-custom-gold">
-                  <!-- Image part -->
-                  <div class="w-full lg:w-1/2 h-full flex items-center justify-center">
-                     <img src="../public/white-horse-2.png" alt="Image 2" class="w-full h-full object-cover rounded-xl">
-                  </div>
-
-                  <!-- Content part -->
-                  <div class="w-full lg:w-1/2 flex items-center justify-start px-12 py-4 h-full">
-                     <div class="flex flex-col w-full h-full justify-between">
-                        <div class="xl:mt-6">
-                           <!-- Placeholder content, replace with your content -->
-                           <h2 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">remate</h2>
-                           <p class="font-roboto capital font-bold text-sm lg:text-base xl:text-lg">La Silla 2da Semana</p>
-
-                           <div class="py-2 lg:py-3 xl:py-4">
-                              <div class="flex items-center">
-                                 <img src="../public/message-icon.png" alt="lot" class="mr-2 h-3 w-3">
-                                 <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">0 lotes</p>
-                              </div>
-                              <div class="flex items-center">
-                                 <img src="../public/location-icon.png" alt="location" class="mr-2 h-3 w-3">
-                                 <p class="font-roboto capital font-bold text-sm text-[#575757]">México / Monterrey</p>
-                              </div>
-                           </div>
-
-                           <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">remate en vivo
-                           </h3>
-                           <div class="py-2 lg:py-3 xl:py-4 flex items-center">
-                              <img src="../public/calendar-icon.png" alt="date" class="mr-2 h-3 w-3">
-                              <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">Sabado 11/11 18:00
-                                 HS</p>
-                           </div>
-
-                           <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">Preofertas</h3>
-                           <div class="py-2 lg:py-3 xl:py-4">
-                              <div class="flex items-center">
-                                 <img src="../public/green-calendar-icon.png" alt="start-date" class="mr-2 h-3 w-3">
-                                 <p class="font-roboto capital font-bold text-sm uppercase">Inicio: Lunes 11/11 10:00 HS
+                                 <p class="font-roboto capital font-bold text-sm uppercase">
+                                    Fin:
+                                    {{ formatDate(auction.end_pre_bid) }}
                                  </p>
                               </div>
-                              <div class="flex items-center">
-                                 <img src="../public/cancel-icon.png" alt="end-date" class="mr-2 h-3 w-3">
-                                 <p class="font-roboto capital font-bold text-sm uppercase">Fin: Viernes 17/11 18:00 HS</p>
-                              </div>
                            </div>
                         </div>
-
-                        <ReusableButton buttonText="participar en remate"
-                           buttonClass="w-full bg-[#BDBDBD] text-white border-0 uppercase extrabold text-base lg:text-xl"
-                           containerClass="w-full" :onClick="someFunction" />
+                        <button type="button"
+                           class="lg:px-12 px-6 md:px-8 py-2 border-1 border-custom-gold rounded-2xl buttonClass w-full bg-[#BDBDBD] text-white  uppercase extrabold text-base lg:text-xl"
+                           @click="goToAuctionDetail(auction)">
+                           participar en remate
+                        </button>
                      </div>
                   </div>
                </div>
@@ -245,10 +223,12 @@
 import ContentTile from '~/components/ContentTile.vue';
 import SectionTitle from '~/components/SectionTitle.vue';
 import ReusableButton from '~/components/ReusableButton.vue';
+import statusBid from "~/components/bid/statusBid.vue";
 
 export default {
    layout: 'default',
    mounted() {
+      this.init()
       // set the background image for this page
       // this.$store.commit('setBgImage', 'home-bg.jpg');
       // set the textColor on Topbar component
@@ -257,10 +237,19 @@ export default {
    components: {
       ContentTile,
       SectionTitle,
-      ReusableButton
+      ReusableButton,
+      statusBid
    },
    data() {
       return {
+         nextAuction: null,
+         otherAuctions: [],
+         bidTime: {
+            days: 0,
+            hours: 0,
+            minutes: 0,
+            seconds: 0
+         },
          newsData: [ // Placeholder data
             {
                id: 1,
@@ -297,6 +286,90 @@ export default {
       }
    },
    methods: {
+      async init() {
+         await this.getNextAuction()
+         this.calculateCountdown()
+      },
+      async getNextAuction() {
+         const listSubastasEndpoint = "/subastas/list-subastas/"
+         const url = `${this.$config.baseURL}${listSubastasEndpoint}?only_subasta_data=true`
+         //I want to stop to make a hardcode and do it using logic
+         this.loading = true
+         await this.$axios
+         .get(url)
+         .then((response) => {
+            response.data.map((auction) => {
+               if (auction.status != "CLOSED") {
+                  if (
+                     ["PREBID", "COMING", "CLOSED PREBID", "BIDDING"].includes(
+                        auction.status
+                     )
+                  ) {
+                     this.nextAuction = auction
+                     this.otherAuctions.push(auction)
+                  }
+               }
+            })
+
+            this.loading = false
+         })
+         .catch((error) => {
+            this.loading = false
+         })
+      },
+      calculateCountdown() {
+         const now = new Date()
+         const targetDate = new Date(this.nextAuction.start_bid)
+         const timeDifference = targetDate - now
+
+         if (timeDifference <= 0) {
+            this.countdownSubasta = false
+            clearInterval(this.timer)
+         } else {
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+            const hours = Math.floor(
+               (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            )
+            const minutes = Math.floor(
+               (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+            )
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
+            this.bidTime.days = days
+            this.bidTime.hours = hours
+            this.bidTime.minutes = minutes
+            this.bidTime.seconds = seconds
+         }
+      },
+
+      formatDate(dateString) {
+         const daysOfWeek = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
+
+         const date = new Date(dateString);
+         const dayOfWeek = daysOfWeek[date.getDay()];
+
+         const options = { month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false, timeZone: 'UTC' };
+         const formattedDate = date.toLocaleString('es-ES', options);
+
+         const [datePart, timePart] = formattedDate.split(', ');
+         const [month, day] = datePart.split('/');
+
+         return `${dayOfWeek} ${day}/${month} ${timePart} HS`;
+      },
+
+      goToAuctionDetail(auction) {
+         console.log('si se hace')
+         if(auction.status == 'BIDDING') {
+            let path = `auction/live/${auction.id}`
+            this.$router.push({ path: path })
+
+         } else {
+            let path = `user/detalles/${auction.id}`
+            this.$router.push({ path: path })
+         }
+
+      },
+
+
       handleButtonClick(index) {
          // Handle button click event. For demonstration:
          alert(`Button clicked on tile: ${index}`);
@@ -332,5 +405,23 @@ export default {
 </script>
 
 <style scoped>
-/* You can add additional styles here if needed */
+.cron-bg{
+   background-image: url('../public/conter-home.png'); /* Reemplaza con la ruta de tu imagen de fondo */
+   background-size: 330px 305px;
+   background-repeat: no-repeat;
+   height: 305px;
+   width: 330px;
+}
+
+@keyframes blink {
+   0%, 50%, 100% {
+      opacity: 1;
+   }
+   25%, 75% {
+      opacity: 0;
+   }
+}
+.animate-blink {
+  animation: blink 4s infinite;
+}
 </style>

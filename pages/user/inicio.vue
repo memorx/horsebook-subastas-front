@@ -134,31 +134,7 @@ export default {
           this.loading = false
         })
     },
-    // async registerAuctions() {
-    //   this.register = []
-    //   const currentDate = new Date().toISOString().slice(0, 10);
-    //   const url = `${this.$config.baseURL}/subastas/get-registered-subastas/?email=${this.$store.state.user.email}&start_date=${currentDate}`;
-    //   console.log(url)
-    //   const decoded = JWTDecode(this.$cookies.get("access_token"))
-    //   //I want to stop to make a hardcode and do it using logic
-    //   if (decoded) {
-    //     const token = "4fd2e979427a259cc56c18cad449cec5aefaed0d"; // Replace with your token value
-    //     const headers = {
-    //       Authorization: `Token ${decoded.token}`,
-    //     };
-    //     this.loading = true;
-    //     await this.$axios
-    //       .get(url, { headers })
-    //       .then((response) => {
-    //         this.register = response.data.subastas;
-    //         console.log('test' + this.register)
-    //         this.loading = false;
-    //       })
-    //       .catch((error) => {
-    //         console.log(error)
-    //       });
-    //   }
-    // },
+
     goToDetails(id) {
       this.$router.push(`/user/detalles/${id}`)
     }

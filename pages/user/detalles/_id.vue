@@ -31,7 +31,7 @@
       <!-- Second Column -->
       <div class="w-full sm:w-1/2 md:flex md:flex-col">
         <!-- First Row in the second column -->
-        <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
+        <div class="mb-4 bg-white p-5 ml-5 rounded-lg">
           <div class="flex items-center">
             <h2 class="text-2xl font-bold mb-1 mr-3">Subasta</h2>
             <statusBid :status="bidStatus" />
@@ -43,7 +43,7 @@
           <span>{{ item.horses.length == 1 ? "Caballo" : "Caballos" }}</span>
         </div>
         <!-- Second Row in the second column -->
-        <div class="bg-white p-5 mx-5 rounded-lg md:flex-grow">
+        <div class="bg-white p-5 ml-5 rounded-lg md:flex-grow">
           <!-- PREOFERTA -->
           <h1
             v-if="bidStatus == 'COMING'"
@@ -157,29 +157,26 @@
         </div>
       </div>
     </div>
-    <div class="text-center md:text-left">
-      <h1 class="text-4xl font-semibold my-6">Caballos a subastar</h1>
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4"
-      >
-        <div
-          class="mx-5 md:mx-0 bg-white rounded-lg shadow-md"
-          v-for="(horse, index) in item.horses"
-          :key="horse.id"
-        >
-          <NuxtLink
-            class="buttonDetails"
-            :to="`/bids/bid/?id=${id}&horsePositionList=${index}&horseId=${horse.local_data.id}`"
-          >
+    <div class="w-full h-full grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4">
+      <!-- Dynamic Cards -->
+      <div v-for="(horse, index) in item.horses" :key="horse.id" class="h-[200px] md:h-[550px] w-full relative">
+          <!-- live Button -->
+          <div class="absolute top-2 left-2 md:top-4 md:left-4 text-white text-center text-[7px] md:text-base xl:text-lg px-2 py-1 rounded-xl z-10">
+            <horseStatus
+                :status="horse.local_data.status"
+                :bid-status="bidStatus"
+              />
+          </div>
+          <!-- Card content -->
 
+          <div class="w-full h-1/2 flex items-center justify-center">
             <img
               v-if="getImageUrl(horse.local_data.horse_id)"
               :src="getImageUrl(horse.local_data.horse_id)"
-              class="w-full object-cover"
-              style="height: 40vh"
+              class="w-full h-full object-cover rounded-tl-3xl rounded-br-3xl opacity-90 hover:opacity-100 transition-opacity"
             />
             <div
-              class="bg-gray-200 h-[40vh] flex justify-center items-center"
+              class="w-full bg-gray-500 h-[35vh] flex justify-center items-center object-cover rounded-tl-3xl rounded-br-3xl opacity-90 hover:opacity-100 transition-opacity"
               v-else
             >
               <img
@@ -188,45 +185,50 @@
                 alt="Default Horse"
               />
             </div>
-            <div class="px-5 py-2">
-              <horseStatus
-                :status="horse.local_data.status"
-                :bid-status="bidStatus"
-              />
-            </div>
-            <p class="text-xl font-bold my-2 mx-6">
-              {{ horse.external_data.name }}
-            </p>
-            <p class="text-md font-medium mx-6 text-gray-500">
-              Lote {{ horse.local_data.lot }}
-            </p>
-            <div class="border-b border-gray-300 my-4 mx-5"></div>
-            <p
-              v-if="
-                amountStringToInt(
-                  horse.local_data.initial_pre_bid_amount,
-                  horse.local_data.final_amount
-                )
-              "
-              class="text-sm font-bold text-center my-2 mx-3"
-            >
-              Mejor Oferta
-            </p>
-            <p v-else class="text-sm font-bold text-center my-2 mx-3">
-              Precio Inicial
-            </p>
-            <p class="text-lg font-bold text-center mt-2 mb-3 mx-3">
-              $ {{ horse.local_data.final_amount }} USD
-            </p>
-            <div class="flex justify-center">
-              <button
-                class="bg-black rounded-lg px-4 py-2 text-white text-center mb-3 hover:bg-gray-800"
-              >
-                Ingresar
-              </button>
-            </div>
-          </NuxtLink>
-        </div>
+          </div>
+          <div class="w-full md:w-full h-1/2">
+              <div class="w-full h-4/5 bg-white font-roboto flex flex-col justify-around">
+                  <div>
+                      <h3 class="text-center text-[10px] md:text-xl xl:text-2xl font-bold">
+                        {{ horse.external_data.name }}
+                      </h3>
+                      <p v-if="isUserAuthenticated" class="text-center text-[7px] md:text-lg xl:text-xl">
+                          <span class="font-bold">Lote: </span> {{ horse.local_data.lot }}
+                      </p>
+                      <!--
+                      <p v-else class="text-center text-[7px] md:text-lg xl:text-xl">
+                          <span class="font-bold">Pedigree: </span> {{ card.pedigree }}
+                      </p>
+                      -->
+                  </div>
+                  <div class="border-b border-gray-300 my-4 mx-5"></div>
+                  <p
+                    v-if="
+                      amountStringToInt(
+                        horse.local_data.initial_pre_bid_amount,
+                        horse.local_data.final_amount
+                      )
+                    "
+                    class="text-xl font-bold text-center my-2 mx-3"
+                  >
+                    Mejor Oferta
+                  </p>
+                  <p v-else class="text-xl font-bold text-center my-2 mx-3">
+                    Precio Inicial
+                  </p>
+                  <p class="text-lg font-bold text-center mt-2 mb-3 mx-3">
+                    $ {{ horse.local_data.final_amount }} USD
+                  </p>
+
+              </div>
+              <div
+                  class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity">
+                  <button @click="goToDetail(horse, index)"
+                      class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105  text-[8px] md:text-xl xl:text-xl">
+                      {{ isUserAuthenticated ? 'Ofertar' : 'REGÍSTRATE PARA OFERTAR' }}
+                  </button>
+              </div>
+          </div>
       </div>
     </div>
   </div>
@@ -291,7 +293,13 @@ export default {
     },
     shouldCallGetDetailsAuctionPre() {
       return this.countdownPre === false
-    }
+    },
+    isUserAuthenticated() {
+      return this.$store.state.isAuthenticated;
+    },
+    displayedCards() {
+        return this.isUserAuthenticated ? this.cards : this.guestCards;
+    },
   },
   watch: {
     shouldCallGetDetailsAuction(newValue) {
@@ -491,7 +499,18 @@ export default {
     },
     showHorseDetails(horse) {
       this.$set(horse, "showDetails", !horse.showDetails)
-    }
+    },
+    goToDetail(horse, index) {
+      if(this.isUserAuthenticated) {
+        let path = `/bids/bid/?id=${this.id}&horsePositionList=${index}&horseId=${horse.local_data.id}`
+        this.$router.push({ path: path })
+
+      } else {
+        let path = '/auth/sign-up'
+        this.$router.push({ path: path })
+      }
+
+    },
   }
 }
 </script>
