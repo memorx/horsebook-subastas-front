@@ -517,6 +517,7 @@ export default {
       winnerEmail: "",
       hasBid: false,
       subscribed:false,
+
     }
   },
   computed: {
