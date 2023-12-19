@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-zinc-200 py-5 lg:px-20">
+  <div>
     <modal
       v-show="showModal"
       :amount="manualInputAmount ? manualInputAmount : inputAmount"
@@ -7,44 +7,62 @@
       :disableModal="disableModal"
       :status="horseStatus"
     />
-    <NuxtLink :to="`/user/detalles/${bidId}`">
-      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-        Listado de Caballos
-      </button>
-    </NuxtLink>
-    <div>
-      <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
-        <div class="flex items-center">
-          <span class="text-2xl font-bold mr-3">Subasta la Silla</span>
-          <div>
-            <statusBid :status="bidStatus" />
-          </div>
-        </div>
-        <h4 class="text-sm">🇲🇽 Monterrey, Nuevo Leon</h4>
-      </div>
-      <div class="flex mx-5 mb-4">
 
-        <!-- PRE BID -->
-        <div
-          class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
-
-        >
-          <div class="w-full p-5 md:mr-2 bg-white rounded-lg">
-            <div class="grid grid-row-2">
-              <div class="flex w-full bg-green p-3">
-                <span class="mr-1 text-xl font-bold mb-2">{{
-                  HorsenName
-                }}</span>
-                <div>
+    <div class="w-full h-auto flex flex-col justify-start pt-4 px-6">
+        <div class="flex-grow bg-[#EDEDED] rounded-lg mb-4 h-full ">
+            <div class="w full h-auto mx-6 my-4 md:my-8">
+                <button
+                    class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
+                    @click="() => this.$router.back()"
+                >
+                    <span class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"><img
+                            src="../../public/arrow-black.png" /></span>Regresar
+                </button>
+            </div>
+            <div class="w full h-auto mx-6 my-4 md:my-8 relative">
+                <div  class="w-auto absolute top-0 right-0 ">
                   <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
                 </div>
-              </div>
+                <h1 class="text-base md:text-2xl lg:text-3xl  xl:text-4xl font-roboto font-extrabold">
+                    {{ HorseName }}
+                    <button class="text-lg text-right" :class="subscribed? 'text-yellow-500' : 'text-black'">
+                      <i class="icon fas fa-bell" v-on:click="() => {subscribe()}" :title="!subscribed? 'Activar notificaciones' : 'Desactivar notificaciones'"></i>
+                    </button>
+                </h1>
+
+                <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
+                  # de lote {{ horseData.Lot }}
+                </p>
+                <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
+                    Monterrey, Nuevo León</p>
+            </div>
+            <div class="w-full h-auto px-0 relative">
               <div class="w-full">
                 <Carousel :images="horseData.images" />
               </div>
             </div>
-          </div>
-          <div v-if="bidStatus == 'PREBID' && horseStatus == 'PREBID'" class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
+            <!--video, description and bid table -->
+            <div class="hidden lg:flex w-full h-screen px-6 my-6">
+                <div class="h1/2 w-1/2">
+                  <div class="aspect-w-16 aspect-h-9 mr-5">
+                      <iframe
+                        v-if="horseData.videoUrl"
+                        class="aspect-content rounded-lg"
+                        :src="
+                          horseData.videoUrl
+                            ? `https://www.youtube.com/embed/${horseData.videoUrl}`
+                            : `https://www.youtube.com/embed/ivGNj_t6S2c`
+                        "
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                      ></iframe>
+                      <h1 v-else class="w-full text-center text-gray-700 mt-8">No hay video disponible</h1>
+                    </div>
+                </div>
+                <!--table bid-->
+
+          <div v-if="bidStatus == 'PREBID' && horseStatus == 'PREBID'" class="h-full w-1/2 bg-white rounded-xl font-roboto text-center">
             <div
               class="text-center w-full p-5 rounded-t-md"
               style="background-color: #b99d61"
@@ -175,7 +193,7 @@
               </div>
             </div>
           </div>
-          <div v-if="bidStatus == 'BIDDING' && horseStatus == 'BIDDING'" class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg text-center">
+          <div v-if="bidStatus == 'BIDDING' && horseStatus == 'BIDDING'" class="h-full w-1/2 bg-white rounded-xl font-roboto text-center">
             <p class="text-black font-bold text-2xl pt-8 px-10">
               LA SUBASTA DE ESTE CABALLO ESTÁ EN VIVO
             </p>
@@ -187,7 +205,7 @@
             </NuxtLink>
             </p>
           </div>
-          <div v-if="horseStatus == 'CLOSED PREBID'" class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg text-center">
+          <div v-if="horseStatus == 'CLOSED PREBID'" class="h-full w-1/2 bg-white rounded-xl font-roboto text-center">
             <p class="text-black font-bold text-2xl pt-8 px-10">
               LA SUBASTA DE ESTE CABALLO ESTÁ POR COMENZAR
             </p>
@@ -202,7 +220,7 @@
               Quédate al pendiente
             </div>
           </div>
-          <div v-if="horseStatus =='COMMING' && bidStatus == 'COMMING'" class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg text-center">
+          <div v-if="horseStatus =='COMMING' && bidStatus == 'COMMING'" class="h-full w-1/2 bg-white rounded-xl font-roboto text-center">
 
             <p class="text-black font-bold text-2xl pt-8 px-10">
               LA PREOFERTA DE ESTE CABALLO ESTÁ POR COMENZAR
@@ -246,97 +264,45 @@
 
           </div>
 
+            </div>
         </div>
-
-
-
-      </div>
-      <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          <div class="mr-4">
-            <span class="font-bold text-gray-700">Fecha de nacimiento:</span>
-            <span class="text-gray-600">{{ horseData.birthDate || "NA" }}</span>
-          </div>
-          <div class="mr-4">
-            <span class="font-bold text-gray-700">Edad:</span>
-            <span class="text-gray-600">{{ horseData.Age || "NA" }}</span>
-            <span class="text-gray-600">años</span>
-          </div>
-
-          <div class="mr-4">
-            <span class="font-bold text-gray-700">No. Registro:</span>
-            <span class="text-gray-600">{{
-              horseData.registerNumber || "NA"
-            }}</span>
-          </div>
-          <div class="mr-4">
-            <span class="font-bold text-gray-700">Alzada:</span>
-            <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
-            <span class="text-gray-600">m</span>
-          </div>
-          <div class="mr-4">
-            <span class="font-bold text-gray-700">Genero:</span>
-            <span class="text-gray-600">{{ horseData.Genre || "NA" }}</span>
-          </div>
-          <div class="mr-4">
-            <span class="font-bold text-gray-700">Criadero:</span>
-            <span class="text-gray-600">{{ horseData.Hatchery || "NA" }}</span>
-          </div>
-          <!-- <div class="mr-4">
-            <span class="font-bold text-gray-700">Color:</span>
-            <span class="text-gray-600">{{ horseData.Color || "NA" }}</span>
-          </div> -->
-
-          <!-- <div class="mr-4">
-            <span class="font-bold text-gray-700">Peso:</span>
-            <span class="text-gray-600">{{ horseData.Weight || "NA" }}</span>
-            <span class="text-gray-600">kg</span>
-          </div>
-
-          <div class="mr-4">
-            <span class="font-bold text-gray-700">Altura:</span>
-            <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
-            <span class="text-gray-600">m</span>
-          </div> -->
-        </div>
-      </div>
-      <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
-        <div class="mb-4">
-          <span class="text-2xl font-bold">Pedigree</span>
-        </div>
-        <Pedigree :link="horseData.Pedigree" />
-        <p v-if="horseData.horseTelex">
-          Revisa los datos en
-          <a class="text-blue-400" :href="horseData.horseTelex" target="_blank"
-            >Horse Telex</a
-          >
-        </p>
-      </div>
     </div>
-    <div class="mb-4 p-5 rounded-lg">
+            <!-- END NEW DESIGN-->
+
+
+    <div class="flex flex-col md:flex-row h-16 p-0 mx-5 bg-[#D9D9D9]">
       <button
-        class="rounded-full"
-        style="width: 100px; height: 50px"
+        class="w-48 h-16 font-bold"
         type="button"
-        v-on:click="toggleTabs(4)"
+        v-on:click="toggleTabs(1)"
         v-bind:class="{
-          'text-black bg-white': openTab !== 4,
-          'w-full bg-black text-white': openTab === 4
+          'text-gray-600 bg-[#D9D9D9]': openTab !== 1,
+          'w-full text-black bg-white': openTab === 1
         }"
       >
-        Video
+        Datos del Caballo
       </button>
       <button
-        class="rounded-full"
-        style="width: 100px; height: 50px"
+        class="w-48 h-16 font-bold"
+        type="button"
+        v-on:click="toggleTabs(2)"
+        v-bind:class="{
+          'text-gray-600 bg-[#D9D9D9]': openTab !== 2,
+          'w-full text-black bg-white': openTab === 2
+        }"
+      >
+        Pedigree
+      </button>
+      <button
+        class="w-48 h-16 font-bold"
         type="button"
         v-on:click="toggleTabs(3)"
         v-bind:class="{
-          'text-black bg-white': openTab !== 3,
-          'w-full bg-black text-white': openTab === 3
+          'text-gray-600 bg-[#D9D9D9]': openTab !== 3,
+          'w-full text-black bg-white': openTab === 3
         }"
       >
-        X-Ray
+        Rayos X
       </button>
     </div>
     <div class="flex flex-col md:flex-row -mx-4">
@@ -344,14 +310,70 @@
         <div class="flex flex-wrap">
           <div class="w-full">
             <!-- Tabs -->
-
             <div
-              class="relative flex flex-col min-w-0 break-words w-full mb-6 rounded"
+              class="relative flex flex-col min-w-0 break-words w-full mb-6"
             >
               <div class="px-4 flex-auto">
                 <div class="tab-content tab-space">
                   <div
-                    class="mb-4 bg-white p-5 mx-5 rounded-lg"
+                    class="mb-4 bg-white p-5 mx-5"
+                    v-bind:class="{
+                      hidden: openTab !== 1,
+                      block: openTab === 1
+                    }"
+                  >
+                    <p>
+                      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div class="mr-4">
+                          <span class="font-bold text-gray-700">Fecha de nacimiento:</span>
+                          <span class="text-gray-600">{{ horseData.birthDate || "NA" }}</span>
+                        </div>
+                        <div class="mr-4">
+                          <span class="font-bold text-gray-700">Edad:</span>
+                          <span class="text-gray-600">{{ horseData.Age || "NA" }}</span>
+                          <span class="text-gray-600">años</span>
+                        </div>
+
+                        <div class="mr-4">
+                          <span class="font-bold text-gray-700">No. Registro:</span>
+                          <span class="text-gray-600">{{
+                            horseData.registerNumber || "NA"
+                          }}</span>
+                        </div>
+                        <div class="mr-4">
+                          <span class="font-bold text-gray-700">Alzada:</span>
+                          <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
+                          <span class="text-gray-600">m</span>
+                        </div>
+                        <div class="mr-4">
+                          <span class="font-bold text-gray-700">Genero:</span>
+                          <span class="text-gray-600">{{ horseData.Genre || "NA" }}</span>
+                        </div>
+                        <div class="mr-4">
+                          <span class="font-bold text-gray-700">Criadero:</span>
+                          <span class="text-gray-600">{{ horseData.Hatchery || "NA" }}</span>
+                        </div>
+                      </div>
+                    </p>
+                  </div>
+                  <div
+                    class="mb-4 bg-white p-5 mx-5"
+                    v-bind:class="{
+                      hidden: openTab !== 2,
+                      block: openTab === 2
+                    }"
+                  >
+                    <Pedigree :link="horseData.Pedigree" />
+                    <p v-if="horseData.horseTelex">
+                      Revisa los datos en
+                      <a class="text-blue-400" :href="horseData.horseTelex" target="_blank"
+                        >Horse Telex</a
+                      >
+                    </p>
+
+                  </div>
+                  <div
+                    class="mb-4 bg-white p-5 mx-5"
                     v-bind:class="{
                       hidden: openTab !== 3,
                       block: openTab === 3
@@ -360,29 +382,6 @@
                     <p>
                       <xRayGallery :images="horseData.xRayGallery" :horse_id="horseId"/>
                     </p>
-                  </div>
-                  <div
-                    class="mb-4 bg-white p-5 mx-5 rounded-lg"
-                    v-bind:class="{
-                      hidden: openTab !== 4,
-                      block: openTab === 4
-                    }"
-                  >
-                    <div class="aspect-w-16 aspect-h-9 mx-5">
-                      <iframe
-                        v-if="horseData.videoUrl"
-                        class="aspect-content rounded-lg"
-                        :src="
-                          horseData.videoUrl
-                            ? `https://www.youtube.com/embed/${horseData.videoUrl}`
-                            : `https://www.youtube.com/embed/ivGNj_t6S2c`
-                        "
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                      ></iframe>
-                      <h1 v-else>No hay video disponible</h1>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -433,6 +432,7 @@ export default {
       },
       auctionSocket: null,
       horseData: {
+        Lot: "",
         Genre: "",
         BirthDate: "",
         Color: "",
@@ -452,7 +452,7 @@ export default {
       },
       bidStatus: "",
       liveURL: "",
-      HorsenName: "",
+      HorseName: "",
       lastOffer: "",
       intial_pre_bid_amount: "",
       horseID: "",
@@ -473,7 +473,7 @@ export default {
         amount: "",
         pre_bid: false
       },
-      openTab: 4,
+      openTab: 1,
       largeBidConfirmed: false,
       successMessage: "",
       errorMessage: "",
@@ -508,6 +508,8 @@ export default {
       horseExternalId: "",
       winnerEmail: "",
       hasBid: false,
+      subscribed:false,
+
     }
   },
   computed: {
@@ -545,11 +547,25 @@ export default {
     clearInterval(this.timer)
     this.intentionalCloseSockets()
     this.$confetti.stop()
+    this.$store.commit('setLayoutMode', 'default'); // reset to default when leaving the page
+    this.$store.commit('setTextColorTopBar', 'text-white'); // reset to default when leaving the page
   },
   async mounted() {
     this.fetchGenres()
     this.init()
     this.startAuctionSocket()
+    this.$store.commit('setLayoutMode', 'lightMode'); // set to 'lightMode' or 'default'
+    this.$store.commit('setTextColorTopBar', 'text-black'); // set to 'text-black' or 'text-white'
+    let subscribedEndpoint = "/horse/notifications/?horse=" + this.horseId
+      let url = `${this.$config.baseURL}${subscribedEndpoint}`
+      const token = getUserTokenOrDefault()
+
+      await axios
+        .get(url, {
+          headers: {
+            Authorization: `Token ${token}`
+          },
+        }).then((response) => { this.subscribed = true }).catch((error) => { })
   },
   methods: {
     async winnerConfetti() {
@@ -577,7 +593,7 @@ export default {
       this.isEditingAmount = value
     },
     removeCommas(e) {
-      document.getElementById("amount").type = "number"
+      document.getElementById("amount").type = "numb er"
       this.formData.amount = this.formData.amount.replace(/,/g, "")
     },
     addCommas(e) {
@@ -725,10 +741,10 @@ export default {
             10
           ).toLocaleString("en-US")
           if (!this.isEditingAmount) {
-            mountedThis.inputAmount = parseInt(
+            mountedThis.inputAmount = (parseInt(
               mountedThis.horseData.final_amount,
               10
-            ).toLocaleString("en-US")
+            ) + 1000).toLocaleString("en-US")
           }
         } else {
           mountedThis.formData.amount = (1000).toLocaleString("en-US")
@@ -951,7 +967,8 @@ export default {
         .then((response) => {
           const horse = response.data
           //name
-          this.HorsenName = horse.external_data.name
+          this.HorseName = horse.external_data.name
+          this.horseData.Lot = horse.local_data.lot
           //horse ID
           this.horseID = horse.external_data.id
           this.horseIDForm = horse.local_data.id
@@ -1063,6 +1080,20 @@ export default {
             }
           })
         )
+      }
+    },
+
+    async subscribe() {
+      let subscribeEndpoint = "/horse/notifications/?horse=" + this.horseId
+      let url = `${this.$config.baseURL}${subscribeEndpoint}`
+      const token = getUserTokenOrDefault()
+
+      if(this.subscribed) {
+        await axios.delete(url, { headers: { Authorization: `Token ${token}` },
+          }).then((response) => { this.subscribed = false }).catch((error) => { })
+      } else {
+        await axios.post(url, [], { headers: { Authorization: `Token ${token}`},
+          }).then((response) => { this.subscribed = true }).catch((error) => { })
       }
     }
   }

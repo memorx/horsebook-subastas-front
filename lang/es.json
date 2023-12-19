@@ -48,7 +48,9 @@
         "us": "nosotros",
         "contact": "contacto",
         "logIn": "login",
-        "signUp": "registrarse"
+        "signUp": "registrarse",
+        "profile": "Perfil",
+        "logout": "Salir"
     },
     "footer": {
         "navigate": "navegación",

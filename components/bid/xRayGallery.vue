@@ -20,7 +20,7 @@
     </div>
   </div>
   <div v-else>
-    <h1 class="text-gray-500">No hay imagenes de Xray disponibles</h1>
+    <h1 class="text-gray-700">No hay imágenes de Rayos X disponibles</h1>
   </div>
 </template>
 
