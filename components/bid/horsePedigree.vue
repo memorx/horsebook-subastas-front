@@ -7,8 +7,8 @@
                 style="width: 100%; height: 100%;"
             >
         </div>
-        <div v-else>
-            <h1>IMAGEN NO DISPONIBLE POR EL MOMENTO</h1>
+        <div v-else class="w-full text-left text-gray-700">
+            <h1>No hay imagen de Pedigree disponible por el momento</h1>
         </div>
     </div>
 </template>

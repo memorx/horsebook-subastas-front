@@ -86,7 +86,7 @@ export default {
     },
     mounted() {
         this.$store.commit('setLayoutMode', 'lightMode'); // set to 'lightMode' or 'default'
-        this.$store.commit('setTextColorTopBar', 'tex-black'); // set to 'text-black' or 'text-white'
+        this.$store.commit('setTextColorTopBar', 'text-black'); // set to 'text-black' or 'text-white'
     },
     beforeDestroy() {
         this.$store.commit('setLayoutMode', 'default'); // reset to default when leaving the page
@@ -115,4 +115,3 @@ export default {
     }
 }
 </script>
-

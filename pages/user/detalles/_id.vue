@@ -176,7 +176,8 @@
               class="w-full h-full object-cover rounded-tl-3xl rounded-br-3xl opacity-90 hover:opacity-100 transition-opacity"
             />
             <div
-              class="w-full bg-gray-500 h-[35vh] flex justify-center items-center object-cover rounded-tl-3xl rounded-br-3xl opacity-90 hover:opacity-100 transition-opacity"
+              class="w-full bg-gray-500 h-full object-cover rounded-tl-3xl rounded-br-3xl opacity-90 hover:opacity-100 transition-opacity flex justify-center items-center object-cover"
+
               v-else
             >
               <img
@@ -225,7 +226,7 @@
                   class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity">
                   <button @click="goToDetail(horse, index)"
                       class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105  text-[8px] md:text-xl xl:text-xl">
-                      {{ isUserAuthenticated ? 'Ofertar' : 'REGÍSTRATE PARA OFERTAR' }}
+                      ingresar
                   </button>
               </div>
           </div>
@@ -501,15 +502,8 @@ export default {
       this.$set(horse, "showDetails", !horse.showDetails)
     },
     goToDetail(horse, index) {
-      if(this.isUserAuthenticated) {
-        let path = `/bids/bid/?id=${this.id}&horsePositionList=${index}&horseId=${horse.local_data.id}`
-        this.$router.push({ path: path })
-
-      } else {
-        let path = '/auth/sign-up'
-        this.$router.push({ path: path })
-      }
-
+      let path = `/bids/bid/?id=${this.id}&horsePositionList=${index}&horseId=${horse.local_data.id}`
+      this.$router.push({ path: path })
     },
   }
 }

@@ -6,7 +6,7 @@
     />
     <div>
       <div class="text-center my-5">
-        <p class="text-2xl md:text-4xl font-bold">Bienvenido a tus subastas</p>
+        <p class="text-2xl md:text-4xl font-bold">Subastas</p>
       </div>
       <div>
         <div

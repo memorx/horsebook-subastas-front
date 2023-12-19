@@ -15,11 +15,7 @@
             <tbody style="font-size: 13px">
               <tr v-if="index < 20" v-for="(bid, index) in bids" :key="bid?.id">
                 <td class="table-cell border-y text-center">
-                  {{
-                    (bid?.user_profile?.name ?? "") +
-                    " " +
-                    bid?.user_profile?.fathers_surname
-                  }}
+                  {{ parsedName(bid) }}
                 </td>
                 <td class="table-cell border-y text-center">
                   {{ bid?.user_profile.country }}
@@ -57,7 +53,10 @@ export default {
       type: [String, Number],
       required: true
     },
-    bids: {}
+    bids: {},
+    hasBid:{
+      type: Boolean,
+    }
   },
   data() {
     return {
@@ -91,6 +90,13 @@ export default {
         return this.$props.bids.slice(0, this.nextBidIndex + 1)
       }
       return this.$props.bids.slice(0, 1)
+    },
+    parsedName() {
+      return (bid) => {
+        if (this.hasBid)
+          return (bid?.user_profile?.name ?? "") + " " + bid?.user_profile?.fathers_surname
+        return "- -"
+      }
     }
   },
   mounted() {
