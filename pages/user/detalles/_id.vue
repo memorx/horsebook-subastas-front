@@ -1,49 +1,54 @@
 <template>
-  <div class="bg-zinc-200 py-5 lg:px-20 md:px-3">
+  <div class="bg-zinc-200 py-5 lg:px-20 px-5">
     <Loading
       v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
     />
-    <NuxtLink :to="`/user/inicio/`">
-      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-        Listado de Subastas
-      </button>
-    </NuxtLink>
-    <div class="flex flex-wrap">
-      <!-- First Column -->
-      <div v-if="bidImage" class="w-full sm:w-1/2 md:flex md:flex-col">
-        <img
-          :src="bidImage"
-          alt="logo"
-          class="hidden md:block w-full max-w-full object-cover rounded-lg md:flex-grow"
-        />
-      </div>
-      <div
-        class="w-full md:w-1/2 bg-gray-300 flex justify-center items-center md:rounded-l-lg"
-        v-else
+    <div class="w full h-auto my-4">
+      <button
+        class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
+        @click="() => this.$router.back()"
       >
-        <img
-          class="m-auto opacity-70"
-          src="../../../public/image_la_silla.png"
-          alt="Default Horse"
-        />
+        <span
+          class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"
+          ><img src="../../../public/arrow-black.png" /></span
+        >Listado de Subastas
+      </button>
+    </div>
+    <div class="flex flex-wrap lg:space-x-3">
+      <!-- First Column -->
+      <div class="flex flex-wrap w-full lg:w-1/2">
+        <div v-if="bidImage" class="w-full">
+          <img
+            :src="bidImage"
+            alt="logo"
+            class="flex-1 flex-grow hidden md:block w-full max-w-full object-cover rounded-lg md:flex-grow"
+          />
+        </div>
+        <div
+          class="flex-1 flex-grow lg:mx-0 bg-gray-500 flex justify-center items-center rounded-tl-3xl rounded-br-3xl"
+          v-else
+        >
+          <img
+            class="opacity-90"
+            src="../../../public/image_la_silla.png"
+            alt="Default Horse"
+          />
+        </div>
       </div>
       <!-- Second Column -->
-      <div class="w-full sm:w-1/2 md:flex md:flex-col">
+      <div class="lg:px-0 lg:flex-1 w-full lg:w-1/2">
         <!-- First Row in the second column -->
-        <div class="mb-4 bg-white p-5 ml-5 rounded-lg">
+        <div class="mb-4 bg-white p-5 rounded-lg">
           <div class="flex items-center">
-            <h2 class="text-2xl font-bold mb-1 mr-3">Subasta</h2>
+            <h2 class="text-2xl font-bold mb-1">Subasta</h2>
             <statusBid :status="bidStatus" />
           </div>
-          <h4 class="text-sm mb-4">🇲🇽 Monterrey, Nuevo Leon</h4>
-          <span class="text-xl font-bold mb-2 mr-1">{{
-            item.horses.length
-          }}</span>
+          <span class="text-xl font-bold mb-2">{{ item.horses.length }}</span>
           <span>{{ item.horses.length == 1 ? "Caballo" : "Caballos" }}</span>
         </div>
         <!-- Second Row in the second column -->
-        <div class="bg-white p-5 ml-5 rounded-lg md:flex-grow">
+        <div class="bg-white p-5 rounded-lg md:flex-grow">
           <!-- PREOFERTA -->
           <h1
             v-if="bidStatus == 'COMING'"
@@ -157,79 +162,85 @@
         </div>
       </div>
     </div>
-    <div class="w-full h-full grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 py-4">
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 my-5">
       <!-- Dynamic Cards -->
-      <div v-for="(horse, index) in item.horses" :key="horse.id" class="h-[200px] md:h-[550px] w-full relative">
-          <!-- live Button -->
-          <div class="absolute top-2 left-2 md:top-4 md:left-4 text-white text-center text-[7px] md:text-base xl:text-lg px-2 py-1 rounded-xl z-10">
+      <div
+        v-for="(horse, index) in item.horses"
+        :key="horse.id"
+        class="mb-5 flex flex-wrap flex-grow"
+      >
+        <!-- Card content -->
+        <div class="relative bg-white rounded-tl-3xl w-full">
+          <div class="absolute z-50 m-2">
             <horseStatus
-                :status="horse.local_data.status"
-                :bid-status="bidStatus"
-              />
-          </div>
-          <!-- Card content -->
-
-          <div class="w-full h-1/2 flex items-center justify-center">
-            <img
-              v-if="getImageUrl(horse.local_data.horse_id)"
-              :src="getImageUrl(horse.local_data.horse_id)"
-              class="w-full h-full object-cover rounded-tl-3xl rounded-br-3xl opacity-90 hover:opacity-100 transition-opacity"
+              :status="horse.local_data.status"
+              :bid-status="bidStatus"
             />
-            <div
-              class="w-full bg-gray-500 h-full object-cover rounded-tl-3xl rounded-br-3xl opacity-90 hover:opacity-100 transition-opacity flex justify-center items-center object-cover"
-
-              v-else
-            >
-              <img
-                class="m-auto opacity-70"
-                src="../../../public/image_la_silla.png"
-                alt="Default Horse"
-              />
+          </div>
+          <img
+            v-if="getImageUrl(horse.local_data.horse_id)"
+            :src="getImageUrl(horse.local_data.horse_id)"
+            class="w-full flex-1 object-cover rounded-tl-3xl rounded-br-3xl opacity-90 hover:opacity-100 transition-opacity h-40 lg:h-64"
+          />
+          <div
+            v-else
+            class="bg-gray-500 w-full h-40 lg:h-64 rounded-tl-3xl rounded-br-3xl"
+          >
+            <img
+              class="mx-auto opacity-70 h-full"
+              src="../../../public/image_la_silla.png"
+              alt="Default Horse"
+            />
+          </div>
+        </div>
+        <div class="w-full">
+          <div
+            class="py-5 flex flex-wrap w-full bg-white font-roboto justify-center items-center space-y-4"
+          >
+            <div class="w-full">
+              <h3
+                class="text-center text-md md:text-xl xl:text-2xl font-extrabold"
+              >
+                {{ horse.external_data.name }}
+              </h3>
+              <p
+                v-if="isUserAuthenticated"
+                class="text-center text-xs md:text-lg xl:text-xl"
+              >
+                <span class="font-bold">Lote: </span> {{ horse.local_data.lot }}
+              </p>
+            </div>
+            <div class="w-full">
+              <p
+                v-if="
+                  amountStringToInt(
+                    horse.local_data.initial_pre_bid_amount,
+                    horse.local_data.final_amount
+                  )
+                "
+                class="text-xs lg:text-xl font-bold text-center"
+              >
+                MEJOR OFERTA:
+              </p>
+              <p v-else class="text-xs lg:text-xl font-bold text-center">
+                PRECIO INICAL:
+              </p>
+              <p class="text-xs lg:text-xl font-bold text-center">
+                $ {{ horse.local_data.final_amount }} USD
+              </p>
             </div>
           </div>
-          <div class="w-full md:w-full h-1/2">
-              <div class="w-full h-4/5 bg-white font-roboto flex flex-col justify-around">
-                  <div>
-                      <h3 class="text-center text-[10px] md:text-xl xl:text-2xl font-bold">
-                        {{ horse.external_data.name }}
-                      </h3>
-                      <p v-if="isUserAuthenticated" class="text-center text-[7px] md:text-lg xl:text-xl">
-                          <span class="font-bold">Lote: </span> {{ horse.local_data.lot }}
-                      </p>
-                      <!--
-                      <p v-else class="text-center text-[7px] md:text-lg xl:text-xl">
-                          <span class="font-bold">Pedigree: </span> {{ card.pedigree }}
-                      </p>
-                      -->
-                  </div>
-                  <div class="border-b border-gray-300 my-4 mx-5"></div>
-                  <p
-                    v-if="
-                      amountStringToInt(
-                        horse.local_data.initial_pre_bid_amount,
-                        horse.local_data.final_amount
-                      )
-                    "
-                    class="text-xl font-bold text-center my-2 mx-3"
-                  >
-                    Mejor Oferta
-                  </p>
-                  <p v-else class="text-xl font-bold text-center my-2 mx-3">
-                    Precio Inicial
-                  </p>
-                  <p class="text-lg font-bold text-center mt-2 mb-3 mx-3">
-                    $ {{ horse.local_data.final_amount }} USD
-                  </p>
-
-              </div>
-              <div
-                  class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity">
-                  <button @click="goToDetail(horse, index)"
-                      class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105  text-[8px] md:text-xl xl:text-xl">
-                      ingresar
-                  </button>
-              </div>
+          <div
+            class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
+          >
+            <button
+              @click="goToDetail(horse, index)"
+              class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105 text-xs md:text-xl xl:text-xl"
+            >
+              ingresar
+            </button>
           </div>
+        </div>
       </div>
     </div>
   </div>
@@ -296,11 +307,11 @@ export default {
       return this.countdownPre === false
     },
     isUserAuthenticated() {
-      return this.$store.state.isAuthenticated;
+      return this.$store.state.isAuthenticated
     },
     displayedCards() {
-        return this.isUserAuthenticated ? this.cards : this.guestCards;
-    },
+      return this.isUserAuthenticated ? this.cards : this.guestCards
+    }
   },
   watch: {
     shouldCallGetDetailsAuction(newValue) {
@@ -504,7 +515,7 @@ export default {
     goToDetail(horse, index) {
       let path = `/bids/bid/?id=${this.id}&horsePositionList=${index}&horseId=${horse.local_data.id}`
       this.$router.push({ path: path })
-    },
+    }
   }
 }
 </script>
