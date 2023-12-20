@@ -1,100 +1,89 @@
 <template>
-  <div class="flex h-screen">
-    <div class="w-1/2 hidden md:block">
-      <img
-        src="../../public/horse_white.png"
-        alt="logo"
-        class="w-full object-cover"
-        style="height: 100vh"
-      />
-    </div>
-    <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
-      <div class="mb-6">
-        <h1 class="text-4xl font-medium text-black">Iniciar sesión</h1>
+  <div class="bg-zinc-200 h-[90vh] p-5 lg:p-10">
+    <div
+      class="h-full p-5 lg:p-10 bg-white rounded-3xl flex justify-center items-center"
+    >
+      <div class="w-full lg:w-1/2">
+        <div class="text-center mb-10">
+          <h2>LOGIN</h2>
+          <h1 class="text-4xl font-extrabold text-black">Iniciar sesión</h1>
+        </div>
+        <div class="border border-black rounded-3xl px-5 py-10">
+          <form @submit.prevent="userLogin">
+            <div class="space-y-3 mb-4">
+              <p
+                v-for="error in errorMsg"
+                :key="error"
+                class="text-red-600 text-sm leading-tight text-center"
+              >
+                {{ error }}
+              </p>
+            </div>
+            <div class="w-full space-y-5 mb-5">
+              <div class="flex flex-col">
+                <input
+                  class="border-t-0 border-x-0 focus:ring-0"
+                  placeholder="Correo electronico"
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  required
+                  v-model="login.email"
+                  @focus="errorMsg = ''"
+                />
+              </div>
+              <div class="flex flex-col">
+                <input
+                  class="border-t-0 border-x-0 focus:ring-0"
+                  placeholder="Contraseña"
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                  v-model="login.password"
+                  @focus="errorMsg = ''"
+                />
+              </div>
+            </div>
+            <div class="flex flex-wrap mb-10">
+              <div class="w-1/2 items-center">
+                <input
+                  type="checkbox"
+                  id="remember-me"
+                  name="remember-me"
+                  class="mr-2"
+                />
+                <label for="remember-me" class="text-gray-600"
+                  >Recordarme</label
+                >
+              </div>
+              <span class="w-1/2 text-gray-400 text-right">
+                <nuxt-link to="/auth/password/send-email">
+                  ¿Has olvidado tu contraseña?
+                </nuxt-link>
+              </span>
+            </div>
+            <div class="text-center mb-10">
+              <button
+                type="submit"
+                class="py-3 px-10 rounded-full bg-[#BFA753] text-white"
+              >
+                INICIAR SESIÓN
+              </button>
+            </div>
+            <div class="text-center">
+              <span class="text-gray-400">
+                <nuxt-link to="/auth/sign-up" class="">Crear cuenta</nuxt-link>
+              </span>
+            </div>
+            <!-- <div class="w-full text-center mt-5">
+              <nuxt-link to="/" class="">Ingresar a subastas</nuxt-link>
+            </div> -->
+          </form>
+        </div>
       </div>
-      <form @submit.prevent="userLogin">
-        <div class="space-y-3 mb-4">
-          <p
-            v-for="error in errorMsg"
-            :key="error"
-            class="text-red-600 text-sm leading-tight text-center"
-          >
-            {{ error }}
-          </p>
-        </div>
-        <div class="w-full space-y-5">
-          <div class="flex flex-col">
-            <label for="email" class="text-black-600 font-medium">Correo</label>
-            <input
-              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              placeholder="Ingresar"
-              id="email"
-              name="email"
-              type="email"
-              autocomplete="email"
-              required
-              v-model="login.email"
-              @focus="errorMsg = ''"
-            />
-          </div>
-          <div class="flex flex-col">
-            <label for="password" class="text-black-600 font-medium"
-              >Contraseña</label
-            >
-            <input
-              class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              placeholder="Ingresar contraseña"
-              id="password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              required
-              v-model="login.password"
-              @focus="errorMsg = ''"
-            />
-          </div>
-        </div>
-        <div class="mb-4 text-right">
-          <span
-            >¿Olvidaste tu contraseña?
-            <nuxt-link to="/auth/password/send-email" class="underline"
-              >Recuperar</nuxt-link
-            >
-          </span>
-        </div>
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <input
-              type="checkbox"
-              id="remember-me"
-              name="remember-me"
-              class="mr-2"
-            />
-            <label for="remember-me" class="text-gray-600">Recordarme</label>
-          </div>
-          <button
-            type="submit"
-            class="py-3 px-5 rounded-md bg-black text-white"
-          >
-            Iniciar Sesion
-          </button>
-        </div>
-        <span class="text-gray-600"
-          >¿No tienes cuenta?
-          <nuxt-link
-            to="/auth/sign-up"
-            class="font-medium text-base text-black hover:text-blue-500"
-            >Resgístrate ahora</nuxt-link
-          >
-        </span>
-        <div class="w-full text-center mt-5">
-          <nuxt-link
-            to="/"
-            class="font-medium text-base text-black hover:text-blue-500"
-            >Ingresar a subastas</nuxt-link
-          >
-        </div>
-      </form>
     </div>
   </div>
 </template>
@@ -124,7 +113,7 @@ export default {
       await this.$axios
         .$post(url, formData, { headers })
         .then((response) => {
-          console.log(response);
+          console.log(response)
           if (response.token) {
             const HMACSHA256 = (stringToSign, secret) => {
               const crypto = require("crypto")
@@ -156,7 +145,7 @@ export default {
             this.$store.commit("setUser", {
               email: this.login.email,
               token: response.token,
-              id: `${response.data.id}`,
+              id: `${response.data.id}`
             })
             this.$store.commit(
               "setIsUserAbleToBid",
