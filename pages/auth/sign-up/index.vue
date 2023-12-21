@@ -1,132 +1,100 @@
 <template>
-  <div class="flex bg-zinc-200">
+  <div class="bg-zinc-200 p-5 lg:p-10">
     <Loading
       v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
     />
-    <div class="w-1/2 hidden md:block">
-      <img
-        src="../../../public/horse_white.png"
-        alt="logo"
-        class="w-full object-cover"
-        style="height: 100vh"
-      />
-    </div>
-    <div class="lg:w-1/2 w-full lg:mx-auto px-5 bg-white">
-      <div class="my-3" v-if="formStep == true">
-        <button
-          type="button"
-          @click="toggleFormStep"
-          class="py-2 px-5 bg-gray-300 rounded-lg"
-        >
-          ← Atras
-        </button>
-      </div>
-      <div v-if="formStep == false" class="my-3">
-        <h1 class="text-4xl font-medium text-black">Crea tu cuenta</h1>
-      </div>
-      <form @submit.prevent="handleSubmit">
-        <div class="flex flex-col w-full gap-6">
-          <!-- EMAIL -->
-          <div class="flex flex-col w-full mb-3">
-            <label for="email" class="text-black-600 font-medium">Email</label>
-            <input
-              v-model="form.email"
-              type="email"
-              required
-              class="rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              placeholder="Ingresar email"
-            />
-          </div>
-          <!-- Password Field -->
-          <div class="flex mb-3">
-            <div class="flex flex-col w-1/2 pr-2">
-              <label for="password" class="text-black-600 font-medium"
-                >Contraseña</label
-              >
-              <input
-                v-model="form.password"
-                :type="passwordFieldType"
-                required
-                @input="handlePasswordInput"
-                @focus="form.isPasswordFocused = true"
-                @blur="form.isPasswordFocused = false"
-                class="rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Enter password"
-              />
-              <button type="button" @click="togglePasswordVisibility">
-                {{ showPasswordText }}
-              </button>
-              <div v-if="form.isPasswordFocused" class="text-red-500 text-sm">
-                {{ form.passwordValidationMessage }}
+    <div
+      class="h-full p-5 lg:p-10 bg-white rounded-3xl flex justify-center items-center"
+    >
+      <div class="w-full lg:w-1/2">
+        <div class="text-center mb-10">
+          <h2>NUEVA CUENTA</h2>
+          <h1 class="text-4xl font-extrabold text-black">Registrarse</h1>
+        </div>
+        <div class="border border-black rounded-3xl px-5 py-10">
+          <form @submit.prevent="handleSubmit">
+            <div class="w-full space-y-5 mb-5">
+              <!-- EMAIL -->
+              <div class="flex flex-col">
+                <input
+                  v-model="form.email"
+                  type="email"
+                  required
+                  class="border-t-0 border-x-0 focus:ring-0"
+                  placeholder="E-mail"
+                />
               </div>
-              <div v-if="form.isPasswordFocused" class="text-red-500 text-sm">
-                {{ form.digitValidationMessage }}
+              <div class="flex flex-col">
+                <input
+                  v-model="form.password"
+                  :type="passwordFieldType"
+                  required
+                  @input="handlePasswordInput"
+                  @focus="form.isPasswordFocused = true"
+                  @blur="form.isPasswordFocused = false"
+                  class="border-t-0 border-x-0 focus:ring-0"
+                  placeholder="Contraseña"
+                />
               </div>
-              <div v-if="form.isPasswordFocused" class="text-red-500 text-sm">
-                {{ form.specialCharacterValidationMessage }}
+              <div class="flex flex-col">
+                <input
+                  v-model="form.confirmPassword"
+                  :type="passwordFieldType"
+                  required
+                  @input="validatePasswordMatch"
+                  class="border-t-0 border-x-0 focus:ring-0"
+                  placeholder="Confirmar contraseña"
+                />
+                <div class="text-red-500 text-sm">
+                  {{ form.passwordMatchValidationMessage }}
+                </div>
               </div>
-            </div>
-
-            <!-- Confirm Password Field -->
-            <div class="flex flex-col w-1/2 mb-3">
-              <label for="confirmPassword" class="text-black-600 font-medium"
-                >Confirmar contraseña</label
-              >
-              <input
-                v-model="form.confirmPassword"
-                :type="passwordFieldType"
-                required
-                @input="validatePasswordMatch"
-                class="rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Confirmar contraseña"
-              />
-              <div class="text-red-500 text-sm">
-                {{ form.passwordMatchValidationMessage }}
-              </div>
-            </div>
-          </div>
-          <!-- Nombre -->
-          <!-- Apellidos -->
-          <div class="flex space-x-4 w-full mb-3">
-            <div class="flex flex-col w-1/2">
-              <label for="name" class="text-black-600 font-medium"
-                >Nombres</label
-              >
-              <input
-                v-model="form.name"
-                required
-                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar nombres"
-              />
-            </div>
-            <!-- Apellido Paterno Input -->
-            <div class="flex flex-col w-1/2">
-              <label for="fathers_surname" class="text-black-600 font-medium"
-                >Apellido Paterno</label
-              >
-              <input
-                v-model="form.fathers_surname"
-                required
-                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar apellido paterno"
-              />
-            </div>
-          </div>
-          <!-- País y Estado Input -->
-          <div class="flex w-full space-x-4">
-            <div class="flex flex-col w-full">
-              <div>
-                <label for="country" class="text-black-600 font-medium"
-                  >País</label
+              <div class="flex flex-col">
+                <button
+                  class="text-gray-400"
+                  type="button"
+                  @click="togglePasswordVisibility"
                 >
+                  {{ showPasswordText }}
+                </button>
+                <div v-if="form.isPasswordFocused" class="text-red-500 text-sm">
+                  {{ form.passwordValidationMessage }}
+                </div>
+                <div v-if="form.isPasswordFocused" class="text-red-500 text-sm">
+                  {{ form.digitValidationMessage }}
+                </div>
+                <div v-if="form.isPasswordFocused" class="text-red-500 text-sm">
+                  {{ form.specialCharacterValidationMessage }}
+                </div>
+              </div>
+              <div class="flex flex-col">
+                <input
+                  type="text"
+                  v-model="form.name"
+                  required
+                  class="border-t-0 border-x-0 focus:ring-0"
+                  placeholder="Nombre"
+                />
+              </div>
+              <div class="flex flex-col">
+                <input
+                  v-model="form.fathers_surname"
+                  type="text"
+                  required
+                  class="border-t-0 border-x-0 focus:ring-0"
+                  placeholder="Apellido"
+                />
+              </div>
+              <div class="flex flex-col">
                 <select
                   required
                   v-if="form.countries.length > 0"
                   v-model="form.selectedCountry"
                   @change="updateSelectedCountryCode"
-                  class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  class="border-t-0 border-x-0 focus:ring-0"
                 >
+                  <option disabled value="" selected hidden>País</option>
                   <option
                     v-for="country in form.countries"
                     :key="country.code"
@@ -137,322 +105,76 @@
                 </select>
                 <div v-else>Loading countries...</div>
               </div>
-            </div>
-            <!-- Estado Input -->
-            <!-- <div class="flex flex-col w-1/2">
-              <label
-                for="state"
-                class="text-black-600 font-medium"
-              >Estado</label>
-              <select
-                required
-                v-if="form.states.length > 0"
-                @change="updateSelectedStateCode"
-                v-model="form.selectedState"
-                class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              >
-                <option
-                  v-for="state in form.states"
-                  :key="state.id"
-                  :value="state.name"
+              <div class="flex">
+                <div
+                  v-if="form.selectedDialCode"
+                  class="flex border-b-1 border-black items-center justify-center"
                 >
-                  {{ state.name }}
-                </option>
-              </select>
-              <select
-                v-else
-                disabled
-                class="w-full rounded-md px-4 py-2 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              >
-              </select>
-            </div>
-          </div> -->
-            <!-- Ciudad Input -->
-            <!-- <div class="flex flex-col w-full mb-3">
-            <label
-              for="state"
-              class="text-black-600 font-medium"
-            >Ciudad</label>
-            <select
-              required
-              v-if="form.cities.length > 0"
-              v-model="form.selectedCity"
-              @change="updateSelectedCityCode"
-              class="w-full rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            >
-              <option
-                v-for="city in form.cities"
-                :key="city.id"
-                :value="city.name"
-              >
-                {{ city.name }}
-              </option>
-            </select>
-            <select
-              v-else
-              disabled
-              class="w-full rounded-md px-4 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            >
-            </select>
-          </div> -->
-            <!-- Calle -->
-            <!-- <div class="flex flex-col w-full mb-3">
-            <label
-              for="name"
-              class="text-black-600 font-medium"
-            >Calle</label>
-            <input
-              v-model="form.street"
-              required
-              class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              placeholder="Ingresar calle"
-            />
-          </div> -->
-            <!-- <div class="flex w-full space-x-2 ">
-            <div class="flex flex-col w-1/3"> -->
-            <!-- Num. Exterior -->
-            <!-- <label
-                for="name"
-                class="text-black-600 font-medium"
-              >Num. Exterior</label>
-              <input
-                v-model="form.outdoor_number"
-                required
-                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar num exterior"
-              />
-            </div> -->
-            <!-- Num. Interior -->
-            <!-- <div class="flex flex-col w-1/3">
-              <label
-                for="name"
-                class="text-black-600 font-medium"
-              >Num. Interior</label>
-              <input
-                v-model="form.indoor_number"
-                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar num interior"
-              />
-            </div>
-            <div class="flex flex-col w-1/3">
-              <label
-                for="name"
-                class="text-black-600 font-medium"
-              >Codigo Postal</label>
-              <input
-                v-model="form.zip_code"
-                required
-                class="rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar codigo postal"
-              />
-            </div>-->
-          </div>
-          <!-- Cellphone Input -->
-          <div class="flex flex-col w-full mb-5">
-            <label for="phone" class="text-black-600 font-medium"
-              >Teléfono</label
-            >
-            <div class="flex space-x-0 w-full">
-              <div
-                class="rounded-l-md px-4 py-2 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              >
-                <span class="font-medium">+{{ form.selectedDialCode }}</span>
-              </div>
-              <input
-                v-model="form.phone"
-                required
-                class="w-full rounded-r-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar teléfono"
-              />
-            </div>
-          </div>
-          <div class="flex">
-            <!-- ID Enfrente -->
-            <!-- <div class="flex w-1/2 flex-col">
-              <label
-                for="fileInput"
-                class="text-black-600 font-medium relative cursor-pointer text-center mx-1"
-              >
-                <span class="block mb-2">Documento de identidad Enfrente</span>
-                <div class="flex items-center">
-                  <input
-                    id="fileInput"
-                    name="fileFront"
-                    required
-                    type="file"
-                    ref="fileInput"
-                    @change="handleFileChange"
-                    accept="image/*"
-                    class="w-full rounded-l-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  />
-                  <button
-                    type="button"
-                    @click="$refs.fileInput.click()"
-                  >
-                    <i
-                      class="fas fa-upload rounded-r-md px-4 py-3 text-blue-500 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
-                    </i>
-                  </button>
+                  <span>+{{ form.selectedDialCode }}</span>
                 </div>
-              </label>
-            </div> -->
-            <!-- ID Atras -->
-            <!-- <div class="flex flex-col w-1/2">
-              <label
-                for="fileInputBack"
-                class="text-black-600 font-medium relative cursor-pointer text-center mx-1"
-              >
-                <span class="block mb-2">Documento de identidad Atras</span>
+                <div class="w-full">
+                  <input
+                    type="text"
+                    v-model="form.phone"
+                    required
+                    class="w-full border-t-0 border-x-0 focus:ring-0"
+                    placeholder="Teléfono"
+                  />
+                </div>
+              </div>
+              <div class="my-5">
                 <div class="flex items-center">
                   <input
-                    id="fileInputBack"
-                    name="fileBack"
+                    type="checkbox"
+                    class="mr-2 rounded-md bg-gray-300 border-none"
                     required
-                    type="file"
-                    ref="fileInputBack"
-                    @change="handleFileChangeBack"
-                    accept="image/*"
-                    class="w-full rounded-l-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
-                  <button type="button" @click="$refs.fileInputBack.click()">
-                    <i
-                      class="fas fa-upload rounded-r-md px-4 py-3 text-blue-500 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  <label class="text-gray-600">
+                    Acepto los
+                    <a
+                      target="_blank"
+                      href="https://horsebook-subastas-stage.s3.us-east-2.amazonaws.com/static/docs/TerminosyCondiciones.pdf"
+                      class="underline"
+                      >Terminos y Condiciones</a
                     >
-                    </i>
-                  </button>
+                  </label>
                 </div>
-              </label>
-            </div> -->
-          </div>
-          <!-- Referencias -->
-          <!-- <div class="flex flex-col w-full my-5">
-            <div class="flex flex-col w-full">
-              <p class="text-2xl font-medium">Referencia 1:</p>
-              <label for="name" class="text-black-600 font-medium"
-                >Nombres</label
-              >
-              <input
-                v-model="form.reference1.name"
-                required
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar nombre completo"
-              />
-            </div>
-            <div class="flex space-x-4 w-full">
-              <div class="flex flex-col w-1/2">
-                <label for="name" class="text-black-600 font-medium"
-                  >Ocupación</label
-                >
-                <input
-                  v-model="form.reference1.occupation"
-                  required
-                  class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  placeholder="Ingresar ocupación"
-                />
+                <div class="flex items-center">
+                  <input
+                    type="checkbox"
+                    class="mr-2 rounded-md bg-gray-300 border-none"
+                    required
+                  />
+                  <label for="remember-me" class="text-gray-600"
+                    >Estoy de acuerdo con las
+                    <a
+                      href="https://horsebook-subastas-stage.s3.us-east-2.amazonaws.com/static/docs/AvisodePrivacidadyPoliticas.pdf"
+                      target="_blank"
+                      class="underline"
+                      >Politicas de Privacidad</a
+                    >
+                  </label>
+                </div>
               </div>
-              <div class="flex flex-col w-1/2">
-                <label for="phone" class="text-black-600 font-medium"
-                  >Teléfono</label
+              <div class="text-center mb-10">
+                <button
+                  type="submit"
+                  class="py-3 px-10 rounded-full bg-[#BFA753] text-white"
                 >
-                <input
-                  v-model="form.reference1.phone"
-                  required
-                  class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  placeholder="Ingresar teléfono"
-                />
+                  CREAR CUENTA
+                </button>
+              </div>
+              <div class="text-center mb-10">
+                <span class="text-gray-600 mb-5">
+                  <nuxt-link to="/auth/login" class="font-medium"
+                    >Inicia sesión</nuxt-link
+                  ></span
+                >
               </div>
             </div>
-            <div class="flex flex-col w-full mt-5">
-              <p class="text-2xl font-medium">Referencia 2:</p>
-              <label for="name" class="text-black-600 font-medium"
-                >Nombres</label
-              >
-              <input
-                v-model="form.reference2.name"
-                required
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar nombre completo"
-              />
-            </div>
-            <div class="flex space-x-4 w-full">
-              <div class="flex flex-col w-1/2">
-                <label for="name" class="text-black-600 font-medium"
-                  >Ocupación</label
-                >
-                <input
-                  v-model="form.reference2.occupation"
-                  required
-                  class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  placeholder="Ingresar ocupación"
-                />
-              </div>
-              <div class="flex flex-col w-1/2">
-                <label for="phone" class="text-black-600 font-medium"
-                  >Teléfono</label
-                >
-                <input
-                  v-model="form.reference2.phone"
-                  required
-                  class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  placeholder="Ingresar teléfono"
-                />
-              </div>
-            </div>
-          </div> -->
-          <!-- Terminos y condiciones y Politicas de Privacidad -->
-          <div class="my-5">
-            <div class="flex items-center">
-              <input type="checkbox" class="mr-2" required />
-              <label class="text-gray-600">
-                Al continuar estoy de acuerdo con los
-                <a
-                  target="_blank"
-                  href="https://horsebook-subastas-stage.s3.us-east-2.amazonaws.com/static/docs/TerminosyCondiciones.pdf"
-                  class="underline"
-                  >Terminos y Condiciones</a
-                >
-                de La Silla.
-              </label>
-            </div>
-            <div class="flex items-center">
-              <input
-                type="checkbox"
-                id="remember-me"
-                name="remember-me"
-                class="mr-2"
-                required
-              />
-              <label for="remember-me" class="text-gray-600"
-                >Al continuar estoy de acuerdo con la
-                <a
-                  href="https://horsebook-subastas-stage.s3.us-east-2.amazonaws.com/static/docs/AvisodePrivacidadyPoliticas.pdf"
-                  target="_blank"
-                  class="underline"
-                  >Politica de Privacidad</a
-                >
-                de La Silla.
-              </label>
-            </div>
-          </div>
-          <!-- Botone de Crear Cuenta -->
-          <div class="flex flex-col w-full">
-            <button
-              type="submit"
-              class="py-2 px-5 mb-5 bg-black text-white rounded-lg"
-            >
-              Crear cuenta
-            </button>
-            <span class="text-gray-600 mb-5"
-              >¿Ya tienes cuenta?
-              <nuxt-link
-                to="/auth/login"
-                class="font-medium text-base text-black hover:text-blue-500"
-                >Inicia sesión</nuxt-link
-              ></span
-            >
-          </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -753,9 +475,3 @@ export default {
   }
 }
 </script>
-
-<style>
-input::file-selector-button {
-  display: none;
-}
-</style>
