@@ -114,7 +114,7 @@ export default {
       await this.$axios
         .get(url)
         .then((response) => {
-          response.data.map((auction) => {
+          response.data.results.map((auction) => {
             if (auction.status != "CLOSED") {
               if (
                 ["PREBID", "BIDDING", "COMING", "CLOSED PREBID"].includes(
