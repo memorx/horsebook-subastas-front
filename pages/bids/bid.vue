@@ -111,6 +111,15 @@
                           <p class="text-center text-black">Segundos</p>
                         </div>
                       </div>
+                      <p class="text-center text-xs text-custom-gold">
+                        Todo participante de la preoferta obtiene un 5% de descuento
+                      </p>
+                      <p class="text-center text-xs text-custom-gold">
+                        *El ganador de la preoferta obtiene un descuento de {{ prebidWinnerDiscount }}% extra
+                      </p>
+                      <p class="text-center text-xs text-red-400">
+                        **Los descuentos aplican por cada caballo
+                      </p>
                     </div>
                   </div>
                   <div class="px-5 mt-5">
@@ -218,6 +227,12 @@
                   </p>
                   <div v-else class="text-black font-bold text-xl pt-5">
                     Quédate al pendiente
+                    <p v-if="hasBid" class="text-center text-xs text-custom-gold">
+                      Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta
+                    </p>
+                    <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
+                      Has ganado {{ prebidWinnerDiscount }}% de descuento extra
+                    </p>
                   </div>
                 </div>
                 <div v-if="horseStatus =='COMMING' && bidStatus == 'COMMING'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
@@ -517,7 +532,7 @@ export default {
       winnerEmail: "",
       hasBid: false,
       subscribed:false,
-
+      prebidWinnerDiscount: 5,
     }
   },
   computed: {
@@ -1048,6 +1063,7 @@ export default {
           this.EndBidDateFormat = this.formatted(auction.end_bid)
           this.bidStatus = auction.status
           this.timer = setInterval(this.calculateCountdown, 1000)
+          this.prebidWinnerDiscount = auction.prebid_winner_discount
         })
         .catch((error) => {
           console.error(error)
