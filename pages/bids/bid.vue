@@ -206,17 +206,29 @@
                   <p class="text-black font-bold text-2xl pt-8 px-10">
                     LA SUBASTA DE ESTE CABALLO ESTÁ EN VIVO
                   </p>
+                  <p v-if="hasBid" class="text-center text-xs text-custom-gold">
+                    Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta
+                  </p>
+                  <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
+                    Has ganado {{ prebidWinnerDiscount }}% de descuento extra
+                  </p>
                   <p class="text-black font-bold text-xl pt-5">
                     <NuxtLink :to="`/auction/live/${bidId}`">
-                    <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                      Ir a la Subasta
-                    </button>
-                  </NuxtLink>
+                      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
+                        Ir a la Subasta
+                      </button>
+                    </NuxtLink>
                   </p>
                 </div>
                 <div v-if="horseStatus == 'CLOSED PREBID'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
                   <p class="text-black font-bold text-2xl pt-8 px-10">
                     LA SUBASTA DE ESTE CABALLO ESTÁ POR COMENZAR
+                  </p>
+                  <p v-if="hasBid" class="text-center text-xs text-custom-gold">
+                    Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta
+                  </p>
+                  <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
+                    Has ganado {{ prebidWinnerDiscount }}% de descuento extra
                   </p>
                   <p v-if="bidStatus == 'BIDDING'" class="text-black font-bold text-xl pt-5">
                     <NuxtLink :to="`/auction/live/${bidId}`">
