@@ -25,7 +25,7 @@
                 <!-- This will be replaced by the page content -->
                 <Nuxt />
             </div>
-            <Footer />
+            <Footer @handle-close-menu="hanldeCloseMenu"/>
         </div>
     </div>
 </template>

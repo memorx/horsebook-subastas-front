@@ -41,7 +41,7 @@
         <!-- First Row in the second column -->
         <div class="mb-4 bg-white p-5 rounded-lg">
           <div class="flex items-center">
-            <h2 class="text-2xl font-bold mb-1">Subasta</h2>
+            <h2 class="text-2xl font-bold mb-1 pr-3">Subasta</h2>
             <statusBid :status="bidStatus" />
           </div>
           <span class="text-xl font-bold mb-2">{{ item.horses.length }}</span>
@@ -167,7 +167,8 @@
       <div
         v-for="(horse, index) in item.horses"
         :key="horse.id"
-        class="mb-5 flex flex-wrap flex-grow"
+        class="mb-5 flex flex-wrap flex-grow hover:cursor-pointer"
+        @click="goToDetail(horse, index)"
       >
         <!-- Card content -->
         <div class="relative bg-white rounded-tl-3xl w-full">

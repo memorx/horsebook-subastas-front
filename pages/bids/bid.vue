@@ -42,7 +42,7 @@
               </div>
             </div>
             <!--video, description and bid table -->
-            <div class="flex flex-col md:flex-row md:w-full md:h-screen md:px-6 my-6">
+            <div class="flex flex-col md:flex-row md:w-full md:px-6 my-6">
                 <div class="md:h1/2 md:w-1/2">
                   <div class="aspect-w-16 aspect-h-9 md:mr-5 mb-5 md:mb-0">
                       <iframe
@@ -649,6 +649,8 @@ export default {
       // this.addCommas()
     },
     calculateCountdown() {
+      if(!this.EndPreBidDate)
+       return
       const now = new Date()
       const targetDate = new Date(this.EndPreBidDate)
       const timeDifference = targetDate - now

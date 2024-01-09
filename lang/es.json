@@ -8,8 +8,8 @@
             "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus rutrum, nunc eu luctus aliquam, nisi lectus volutpat ante, a elementum lorem mi ac nisl. Praesent congue risus id.",
             "button": "ver subastas"
         },
-        "bid": {
-            "MainTitle": "Subastas"
+        "auction": {
+            "title": "Subastas"
         },
         "news": {
             "title": "Novedades",
@@ -25,13 +25,13 @@
         "contact": {
             "title": "Contacto",
             "subTitle": "¡Nos interesa saber de ti! ",
-            "paragraph": "Si tienes alguna duda de como partisapar en nuestras subastas o quieres ponerte en contacto con nosotros, envíanos un mesaje en el siguiente formularios.",
+            "paragraph": "Si tienes alguna duda de como participar en nuestras subastas o quieres ponerte en contacto con nosotros, envíanos un mesaje en el siguiente formulario.",
             "button": "enviar",
             "form": {
                 "name": "nombre",
                 "phone": "teléfono",
                 "email": "email",
-                "message": "mensajes"
+                "message": "mensaje"
             }
         },
         "video": {
@@ -50,7 +50,8 @@
         "logIn": "login",
         "signUp": "registrarse",
         "profile": "Perfil",
-        "logout": "Salir"
+        "logout": "Salir",
+        "liveAuction": "Subasta En Vivo"
     },
     "footer": {
         "navigate": "navegación",

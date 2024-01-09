@@ -90,7 +90,7 @@
                   class="text-center w-full rounded-t-lg p-5"
                   style="background-color: #b99d61"
                 >
-                  <p class="text-white font-bold text-sm">OFERTA MAS ALTA</p>
+                  <p class="text-white font-bold text-sm">OFERTA MÁS ALTA</p>
                   <span v-if="lastOffer" class="text-white font-bold text-2xl"
                     >${{ lastOffer }} USD</span
                   >
@@ -414,7 +414,6 @@ export default {
       winner: "",
       winnerName: "",
       isEditingAmount: false,
-      firstUpdateAmount: true,
       inputAmount: "",
       winnerEmail: "",
       wonHorse: "",
@@ -538,7 +537,7 @@ export default {
         }
 
         if (message.has_bid) {
-          mountedThis.hasBid = message.has_bid
+          this.hasBid = message.has_bid
         }
 
         if (message.bid) {

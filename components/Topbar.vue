@@ -17,7 +17,7 @@
                         <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
                         fill="none" />
                     </svg>
-                    Subasta En Vivo
+                        {{ $t('topBar.liveAuction') }}
                     </a>
                 </div>
 
@@ -53,9 +53,7 @@
                                 buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
                                 containerClass="w-1/2" :onClick="logout" />
                         </div>
-
-                        <!-- Swtich Language -->
-                        <!-- <nuxt-link :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
+                        <nuxt-link :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
                             class="cursor-pointer" aria-haspopup="listbox" aria-expanded="true"
                             aria-labelledby="listbox-label">
                             <span class="flex items-center">
@@ -64,7 +62,7 @@
                                 <img v-if="$i18n.locale === 'es'" src="../public/flag-USA.png" alt="flag-usa"
                                     class="mr-2 h-6 w-6 flex-shrink-0 rounded-full">
                             </span>
-                        </nuxt-link> -->
+                        </nuxt-link>
                     </div>
                 </div>
             </div>
@@ -82,7 +80,7 @@
                 </nuxt-link>
 
                 <div v-if="!isMobileMenuOpen">
-                    <div class=" flex flex-row justify-space-between">
+                    <div v-if="!isUserAuthenticated" class=" flex flex-row justify-space-between">
                         <!-- Sign Up / Log in-->
                         <div class="flex flex-row mx-8 gap-6 w-auto">
                             <ReusableButton :buttonText="$t('topBar.signUp')"
@@ -92,6 +90,16 @@
                             <ReusableButton :buttonText="$t('topBar.logIn')"
                                 buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
                                 containerClass="w-1/2" :onClick="navigateToLogin" />
+                        </div>
+                    </div>
+                    <div v-else class=" flex flex-row justify-space-between">
+                        <div class="flex flex-row mx-8 gap-6 w-auto">
+                            <ReusableButton :buttonText="$t('topBar.profile')"
+                                :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full ${textColor}`"
+                                containerClass="w-1/2" :onClick="navigateToProfile" />
+                            <ReusableButton :buttonText="$t('topBar.logout')"
+                                buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
+                                containerClass="w-1/2" :onClick="logout" />
                         </div>
                     </div>
                 </div>

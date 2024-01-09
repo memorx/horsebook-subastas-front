@@ -3,13 +3,6 @@
 
         <!-- Buttons for Login and Register -->
         <div class="flex flex-col justify-between items-center w-full p-4">
-            <div class="flex flex-row justify-between items-center w-full">
-                <ReusableButton :buttonText="$t('topBar.logIn')"
-                    buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
-                    containerClass="w-1/2" :onClick="navigateToLogin" />
-                <!-- here goes the langues flag-->
-            </div>
-
             <!-- Margin space -->
             <div class="my-8"></div>
 
@@ -22,18 +15,16 @@
                         </nuxt-link>
                     </li>
                     <li>
-                        <nuxt-link :class="activePageClass('/bids')" to="/bids" @click.native="closeMenu">
+                        <nuxt-link :class="activePageClass('/user/inicio')" to="/user/inicio" @click.native="closeMenu">
                             {{ $t('topBar.bids') }}
                         </nuxt-link>
                     </li>
                     <li>
-                        <button v-if="this.$route.path === '/'"
+                        <button
                             :class="[activePageClass('/contact'), 'uppercase font-roboto']" @click="handleScrollIntoContact">
                             {{ $t('topBar.contact') }}
                         </button>
-                        <nuxt-link v-if="this.$route.path !== '/'" :class="activePageClass('/contact')" to="/contact"
-                            @click.native="closeMenu">{{
-                                $t('topBar.contact') }}</nuxt-link>
+
                     </li>
                 </ul>
             </nav>
@@ -83,7 +74,14 @@ export default {
         },
         handleScrollIntoContact() {
             this.$emit('handle-close-menu')
-            this.$store.dispatch('scrollIntoContact', true)
+            if (this.$route.path === '/') {
+                this.$store.commit('setScrollIntoContact', true);
+            } else {
+                this.$router.push('/')
+                setTimeout(() => {
+                    this.$store.commit('setScrollIntoContact', true);
+                }, 1000);
+            }
         },
         closeMenu() {
             this.$emit('handle-close-menu');

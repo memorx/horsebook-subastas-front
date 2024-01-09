@@ -16,13 +16,17 @@
                 alt="image"
                 loading="lazy"
             >
-            <img
+            <div
+                class="flex absolute inset-0 flex-grow lg:mx-0 bg-gray-500 justify-center items-center rounded-lg"
                 v-else
-                class="rounded-lg absolute inset-0 w-full h-full object-cover"
-                src="../public/horse_black.png"
-                alt="image"
-                loading="lazy"
-            >
+                >
+                <img
+                    class="opacity-90 h-1/2"
+                    src="../public/image_la_silla.png"
+                    alt="Default Horse"
+                />
+            </div>
+
         </transition>
         <!-- Left Arrow -->
         <button
@@ -39,7 +43,7 @@
             →
         </button>
     </div>
-</template>  
+</template>
 
 <script>
 export default {

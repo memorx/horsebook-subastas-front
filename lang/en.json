@@ -8,11 +8,11 @@
             "paragraph": "english main paragraph",
             "button": "english main button"
         },
-        "bid": {
-            "MainTitle": "english bid title"
+        "auction": {
+            "title": "Auctions"
         },
         "news": {
-            "title": "english news title",
+            "title": "News",
             "paragraph": "english news paragraph",
             "button": "english news button"
         },
@@ -42,17 +42,20 @@
         "exampleButton": "Example Button"
     },
     "topBar": {
-        "home": "home",
-        "bids": "bids",
-        "news": "news",
-        "us": "about us",
-        "contact": "contact us",
-        "logIn": "log in",
-        "signUp": "sign up"
+        "home": "Home",
+        "bids": "Bids",
+        "news": "News",
+        "us": "About Us",
+        "contact": "Contact Us",
+        "logIn": "Log In",
+        "signUp": "Sign Up",
+        "profile": "Profile",
+        "logout": "Logout",
+        "liveAuction": "Auction Live"
     },
     "footer": {
-        "navigate": "navigate",
-        "email":"email",
-        "phone":"phone"
+        "navigate": "Navigate",
+        "email":"Email",
+        "phone":"Phone"
     }
 }

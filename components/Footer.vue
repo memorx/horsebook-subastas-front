@@ -16,8 +16,14 @@
                 <h3 :class="classTittleSection">{{ $t('footer.navigate') }}</h3>
                 <ul class="font-roboto capitalize">
                     <li><nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/bids')" to="/bids">{{ $t('topBar.bids') }}</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/contact')" to="/contact">{{ $t('topBar.contact') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/user/inicio')" to="/user/inicio">{{ $t('topBar.bids') }}</nuxt-link></li>
+                    <li>
+                        <button
+                            class="capitalize"
+                           @click="handleScrollIntoContact">
+                            {{ $t('topBar.contact') }}
+                        </button>
+                    </li>
                     <li><nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">registro</nuxt-link></li>
                     <li><nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">login</nuxt-link></li>
                 </ul>
@@ -64,8 +70,14 @@
                 <h3 :class="classTittleSection">{{ $t('footer.navigate') }}</h3>
                 <ul class="font-roboto capitalize">
                     <li><nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/bids')" to="/bids">{{ $t('topBar.bids') }}</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/contact')" to="/contact">{{ $t('topBar.contact') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/user/inicio')" to="/user/inicio">{{ $t('topBar.bids') }}</nuxt-link></li>
+                    <li>
+                        <button
+                            class="capitalize"
+                           @click="handleScrollIntoContact">
+                            {{ $t('topBar.contact') }}
+                        </button>
+                    </li>
                     <li><nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">registro</nuxt-link></li>
                     <li><nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">login</nuxt-link></li>
                 </ul>
@@ -111,6 +123,17 @@ export default {
     methods: {
         activePage(route) {
             return this.$route.path === route;
+        },
+        handleScrollIntoContact() {
+            this.$emit('handle-close-menu')
+            if (this.$route.path === '/') {
+                this.$store.commit('setScrollIntoContact', true);
+            } else {
+                this.$router.push('/')
+                setTimeout(() => {
+                    this.$store.commit('setScrollIntoContact', true);
+                }, 1000);
+            }
         },
     }
 }
