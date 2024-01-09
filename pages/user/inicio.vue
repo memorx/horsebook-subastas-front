@@ -6,7 +6,9 @@
     />
     <div>
       <div class="text-center my-5">
-        <p class="text-2xl md:text-4xl font-bold">Subastas</p>
+        <p class="text-2xl md:text-4xl font-bold">
+          {{ $t('home.auction.title') }}
+        </p>
       </div>
       <div>
         <div
@@ -114,7 +116,9 @@ export default {
       await this.$axios
         .get(url)
         .then((response) => {
-          response.data.map((auction) => {
+
+          response.data.results.map((auction) => {
+            console.log(auction)
             if (auction.status != "CLOSED") {
               if (
                 ["PREBID", "BIDDING", "COMING", "CLOSED PREBID"].includes(

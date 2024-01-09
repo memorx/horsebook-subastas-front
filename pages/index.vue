@@ -3,7 +3,7 @@
       <div class="w-11/12 flex flex-col items-center sm:space-x-4">
 
          <!-- Main section web -->
-         <div class="hidden md:grid  h-auto md:h-1/2 lg:h-screen w-full my-12 md:my-6 grid-1 md:grid-cols-2 gap-4">
+         <div class="items-center justify-center md:grid  h-auto md:h-1/2 lg:h-screen w-full my-12 md:my-6 grid-1 md:grid-cols-2 gap-4">
             <!-- Content -->
             <div class="order-2 md:order-1 flex flex-col items-center justify-center space-y-4 w-full md:w-auto">
                <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')"
@@ -11,20 +11,20 @@
                   headingLevel="1" :classOverrides="{
                      container: 'flex flex-col items-center md:items-start w-full md:w-auto',
                      title: 'text-center md:text-start text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4',
-                     paragraph: 'text-white mb-3 md:mb-4 lg:mb-5 text-sm md:text-base lg:text-lg text-center md:text-left',
-                     button: 'bg-custom-gold text-sm md:text-base lg:text-lg uppercase text-center md:text-left mt-4 md:mt-0'
+                     paragraph: 'text-white mb-3 text-lg md:mb-4 lg:mb-5 md:text-base lg:text-lg text-center md:text-left',
+                     button: 'bg-custom-gold text-lg md:text-base lg:text-lg uppercase text-center md:text-left mt-4 md:mt-0'
                   }" />
             </div>
 
             <!-- Image -->
-            <button :to="'/'" @click="goToAuctionDetail(nextAuction)" exact class="order-1 md:order-2 flex flex-col items-center justify-center space-y-4" :class="(nextAuction?.status == 'BIDDING') ? 'animate-blink' : ''">
+            <button :to="'/'" @click="goToAuctionDetail(nextAuction)" exact class="w-45 mx-auto order-1 md:order-2 flex flex-col items-center justify-center space-y-4" :class="(nextAuction?.status == 'BIDDING') ? 'animate-blink' : ''">
 
-                  <ContentTile :title="nextAuction?.notes"
+                  <ContentTile :title="nextAuction?.notes ? nextAuction?.notes : ''"
                      :paragraph="(nextAuction?.status == 'BIDDING') ? 'subasta en vivo' : 'la subasta comienza en'" :buttonLabel="null" headingLevel="2"
                      :classOverrides="{
                         container: 'flex flex-col items-center w-full',
                         title: 'text-custom-gold font-normal text-xl md:text-2xl lg:text-2xl uppercase font-roboto',
-                        paragraph: 'uppercase text-white text-xs md:text-sm lg:text-base',
+                        paragraph: 'uppercase text-white text-base md:text-sm lg:text-base',
                      }" />
 
                      <div class="grid grid-rows-5 grid-cols-1 gap-2 text-white cron-bg object-cover">
@@ -47,36 +47,10 @@
             </button>
          </div>
 
-         <!-- Main section mobile -->
-         <div class="grid md:hidden h-auto w-full my-12 grid-1 gap-4">
-            <!-- Content -->
-            <div class="order-2 flex flex-col items-center justify-center space-y-4 w-full ">
-               <ContentTile title="" :paragraph="$t('home.main.paragraph')"
-                  :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null" @button-clicked="handleShowBids"
-                  headingLevel="1" :classOverrides="{
-                     container: 'flex flex-col items-center w-full',
-                     title: 'text-center text-white text-xl uppercase font-roboto my-2',
-                     paragraph: 'text-white mb-3 text-sm text-center',
-                     button: 'bg-custom-gold text-sm uppercase text-center'
-                  }" />
-            </div>
 
-            <!-- Image -->
-            <div class="order-1 flex flex-col items-center justify-center space-y-4">
-               <h2 class="text-center text-white text-4xl uppercase font-roboto my-0">{{$t('home.main.title')}}</h2>
-               <ContentTile title="Octubre 2023" paragraph="la subasta comienza en" :buttonLabel="null" headingLevel="2"
-                  :classOverrides="{
-                     container: 'flex flex-col items-center w-full',
-                     title: 'text-custom-gold font-normal text-xl uppercase font-roboto',
-                     paragraph: 'uppercase text-white text-xs',
-                  }" />
-               <img src="../public/conter-home.png" alt="conter"
-                  class="w-1/3  h-auto object-cover" />
-            </div>
-         </div>
 
          <!-- Bid -->
-         <SectionTitle :titleText="$t('home.bid.MainTitle')" ref="bidSection"
+         <SectionTitle :titleText="$t('home.auction.title')" ref="bidSection"
             containerClass="flex flex-col items-center lg:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
             titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
 
@@ -160,9 +134,11 @@
 
 
          <!-- Contact -->
-         <SectionTitle ref="contactSection" :titleText="$t('home.contact.title')"
-            containerClass="flex flex-col items-center lg:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
-            titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
+         <a id="contactSection" class="w-full text-right">
+            <SectionTitle ref="contactSection" :titleText="$t('home.contact.title')"
+               containerClass="flex flex-col items-center lg:items-start w-full md:mt-16 lg:mt-20 mt-8 md:mb-8"
+               titleClass="text-white text-4xl md:text-7xl lg:text-8xl font-bold uppercase opacity-20" />
+         </a>
 
          <div class=" w-full my-2 md:my-6 grid grid-1 lg:grid-cols-2 gap-4">
             <!-- Content on the left -->
@@ -178,33 +154,33 @@
             <!-- Content on the right including the image -->
             <div class="flex flex-col items-center justify-center space-y-4">
                <!-- Form starts here -->
-               <form id="contactForm" class="w-full md:w-2/3 p-4" @submit.prevent="handleSubmit">
+               <form id="contactForm" class="w-full md:w-2/3 p-4" @submit.prevent="sendContactInfo">
                   <!-- Name input -->
                   <label for="name"
                      class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{
                         $t('home.contact.form.name') }}</label>
-                  <input type="text" id="name" name="name" required autocomplete="name"
+                  <input v-model="contactInfo.name" type="text" id="name" name="name" required autocomplete="name"
                      class="w-full p-2 mb-2 rounded bg-[#15151A] text-white font-roboto border-[#15151A]">
 
                   <!-- Phone input -->
                   <label for="phone"
                      class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{
                         $t('home.contact.form.phone') }}</label>
-                  <input type="tel" id="phone" name="phone" required autocomplete="tel"
+                  <input v-model="contactInfo.phone" type="tel" id="phone" name="phone" required autocomplete="tel"
                      class="w-full p-2 mb-2 rounded bg-[#15151A] text-white font-roboto border-[#15151A]">
 
                   <!-- Email input -->
                   <label for="email"
                      class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{
                         $t('home.contact.form.email') }}</label>
-                  <input type="email" id="email" name="email" required autocomplete="email"
+                  <input v-model="contactInfo.email" type="email" id="email" name="email" required autocomplete="email"
                      class="w-full p-2 mb-2 rounded bg-[#15151A] text-white font-roboto border-[#15151A]">
 
                   <!-- Message input -->
                   <label for="message"
                      class="block text-white mb-1 font-roboto text-sm md:text-base lg:text-lg font-normal capitalize">{{
                         $t('home.contact.form.message') }}</label>
-                  <textarea id="message" name="message" required rows="4" cols="50" maxlength="500"
+                  <textarea v-model="contactInfo.message"  id="message" name="message" required rows="4" cols="50" maxlength="500"
                      class="w-full p-2 mb-4 rounded bg-[#15151A] text-white font-roboto border-[#15151A]"></textarea>
 
                   <!-- Submit button -->
@@ -250,6 +226,12 @@ export default {
             minutes: 0,
             seconds: 0
          },
+         contactInfo: {
+            name: '',
+            phone: '',
+            email: '',
+            message: '',
+         },
          newsData: [ // Placeholder data
             {
                id: 1,
@@ -294,11 +276,13 @@ export default {
          const listSubastasEndpoint = "/subastas/list-subastas/"
          const url = `${this.$config.baseURL}${listSubastasEndpoint}?only_subasta_data=true`
          //I want to stop to make a hardcode and do it using logic
+
          this.loading = true
          await this.$axios
          .get(url)
          .then((response) => {
-            response.data.map((auction) => {
+            response.data.results.map((auction) => {
+
                if (auction.status != "CLOSED") {
                   if (
                      ["PREBID", "COMING", "CLOSED PREBID", "BIDDING"].includes(
@@ -307,6 +291,7 @@ export default {
                   ) {
                      this.nextAuction = auction
                      this.otherAuctions.push(auction)
+                     console.log('que pasa aqui')
                   }
                }
             })
@@ -319,6 +304,8 @@ export default {
       },
       calculateCountdown() {
          const now = new Date()
+         if(!this.nextAuction?.start_bid)
+            return
          const targetDate = new Date(this.nextAuction.start_bid)
          const timeDifference = targetDate - now
 
@@ -369,6 +356,32 @@ export default {
 
       },
 
+      async sendContactInfo() {
+         this.loading = true
+         const url = this.$config.baseURL + "/contact/send_email/";
+
+         const body = {
+            "name": this.contactInfo.name,
+            "phone": this.contactInfo.phone,
+            "email": this.contactInfo.email,
+            "message": this.contactInfo.message,
+         }
+         await this.$axios.$post(url, body)
+         .then((response) => {
+            // console.log(response);
+            this.$toast.success("El mensaje de contacto ha sido enviado");
+            this.contactInfo.name = ''
+            this.contactInfo.phone = ''
+            this.contactInfo.email = ''
+            this.contactInfo.message = ''
+            this.loading = false
+         })
+         .catch((error) => {
+            this.loading = false
+            this.$toast.error("Lo sentimos, ha ocurrido un error, favor de intentar más tarde");
+            console.error(error.response.data);
+         });
+      },
 
       handleButtonClick(index) {
          // Handle button click event. For demonstration:
