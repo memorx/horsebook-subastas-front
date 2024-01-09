@@ -6,7 +6,9 @@
     />
     <div>
       <div class="text-center my-5">
-        <p class="text-2xl md:text-4xl font-bold">Subastas</p>
+        <p class="text-2xl md:text-4xl font-bold">
+          {{ $t('home.auction.title') }}
+        </p>
       </div>
       <div>
         <div

@@ -30,7 +30,7 @@
             </p>
           </div>
           <div class="flex flex-col">
-            <p class="text-md font-bold mb-5">Pais: <span class="font-medium">{{ selectedCountry }}</span></p>
+            <p class="text-md font-bold mb-5">País: <span class="font-medium">{{ selectedCountry }}</span></p>
             <p class="text-md font-bold mb-5">Estado: <span class="font-medium">{{ selectedState }}</span></p>
             <p class="text-md font-bold mb-5">Ciudad: <span class="font-medium">{{ selectedCity }}</span>
             </p>
