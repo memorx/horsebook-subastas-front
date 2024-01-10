@@ -14,8 +14,12 @@
       />
 
       <NuxtLink :to="`/`">
-        <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-          ← Inicio
+        <button
+          class="uppercase border-1 ml-2 mb-3 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
+            <span
+              class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1">
+              <img src="../../../public/arrow-black.png" /></span>
+              Inicio
         </button>
       </NuxtLink>
       <div class="flex flex-wrap">
@@ -267,9 +271,13 @@
       <h2 class="font-bold text-3xl mx-auto text-center text-yellow-600 md:w-[600px]">
           LA SUBASTA HA TERMINADO, GRACIAS POR TU PREFERENCIA, ESPERA NOTICIAS DE NOSOTROS PARA LA SIGUIENTE.
       </h2>
-      <NuxtLink :to="`/`" class="w-44 mx-auto">
-        <button class="bg-gray-500 text-white px-4 py-2 rounded-md mb-5 w-44">
-          ← Inicio
+      <NuxtLink :to="`/`">
+        <button
+          class="uppercase border-1 border-black ml-2 mb-3 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
+            <span
+              class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1">
+              <img src="../../../public/arrow-black.png" /></span>
+              Inicio
         </button>
       </NuxtLink>
     </div>
@@ -277,9 +285,13 @@
       <h2 class="font-bold text-3xl mx-auto text-center text-red-600 md:w-[600px]">
           LA SUBASTA NO ESTÁ DISPONIBLE
       </h2>
-      <NuxtLink :to="`/`" class="w-44 mx-auto">
-        <button class="bg-gray-500 text-white px-4 py-2 rounded-md mb-5 w-44">
-          ← Inicio
+      <NuxtLink :to="`/`">
+        <button
+          class="uppercase border-1 ml-2 mb-3 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
+            <span
+              class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1">
+              <img src="../../../public/arrow-black.png" /></span>
+              Inicio
         </button>
       </NuxtLink>
     </div>

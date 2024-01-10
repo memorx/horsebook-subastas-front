@@ -20,7 +20,7 @@
     </div>
     <div
       v-if="status == 'CLOSED PREBID'"
-      class="text-white rounded-xl px-5 py-2 text-sm bg-[#B8BB2A] text-center w-38 whitespace-nowrap"
+      class="text-white rounded-xl px-5 py-2 text-xs md:text-sm bg-[#B8BB2A] text-center w-38 md:whitespace-nowrap"
     >
       PRE OFERTA CERRADA
     </div>
