@@ -116,6 +116,15 @@
                           <p class="text-center text-black">Segundos</p>
                         </div>
                       </div>
+                      <p class="text-center text-xs text-custom-gold">
+                        Todo participante de la preoferta obtiene un 5% de descuento
+                      </p>
+                      <p class="text-center text-xs text-custom-gold">
+                        *El ganador de la preoferta obtiene un descuento de {{ prebidWinnerDiscount }}% extra
+                      </p>
+                      <p class="text-center text-xs text-red-400">
+                        **Los descuentos aplican por cada caballo
+                      </p>
                     </div>
                   </div>
                   <div class="px-5 mt-5">
@@ -152,7 +161,7 @@
                         >
                           +
                         </button>
-                        <div class="hidden md:block">
+                        <div class="hidden lg:block">
                           <SubmitAuthenticatedButton
                             :enable-modal="enableModal"
                             button-text="Pre Ofertar"
@@ -202,17 +211,29 @@
                   <p class="text-black font-bold text-2xl pt-8 px-10">
                     LA SUBASTA DE ESTE CABALLO ESTÁ EN VIVO
                   </p>
+                  <p v-if="hasBid" class="text-center text-xs text-custom-gold">
+                    Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta
+                  </p>
+                  <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
+                    Has ganado {{ prebidWinnerDiscount }}% de descuento extra
+                  </p>
                   <p class="text-black font-bold text-xl pt-5">
                     <NuxtLink :to="`/auction/live/${bidId}`">
-                    <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                      Ir a la Subasta
-                    </button>
-                  </NuxtLink>
+                      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
+                        Ir a la Subasta
+                      </button>
+                    </NuxtLink>
                   </p>
                 </div>
                 <div v-if="horseStatus == 'CLOSED PREBID'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
                   <p class="text-black font-bold text-2xl pt-8 px-10">
                     LA SUBASTA DE ESTE CABALLO ESTÁ POR COMENZAR
+                  </p>
+                  <p v-if="hasBid" class="text-center text-xs text-custom-gold">
+                    Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta
+                  </p>
+                  <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
+                    Has ganado {{ prebidWinnerDiscount }}% de descuento extra
                   </p>
                   <p v-if="bidStatus == 'BIDDING'" class="text-black font-bold text-xl pt-5">
                     <NuxtLink :to="`/auction/live/${bidId}`">
@@ -223,6 +244,12 @@
                   </p>
                   <div v-else class="text-black font-bold text-xl pt-5">
                     Quédate al pendiente
+                    <p v-if="hasBid" class="text-center text-xs text-custom-gold">
+                      Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta
+                    </p>
+                    <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
+                      Has ganado {{ prebidWinnerDiscount }}% de descuento extra
+                    </p>
                   </div>
                 </div>
                 <div v-if="horseStatus =='COMMING' && bidStatus == 'COMMING'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
@@ -522,7 +549,7 @@ export default {
       winnerEmail: "",
       hasBid: false,
       subscribed:false,
-
+      prebidWinnerDiscount: 5,
     }
   },
   computed: {
@@ -1058,6 +1085,7 @@ export default {
           this.EndBidDateFormat = this.formatted(auction.end_bid)
           this.bidStatus = auction.status
           this.timer = setInterval(this.calculateCountdown, 1000)
+          this.prebidWinnerDiscount = auction.prebid_winner_discount
         })
         .catch((error) => {
           console.error(error)
