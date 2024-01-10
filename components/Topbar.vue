@@ -11,7 +11,7 @@
             <div class="flex items-center space-x-4">
                 <div class="flex justify-right">
                     <a @click="goToCurrenAuction()" v-if="idCurrenBid"
-                    class="text-white hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer">
+                    :class="['hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                         class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
                         <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
