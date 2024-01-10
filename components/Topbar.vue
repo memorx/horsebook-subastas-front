@@ -54,7 +54,7 @@
                                 containerClass="w-1/2" :onClick="logout" />
                         </div>
                         <nuxt-link :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
-                            class="cursor-pointer" aria-haspopup="listbox" aria-expanded="true"
+                            class="hidden cursor-pointer" aria-haspopup="listbox" aria-expanded="true"
                             aria-labelledby="listbox-label">
                             <span class="flex items-center">
                                 <img v-if="$i18n.locale === 'en'" src="../public/flag-mex.png" alt="mexico-flag"
