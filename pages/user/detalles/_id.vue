@@ -26,11 +26,11 @@
           />
         </div>
         <div
-          class="flex-1 flex-grow lg:mx-0 bg-gray-500 flex justify-center items-center rounded-tl-3xl rounded-br-3xl"
+          class="flex-1 flex-grow lg:mx-0 bg-gray-400 flex justify-center items-center rounded-tl-3xl rounded-br-3xl"
           v-else
         >
           <img
-            class="opacity-90"
+            class="opacity-70 m-auto h-2/3"
             src="../../../public/image_la_silla.png"
             alt="Default Horse"
           />
@@ -185,10 +185,10 @@
           />
           <div
             v-else
-            class="bg-gray-500 w-full h-40 lg:h-64 rounded-tl-3xl rounded-br-3xl"
+            class="flex justify-center items-center bg-gray-400 w-full h-40 lg:h-64 rounded-tl-3xl rounded-br-3xl"
           >
             <img
-              class="mx-auto opacity-70 h-full"
+              class="m-auto opacity-70 h-1/2"
               src="../../../public/image_la_silla.png"
               alt="Default Horse"
             />
@@ -438,6 +438,7 @@ export default {
       this.horseData.imagesID.forEach((horseID) => {
         this.fetchHorseImages(horseID)
       })
+
     },
     calculateCountdown() {
       const now = new Date()

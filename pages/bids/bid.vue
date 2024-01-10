@@ -19,17 +19,22 @@
                             src="../../public/arrow-black.png" /></span>Regresar
                 </button>
             </div>
-            <div class="w full h-auto mx-6 my-4 md:my-8 relative">
-                <div  class="w-auto absolute top-0 right-0 ">
-                  <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
+            <div class="flex flex-col md:flex-row-reverse h-auto mx-6 my-4 md:my-8">
+                <div class="flex justify-end md:w-1/3">
+                  <div>
+                    <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
+                  </div>
                 </div>
-                <h1 class="text-base md:text-2xl lg:text-3xl  xl:text-4xl font-roboto font-extrabold">
-                    {{ HorseName }}
-                    <button class="text-lg text-right" :class="subscribed? 'text-yellow-500' : 'text-black'">
+                <h1 class="flex flex-row mt-3 md:mt-0 md:w-2/3">
+                    <span class="text-base md:text-2xl lg:text-3xl xl:text-4xl font-roboto font-extrabold">
+                      {{ HorseName }}
+                    </span>
+                    <button v-if="isUserAuthenticated" class="text-lg text-left ml-3" :class="subscribed? 'text-yellow-500' : 'text-black'">
                       <i class="icon fas fa-bell" v-on:click="() => {subscribe()}" :title="!subscribed? 'Activar notificaciones' : 'Desactivar notificaciones'"></i>
                     </button>
                 </h1>
-
+            </div>
+            <div class="flex flex-col h-auto mx-6 my-4 md:my-8 relative">
                 <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
                   # de lote {{ horseData.Lot }}
                 </p>
@@ -548,6 +553,9 @@ export default {
     }
   },
   computed: {
+    isUserAuthenticated() {
+        return this.$store.state.isAuthenticated;
+    },
     setUser() {
       return this.$store.state.user
     },
