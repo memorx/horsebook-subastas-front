@@ -20,7 +20,6 @@
                         {{ $t('topBar.liveAuction') }}
                     </a>
                 </div>
-
                 <div>
                     <!--web/ipad Navigation items -->
                     <div class=" hidden md:flex justify-center align-middle items-center ">
@@ -28,8 +27,8 @@
                             <nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link>
                             <nuxt-link :class="activePageClass('/user/inicio')" to="/user/inicio">{{
                                 $t('topBar.bids') }}</nuxt-link>
-                            <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link>
-                            <nuxt-link :class="activePageClass('/news')" to="/news">{{ $t('topBar.news') }}</nuxt-link> -->
+                            <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link> -->
+                            <nuxt-link :class="activePageClass('/news')" to="/news">{{ $t('topBar.news') }}</nuxt-link>
                             <button class="uppercase text-xs font-roboto" @click="handleScrollIntoContact">
                                 {{ $t('topBar.contact') }}
                             </button>

@@ -14,7 +14,8 @@
         "news": {
             "title": "Novedades",
             "paragraph": "Subtítulo de novedades",
-            "button": "Ver todas las novedades"
+            "button": "Ver todas las novedades",
+            "buttonViewMore": "Ver más"
         },
         "us": {
             "title": "Nosotros",
