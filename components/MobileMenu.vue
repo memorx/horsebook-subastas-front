@@ -24,7 +24,12 @@
                             :class="[activePageClass('/contact'), 'uppercase font-roboto']" @click="handleScrollIntoContact">
                             {{ $t('topBar.contact') }}
                         </button>
-
+                    </li>
+                    <li>
+                        <nuxt-link
+                            :class="[activePageClass('/news'), 'uppercase font-roboto']" to="/news">
+                            {{ $t('topBar.news') }}
+                        </nuxt-link>
                     </li>
                 </ul>
             </nav>

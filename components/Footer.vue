@@ -33,8 +33,8 @@
             <div>
                 <h3 :class="classTittleSection">Contacto</h3>
                 <div class="font-robotom capitalize">
-                    <p><span class="normal-case">lasilla@hipicolasilla.com</span></p>
-                    <p>+52 81 81550100</p>
+                    <p><span class="normal-case">{{ contactInfo.email }}</span></p>
+                    <p>{{ contactInfo?.app_user_profile?.phone }}</p>
                 </div>
 
                 <!-- <h3 :class="[classTittleSection, 'mt-6']">Policies</h3>
@@ -87,8 +87,8 @@
             <div class="w-1/2 mb-6">
                 <h3 :class="classTittleSection">Contacto</h3>
                 <div class="font-roboto capitalize">
-                    <p><span class="normal-case">lasilla@hipicolasilla.com</span></p>
-                    <p>+52 81 81550100</p>
+                    <p><span class="normal-case">{{ contactInfo.email }}</span></p>
+                    <p>{{ contactInfo?.app_user_profile?.phone }}</p>
                 </div>
             </div>
         </div>
@@ -99,6 +99,7 @@
 export default {
     data() {
         return {
+            contactInfo: [],
         }
     },
     computed: {
@@ -120,6 +121,9 @@ export default {
             return this.$store.state.layoutMode === 'lightMode' ? 'border-custom-gold border-t' : '';
         }
     },
+    mounted() {
+        this.getContactInfo()
+    },
     methods: {
         activePage(route) {
             return this.$route.path === route;
@@ -134,6 +138,23 @@ export default {
                     this.$store.commit('setScrollIntoContact', true);
                 }, 1000);
             }
+        },
+        async getContactInfo() {
+            this.contactInfo = []
+            const url = `${this.$config.baseURL}/contact/info/`
+
+
+            this.loading = true;
+            await this.$axios
+            .get(url)
+            .then((response) => {
+                this.contactInfo = { ...response.data }
+                this.loading = false
+            })
+            .catch((error) => {
+                this.loading = false
+            });
+
         },
     }
 }
