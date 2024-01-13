@@ -100,7 +100,7 @@ export default {
           this.loading = false
           if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'El usuario ya ha sido activado') {
             this.$toast.error("El usuario ya se encuentra activado");
-            this.$router.push('/auth/login/')
+            this.$router.push(this.localePath('/auth/login/'))
           } else {
             this.$toast.error("Lo sentimos, ha ocurrido un error");
           }

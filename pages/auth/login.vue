@@ -162,7 +162,7 @@ export default {
               "setIsUserAbleToBid",
               response.data.app_user_profile.bid
             )
-            this.$router.push("/")
+            this.$router.push(this.localePath("/"))
           }
         })
         .catch((error) => {

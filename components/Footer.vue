@@ -133,7 +133,7 @@ export default {
             if (this.$route.path === '/') {
                 this.$store.commit('setScrollIntoContact', true);
             } else {
-                this.$router.push('/')
+                this.$router.push(this.localePath('/'))
                 setTimeout(() => {
                     this.$store.commit('setScrollIntoContact', true);
                 }, 1000);

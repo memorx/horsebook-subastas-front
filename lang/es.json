@@ -1,6 +1,6 @@
 {
-    "test": {
-        "hello": "mundo"
+    "general": {
+        "back": "Regresar"
     },
     "home": {
         "main": {
@@ -58,5 +58,39 @@
         "navigate": "navegación",
         "email": "email",
         "phone": "teléfono"
+    },
+    "cron": {
+        "day": "día",
+        "days": "días",
+        "hour": "hora",
+        "hours": "horas",
+        "minute": "minuto",
+        "minutes": "minutos",
+        "second": "segundo",
+        "seconds": "segundos"
+    },
+    "auction": {
+        "title": "Subastas",
+        "auction": "Subasta",
+        "auctionDate": "Fecha de Subasta",
+        "enterTheAuction": "Ingresar a Subasta",
+        "auctionListButton": "Listado de subastas",
+        "horse": "Caballo",
+        "horses": "Caballos",
+        "preOfferStaredtMsg": "LA PRE OFERTA HA COMENZADO",
+        "preOfferStartMsg": "LA PRE OFERTA COMIENZA EN",
+        "auctionLivetMsg": "LA SUBASTA ESTARA EN VIVO EN",
+        "lot": "Lote",
+        "bestOffer": "Mejor Oferta",
+        "startingPrice": "Precio Inicial",
+        "enter": "Ingresar",
+        "statuses": {
+            "PREBID": "Preoferta",
+            "BIDDING": "En Vivo",
+            "CLOSED": "Cerrada",
+            "CLOSED PREBID": "Preoferta Cerrada",
+            "COMING": "En Espera"
+        }
+
     }
 }

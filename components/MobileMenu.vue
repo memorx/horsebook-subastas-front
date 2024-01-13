@@ -75,14 +75,14 @@ export default {
     methods: {
         navigateToLogin() {
             this.$emit('handle-close-menu')
-            this.$router.push('/auth/login')
+            this.$router.push(this.localePath('/auth/login'))
         },
         handleScrollIntoContact() {
             this.$emit('handle-close-menu')
             if (this.$route.path === '/') {
                 this.$store.commit('setScrollIntoContact', true);
             } else {
-                this.$router.push('/')
+                this.$router.push(this.localePath('/'))
                 setTimeout(() => {
                     this.$store.commit('setScrollIntoContact', true);
                 }, 1000);

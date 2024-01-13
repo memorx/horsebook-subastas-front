@@ -13,10 +13,11 @@
             <div class="w full h-auto mx-6 my-4 md:my-8">
                 <button
                     class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
-                    @click="() => this.$router.back()"
+                    @click="() => this.$router.push(this.localePath(`/user/detalles/${bidId}`))"
                 >
                     <span class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"><img
-                            src="../../public/arrow-black.png" /></span>Regresar
+                            src="../../public/arrow-black.png" /></span>
+                            {{ $t('general.back') }}
                 </button>
             </div>
             <div class="flex flex-col md:flex-row-reverse h-auto mx-6 my-4 md:my-8">

@@ -7,7 +7,7 @@
     <div>
       <div class="text-center my-5">
         <p class="text-2xl md:text-4xl font-bold">
-          {{ $t('home.auction.title') }}
+          {{ $t('auction.title') }}
         </p>
       </div>
       <div>
@@ -17,7 +17,7 @@
           class="bg-white rounded-lg"
         >
           <NuxtLink
-            :to="'/user/detalles/' + item.id"
+            :to="localePath('/user/detalles/' + item.id)"
             @click.prevent="goToDetails(item.id)"
             class="flex flex-col md:flex-row mb-10"
           >
@@ -42,11 +42,13 @@
             <div class="w-full md:w-1/2 flex flex-col justify-between">
               <div class="p-5">
                 <div class="flex items-center">
-                  <span class="text-4xl font-bold mr-2">Subasta</span>
+                  <span class="text-4xl font-bold mr-2">
+                    {{ $t('auction.auction') }}
+                  </span>
                   <statusBid :status="item.status" />
                 </div>
                 <p class="text-sm font-medium text-slate-500">
-                  Fecha de subasta:
+                  {{ $t('auction.auctionDate') }}:
                   <span class="font-normal">{{
                     new Date(item.start_bid).toLocaleString()
                   }}</span>
@@ -57,11 +59,11 @@
                 </p>
                 <div class="text-center mt-auto">
                   <NuxtLink
-                    :to="'/user/detalles/' + item.id"
+                    :to="localePath('/user/detalles/' + item.id)"
                     @click.prevent="goToDetails(item.id)"
                   >
                     <button class="bg-black py-3 px-5 text-white rounded-lg">
-                      Ingresar a Subasta
+                      {{ $t('auction.enterTheAuction')}}
                     </button>
                   </NuxtLink>
                 </div>
@@ -138,7 +140,7 @@ export default {
     },
 
     goToDetails(id) {
-      this.$router.push(`/user/detalles/${id}`)
+      this.$router.push(this.localePath(`/user/detalles/${id}`))
     }
   }
 }

@@ -173,7 +173,7 @@ export default {
           //   this.$router.push('/auth/login/')
           // } else {
           //   this.$toast.error("Lo sentimos, ha ocurrido un error");
-          // } 
+          // }
           console.log(error);
         });
     },
@@ -199,7 +199,7 @@ export default {
         .then((response) => {
           console.log(response);
           this.$toast.success("Su codigo ha sido verificado");
-          this.$router.push('/auth/password/reset-password')
+          this.$router.push(this.localePath('/auth/password/reset-password'))
           this.loading = false
         })
         .catch((error) => {

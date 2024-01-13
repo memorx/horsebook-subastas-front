@@ -432,7 +432,7 @@ export default {
         }
         try {
           const response = await this.$axios.put(url, formData, { headers })
-          this.$router.push("/user/perfil")
+          this.$router.push(this.localePath("/user/perfil"))
         } catch (error) {
           console.log(error, "ERROR")
           this.loading = false

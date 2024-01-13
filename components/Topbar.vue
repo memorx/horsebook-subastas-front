@@ -24,11 +24,11 @@
                     <!--web/ipad Navigation items -->
                     <div class=" hidden md:flex justify-center align-middle items-center ">
                         <div class="flex space-x-3 lg:space-x-4 uppercase text-xs font-roboto">
-                            <nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link>
-                            <nuxt-link :class="activePageClass('/user/inicio')" to="/user/inicio">{{
+                            <nuxt-link :class="activePageClass('/')" :to="localePath('/')">{{ $t('topBar.home') }}</nuxt-link>
+                            <nuxt-link :class="activePageClass('/user/inicio')" :to="localePath('/user/inicio')"> {{
                                 $t('topBar.bids') }}</nuxt-link>
                             <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link> -->
-                            <nuxt-link :class="activePageClass('/news')" to="/news">{{ $t('topBar.news') }}</nuxt-link>
+                            <nuxt-link :class="activePageClass('/news')" :to="localePath('/news')">{{ $t('topBar.news') }}</nuxt-link>
                             <button class="uppercase text-xs font-roboto" @click="handleScrollIntoContact">
                                 {{ $t('topBar.contact') }}
                             </button>
@@ -53,7 +53,7 @@
                                 containerClass="w-1/2" :onClick="logout" />
                         </div>
                         <nuxt-link :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
-                            class="hidden cursor-pointer" aria-haspopup="listbox" aria-expanded="true"
+                            class="cursor-pointer" aria-haspopup="listbox" aria-expanded="true"
                             aria-labelledby="listbox-label">
                             <span class="flex items-center">
                                 <img v-if="$i18n.locale === 'en'" src="../public/flag-mex.png" alt="mexico-flag"
@@ -179,16 +179,16 @@ export default {
             return this.$route.path === route;
         },
         navigateToSignUp() {
-            this.$router.push('/auth/sign-up')
+            this.$router.push(this.localePath('/auth/sign-up'))
         },
         navigateToProfile() {
-            this.$router.push('/user/perfil')
+            this.$router.push(this.localePath('/user/perfil'))
         },
         navigateToLogin() {
-            this.$router.push('/auth/login')
+            this.$router.push(this.localePath('/auth/login'))
         },
         login() {
-            this.$router.push('/auth/login')
+            this.$router.push(this.localePath('/auth/login'))
         },
         logout() {
             this.$store.commit('authenticate', false);
@@ -196,11 +196,11 @@ export default {
             this.$store.commit("closeWebSocket");
             Cookies.remove('access_token');
             localStorage.removeItem("setUser");
-            this.$router.push('/')
+            this.$router.push(this.localePath('/'))
         },
         async handleScrollIntoContact() {
             if (this.$route.path !== '/') {
-                await this.$router.push('/');
+                await this.$router.push(this.localePath('/'));
 
             }
             if (this.$route.path === '/') {
@@ -256,7 +256,7 @@ export default {
 
             if (this.idCurrenBid) {
                 let path = `/auction/live/${this.idCurrenBid}`
-                this.$router.push({ path: path })
+                this.$router.push({ path: this.localePath(path) })
             }
         },
     },

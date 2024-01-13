@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     redirect() {
-      this.$router.push({ path: '/' })
+      this.$router.push({ path: this.localePath('/') })
     },
     async validatePasswords() {
       if (this.passwordOne.length >= 8) {
@@ -124,7 +124,7 @@ export default {
                 email: this.setUser.email,
                 password: this.passwordOne,
               });
-              this.$router.push("/");
+              this.$router.push(this.localePath("/"));
             } catch (error) {
               this.message = "Email incorrecto";
             }

@@ -89,7 +89,7 @@ export default {
         });
         console.log(response, "RESPONSE")
         this.$store.commit('setUser', data);
-        this.$router.push('/auth/password/forgot-password')
+        this.$router.push(this.localePath('/auth/password/forgot-password'))
         console.log(response, "RESPONSE")
       } catch (error) {
         console.log(error, "ERROR")

@@ -407,7 +407,7 @@ export default {
           let data = response
           delete data.password
           this.$store.commit("setSingUpData", data)
-          this.$router.push("/auth/sign-up/confirm-account")
+          this.$router.push(this.localePath("/auth/sign-up/confirm-account"))
         })
         .catch((error) => {
           this.loading = false

@@ -1,6 +1,6 @@
 {
-    "test": {
-        "hello": "world"
+    "general": {
+        "back": "Back"
     },
     "home": {
         "main": {
@@ -57,5 +57,39 @@
         "navigate": "Navigate",
         "email":"Email",
         "phone":"Phone"
+    },
+    "cron": {
+        "day": "day",
+        "days": "days",
+        "hour": "hour",
+        "hours": "hours",
+        "minute": "minute",
+        "minutes": "minutes",
+        "second": "second",
+        "seconds": "seconds"
+    },
+    "auction": {
+        "title": "Auctions",
+        "auction": "Auction",
+        "auctionDate": "Date",
+        "enterTheAuction": "Enter the auction",
+        "auctionListButton": "Auction listing",
+        "horse": "Horse",
+        "horses": "Horses",
+        "preOfferStartedMsg": "PRE OFFER HAS STARTED",
+        "preOfferStartMsg": "PRE OFFER STARTS IN",
+        "auctionLivetMsg": "THE AUCTION WILL BE LIVE ON",
+        "lot": "Lot",
+        "bestOffer": "Best Offer",
+        "startingPrice": "Starting Price",
+        "enter": "Enter",
+        "statuses": {
+            "PREBID": "Prebid",
+            "BIDDING": "Live",
+            "CLOSED": "Closed",
+            "CLOSED PREBID": "Closed Prebid",
+            "COMING": "Coming"
+        }
+
     }
 }

@@ -347,11 +347,11 @@ export default {
          console.log('si se hace')
          if(auction.status == 'BIDDING') {
             let path = `auction/live/${auction.id}`
-            this.$router.push({ path: path })
+            this.$router.push({ path: this.localePath(path) })
 
          } else {
             let path = `user/detalles/${auction.id}`
-            this.$router.push({ path: path })
+            this.$router.push({ path: this.localePath(path) })
          }
 
       },
