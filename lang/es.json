@@ -1,6 +1,9 @@
 {
     "general": {
-        "back": "Regresar"
+        "back": "Regresar",
+        "home": "Inicio",
+        "confirm": "Confirmar",
+        "cancel": "Cancelar"
     },
     "home": {
         "main": {
@@ -9,12 +12,18 @@
             "button": "ver subastas"
         },
         "auction": {
-            "title": "Subastas"
+            "title": "Subastas",
+            "auctionStartIn": "La subasta comienza en",
+            "liveAuction": "Subasta en vivo",
+            "auction": "Subasta",
+            "lots": "lotes",
+            "prebids": "Preofertas",
+            "participateInTheAuction": "Participar en la subasta"
         },
         "news": {
             "title": "Novedades",
             "paragraph": "Subtítulo de novedades",
-            "button": "Ver todas las novedades",
+            "button": "Ver todas",
             "buttonViewMore": "Ver más"
         },
         "us": {
@@ -57,7 +66,8 @@
     "footer": {
         "navigate": "navegación",
         "email": "email",
-        "phone": "teléfono"
+        "phone": "teléfono",
+        "followUs": "síguenos"
     },
     "cron": {
         "day": "día",
@@ -67,7 +77,8 @@
         "minute": "minuto",
         "minutes": "minutos",
         "second": "segundo",
-        "seconds": "segundos"
+        "seconds": "segundos",
+        "timeLeft": "tiempo restante"
     },
     "auction": {
         "title": "Subastas",
@@ -79,18 +90,75 @@
         "horses": "Caballos",
         "preOfferStaredtMsg": "LA PRE OFERTA HA COMENZADO",
         "preOfferStartMsg": "LA PRE OFERTA COMIENZA EN",
-        "auctionLivetMsg": "LA SUBASTA ESTARA EN VIVO EN",
+        "auctionWillBeLivetMsg": "LA SUBASTA ESTARA EN VIVO EN",
+        "auctionLivetMsg": "LA SUBASTA ESTA EN VIVO",
+        "autctionEndMsg": "LA SUBASTA HA TERMINADO, GRACIAS POR TU PREFERENCIA, ESPERA NOTICIAS DE NOSOTROS PARA LA SIGUIENTE.",
+        "noAvailableMsg": "LA SUBASTA NO ESTÁ DISPONIBLE",
+        "stayWithUsMsg": "QUÉDATE CON NOSOTROS SEGUIMOS CON LA SUBASTA EN VIVO",
+        "winnerCongratsMsg": "FELICIDADES HAS GANADO LA SUBASTA DE {wonHorse} POR ${lastOffer} USD",
+        "winnerMsg": "{winnerName} HA GANADO LA SUBASTA DE {wonHorse} POR ${lastOffer} USD",
         "lot": "Lote",
+        "lotNo": "# de lote",
         "bestOffer": "Mejor Oferta",
         "startingPrice": "Precio Inicial",
         "enter": "Ingresar",
+        "horseBeingAuctioned": "caballo en subasta",
+        "highestOffer": "Oferta más alta",
+        "beTheFirst": "SE EL PRIMERO EN OFERTAR",
+        "bidOnThisLot": "Ofertar por este lote",
         "statuses": {
             "PREBID": "Preoferta",
             "BIDDING": "En Vivo",
             "CLOSED": "Cerrada",
             "CLOSED PREBID": "Preoferta Cerrada",
             "COMING": "En Espera"
-        }
+        },
+        "bids": "ofertas",
+        "noVideoAvailableMsg": "No video available"
+    },
+    "bids": {
+        "offer": "Ofertar",
+        "name": "nombre",
+        "nationality": "nacionalidad",
+        "bid": "oferta",
+        "date": "fecha",
+        "prebidHistory": "Historial de pre ofertas",
+        "commission": "de comisión",
+        "bidConfirmQuestion": "¿Estas seguro que quieres ofertar?",
+        "prebidDiscountMsg": "Todo participante de la preoferta obtiene un 5% de descuento",
+        "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
+        "discountByHorseMsg": "**Los descuentos aplican por cada caballo"
+    },
+    "horse": {
+        "dateOfBirth": "Fecha de nacimiento",
+        "age": "Edad",
+        "registerNo": "No. Registro",
+        "height": "Alzada",
+        "gender": "Género",
+        "birthLocation": "Criadero",
+        "tabs": {
+            "horseData": "Datos del caballo",
+            "pedigree": "Pedigree",
+            "xRays": "Rayos X"
+        },
+        "pedigreeNoImageMsg": "No hay imagen de Pedigree disponible por el momento",
+        "xRaysNoImagesMsg": "No hay imágenes de Rayos X disponibles",
+        "horseTelexMsg": "Revisa los datos en"
+    },
+    "dates": {
+        "daysOfTheWeek": {
+            "sunday": "Domingo",
+            "monday": "Lunes",
+            "tuesday": "Martes",
+            "wednesday": "Miércoles",
+            "thursday": "Jueves",
+            "friday": "Viernes",
+            "saturday": "Sábado"
+        },
+        "start": "incio",
+        "end": "fin",
+        "years": "años"
 
     }
+
 }

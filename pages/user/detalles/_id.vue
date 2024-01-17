@@ -115,13 +115,14 @@
             v-if="bidStatus != 'BIDDING'"
             class="text-center text-sm font-bold"
           >
-            {{ $t('auction.auctionLivetMsg') }}
+            {{ $t('auction.auctionWillBeLivetMsg') }}
           </h1>
           <h1
             v-if="bidStatus == 'BIDDING'"
             class="text-center text-sm font-bold"
           >
-            LA SUBASTA ESTA EN VIVO
+            {{ $t('auction.auctionLivetMsg') }}
+
           </h1>
           <div
             v-if="loading == false && countdownSubasta == true"

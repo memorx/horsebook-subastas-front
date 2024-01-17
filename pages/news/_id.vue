@@ -12,13 +12,13 @@
             </div>
         </div>
         <div class="mx-16 my-4 text-justify">
-            <NuxtLink :to="`/news`">
+            <NuxtLink :to="localePath(`/news`)">
                 <button
                 class="uppercase border-1 border-black mb-3 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
                     <span
                     class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1">
                     <img src="../../public/arrow-black.png" /></span>
-                    Ver todas
+                    {{ $t('home.news.button') }}
                 </button>
             </NuxtLink>
             <div class="my-2">

@@ -12,14 +12,13 @@
         :disableModal="disableModal"
         :status="horseStatus"
       />
-
-      <NuxtLink :to="`/`">
+      <NuxtLink :to="localePath('/')">
         <button
           class="uppercase border-1 ml-2 mb-3 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
             <span
               class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1">
               <img src="../../../public/arrow-black.png" /></span>
-              Inicio
+              {{ $t('general.home') }}
         </button>
       </NuxtLink>
       <div class="flex flex-wrap">
@@ -57,7 +56,9 @@
           <!-- First Row in the second column -->
           <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
             <div class="flex items-center">
-              <h2 class="text-2xl font-bold mb-1 mr-3">Subasta</h2>
+              <h2 class="text-2xl font-bold mb-1 mr-3">
+                {{ $t('auction.auction') }}
+              </h2>
               <statusBid :status="bidStatus" />
             </div>
             <h4 class="text-sm mb-4">
@@ -65,11 +66,12 @@
               <span class="text-xl font-bold mb-2 mr-1 ml-4">{{
                 item.horses.length
               }}</span>
-              <span>{{ item.horses.length == 1 ? "Caballo" : "Caballos" }}</span>
+              <span>{{ $t('auction.' + (item.horses.length == 1 ? "horse" : "horses")) }}</span>
             </h4>
             <transition name="fade">
               <div v-if="horseID" class="fade text-lg font-bold flex flex-col md:flex-row">
-                Caballo en subasta: <span class="text-2xl text-red-500">{{ HorsenName }}</span>
+                <span class="capitalize mr-2">{{  $t('auction.horseBeingAuctioned') }}: </span>
+                <span class="text-2xl text-red-500">{{ HorsenName }}</span>
               </div>
             </transition>
           </div>
@@ -78,13 +80,13 @@
             <transition name="fade">
               <div v-if="!horseID" class="fade p-8">
                   <h2 v-if="yourAreTheWinner" class="font-bold text-4xl mx-auto text-center text-green-700 pb-6">
-                      FELICIDADES HAS GANADO LA SUBASTA DE <span class="text-black"> {{ wonHorse }} </span> POR ${{ lastOffer }} USD
+                      {{ $t('auction.winnerCongratsMsg',{ 'wonHorse': wonHorse,  'lastOffer': lastOffer}) }}
                   </h2>
                   <h2 v-if="!yourAreTheWinner && horseStatus == 'CLOSED'" class="font-bold text-4xl mx-auto text-center text-red-700 pb-6">
-                    <span class="text-black">{{ winnerName }} </span> HA GANADO LA SUBASTA DE <span class="text-black"> {{ wonHorse }} </span> POR ${{ lastOffer }} USD
+                    {{ $t('auction.winnerMsg',{'winnerName': winnerName, 'wonHorse': wonHorse, 'lastOffer': lastOffer}) }}
                   </h2>
                   <h2 class="font-bold text-3xl mx-auto text-center text-yellow-600">
-                      QUÉDATE CON NOSOTROS SEGUIMOS CON LA SUBASTA EN VIVO
+                      {{ $t('auction.stayWithUsMsg') }}
                   </h2>
               </div>
 
@@ -94,16 +96,20 @@
                   class="text-center w-full rounded-t-lg p-5"
                   style="background-color: #b99d61"
                 >
-                  <p class="text-white font-bold text-sm">OFERTA MÁS ALTA</p>
+                  <p class="text-white font-bold text-sm uppercase">
+                    {{ $t('auction.highestOffer') }}
+                  </p>
                   <span v-if="lastOffer" class="text-white font-bold text-2xl"
                     >${{ lastOffer }} USD</span
                   >
-                  <span v-else class="text-white font-bold text-2xl"
-                    >SE EL PRIMERO EN OFERTAR</span
-                  >
+                  <span v-else class="text-white font-bold text-2xl uppercase">
+                    {{ $t('auction.beTheFirst') }}
+                  </span>
                 </div>
                 <div class="px-5 mt-5">
-                  <p class="text-sm font-bold">OFERTAR POR ESTE LOTE</p>
+                  <p class="text-sm font-bold uppercase">
+                    {{ $t('auction.bidOnThisLot') }}
+                  </p>
                   <form @submit="submitForm">
                     <div class="flex items-center space-x-2 mb-5">
                       <button
@@ -140,14 +146,14 @@
                       <div class="hidden lg:block">
                         <SubmitAuthenticatedButton
                           :enable-modal="enableModal"
-                          button-text="Ofertar"
+                          :button-text="$t('bids.offer')"
                         />
                       </div>
                     </div>
                     <div class="lg:hidden text-center mt-5 w-full">
                       <SubmitAuthenticatedButton
                         :enable-modal="enableModal"
-                        button-text="Ofertar"
+                        :button-text="$t('bids.offer')"
                       />
                     </div>
                   </form>
@@ -169,7 +175,7 @@
                 <div v-if="bids.length > 0">
                   <div class="mx-5">
                     <div class="border-b border-gray-300 my-4"></div>
-                    <p class="text-sm font-bold">OFERTAS</p>
+                    <p class="text-sm font-bold uppercase"> {{ $t('auction.bids') }} </p>
                   </div>
                   <div class="px-4" style="flex: 5">
                     <Bids
@@ -192,43 +198,43 @@
           <div class="mt-4 bg-white p-5 mx-5 rounded-lg">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               <div class="mr-4">
-                <span class="font-bold text-gray-700">Fecha de nacimiento:</span>
+                <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
                 <span class="text-gray-600">{{ horseData.birthDate || "NA" }}</span>
               </div>
               <div class="mr-4">
-                <span class="font-bold text-gray-700">Edad:</span>
+                <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
                 <span class="text-gray-600">{{ horseData.Age || "NA" }}</span>
-                <span class="text-gray-600">años</span>
+                <span class="text-gray-600">{{ $t('dates.years') }}</span>
               </div>
 
               <div class="mr-4">
-                <span class="font-bold text-gray-700">No. Registro:</span>
+                <span class="font-bold text-gray-700">{{ $t('horse.registerNo') }}:</span>
                 <span class="text-gray-600">{{
                   horseData.registerNumber || "NA"
                 }}</span>
               </div>
               <div class="mr-4">
-                <span class="font-bold text-gray-700">Alzada:</span>
+                <span class="font-bold text-gray-700">{{ $t('horse.height') }}:</span>
                 <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
                 <span class="text-gray-600">m</span>
               </div>
               <div class="mr-4">
-                <span class="font-bold text-gray-700">Genero:</span>
+                <span class="font-bold text-gray-700">{{ $t('horse.gender') }}:</span>
                 <span class="text-gray-600">{{ horseData.Genre || "NA" }}</span>
               </div>
               <div class="mr-4">
-                <span class="font-bold text-gray-700">Criadero:</span>
+                <span class="font-bold text-gray-700">{{ $t('horse.birthLocation') }}:</span>
                 <span class="text-gray-600">{{ horseData.Hatchery || "NA" }}</span>
               </div>
             </div>
           </div>
           <div class="mt-4 bg-white p-5 mx-5 rounded-lg">
             <div class="mb-4">
-              <span class="text-2xl font-bold">Pedigree</span>
+              <span class="text-2xl font-bold">{{ $t('horse.tabs.pedigree') }}</span>
             </div>
             <Pedigree :link="horseData.Pedigree" />
             <p v-if="horseData.horseTelex">
-              Revisa los datos en
+              {{ $t('horse.horseTelexMsg') }}
               <a class="text-blue-400" :href="horseData.horseTelex" target="_blank"
                 >Horse Telex</a
               >
@@ -249,7 +255,7 @@
                         class="mb-4 bg-white p-5 mx-5 rounded-lg"
                       >
                         <div class="mb-4">
-                          <span class="text-2xl font-bold">Rayos X</span>
+                          <span class="text-2xl font-bold">{{ $t('horse.tabs.xRays') }}</span>
                         </div>
                         <p>
                           <xRayGallery :images="horseData.xRayGallery" />
@@ -269,7 +275,7 @@
     </div>
     <div v-else-if="bidStatus == 'CLOSED'" class="flex md:flex-col m-1 md:m-20 gap-4">
       <h2 class="font-bold text-3xl mx-auto text-center text-yellow-600 md:w-[600px]">
-          LA SUBASTA HA TERMINADO, GRACIAS POR TU PREFERENCIA, ESPERA NOTICIAS DE NOSOTROS PARA LA SIGUIENTE.
+          {{ $t('auction.autctionEndMsg')}}
       </h2>
       <NuxtLink :to="`/`">
         <button
@@ -277,13 +283,13 @@
             <span
               class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1">
               <img src="../../../public/arrow-black.png" /></span>
-              Inicio
+              {{ $t('general.home') }}
         </button>
       </NuxtLink>
     </div>
     <div v-else-if="bidStatus != ''" class="flex md:flex-col m-1 md:m-20 gap-4">
       <h2 class="font-bold text-3xl mx-auto text-center text-red-600 md:w-[600px]">
-          LA SUBASTA NO ESTÁ DISPONIBLE
+          {{ $t('auction.noAvailableMsg') }}
       </h2>
       <NuxtLink :to="`/`">
         <button
@@ -291,7 +297,7 @@
             <span
               class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1">
               <img src="../../../public/arrow-black.png" /></span>
-              Inicio
+              {{ $t('general.home') }}
         </button>
       </NuxtLink>
     </div>

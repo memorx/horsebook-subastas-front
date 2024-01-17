@@ -31,6 +31,18 @@
                             {{ $t('topBar.news') }}
                         </nuxt-link>
                     </li>
+                    <li>
+                        <nuxt-link :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
+                            class="cursor-pointer" aria-haspopup="listbox" aria-expanded="true"
+                            aria-labelledby="listbox-label">
+                            <span class="flex items-center">
+                                <img v-if="$i18n.locale === 'en'" src="../public/flag-mex.png" alt="mexico-flag"
+                                    class="mr-2 h-6 w-6 flex-shrink-0 rounded-full">
+                                <img v-if="$i18n.locale === 'es'" src="../public/flag-USA.png" alt="flag-usa"
+                                    class="mr-2 h-6 w-6 flex-shrink-0 rounded-full">
+                            </span>
+                        </nuxt-link>
+                    </li>
                 </ul>
             </nav>
         </div>

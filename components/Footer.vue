@@ -24,14 +24,24 @@
                             {{ $t('topBar.contact') }}
                         </button>
                     </li>
-                    <li><nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">registro</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">login</nuxt-link></li>
+                    <li>
+                        <nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">
+                            {{ $t('topBar.signUp') }}
+                        </nuxt-link>
+                    </li>
+                    <li>
+                        <nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">
+                            {{ $t('topBar.logIn') }}
+                        </nuxt-link>
+                    </li>
                 </ul>
             </div>
 
             <!-- 3. Contact Us -->
             <div>
-                <h3 :class="classTittleSection">Contacto</h3>
+                <h3 :class="classTittleSection">
+                    {{ $t('topBar.contact') }}
+                </h3>
                 <div class="font-robotom capitalize">
                     <p><span class="normal-case">{{ contactInfo.email }}</span></p>
                     <p>{{ contactInfo?.app_user_profile?.phone }}</p>
@@ -46,7 +56,9 @@
 
             <!-- 4. Follow Us + Social Icons -->
             <div >
-                <h3 :class="classTittleSection">Siguenos</h3>
+                <h3 :class="classTittleSection" class="capitalize">
+                    {{ $t('footer.followUs') }}
+                </h3>
                 <div class="flex space-x-4">
                     <i class="fab fa-instagram fa-2x"></i>
                     <i class="fab fa-facebook fa-2x"></i>
@@ -78,14 +90,24 @@
                             {{ $t('topBar.contact') }}
                         </button>
                     </li>
-                    <li><nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">registro</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">login</nuxt-link></li>
+                    <li>
+                        <nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">
+                            {{ $t('topBar.signUp') }}
+                        </nuxt-link>
+                    </li>
+                    <li>
+                        <nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">
+                            {{ $t('topBar.logIn') }}
+                        </nuxt-link>
+                    </li>
                 </ul>
             </div>
 
             <!-- Contact Us -->
             <div class="w-1/2 mb-6">
-                <h3 :class="classTittleSection">Contacto</h3>
+                <h3 :class="classTittleSection">
+                    {{ $t('topBar.contact') }}
+                </h3>
                 <div class="font-roboto capitalize">
                     <p><span class="normal-case">{{ contactInfo.email }}</span></p>
                     <p>{{ contactInfo?.app_user_profile?.phone }}</p>

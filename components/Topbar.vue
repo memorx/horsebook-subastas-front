@@ -3,7 +3,7 @@
         <!-- Web Navigation -->
         <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent" >
             <!-- Logo or brand -->
-            <nuxt-link to="/">
+            <nuxt-link :to="localePath('/')">
                 <img src="../public/image_la_silla.png" alt="logo" style="width: 40px;">
             </nuxt-link>
 
@@ -74,7 +74,7 @@
             <div class="flex items-center justify-between w-full">
 
                 <!-- Logo or brand -->
-                <nuxt-link to="/">
+                <nuxt-link :to="localePath('/')">
                     <img src="../public/image_la_silla.png" alt="logo" style="width: 40px;">
                 </nuxt-link>
 

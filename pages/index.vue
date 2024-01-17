@@ -20,7 +20,7 @@
             <button :to="'/'" @click="goToAuctionDetail(nextAuction)" exact class="w-45 mx-auto order-1 md:order-2 flex flex-col items-center justify-center space-y-4" :class="(nextAuction?.status == 'BIDDING') ? 'animate-blink' : ''">
 
                   <ContentTile :title="nextAuction?.notes ? nextAuction?.notes : ''"
-                     :paragraph="(nextAuction?.status == 'BIDDING') ? 'subasta en vivo' : 'la subasta comienza en'" :buttonLabel="null" headingLevel="2"
+                     :paragraph="(nextAuction?.status == 'BIDDING') ? $t('home.auction.liveAuction') : $t('home.auction.auctionStartIn')" :buttonLabel="null" headingLevel="2"
                      :classOverrides="{
                         container: 'flex flex-col items-center w-full',
                         title: 'text-custom-gold font-normal text-xl md:text-2xl lg:text-2xl uppercase font-roboto',
@@ -71,7 +71,7 @@
                         <div class="xl:mt-6">
                            <!-- Placeholder content, replace with your content -->
                            <h2 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl flex flex-row gap-10">
-                              remate
+                              {{ $t('home.auction.auction') }}
                               <statusBid :status="auction.status" />
                            </h2>
                            <p class="font-roboto capital font-bold text-sm lg:text-base xl:text-lg pt-2">
@@ -83,7 +83,7 @@
                                  <img src="../public/message-icon.png" alt="lot" class="mr-2 h-3 w-3">
                                  <p class="font-roboto capital font-bold text-sm text-[#575757] uppercase">
                                     {{ auction.horses?.length }}
-                                    lotes
+                                    {{ $t('home.auction.lots') }}
                                  </p>
                               </div>
                               <div class="flex items-center">
@@ -93,7 +93,7 @@
                            </div>
 
                            <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">
-                              remate en vivo
+                              {{ $t('home.auction.liveAuction') }}
                            </h3>
                            <div class="py-2 lg:py-3 xl:py-4 flex items-center">
                               <img src="../public/calendar-icon.png" alt="date" class="mr-2 h-3 w-3">
@@ -102,19 +102,21 @@
                               </p>
                            </div>
 
-                           <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">Preofertas</h3>
+                           <h3 class="font-roboto uppercase font-extrabold text-base lg:text-lg xl:text-xl">
+                              {{ $t('home.auction.prebids') }}
+                           </h3>
                            <div class="py-2 lg:py-3 xl:py-4">
                               <div class="flex items-center">
                                  <img src="../public/green-calendar-icon.png" alt="start-date" class="mr-2 h-3 w-3">
                                  <p class="font-roboto capital font-bold text-sm uppercase">
-                                    Inicio:
+                                    {{ $t('dates.start') }}:
                                     {{ formatDate(auction.start_pre_bid) }}
                                  </p>
                               </div>
                               <div class="flex items-center">
                                  <img src="../public/cancel-icon.png" alt="end-date" class="mr-2 h-3 w-3">
                                  <p class="font-roboto capital font-bold text-sm uppercase">
-                                    Fin:
+                                    {{ $t('dates.end') }}:
                                     {{ formatDate(auction.end_pre_bid) }}
                                  </p>
                               </div>
@@ -123,7 +125,7 @@
                         <button type="button"
                            class="lg:px-12 px-6 md:px-8 py-2 border-1 border-custom-gold rounded-2xl buttonClass w-full bg-[#BDBDBD] text-white  uppercase extrabold text-base lg:text-xl"
                            @click="goToAuctionDetail(auction)">
-                           participar en remate
+                           {{ $t('home.auction.participateInTheAuction') }}
                         </button>
                      </div>
                   </div>
@@ -329,7 +331,15 @@ export default {
       },
 
       formatDate(dateString) {
-         const daysOfWeek = ['DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO'];
+         const daysOfWeek = [
+            this.$t('dates.daysOfTheWeek.sunday'),
+            this.$t('dates.daysOfTheWeek.monday'),
+            this.$t('dates.daysOfTheWeek.tuesday'),
+            this.$t('dates.daysOfTheWeek.wednesday'),
+            this.$t('dates.daysOfTheWeek.thursday'),
+            this.$t('dates.daysOfTheWeek.friday'),
+            this.$t('dates.daysOfTheWeek.saturday')
+         ];
 
          const date = new Date(dateString);
          const dayOfWeek = daysOfWeek[date.getDay()];

@@ -8,7 +8,7 @@
             >
         </div>
         <div v-else class="w-full text-left text-gray-700">
-            <h1>No hay imagen de Pedigree disponible por el momento</h1>
+            <h1>{{ $t('horse.pedigreeNoImageMsg')}}</h1>
         </div>
     </div>
 </template>

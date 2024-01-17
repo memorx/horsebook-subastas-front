@@ -26,7 +26,7 @@
                                 </div>
                             </div>
                             <div class="mt-auto w-full flex items-left p-0">
-                                <NuxtLink :to="`/news/${item.id}`" class="uppercase flex flex-row items-left font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
+                                <NuxtLink :to="localePath(`/news/${item.id}`)"  class="uppercase flex flex-row items-left font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
                                     {{ $t('home.news.buttonViewMore') }}
                                     <span class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1">
                                         &#8594;
