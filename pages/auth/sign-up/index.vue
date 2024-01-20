@@ -9,8 +9,9 @@
     >
       <div class="w-full lg:w-1/2">
         <div class="text-center mb-10">
-          <h2>NUEVA CUENTA</h2>
-          <h1 class="text-4xl font-extrabold text-black">Registrarse</h1>
+          <h1 class="text-4xl font-extrabold text-black">
+            {{ $t('login.signUp') }}
+          </h1>
         </div>
         <div class="border border-black rounded-3xl px-5 py-10">
           <form @submit.prevent="handleSubmit">
@@ -22,7 +23,7 @@
                   type="email"
                   required
                   class="border-t-0 border-x-0 focus:ring-0"
-                  placeholder="E-mail"
+                  :placeholder="$t('login.email')"
                 />
               </div>
               <div class="flex flex-col">
@@ -34,7 +35,7 @@
                   @focus="form.isPasswordFocused = true"
                   @blur="form.isPasswordFocused = false"
                   class="border-t-0 border-x-0 focus:ring-0"
-                  placeholder="Contraseña"
+                  :placeholder="$t('login.password')"
                 />
               </div>
               <div class="flex flex-col">
@@ -44,7 +45,7 @@
                   required
                   @input="validatePasswordMatch"
                   class="border-t-0 border-x-0 focus:ring-0"
-                  placeholder="Confirmar contraseña"
+                  :placeholder="$t('login.confirmPassword')"
                 />
                 <div class="text-red-500 text-sm">
                   {{ form.passwordMatchValidationMessage }}
@@ -74,7 +75,7 @@
                   v-model="form.name"
                   required
                   class="border-t-0 border-x-0 focus:ring-0"
-                  placeholder="Nombre"
+                  :placeholder="$t('signup.name')"
                 />
               </div>
               <div class="flex flex-col">
@@ -83,7 +84,7 @@
                   type="text"
                   required
                   class="border-t-0 border-x-0 focus:ring-0"
-                  placeholder="Apellido"
+                  :placeholder="$t('signup.lastName')"
                 />
               </div>
               <div class="flex flex-col">
@@ -94,7 +95,9 @@
                   @change="updateSelectedCountryCode"
                   class="border-t-0 border-x-0 focus:ring-0"
                 >
-                  <option disabled value="" selected hidden>País</option>
+                  <option disabled value="" selected hidden>
+                    {{ $t('signup.country') }}
+                  </option>
                   <option
                     v-for="country in form.countries"
                     :key="country.code"
@@ -118,7 +121,7 @@
                     v-model="form.phone"
                     required
                     class="w-full border-t-0 border-x-0 focus:ring-0"
-                    placeholder="Teléfono"
+                    :placeholder="$t('signup.phone')"
                   />
                 </div>
               </div>
@@ -130,12 +133,14 @@
                     required
                   />
                   <label class="text-gray-600">
-                    Acepto los
+                    {{ $t('signup.agreeConditions')  }}
                     <a
                       target="_blank"
                       href="https://horsebook-subastas-stage.s3.us-east-2.amazonaws.com/static/docs/TerminosyCondiciones.pdf"
                       class="underline"
-                      >Terminos y Condiciones</a
+                      >
+                      {{ $t('signup.termsAndConditions')  }}
+                      </a
                     >
                   </label>
                 </div>
@@ -146,12 +151,14 @@
                     required
                   />
                   <label for="remember-me" class="text-gray-600"
-                    >Estoy de acuerdo con las
+                    >{{ $t('signup.agreePolicies')  }}
                     <a
                       href="https://horsebook-subastas-stage.s3.us-east-2.amazonaws.com/static/docs/AvisodePrivacidadyPoliticas.pdf"
                       target="_blank"
                       class="underline"
-                      >Politicas de Privacidad</a
+                      >
+                        {{ $t('signup.privacyPolicies')  }}
+                      </a
                     >
                   </label>
                 </div>
@@ -161,13 +168,15 @@
                   type="submit"
                   class="py-3 px-10 rounded-full bg-[#BFA753] text-white"
                 >
-                  CREAR CUENTA
+                {{ $t('signup.createAccount')  }}
                 </button>
               </div>
               <div class="text-center mb-10">
                 <span class="text-gray-600 mb-5">
                   <nuxt-link to="/auth/login" class="font-medium"
-                    >Inicia sesión</nuxt-link
+                    >
+                    {{ $t('login.login')  }}
+                    </nuxt-link
                   ></span
                 >
               </div>
@@ -248,7 +257,7 @@ export default {
       return this.showPassword ? "text" : "password"
     },
     showPasswordText() {
-      return this.showPassword ? "Ocultar Contraseña " : "Mostrar Contraseña"
+      return this.showPassword ? this.$t('signup.hidePassword') : this.$t('signup.showPassword')
     }
   },
   mounted() {
@@ -310,18 +319,18 @@ export default {
       const password = this.form.password
       const confirmPassword = this.form.confirmPassword
       this.form.passwordMatchValidationMessage =
-        password === confirmPassword ? "" : "Las contraseñas deben ser iguales."
+        password === confirmPassword ? "" : this.$t('login.passwordsError')
     },
     validatePassword() {
       const password = this.form.password
       const isLengthValid = password.length >= 8
       this.form.passwordValidationMessage = isLengthValid
         ? ""
-        : "La contraseña debe tener al menos 8 caracteres."
+        : this.$t('login.passwordsError')
     },
     handleSubmit() {
       if (this.form.password !== this.form.confirmPassword) {
-        this.$toast.error("Las contraseñas no coinciden")
+        this.$toast.error(this.$t('login.passwordsError'))
         return
       }
       const passwordPattern = /^(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/
@@ -333,7 +342,7 @@ export default {
         this.form.password === this.form.confirmPassword
       if (!isValidPassword) {
         this.$toast.error(
-          "La contraseña debe tener al menos 8 caracteres,<br>contener al menos un dígito,<br>un carácter especial,<br>no puede incluir parte de los atributos del usuario,<br>ni ser una contraseña común o fácilmente adivinable."
+          this.$t('signup.passwordGuidelines', {duration: 10000})
         )
         return
       }
@@ -416,9 +425,9 @@ export default {
             error.response.data &&
             error.response.data.email
           ) {
-            this.$toast.error("Una cuenta con este mail ya existe")
+            this.$toast.error(this.$t('signup.accountAlreadyExist'))
           } else {
-            this.$toast.error("Lo sentimos, ha ocurrido un error")
+            this.$toast.error(this.$t('general.errorMsg'))
           }
           console.error(error)
         })

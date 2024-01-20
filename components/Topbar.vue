@@ -79,28 +79,17 @@
                 </nuxt-link>
 
                 <div v-if="!isMobileMenuOpen">
-                    <div v-if="!isUserAuthenticated" class=" flex flex-row justify-space-between">
-                        <!-- Sign Up / Log in-->
-                        <div class="flex flex-row mx-8 gap-6 w-auto">
-                            <ReusableButton :buttonText="$t('topBar.signUp')"
-                                :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full ${textColor}`"
-                                containerClass="w-1/2" :onClick="navigateToSignUp" />
-
-                            <ReusableButton :buttonText="$t('topBar.logIn')"
-                                buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
-                                containerClass="w-1/2" :onClick="navigateToLogin" />
-                        </div>
-                    </div>
-                    <div v-else class=" flex flex-row justify-space-between">
-                        <div class="flex flex-row mx-8 gap-6 w-auto">
-                            <ReusableButton :buttonText="$t('topBar.profile')"
-                                :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full ${textColor}`"
-                                containerClass="w-1/2" :onClick="navigateToProfile" />
-                            <ReusableButton :buttonText="$t('topBar.logout')"
-                                buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
-                                containerClass="w-1/2" :onClick="logout" />
-                        </div>
-                    </div>
+                    <div class="flex justify-right">
+                    <a @click="goToCurrenAuction()" v-if="idCurrenBid"
+                    :class="['hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
+                        fill="none" />
+                    </svg>
+                        {{ $t('topBar.liveAuction') }}
+                    </a>
+                </div>
                 </div>
 
                 <button v-if="!isMobileMenuOpen" @click="toggleMenu">

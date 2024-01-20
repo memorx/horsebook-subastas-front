@@ -6,46 +6,46 @@
     />
     <div>
       <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
-        <p class="text-xl text-white font-bold">DATOS GENERALES</p>
-        <NuxtLink to="/user/perfil/editar">
+        <p class="text-xl text-white font-bold">{{ $t('profile.title') }}</p>
+        <NuxtLink :to="localePath('/user/perfil/editar')">
           <button class="bg-white text-black p-2 rounded-lg">
-            <i class="fas fa-pencil-alt mr-2 text-blue-500"></i> Editar
+            <i class="fas fa-pencil-alt mr-2 text-blue-500"></i> {{ $t('general.edit') }}
           </button>
         </NuxtLink>
       </div>
       <div class="bg-white rounded-b-lg p-6 md:p-10 mb-5">
         <div class="grid md:grid-cols-2 grid-cols-1 gap-4 my-5">
           <div class="flex flex-col">
-            <p class="text-md font-bold mb-5">Nombre(s): <span class="font-medium">{{ email?.name }}</span></p>
-            <p class="text-md font-bold mb-5">Apellido paterno: <span class="font-medium">{{ email?.fathers_surname
+            <p class="text-md font-bold mb-5">{{ $t('profile.name') }}: <span class="font-medium">{{ email?.name }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.fathersSurname') }}: <span class="font-medium">{{ email?.fathers_surname
             }}</span>
             </p>
-            <p class="text-md font-bold mb-5">Apellido materno: <span class="font-medium">{{ email?.mothers_maiden_name
+            <p class="text-md font-bold mb-5">{{ $t('profile.mothersMaidenName') }}: <span class="font-medium">{{ email?.mothers_maiden_name
             }}</span></p>
-            <p class="text-md font-bold mb-5">Fecha de nacimiento: <span class="font-medium">{{ email?.birth_date }}</span>
+            <p class="text-md font-bold mb-5">{{ $t('profile.birthdate') }}: <span class="font-medium">{{ email?.birth_date }}</span>
             </p>
-            <p class="text-md font-bold mb-5">Email: <span class="font-medium">{{ email?.email }}</span></p>
-            <p class="text-md font-bold mb-5">Teléfono: <span class="font-medium">{{ email?.phone }}</span></p>
-            <p class="text-md font-bold mb-5">Nacionalidad: <span class="font-medium">{{ selectedNationality }}</span>
+            <p class="text-md font-bold mb-5">{{ $t('login.email') }}: <span class="font-medium">{{ email?.email }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('signup.phone') }}: <span class="font-medium">{{ email?.phone }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.nacionality') }}: <span class="font-medium">{{ selectedNationality }}</span>
             </p>
           </div>
           <div class="flex flex-col">
-            <p class="text-md font-bold mb-5">País: <span class="font-medium">{{ selectedCountry }}</span></p>
-            <p class="text-md font-bold mb-5">Estado: <span class="font-medium">{{ selectedState }}</span></p>
-            <p class="text-md font-bold mb-5">Ciudad: <span class="font-medium">{{ selectedCity }}</span>
+            <p class="text-md font-bold mb-5">{{ $t('profile.country') }}: <span class="font-medium">{{ selectedCountry }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.state') }}: <span class="font-medium">{{ selectedState }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.city') }}: <span class="font-medium">{{ selectedCity }}</span>
             </p>
-            <p class="text-md font-bold mb-5">Calle: <span class="font-medium">{{ email?.street }}</span></p>
-            <p class="text-md font-bold mb-5">Número exterior: <span class="font-medium">{{ email?.outdoor_number }}</span>
+            <p class="text-md font-bold mb-5">{{ $t('profile.street') }}: <span class="font-medium">{{ email?.street }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.exteriorNo') }}: <span class="font-medium">{{ email?.outdoor_number }}</span>
             </p>
-            <p class="text-md font-bold mb-5">Número interior: <span class="font-medium">{{ email?.interior_number
+            <p class="text-md font-bold mb-5">{{ $t('profile.interiorNo') }}: <span class="font-medium">{{ email?.interior_number
             }}</span>
-            <p class="text-md font-bold mb-5">CP: <span class="font-medium">{{ email?.zip_code }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.zipCode') }}: <span class="font-medium">{{ email?.zip_code }}</span></p>
             </p>
           </div>
           <p
             v-if="email?.official_document"
             class="text-md font-bold mb-5"
-          >Identificacion Oficial Enfrente: <span>
+          >{{ $t('profile.frontIdentityDoc') }}: <span>
               <img
                 class="rounded-lg"
                 :src="email?.official_document"
@@ -56,12 +56,12 @@
           <p
             v-else
             class="text-md font-bold mb-5"
-          >Identificacion Oficial Enfrente: <span class="font-medium">No existe un documento cargado</span>
+          >{{ $t('profile.frontIdentityDoc') }}: <span class="font-medium">{{ $t('profile.noDocumentUploaded') }}</span>
           </p>
           <p
             v-if="email?.official_document_back"
             class="text-md font-bold mb-5"
-          >Identificacion Oficial Atras: <span>
+          >{{ $t('profile.backIdentityDoc') }}: <span>
               <img
                 class="rounded-lg"
                 :src="email?.official_document_back"
@@ -72,7 +72,7 @@
           <p
             v-else
             class="text-md font-bold mb-5"
-          >Identificacion Oficial Atras: <span class="font-medium">No existe un documento cargado</span>
+          >{{ $t('profile.backIdentityDoc') }}: <span class="font-medium">{{ $t('profile.noDocumentUploaded') }}</span>
           </p>
         </div>
       </div>
@@ -92,25 +92,25 @@
       <p class="text-md font-bold mb-5">Contraseña: <span class="font-light">**********</span></p>
     </div> -->
     <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
-      <p class="text-xl text-white font-bold">Historial de Subastas</p>
+      <p class="text-xl text-white font-bold">{{ $t('profile.auctions.history') }}</p>
       <div>
         <button
           :class="selectedStatus == 'all' ? 'bg-white text-black py-1 px-8 rounded-lg font-bold' : 'bg-gray-400 text-white py-1 px-8 rounded-lg'"
           @click="selectedStatus = 'all'"
         >
-          Todas
+          {{ $t('profile.auctions.all') }}
         </button>
         <button
           :class="selectedStatus == 'won' ? 'bg-white text-black py-1 px-8 rounded-lg font-bold' : 'bg-gray-400 text-white py-1 px-8 rounded-lg'"
           @click="selectedStatus = 'won'"
         >
-          Ganadas
+          {{ $t('profile.auctions.won') }}
         </button>
         <button
           :class="selectedStatus == 'lost' ? 'bg-white text-black py-1 px-8 rounded-lg font-bold' : 'bg-gray-400 text-white py-1 px-8 rounded-lg'"
           @click="selectedStatus = 'lost'"
         >
-          Perdidas
+          {{ $t('profile.auctions.lost') }}
         </button>
       </div>
     </div>
@@ -119,11 +119,11 @@
         <table class="min-w-full rounded-lg bg-gray-300">
           <thead>
             <tr class="bg-gray-700 text-white">
-              <th class="table-header">Subasta</th>
-              <th class="table-header">Caballo</th>
-              <th class="table-header">Fecha</th>
-              <th class="table-header">Total</th>
-              <th class="table-header">Estado</th>
+              <th class="table-header capitalize">{{ $t('auction.auction') }}</th>
+              <th class="table-header capitalize">{{ $t('auction.horse') }}</th>
+              <th class="table-header capitalize">{{ $t('auction.auctionDate') }}</th>
+              <th class="table-header capitalize">{{ $t('auction.total') }}</th>
+              <th class="table-header capitalize">{{ $t('auction.status') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -139,7 +139,9 @@
                 class="table-cell border-y text-center"
                 :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }"
               >
-                {{ record.status === 'won' ? 'Ganada' : (record.status === 'lost' ? 'Perdida' : '') }}
+
+                {{ $t(`profile.auctions.status.${record.status}`) }}
+
               </td>
             </tr>
           </tbody>

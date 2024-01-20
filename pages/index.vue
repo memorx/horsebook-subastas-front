@@ -17,7 +17,7 @@
             </div>
 
             <!-- Image -->
-            <button :to="'/'" @click="goToAuctionDetail(nextAuction)" exact class="w-45 mx-auto order-1 md:order-2 flex flex-col items-center justify-center space-y-4" :class="(nextAuction?.status == 'BIDDING') ? 'animate-blink' : ''">
+            <button v-if="nextAuction" @click="goToAuctionDetail(nextAuction)" exact class="w-45 mx-auto order-1 md:order-2 flex flex-col items-center justify-center space-y-4" :class="(nextAuction?.status == 'BIDDING') ? 'animate-blink' : ''">
 
                   <ContentTile :title="nextAuction?.notes ? nextAuction?.notes : ''"
                      :paragraph="(nextAuction?.status == 'BIDDING') ? $t('home.auction.liveAuction') : $t('home.auction.auctionStartIn')" :buttonLabel="null" headingLevel="2"
@@ -293,7 +293,7 @@ export default {
                   ) {
                      this.nextAuction = auction
                      this.otherAuctions.push(auction)
-                     console.log('que pasa aqui')
+                     console.log('next auction', this.nextAuction)
                   }
                }
             })
@@ -354,15 +354,10 @@ export default {
       },
 
       goToAuctionDetail(auction) {
-         console.log('si se hace')
-         if(auction.status == 'BIDDING') {
-            let path = `auction/live/${auction.id}`
-            this.$router.push({ path: this.localePath(path) })
-
-         } else {
-            let path = `user/detalles/${auction.id}`
-            this.$router.push({ path: this.localePath(path) })
-         }
+         console.log('si se hace', auction)
+         const basePath = auction.status === 'BIDDING' ? '/auction/live' : '/user/detalles';
+         const path = `${basePath}/${auction.id}`;
+         this.$router.push({ path: this.localePath(path) });
 
       },
 

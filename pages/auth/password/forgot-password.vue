@@ -14,9 +14,12 @@
     </div>
     <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
       <div class="mb-6">
-        <h1 class="text-4xl font-medium text-black">Verifica tu cuenta</h1>
-        <p class="font-normal text-base text-neutral-600 pt-2">Ingresa el código que te hemos enviado a: {{
-          setUser?.email || 'correo@gmail.com' }}
+        <h1 class="text-4xl font-medium text-black">
+          {{ $t('login.verifyYourAccount') }}
+        </h1>
+        <p class="font-normal text-base text-neutral-600 pt-2">
+          {{ $t('login.verifyYourAccountTxt') }}
+          {{ setUser?.email || 'correo@gmail.com' }}
         </p>
       </div>
       <form
@@ -68,29 +71,32 @@
               type="submit"
               class="hidden md:block py-3 px-5 mr-3 rounded-md bg-black text-white"
             >
-              Verificar codigo
+              {{ $t('login.verifyCode') }}
             </button>
-            <p class="font-normal text-base text-neutral-600">¿No recibiste el código?
+            <p class="font-normal text-base text-neutral-600">
+              {{ $t('login.codeNotReceived') }}
               <button
                 type="button"
                 @click=reSendCode
                 class="font-medium text-base text-black"
-              >Reenviar
-                código</button>
+              >
+                {{ $t('login.resendCode') }}
+              </button>
             </p>
           </div>
           <button
             type="submit"
             class="md:hidden mx-5 py-2 px-4 bg-black text-white rounded-lg border border-black border-solid font-aeonik font-medium text-base"
           >
-            Verificar codigo
+            {{ $t('login.verifyCode') }}
           </button>
           <div class="w-full flex items-center">
-            <nuxt-link to="/auth/password/send-email">
+            <nuxt-link :to="localePath('/auth/password/send-email')">
               <button
                 type="button"
                 class="justify-left font-medium text-base text-black underline"
-              >Regresar
+              >
+                {{ $t('general.back') }}
               </button>
             </nuxt-link>
           </div>
@@ -163,11 +169,12 @@ export default {
       await this.$axios.$post(url, body, { headers })
         .then((response) => {
           console.log(response);
-          this.$toast.success("El codigo ha sido enviado nuevamente, porfavor revise su correo");
+          this.$toast.success(this.$t('login.resendCodeNotice'));
           this.loading = false
         })
         .catch((error) => {
           this.loading = false
+          this.$toast.error(this.$t('general.errorMsg'));
           // if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'El usuario ya ha sido activado') {
           //   this.$toast.error("El usuario ya se encuentra activado");
           //   this.$router.push('/auth/login/')
@@ -198,7 +205,7 @@ export default {
       await this.$axios.$post(url, body)
         .then((response) => {
           console.log(response);
-          this.$toast.success("Su codigo ha sido verificado");
+          this.$toast.success(this.$t('login.codeVerified'));
           this.$router.push(this.localePath('/auth/password/reset-password'))
           this.loading = false
         })

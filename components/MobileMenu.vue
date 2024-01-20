@@ -10,12 +10,36 @@
             <nav class="flex flex-col justify-center  w-full px-4">
                 <ul class="flex flex-col space-y-8 uppercase">
                     <li>
-                        <nuxt-link :class="activePageClass('/')" to="/" @click.native="closeMenu">
+                        <div v-if="!isUserAuthenticated" class=" flex flex-col">
+                            <!-- Sign Up / Log in-->
+                            <div class="flex flex-col gap-6 w-auto">
+                                <ReusableButton :buttonText="$t('topBar.signUp')"
+                                    :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full bg-white text-black`"
+                                    containerClass="" :onClick="navigateToSignUp" />
+
+                                <ReusableButton :buttonText="$t('topBar.logIn')"
+                                    buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
+                                    containerClass="" :onClick="navigateToLogin" />
+                            </div>
+                        </div>
+                        <div v-else class=" flex flex-col justify-space-between">
+                            <div class="flex flex-col gap-6 w-auto">
+                                <ReusableButton :buttonText="$t('topBar.profile')"
+                                    :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full text-black bg-white`"
+                                    containerClass="" :onClick="navigateToProfile" />
+                                <ReusableButton :buttonText="$t('topBar.logout')"
+                                    buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
+                                    containerClass="" :onClick="logout" />
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <nuxt-link :class="activePageClass('/')" :to="localePath('/')" @click.native="closeMenu">
                             {{ $t('topBar.home') }}
                         </nuxt-link>
                     </li>
                     <li>
-                        <nuxt-link :class="activePageClass('/user/inicio')" to="/user/inicio" @click.native="closeMenu">
+                        <nuxt-link :class="activePageClass('/user/inicio')" :to="localePath('/user/inicio')" @click.native="closeMenu">
                             {{ $t('topBar.bids') }}
                         </nuxt-link>
                     </li>
@@ -27,7 +51,7 @@
                     </li>
                     <li>
                         <nuxt-link
-                            :class="[activePageClass('/news'), 'uppercase font-roboto']" to="/news">
+                            :class="[activePageClass('/news'), 'uppercase font-roboto']" :to="localePath('/news')">
                             {{ $t('topBar.news') }}
                         </nuxt-link>
                     </li>
@@ -43,6 +67,7 @@
                             </span>
                         </nuxt-link>
                     </li>
+
                 </ul>
             </nav>
         </div>
@@ -73,11 +98,16 @@
 
 <script>
 import ReusableButton from '~/components/ReusableButton.vue';
+import Cookies from "js-cookie";
+
 export default {
     components: {
         ReusableButton
     },
     computed: {
+        isUserAuthenticated() {
+            return this.$store.state.isAuthenticated;
+        },
         activePageClass() {
             return (route) => {
                 return this.$route.path === route ? 'text-custom-gold' : this.$store.state.textColorTopBar ?  `text-white lg:${this.$store.state.textColorTopBar}` : 'text-white';
@@ -88,6 +118,20 @@ export default {
         navigateToLogin() {
             this.$emit('handle-close-menu')
             this.$router.push(this.localePath('/auth/login'))
+        },
+        navigateToSignUp() {
+            this.$router.push(this.localePath('/auth/sign-up'))
+        },
+        navigateToProfile() {
+            this.$router.push(this.localePath('/user/perfil'))
+        },
+        logout() {
+            this.$store.commit('authenticate', false);
+            this.$store.commit('clearUserData');
+            this.$store.commit("closeWebSocket");
+            Cookies.remove('access_token');
+            localStorage.removeItem("setUser");
+            this.$router.push(this.localePath('/'))
         },
         handleScrollIntoContact() {
             this.$emit('handle-close-menu')

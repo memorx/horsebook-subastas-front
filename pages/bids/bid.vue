@@ -187,7 +187,7 @@
                         v-if="errorMessage"
                         class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
                       >
-                        {{ errorMessage }}
+                        {{ $t(`backMessages.${errorMessage}`,{"lastOffer": lastOffer}) }}
                       </div>
                     </div>
                   </div>
@@ -637,7 +637,7 @@ export default {
       this.isEditingAmount = value
     },
     removeCommas(e) {
-      document.getElementById("amount").type = "numb er"
+      document.getElementById("amount").type = "number"
       this.formData.amount = this.formData.amount.replace(/,/g, "")
     },
     addCommas(e) {
@@ -722,7 +722,11 @@ export default {
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
         if (message.error) {
-          mountedThis.errorMessage = message.error
+          let msg = message.error
+          msg = msg.replace(/\./, '')
+          msg = msg.replace(/\d*\.?\d* USD/, 'lastOffer USD')
+          mountedThis.errorMessage = msg
+
           setTimeout(() => {
             mountedThis.errorMessage = ""
           }, 6000)

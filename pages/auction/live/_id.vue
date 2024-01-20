@@ -168,7 +168,7 @@
                       v-if="errorMessage"
                       class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
                     >
-                      {{ errorMessage }}
+                      {{ $t(`backMessages.${errorMessage}`,{"lastOffer": lastOffer}) }}
                     </div>
                   </div>
                 </div>
@@ -273,13 +273,13 @@
       </transition>
 
     </div>
-    <div v-else-if="bidStatus == 'CLOSED'" class="flex md:flex-col m-1 md:m-20 gap-4">
+    <div v-else-if="bidStatus == 'CLOSED'" class="flex flex-col m-1 md:m-20 gap-4 mt-3">
       <h2 class="font-bold text-3xl mx-auto text-center text-yellow-600 md:w-[600px]">
-          {{ $t('auction.autctionEndMsg')}}
+          {{ $t('auction.auctionEndMsg')}}
       </h2>
-      <NuxtLink :to="`/`">
+      <NuxtLink :to="`/`" class="mx-auto">
         <button
-          class="uppercase border-1 border-black ml-2 mb-3 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
+          class="uppercase border-1 border-black ml-2 mb-3 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base bg-white">
             <span
               class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1">
               <img src="../../../public/arrow-black.png" /></span>
@@ -544,7 +544,12 @@ export default {
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
         if (message.error) {
-          this.errorMessage = message.error
+
+          let msg = message.error
+          msg = msg.replace(/\./, '')
+          msg = msg.replace(/\d*\.?\d* USD/, 'lastOffer USD')
+          this.errorMessage = msg
+
           setTimeout(() => {
             this.errorMessage = ""
           }, 6000)
@@ -648,6 +653,7 @@ export default {
         }
 
         if (message.horses && message.horses.length > 0) {
+          console.log(this.item)
           this.item.horses.forEach((horse, key) => {
             const curHorse = message.horses.find( item => item.status === 'BIDDING' );
             if(curHorse.id != this.horseID){
@@ -724,6 +730,7 @@ export default {
       await this.$axios
         .get(url)
         .then((response) => {
+          console.log("llega al response", response)
           this.item.start_bid = response.data.start_bid
           this.item.start_pre_bid = response.data.start_pre_bid
           this.item.horses = response.data.horses

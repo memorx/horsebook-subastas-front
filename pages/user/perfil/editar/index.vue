@@ -7,25 +7,26 @@
     <div
       class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg"
     >
-      <p class="text-xl text-white font-bold">EDITAR PERFIL</p>
+      <p class="text-xl text-white font-bold">{{ $t('profile.editProfile') }}</p>
       <div class="text-center">
-        <NuxtLink to="/user/perfil">
+        <NuxtLink :to="localePath('/user/perfil')">
           <button class="bg-white text-black p-2 rounded-lg">
-            <i class="fas fa-times mr-2 text-red-500"></i> Cancelar
+            <i class="fas fa-times mr-2 text-red-500"></i>
+            {{ $t('general.cancel') }}
           </button>
         </NuxtLink>
         <button
           @click="updateProfile"
           class="bg-white text-black p-2 rounded-lg"
         >
-          <i class="fas fa-save mr-2 text-green-500"></i> Guardar
+          <i class="fas fa-save mr-2 text-green-500"></i> {{ $t('general.save') }}
         </button>
       </div>
     </div>
     <div class="bg-white rounded-lg p-6 md:p-10 mb-4">
       <div class="grid md:grid-cols-3 grid-cols-1 gap-4 my-5">
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium">Nombre(s):</label>
+          <label class="text-black-600 font-medium">{{ $t('profile.name') }}:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             placeholder="Nombre (s)"
@@ -33,34 +34,31 @@
           />
         </div>
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium">Apellido paterno:</label>
+          <label class="text-black-600 font-medium">{{ $t('profile.fathersSurname') }}:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            placeholder="Apellido paterno"
             v-model="fathers_surname"
           />
         </div>
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium">Apellido materno:</label>
+          <label class="text-black-600 font-medium">{{ $t('profile.mothersMaidenName') }}:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            placeholder="Apellido materno"
             v-model="mothers_maiden_name"
           />
         </div>
       </div>
       <div class="grid md:grid-cols-2 grid-cols-1 gap-4 mb-5">
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium">Fecha de nacimiento:</label>
+          <label class="text-black-600 font-medium">{{ $t('profile.birthdate') }}:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            placeholder="Fecha de nacimiento"
             type="date"
             v-model="birth_date"
           />
         </div>
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium">Telefono:</label>
+          <label class="text-black-600 font-medium">{{ $t('signup.phone') }}:</label>
           <div class="flex items-center">
             <div
               class="rounded-l-md px-4 py-2 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 flex-shrink-0"
@@ -71,7 +69,6 @@
             </div>
             <input
               class="w-full rounded-r-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 flex-grow"
-              placeholder="Ingresar teléfono"
               v-model="phone"
             />
           </div>
@@ -80,13 +77,13 @@
       <div class="border-b border-gray-300 my-4"></div>
       <div class="grid md:grid-cols-4 grid-cols-1 gap-4 mb-5">
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium pr-2">Nacionalidad:</label>
+          <label class="text-black-600 font-medium pr-2">{{ $t('profile.nacionality') }}:</label>
           <select
             v-if="nationalities.length > 0"
             v-model="selectedNationalityCode"
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
-            <option value="" class="text-gray-500 text-center" disabled>Selecciona tu nacionalidad</option>
+            <option value="" class="text-gray-500 text-center" disabled>{{ $t('general.select') }}</option>
             <option
               v-for="nationality in nationalities"
               :key="nationality.code"
@@ -97,14 +94,14 @@
           </select>
         </div>
         <div class="flex flex-col">
-          <label for="country" class="text-black-600 font-medium">País:</label>
+          <label for="country" class="text-black-600 font-medium">{{ $t('profile.country') }}:</label>
           <select
             v-if="countries.length > 0"
             v-model="selectedCountryCode"
             @change="() => { fetchStates() }"
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
-            <option value="" class="text-gray-500 text-center" disabled>Selecciona el país</option>
+            <option value="" class="text-gray-500 text-center" disabled>{{ $t('general.select') }}</option>
             <option
               v-for="country in countries"
               :key="country.code"
@@ -116,14 +113,14 @@
           <div v-else>Loading countries...</div>
         </div>
         <div class="flex flex-col">
-          <label for="state" class="text-black-600 font-medium">Estado:</label>
+          <label for="state" class="text-black-600 font-medium">{{ $t('profile.state') }}:</label>
           <select
             v-if="states.length > 0"
             @change="() => { fetchCities() }"
             v-model="selectedStateCode"
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
-            <option value="" class="text-gray-500 text-center" disabled>Selecciona el estado</option>
+            <option value="" class="text-gray-500 text-center" disabled>{{ $t('general.select') }}</option>
             <option v-for="state in states" :key="state.id" :value="state.id">
               {{ state.name }}
             </option>
@@ -135,13 +132,13 @@
           ></select>
         </div>
         <div class="flex flex-col">
-          <label for="state" class="text-black-600 font-medium">Ciudad:</label>
+          <label for="state" class="text-black-600 font-medium">{{ $t('profile.city') }}:</label>
           <select
             v-if="cities.length > 0"
             v-model="selectedCityCode"
             class="w-full rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
-            <option value="" class="text-gray-500 text-center" disabled>Selecciona la ciudad</option>
+            <option value="" class="text-gray-500 text-center" disabled>{{ $t('general.select') }}</option>
             <option v-for="city in cities" :key="city.id" :value="city.id">
               {{ city.name }}
             </option>
@@ -155,34 +152,30 @@
       </div>
       <div class="grid md:grid-cols-4 grid-cols-1 gap-4 mb-5">
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium">Calle:</label>
+          <label class="text-black-600 font-medium">{{ $t('profile.street') }}:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            placeholder="Calle"
             v-model="street"
           />
         </div>
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium">Número exterior:</label>
+          <label class="text-black-600 font-medium">{{ $t('profile.exteriorNo') }}:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            placeholder="Número exterior"
             v-model="outdoor_number"
           />
         </div>
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium">Número interior:</label>
+          <label class="text-black-600 font-medium">{{ $t('profile.interiorNo') }}:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            placeholder="Número interior"
             v-model="interior_number"
           />
         </div>
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium">C.P:</label>
+          <label class="text-black-600 font-medium">{{ $t('profile.zipCode') }}:</label>
           <input
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            placeholder="C.P"
             v-model="zip_code"
           />
         </div>
@@ -193,7 +186,7 @@
           <label
             class="text-black-600 font-medium relative cursor-pointer text-center mx-1"
           >
-            <span class="block mb-2">Documento de identidad Enfrente</span>
+            <span class="block mb-2">{{ $t('profile.frontIdentityDoc') }}</span>
             <div class="flex items-center">
               <input
                 type="file"
@@ -207,7 +200,11 @@
                 class="py-2 bg-gray-200 text-gray-500 underline border-dashed border-gray-600 border-2 rounded-lg w-full h-40"
                 @click="$refs.fileInput.click()"
               >
-                {{ official_document ? "Cambiar imagen" : "Escoge una imagen" }}
+                {{
+                  official_document
+                    ? $t('profile.changeImage')
+                    : $t('profile.chooseImage')
+                }}
               </button>
             </div>
           </label>
@@ -216,7 +213,7 @@
           <label
             class="text-black-600 font-medium relative cursor-pointer text-center mx-1"
           >
-            <span class="block mb-2">Documento de identidad Atras</span>
+            <span class="block mb-2">{{ $t('profile.backIdentityDoc') }}</span>
             <div class="flex items-center">
               <input
                 type="file"
@@ -232,8 +229,8 @@
               >
                 {{
                   official_document_back
-                    ? "Cambiar imagen"
-                    : "Escoge una imagen"
+                    ? $t('profile.changeImage')
+                    : $t('profile.chooseImage')
                 }}
               </button>
             </div>

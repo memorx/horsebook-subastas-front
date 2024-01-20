@@ -5,8 +5,8 @@
     >
       <div class="w-full lg:w-1/2">
         <div class="text-center mb-10">
-          <h2>LOGIN</h2>
-          <h1 class="text-4xl font-extrabold text-black">Iniciar sesión</h1>
+
+          <h1 class="text-4xl font-extrabold text-black">{{ $t('login.login') }}</h1>
         </div>
         <div class="border border-black rounded-3xl px-5 py-10">
           <form @submit.prevent="userLogin">
@@ -23,7 +23,7 @@
               <div class="flex flex-col">
                 <input
                   class="border-t-0 border-x-0 focus:ring-0"
-                  placeholder="Correo electronico"
+                  :placeholder="$t('login.email')"
                   id="email"
                   name="email"
                   type="email"
@@ -36,7 +36,7 @@
               <div class="flex">
                 <input
                   class="border-t-0 border-x-0 focus:ring-0 w-full"
-                  placeholder="Contraseña"
+                  :placeholder="$t('login.password')"
                   id="password"
                   name="password"
                   :type="show ? 'text' : 'password'"
@@ -59,6 +59,7 @@
             </div>
             <div class="flex flex-wrap mb-10">
               <div class="w-1/2 items-center">
+                <!--
                 <input
                   type="checkbox"
                   id="remember-me"
@@ -68,24 +69,25 @@
                 <label for="remember-me" class="text-gray-600"
                   >Recordarme</label
                 >
+                -->
               </div>
               <span class="w-1/2 text-gray-400 text-right">
-                <nuxt-link to="/auth/password/send-email">
-                  ¿Has olvidado tu contraseña?
+                <nuxt-link :to="localePath('/auth/password/send-email')">
+                  {{ $t('login.forgotPassword') }}
                 </nuxt-link>
               </span>
             </div>
             <div class="text-center mb-10">
               <button
                 type="submit"
-                class="py-3 px-10 rounded-full bg-[#BFA753] text-white"
+                class="py-3 px-10 rounded-full bg-[#BFA753] text-white uppercase"
               >
-                INICIAR SESIÓN
+                {{ $t('login.login') }}
               </button>
             </div>
             <div class="text-center">
               <span class="text-gray-400">
-                <nuxt-link to="/auth/sign-up" class="">Crear cuenta</nuxt-link>
+                <nuxt-link :to="localePath('/auth/sign-up')" class="">{{ $t('login.signUp') }}</nuxt-link>
               </span>
             </div>
             <!-- <div class="w-full text-center mt-5">
@@ -168,7 +170,8 @@ export default {
         .catch((error) => {
           console.log(error)
           if (error.response.status === 400) {
-            this.$toast.error(error.response.data.detail)
+            const msg = error.response.data.detail
+            this.$toast.error(this.$t(`backMessages.${msg}`))
           } else if (error.response.status === 401) {
             this.$toast.error(error.response.data.detail)
             this.$toast.error(error.response.data.message)

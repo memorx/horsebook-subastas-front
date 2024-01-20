@@ -5,7 +5,7 @@
 
             <!-- 1. Logo -->
             <div>
-                <nuxt-link to="/">
+                <nuxt-link :to="localePath('/')">
                     <img src="../public/image_la_silla.png" alt="logo" style="width: 60px;">
                     <p class="text-xs">© 2023 STUDBOOK LA SILLA. A.C.</p>
                 </nuxt-link>
@@ -15,8 +15,8 @@
             <div>
                 <h3 :class="classTittleSection">{{ $t('footer.navigate') }}</h3>
                 <ul class="font-roboto capitalize">
-                    <li><nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/user/inicio')" to="/user/inicio">{{ $t('topBar.bids') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/')" :to="localePath('/')">{{ $t('topBar.home') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/user/inicio')" :to="localePath('/user/inicio')">{{ $t('topBar.bids') }}</nuxt-link></li>
                     <li>
                         <button
                             class="capitalize"
@@ -25,12 +25,12 @@
                         </button>
                     </li>
                     <li>
-                        <nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">
+                        <nuxt-link :class="activePageClass('/auth/sign-up')" :to="localePath('/auth/sign-up')">
                             {{ $t('topBar.signUp') }}
                         </nuxt-link>
                     </li>
                     <li>
-                        <nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">
+                        <nuxt-link :class="activePageClass('/auth/login')" :to="localePath('/auth/login')">
                             {{ $t('topBar.logIn') }}
                         </nuxt-link>
                     </li>
@@ -55,15 +55,8 @@
             </div>
 
             <!-- 4. Follow Us + Social Icons -->
-            <div >
-                <h3 :class="classTittleSection" class="capitalize">
-                    {{ $t('footer.followUs') }}
-                </h3>
-                <div class="flex space-x-4">
-                    <i class="fab fa-instagram fa-2x"></i>
-                    <i class="fab fa-facebook fa-2x"></i>
-                    <i class="fab fa-youtube fa-2x"></i>
-                </div>
+            <div>
+
             </div>
 
         </div>
@@ -71,7 +64,7 @@
         <div class="lg:hidden flex flex-wrap justify-between  px-4">
             <!-- Logo -->
             <div class="w-full mb-6 text-center">
-                <nuxt-link to="/">
+                <nuxt-link :to="localePath('/')">
                     <img src="../public/image_la_silla.png" alt="logo" class="mx-auto" style="width: 60px;">
                     <p class="text-xs">© 2023 STUDBOOK LA SILLA. A.C.</p>
                 </nuxt-link>
@@ -81,8 +74,8 @@
             <div class="w-1/2 mb-6">
                 <h3 :class="classTittleSection">{{ $t('footer.navigate') }}</h3>
                 <ul class="font-roboto capitalize">
-                    <li><nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link></li>
-                    <li><nuxt-link :class="activePageClass('/user/inicio')" to="/user/inicio">{{ $t('topBar.bids') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/')" :to="localePath('/')">{{ $t('topBar.home') }}</nuxt-link></li>
+                    <li><nuxt-link :class="activePageClass('/user/inicio')" :to="localePath('/user/inicio')">{{ $t('topBar.bids') }}</nuxt-link></li>
                     <li>
                         <button
                             class="capitalize"
@@ -91,12 +84,12 @@
                         </button>
                     </li>
                     <li>
-                        <nuxt-link :class="activePageClass('/auth/sign-up')" to="/auth/sign-up">
+                        <nuxt-link :class="activePageClass('/auth/sign-up')" :to="localePath('/auth/sign-up')">
                             {{ $t('topBar.signUp') }}
                         </nuxt-link>
                     </li>
                     <li>
-                        <nuxt-link :class="activePageClass('/auth/login')" to="/auth/login">
+                        <nuxt-link :class="activePageClass('/auth/login')" :to="localePath('/auth/login')">
                             {{ $t('topBar.logIn') }}
                         </nuxt-link>
                     </li>

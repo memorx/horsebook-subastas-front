@@ -109,7 +109,7 @@
             v-if="bidStatus == 'CLOSED'"
             class="text-center text-sm font-bold"
           >
-            LA SUBASTA HA TERMINADO
+            {{ $t('auction.auctionEndedMsg') }}
           </h1>
           <h1
             v-if="bidStatus != 'BIDDING'"
