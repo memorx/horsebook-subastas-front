@@ -7,12 +7,12 @@
     <div class="w full h-auto my-4">
       <button
         class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
-        @click="() => this.$router.back()"
+        @click="() => this.$router.push(localePath('/user/inicio'))"
       >
         <span
           class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"
           ><img src="../../../public/arrow-black.png" /></span
-        >Listado de Subastas
+        > {{ $t('auction.auctionListButton') }}
       </button>
     </div>
     <div class="flex flex-wrap lg:space-x-3">
@@ -41,11 +41,11 @@
         <!-- First Row in the second column -->
         <div class="mb-4 bg-white p-5 rounded-lg">
           <div class="flex items-center">
-            <h2 class="text-2xl font-bold mb-1 pr-3">Subasta</h2>
+            <h2 class="text-2xl font-bold mb-1 pr-3">{{ $t('auction.auction') }}</h2>
             <statusBid :status="bidStatus" />
           </div>
           <span class="text-xl font-bold mb-2">{{ item.horses.length }}</span>
-          <span>{{ item.horses.length == 1 ? "Caballo" : "Caballos" }}</span>
+          <span>{{ $t('auction.' + (item.horses.length == 1 ? "horse" : "horses")) }}</span>
         </div>
         <!-- Second Row in the second column -->
         <div class="bg-white p-5 rounded-lg md:flex-grow">
@@ -54,13 +54,13 @@
             v-if="bidStatus == 'COMING'"
             class="text-center text-sm font-bold"
           >
-            LA PRE OFERTA COMIENZA EN
+            {{ $t('auction.preOfferStartMsg')  }}
           </h1>
           <h1
             v-if="bidStatus == 'PREBID'"
             class="text-center text-sm font-bold"
           >
-            LA PRE OFERTA HA COMENZADO,
+            {{ $t('auction.preOfferStartedMsg')  }},
           </h1>
           <h1
             v-if="bidStatus == 'CLOSED PREBID'"
@@ -109,19 +109,20 @@
             v-if="bidStatus == 'CLOSED'"
             class="text-center text-sm font-bold"
           >
-            LA SUBASTA HA TERMINADO
+            {{ $t('auction.auctionEndedMsg') }}
           </h1>
           <h1
             v-if="bidStatus != 'BIDDING'"
             class="text-center text-sm font-bold"
           >
-            LA SUBASTA ESTARA EN VIVO EN
+            {{ $t('auction.auctionWillBeLivetMsg') }}
           </h1>
           <h1
             v-if="bidStatus == 'BIDDING'"
             class="text-center text-sm font-bold"
           >
-            LA SUBASTA ESTA EN VIVO
+            {{ $t('auction.auctionLivetMsg') }}
+
           </h1>
           <div
             v-if="loading == false && countdownSubasta == true"
@@ -136,25 +137,33 @@
                   <p class="text-center text-5xl mb-2 font-bold">
                     {{ bidTime.days }}
                   </p>
-                  <p class="text-center text-slate-500">Días</p>
+                  <p class="text-center text-slate-500 capitalize">
+                    {{ $t('cron.days') }}
+                  </p>
                 </div>
                 <div class="mx-5">
                   <p class="text-center text-5xl mb-2 font-bold">
                     {{ bidTime.hours }}
                   </p>
-                  <p class="text-center text-slate-500">Horas</p>
+                  <p class="text-center text-slate-500 capitalize">
+                    {{ $t('cron.hours') }}
+                  </p>
                 </div>
                 <div class="mx-5">
                   <p class="text-center text-5xl mb-2 font-bold">
                     {{ bidTime.minutes }}
                   </p>
-                  <p class="text-center text-slate-500">Minutos</p>
+                  <p class="text-center text-slate-500 capitalize">
+                    {{ $t('cron.minutes') }}
+                  </p>
                 </div>
                 <div class="mx-5">
                   <p class="text-center text-5xl mb-2 font-bold">
                     {{ bidTime.seconds }}
                   </p>
-                  <p class="text-center text-slate-500">Segundos</p>
+                  <p class="text-center text-slate-500 capitalize">
+                    {{ $t('cron.seconds') }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -208,7 +217,8 @@
                 v-if="isUserAuthenticated"
                 class="text-center text-xs md:text-lg xl:text-xl"
               >
-                <span class="font-bold">Lote: </span> {{ horse.local_data.lot }}
+                <span class="font-bold">
+                  {{ $t('auction.lot') }}: </span> {{ horse.local_data.lot }}
               </p>
             </div>
             <div class="w-full">
@@ -221,10 +231,10 @@
                 "
                 class="text-xs lg:text-xl font-bold text-center"
               >
-                MEJOR OFERTA:
+                {{ $t('auction.bestOffer') }}:
               </p>
               <p v-else class="text-xs lg:text-xl font-bold text-center">
-                PRECIO INICAL:
+                {{ $t('auction.startingPrice') }}:
               </p>
               <p class="text-xs lg:text-xl font-bold text-center">
                 $ {{ horse.local_data.final_amount }} USD
@@ -238,7 +248,7 @@
               @click="goToDetail(horse, index)"
               class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105 text-xs md:text-xl xl:text-xl"
             >
-              ingresar
+              {{ $t('auction.enter') }}
             </button>
           </div>
         </div>
@@ -516,7 +526,7 @@ export default {
     },
     goToDetail(horse, index) {
       let path = `/bids/bid/?id=${this.id}&horsePositionList=${index}&horseId=${horse.local_data.id}`
-      this.$router.push({ path: path })
+      this.$router.push({ path: this.localePath(path) })
     }
   }
 }

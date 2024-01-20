@@ -3,7 +3,7 @@
         <!-- Web Navigation -->
         <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent" >
             <!-- Logo or brand -->
-            <nuxt-link to="/">
+            <nuxt-link :to="localePath('/')">
                 <img src="../public/image_la_silla.png" alt="logo" style="width: 40px;">
             </nuxt-link>
 
@@ -20,16 +20,15 @@
                         {{ $t('topBar.liveAuction') }}
                     </a>
                 </div>
-
                 <div>
                     <!--web/ipad Navigation items -->
                     <div class=" hidden md:flex justify-center align-middle items-center ">
                         <div class="flex space-x-3 lg:space-x-4 uppercase text-xs font-roboto">
-                            <nuxt-link :class="activePageClass('/')" to="/">{{ $t('topBar.home') }}</nuxt-link>
-                            <nuxt-link :class="activePageClass('/user/inicio')" to="/user/inicio">{{
+                            <nuxt-link :class="activePageClass('/')" :to="localePath('/')">{{ $t('topBar.home') }}</nuxt-link>
+                            <nuxt-link :class="activePageClass('/user/inicio')" :to="localePath('/user/inicio')"> {{
                                 $t('topBar.bids') }}</nuxt-link>
-                            <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link>
-                            <nuxt-link :class="activePageClass('/news')" to="/news">{{ $t('topBar.news') }}</nuxt-link> -->
+                            <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link> -->
+                            <nuxt-link :class="activePageClass('/news')" :to="localePath('/news')">{{ $t('topBar.news') }}</nuxt-link>
                             <button class="uppercase text-xs font-roboto" @click="handleScrollIntoContact">
                                 {{ $t('topBar.contact') }}
                             </button>
@@ -54,7 +53,7 @@
                                 containerClass="w-1/2" :onClick="logout" />
                         </div>
                         <nuxt-link :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
-                            class="hidden cursor-pointer" aria-haspopup="listbox" aria-expanded="true"
+                            class="cursor-pointer" aria-haspopup="listbox" aria-expanded="true"
                             aria-labelledby="listbox-label">
                             <span class="flex items-center">
                                 <img v-if="$i18n.locale === 'en'" src="../public/flag-mex.png" alt="mexico-flag"
@@ -75,33 +74,22 @@
             <div class="flex items-center justify-between w-full">
 
                 <!-- Logo or brand -->
-                <nuxt-link to="/">
+                <nuxt-link :to="localePath('/')">
                     <img src="../public/image_la_silla.png" alt="logo" style="width: 40px;">
                 </nuxt-link>
 
                 <div v-if="!isMobileMenuOpen">
-                    <div v-if="!isUserAuthenticated" class=" flex flex-row justify-space-between">
-                        <!-- Sign Up / Log in-->
-                        <div class="flex flex-row mx-8 gap-6 w-auto">
-                            <ReusableButton :buttonText="$t('topBar.signUp')"
-                                :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full ${textColor}`"
-                                containerClass="w-1/2" :onClick="navigateToSignUp" />
-
-                            <ReusableButton :buttonText="$t('topBar.logIn')"
-                                buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
-                                containerClass="w-1/2" :onClick="navigateToLogin" />
-                        </div>
-                    </div>
-                    <div v-else class=" flex flex-row justify-space-between">
-                        <div class="flex flex-row mx-8 gap-6 w-auto">
-                            <ReusableButton :buttonText="$t('topBar.profile')"
-                                :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full ${textColor}`"
-                                containerClass="w-1/2" :onClick="navigateToProfile" />
-                            <ReusableButton :buttonText="$t('topBar.logout')"
-                                buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
-                                containerClass="w-1/2" :onClick="logout" />
-                        </div>
-                    </div>
+                    <div class="flex justify-right">
+                    <a @click="goToCurrenAuction()" v-if="idCurrenBid"
+                    :class="['hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
+                        fill="none" />
+                    </svg>
+                        {{ $t('topBar.liveAuction') }}
+                    </a>
+                </div>
                 </div>
 
                 <button v-if="!isMobileMenuOpen" @click="toggleMenu">
@@ -180,16 +168,16 @@ export default {
             return this.$route.path === route;
         },
         navigateToSignUp() {
-            this.$router.push('/auth/sign-up')
+            this.$router.push(this.localePath('/auth/sign-up'))
         },
         navigateToProfile() {
-            this.$router.push('/user/perfil')
+            this.$router.push(this.localePath('/user/perfil'))
         },
         navigateToLogin() {
-            this.$router.push('/auth/login')
+            this.$router.push(this.localePath('/auth/login'))
         },
         login() {
-            this.$router.push('/auth/login')
+            this.$router.push(this.localePath('/auth/login'))
         },
         logout() {
             this.$store.commit('authenticate', false);
@@ -197,11 +185,11 @@ export default {
             this.$store.commit("closeWebSocket");
             Cookies.remove('access_token');
             localStorage.removeItem("setUser");
-            this.$router.push('/')
+            this.$router.push(this.localePath('/'))
         },
         async handleScrollIntoContact() {
             if (this.$route.path !== '/') {
-                await this.$router.push('/');
+                await this.$router.push(this.localePath('/'));
 
             }
             if (this.$route.path === '/') {
@@ -257,7 +245,7 @@ export default {
 
             if (this.idCurrenBid) {
                 let path = `/auction/live/${this.idCurrenBid}`
-                this.$router.push({ path: path })
+                this.$router.push({ path: this.localePath(path) })
             }
         },
     },

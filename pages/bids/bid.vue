@@ -13,10 +13,11 @@
             <div class="w full h-auto mx-6 my-4 md:my-8">
                 <button
                     class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
-                    @click="() => this.$router.back()"
+                    @click="() => this.$router.push(this.localePath(`/user/detalles/${bidId}`))"
                 >
                     <span class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"><img
-                            src="../../public/arrow-black.png" /></span>Regresar
+                            src="../../public/arrow-black.png" /></span>
+                            {{ $t('general.back') }}
                 </button>
             </div>
             <div class="flex flex-col md:flex-row-reverse h-auto mx-6 my-4 md:my-8">
@@ -36,7 +37,7 @@
             </div>
             <div class="flex flex-col h-auto mx-6 my-4 md:my-8 relative">
                 <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
-                  # de lote {{ horseData.Lot }}
+                  {{ $t('auction.lotNo') }} {{ horseData.Lot }}
                 </p>
                 <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
                     Monterrey, Nuevo León</p>
@@ -62,7 +63,7 @@
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
                       ></iframe>
-                      <h1 v-else class="w-full text-center text-gray-700 mt-8">No hay video disponible</h1>
+                      <h1 v-else class="w-full text-center text-gray-700 mt-8">{{ $t('auction.noVideoAvailableMsg')}}</h1>
                     </div>
                 </div>
                 <!--table bid-->
@@ -89,46 +90,46 @@
                   </div>
                   <div class="flex justify-center rounded-t-md">
                     <div class="mx-10 md:mx-0 my-10">
-                      <p>Tiempo restante</p>
+                      <p class="uppercase">{{ $t('cron.timeLeft')}}</p>
                       <div class="md:flex md:items-center">
                         <div class="mx-5">
                           <p class="text-center text-5xl mb-2 font-bold">
                             {{ bidTime.days }}
                           </p>
-                          <p class="text-center text-black">Días</p>
+                          <p class="text-center text-black">{{ $t('cron.days')}}</p>
                         </div>
                         <div class="mx-5">
                           <p class="text-center text-5xl mb-2 font-bold">
                             {{ bidTime.hours }}
                           </p>
-                          <p class="text-center text-black">Horas</p>
+                          <p class="text-center text-black">{{ $t('cron.hours')}}</p>
                         </div>
                         <div class="mx-5">
                           <p class="text-center text-5xl mb-2 font-bold">
                             {{ bidTime.minutes }}
                           </p>
-                          <p class="text-center text-black">Minutos</p>
+                          <p class="text-center text-black">{{ $t('cron.minutes')}}</p>
                         </div>
                         <div class="mx-5">
                           <p class="text-center text-5xl mb-2 font-bold">
                             {{ bidTime.seconds }}
                           </p>
-                          <p class="text-center text-black">Segundos</p>
+                          <p class="text-center text-black">{{ $t('cron.seconds')}}</p>
                         </div>
                       </div>
                       <p class="text-center text-xs text-custom-gold">
-                        Todo participante de la preoferta obtiene un 5% de descuento
+                        {{ $t('bids.prebidDiscountMsg')}}
                       </p>
                       <p class="text-center text-xs text-custom-gold">
-                        *El ganador de la preoferta obtiene un descuento de {{ prebidWinnerDiscount }}% extra
+                        {{ $t('bids.prebidWinnerDiscountMsg', { 'prebidWinnerDiscount': prebidWinnerDiscount }) }}
                       </p>
                       <p class="text-center text-xs text-red-400">
-                        **Los descuentos aplican por cada caballo
+                        {{ $t('bids.discountByHorseMsg')}}
                       </p>
                     </div>
                   </div>
                   <div class="px-5 mt-5">
-                    <p class="text-sm font-bold">PRE OFERTAR POR ESTE LOTE</p>
+                    <p class="text-sm font-bold uppercase">PRE{{ $t('auction.bidOnThisLot') }}</p>
                     <form @submit="submitForm">
                       <div class="flex items-center space-x-2">
                         <button
@@ -164,14 +165,14 @@
                         <div class="hidden lg:block">
                           <SubmitAuthenticatedButton
                             :enable-modal="enableModal"
-                            button-text="Pre Ofertar"
+                            :button-text="$t('bids.offer')"
                           />
                         </div>
                       </div>
                       <div class="lg:hidden text-center mt-5 w-full">
                         <SubmitAuthenticatedButton
                           :enable-modal="enableModal"
-                          button-text="Pre Ofertar"
+                          :button-text="$t('bids.offer')"
                         />
                       </div>
                     </form>
@@ -186,14 +187,14 @@
                         v-if="errorMessage"
                         class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
                       >
-                        {{ errorMessage }}
+                        {{ $t(`backMessages.${errorMessage}`,{"lastOffer": lastOffer}) }}
                       </div>
                     </div>
                   </div>
                   <div v-if="bids.length > 0">
                     <div class="mx-5">
                       <div class="border-b border-gray-300 my-4"></div>
-                      <p class="text-sm font-bold">HISTORIAL DE PRE OFERTAS</p>
+                      <p class="text-sm font-bold uppercase">{{ $t('bids.prebidHistory')}}</p>
                       <div class="border-b border-gray-300 my-4"></div>
                     </div>
                     <div class="px-4" style="flex: 5">
@@ -305,9 +306,9 @@
       <select v-model="openTab"
       class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500 mb-1"
       >
-          <option :value="1">Datos del Caballo</option>
-          <option :value="2">Pedigree</option>
-          <option :value="3">Rayos X</option>
+          <option :value="1">{{ $t('horse.tabs.horseData')}}</option>
+          <option :value="2">{{ $t('horse.tabs.pedigree')}}</option>
+          <option :value="3">{{ $t('horse.tabs.xRays')}}</option>
       </select>
     </div>
     <div class="hidden md:show md:flex md:flex-row h-16 p-0 mx-5 bg-[#D9D9D9]">
@@ -320,7 +321,7 @@
           'w-full text-black bg-white': openTab === 1
         }"
       >
-        Datos del Caballo
+        {{ $t('horse.tabs.horseData')}}
       </button>
       <button
         class="w-48 h-16 font-bold"
@@ -331,7 +332,7 @@
           'w-full text-black bg-white': openTab === 2
         }"
       >
-        Pedigree
+        {{ $t('horse.tabs.pedigree')}}
       </button>
       <button
         class="w-48 h-16 font-bold"
@@ -342,7 +343,7 @@
           'w-full text-black bg-white': openTab === 3
         }"
       >
-        Rayos X
+        {{ $t('horse.tabs.xRays')}}
       </button>
     </div>
     <div class="flex flex-col md:flex-row -mx-4">
@@ -365,32 +366,32 @@
                     <p>
                       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         <div class="mr-4">
-                          <span class="font-bold text-gray-700">Fecha de nacimiento:</span>
+                          <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
                           <span class="text-gray-600">{{ horseData.birthDate || "NA" }}</span>
                         </div>
                         <div class="mr-4">
-                          <span class="font-bold text-gray-700">Edad:</span>
+                          <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
                           <span class="text-gray-600">{{ horseData.Age || "NA" }}</span>
-                          <span class="text-gray-600">años</span>
+                          <span class="text-gray-600">{{ $t('dates.years') }}</span>
                         </div>
 
                         <div class="mr-4">
-                          <span class="font-bold text-gray-700">No. Registro:</span>
+                          <span class="font-bold text-gray-700">{{ $t('horse.registerNo') }}:</span>
                           <span class="text-gray-600">{{
                             horseData.registerNumber || "NA"
                           }}</span>
                         </div>
                         <div class="mr-4">
-                          <span class="font-bold text-gray-700">Alzada:</span>
+                          <span class="font-bold text-gray-700">{{ $t('horse.height') }}:</span>
                           <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
                           <span class="text-gray-600">m</span>
                         </div>
                         <div class="mr-4">
-                          <span class="font-bold text-gray-700">Genero:</span>
+                          <span class="font-bold text-gray-700">{{ $t('horse.gender') }}:</span>
                           <span class="text-gray-600">{{ horseData.Genre || "NA" }}</span>
                         </div>
                         <div class="mr-4">
-                          <span class="font-bold text-gray-700">Criadero:</span>
+                          <span class="font-bold text-gray-700">{{ $t('horse.birthLocation') }}:</span>
                           <span class="text-gray-600">{{ horseData.Hatchery || "NA" }}</span>
                         </div>
                       </div>
@@ -405,7 +406,7 @@
                   >
                     <Pedigree :link="horseData.Pedigree" />
                     <p v-if="horseData.horseTelex">
-                      Revisa los datos en
+                      {{ $t('horse.horseTelexMsg') }}
                       <a class="text-blue-400" :href="horseData.horseTelex" target="_blank"
                         >Horse Telex</a
                       >
@@ -636,7 +637,7 @@ export default {
       this.isEditingAmount = value
     },
     removeCommas(e) {
-      document.getElementById("amount").type = "numb er"
+      document.getElementById("amount").type = "number"
       this.formData.amount = this.formData.amount.replace(/,/g, "")
     },
     addCommas(e) {
@@ -721,7 +722,11 @@ export default {
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
         if (message.error) {
-          mountedThis.errorMessage = message.error
+          let msg = message.error
+          msg = msg.replace(/\./, '')
+          msg = msg.replace(/\d*\.?\d* USD/, 'lastOffer USD')
+          mountedThis.errorMessage = msg
+
           setTimeout(() => {
             mountedThis.errorMessage = ""
           }, 6000)

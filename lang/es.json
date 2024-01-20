@@ -1,6 +1,90 @@
 {
-    "test": {
-        "hello": "mundo"
+    "general": {
+        "back": "Regresar",
+        "home": "Inicio",
+        "confirm": "Confirmar",
+        "cancel": "Cancelar",
+        "change": "Cambiar",
+        "edit": "Editar",
+        "save": "Guardar",
+        "select": "Seleccione",
+        "errorMsg": "Lo sentimos, ha ocurrido un error"
+    },
+    "login": {
+        "login": "Iniciar Sesión",
+        "signUp": "Crear Cuenta",
+        "email": "Correo Electrónico",
+        "password": "Contraseña",
+        "forgotPassword": "¿Has olvidado tu contraseña?",
+        "recoverPassword": "Recuperar Contraseña",
+        "recoverPasswordTxt": "Ingrese el correo asociado con su cuenta y te enviaremos un codigo para recuperar tu contraseña.",
+        "confirmPassword": "Confirme su contraseña",
+        "confirmNewPassword": "Confirme su nueva contraseña",
+        "sendMail": "Enviar Correo",
+        "enterYourEmail": "Ingrese su correo electrónico",
+        "wrongEmail": "Email incorrecto",
+        "passwordsError": "Las contraseñas deben ser iguales",
+        "passwordValidation": "Ingrese por lo menos 8 dígitos",
+        "verifyYourAccount": "Verifica tu cuenta",
+        "verifyYourAccountTxt": "Ingresa el código que te hemos enviado a: ",
+        "verifyCode": "Verifica Código",
+        "codeNotReceived": "¿No recibiste el código?",
+        "resendCode": "Reenviar código",
+        "resendCodeNotice": "El codigo ha sido enviado nuevamente, por favor revise su correo",
+        "codeVerified": "Su codigo ha sido verificado"
+    },
+    "signup": {
+        "showPassword": "Mostrar Contraseña",
+        "hidePassword": "Ocultar Contraseña",
+        "name": "Nombre",
+        "lastName": "Apellido",
+        "country": "País",
+        "phone": "Teléfono",
+        "privacyPolicies": "Politicas de Privacidad",
+        "agreePolicies": "Estoy de acuerdo con las",
+        "termsAndConditions": "Términos y Condiciones",
+        "agreeConditions": "Acepto los",
+        "createAccount": "Crear Cuenta",
+        "passwordGuidelines": "La contraseña debe tener al menos 8 caracteres,<br>contener al menos un dígito,<br>un carácter especial,<br>no puede incluir parte de los atributos del usuario,<br>ni ser una contraseña común o fácil de adivinar.",
+        "accountAlreadyExists": "Una cuenta con este mail ya existe",
+        "verifyYourAccount": "Verifica tu cuenta",
+        "verifyAccountInstruction": "Ingresa a tu cuenta de correo y accede al enlace que encontrarás en el correo que te hemos enviado",
+        "emailNotReceived": "¿No recibiste el correo?",
+        "resendVerifyAccountEmail": "Reenviar correo de verificación",
+        "verificationEmailSendMsg" : "El correo ha sido enviado nuevamente, porfavor revise su correo",
+        "userHasBeenActivated" : "El usuario ya se encuentra activado"
+    },
+    "profile": {
+        "title": "Datos Generales",
+        "editProfile": "Editar Perfil",
+        "name": "Nombre",
+        "fathersSurname": "Apellido Paterno",
+        "mothersMaidenName": "Apellido Materno",
+        "birthdate": "Fecha de Nacimiento",
+        "nacionality": "Nacionalidad",
+        "country": "País",
+        "state": "Estado",
+        "city": "Ciudad",
+        "street": "Calle",
+        "exteriorNo": "No. exterior",
+        "interiorNo": "No. interior",
+        "zipCode": "Código Postal",
+        "frontIdentityDoc": "Documento de identidad Enfrente",
+        "backIdentityDoc": "Documento de identidad Atras",
+        "changeImage": "Cambiar imagen",
+        "choooseImage": "Elige una imagen",
+        "notDocumentUploaded": "No existe un documento cargado",
+        "auctions": {
+            "history": "Historial de Subastas",
+            "all": "Todas",
+            "won": "Ganadas",
+            "lost": "Perdidas",
+            "status": {
+                "won": "Ganada",
+                "lost": "Perdida",
+                "bidding": ""
+            }
+        }
     },
     "home": {
         "main": {
@@ -9,12 +93,19 @@
             "button": "ver subastas"
         },
         "auction": {
-            "title": "Subastas"
+            "title": "Subastas",
+            "auctionStartIn": "La subasta comienza en",
+            "liveAuction": "Subasta en vivo",
+            "auction": "Subasta",
+            "lots": "lotes",
+            "prebids": "Preofertas",
+            "participateInTheAuction": "Participar en la subasta"
         },
         "news": {
             "title": "Novedades",
             "paragraph": "Subtítulo de novedades",
-            "button": "Ver todas las novedades"
+            "button": "Ver todas",
+            "buttonViewMore": "Ver más"
         },
         "us": {
             "title": "Nosotros",
@@ -56,6 +147,109 @@
     "footer": {
         "navigate": "navegación",
         "email": "email",
-        "phone": "teléfono"
+        "phone": "teléfono",
+        "followUs": "síguenos"
+    },
+    "cron": {
+        "day": "día",
+        "days": "días",
+        "hour": "hora",
+        "hours": "horas",
+        "minute": "minuto",
+        "minutes": "minutos",
+        "second": "segundo",
+        "seconds": "segundos",
+        "timeLeft": "tiempo restante"
+    },
+    "auction": {
+        "title": "Subastas",
+        "auction": "Subasta",
+        "auctionDate": "Fecha de Subasta",
+        "total": "Total",
+        "enterTheAuction": "Ingresar a Subasta",
+        "auctionListButton": "Listado de subastas",
+        "horse": "Caballo",
+        "horses": "Caballos",
+        "preOfferStartedMsg": "LA PRE OFERTA HA COMENZADO",
+        "preOfferStartMsg": "LA PRE OFERTA COMIENZA EN",
+        "auctionWillBeLivetMsg": "LA SUBASTA ESTARA EN VIVO EN",
+        "auctionLivetMsg": "LA SUBASTA ESTA EN VIVO",
+        "auctionEndMsg": "LA SUBASTA HA TERMINADO, GRACIAS POR TU PREFERENCIA, ESPERA NOTICIAS DE NOSOTROS PARA LA SIGUIENTE.",
+        "auctionEndedMsg": "LA SUBASTA HA TERMINADO",
+        "noAvailableMsg": "LA SUBASTA NO ESTÁ DISPONIBLE",
+        "stayWithUsMsg": "QUÉDATE CON NOSOTROS SEGUIMOS CON LA SUBASTA EN VIVO",
+        "winnerCongratsMsg": "FELICIDADES HAS GANADO LA SUBASTA DE {wonHorse} POR ${lastOffer} USD",
+        "winnerMsg": "{winnerName} HA GANADO LA SUBASTA DE {wonHorse} POR ${lastOffer} USD",
+        "lot": "Lote",
+        "lotNo": "# de lote",
+        "bestOffer": "Mejor Oferta",
+        "startingPrice": "Precio Inicial",
+        "enter": "Ingresar",
+        "horseBeingAuctioned": "caballo en subasta",
+        "highestOffer": "Oferta más alta",
+        "beTheFirst": "SE EL PRIMERO EN OFERTAR",
+        "bidOnThisLot": "Ofertar por este lote",
+        "status": "Estado",
+        "statuses": {
+            "PREBID": "Preoferta",
+            "BIDDING": "En Vivo",
+            "CLOSED": "Cerrada",
+            "CLOSED PREBID": "Preoferta Cerrada",
+            "COMING": "En Espera"
+        },
+        "bids": "ofertas",
+        "noVideoAvailableMsg": "No video available",
+        "notLoggedInMsg": "¡Inicia sesión por favor!",
+        "notAuthorizedMsg": "No estás autorizado para ofertar. Comunícate con el administrador al número: "
+    },
+    "bids": {
+        "offer": "Ofertar",
+        "name": "nombre",
+        "nationality": "nacionalidad",
+        "bid": "oferta",
+        "date": "fecha",
+        "prebidHistory": "Historial de pre ofertas",
+        "commission": "de comisión",
+        "bidConfirmQuestion": "¿Estas seguro que quieres ofertar?",
+        "prebidDiscountMsg": "Todo participante de la preoferta obtiene un 5% de descuento",
+        "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
+        "discountByHorseMsg": "**Los descuentos aplican por cada caballo"
+    },
+    "horse": {
+        "dateOfBirth": "Fecha de nacimiento",
+        "age": "Edad",
+        "registerNo": "No. Registro",
+        "height": "Alzada",
+        "gender": "Género",
+        "birthLocation": "Criadero",
+        "tabs": {
+            "horseData": "Datos del caballo",
+            "pedigree": "Pedigree",
+            "xRays": "Rayos X"
+        },
+        "pedigreeNoImageMsg": "No hay imagen de Pedigree disponible por el momento",
+        "xRaysNoImagesMsg": "No hay imágenes de Rayos X disponibles",
+        "horseTelexMsg": "Revisa los datos en"
+    },
+    "dates": {
+        "daysOfTheWeek": {
+            "sunday": "Domingo",
+            "monday": "Lunes",
+            "tuesday": "Martes",
+            "wednesday": "Miércoles",
+            "thursday": "Jueves",
+            "friday": "Viernes",
+            "saturday": "Sábado"
+        },
+        "start": "incio",
+        "end": "fin",
+        "years": "años"
+
+    },
+    "backMessages": {
+        "Invalid credentials or user not activated": "Las credenciales son inválidas o el usuario no ha sido activado",
+        "You cannot bid after yourself": "No puedes ofertar después de ti mismo.",
+        "The offer must be greater than lastOffer USD": "La oferta debe ser mayor a {lastOffer} USD",
+        "Offer closed": "Oferta cerrada"
     }
 }
