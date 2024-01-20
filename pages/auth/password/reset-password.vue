@@ -14,8 +14,8 @@
     </div>
     <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
       <div class="mb-6">
-        <h1 class="text-4xl font-medium text-black">Recuperar contraseña</h1>
-        <p class="font-normal text-base text-neutral-600 pt-2">Confirme su nueva contraseña</p>
+        <h1 class="text-4xl font-medium text-black">{{ $t('login.recoverPassword') }}</h1>
+        <p class="font-normal text-base text-neutral-600 pt-2">{{ $t('login.confirmPassword') }}</p>
       </div>
       <form
         class="w-full mt-2 space-y-4"
@@ -35,7 +35,7 @@
             name="passwordOne"
             id="passwordOne"
             class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            placeholder="Contraseña"
+            :placeholder="$t('login.password')"
           >
         </div>
         <div class="place-items-end">
@@ -51,7 +51,7 @@
             for="passwordTwo"
             class="titleInput font-medium text-base text-black"
           >
-            Confirmar contraseña
+            {{ $t('login.confirmNewPassword') }}
           </label>
           <input
             v-model="passwordTwo"
@@ -60,7 +60,7 @@
             name="passwordOne"
             id="passwordOne"
             class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            placeholder="Repita su contraseña"
+            :placeholder="$t('login.confirmNewPassword')"
           >
           <div class="place-items-end">
             <label
@@ -77,7 +77,7 @@
             :disabled="disableButton"
             class="py-3 px-5 rounded-md bg-black text-white"
           >
-            Cambiar
+            {{ $t('general.change') }}
           </button>
         </div>
         <div class="text-gray-800 text-center text-xl font-semibold py-4">
@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     redirect() {
-      this.$router.push({ path: '/' })
+      this.$router.push({ path: this.localePath('/') })
     },
     async validatePasswords() {
       if (this.passwordOne.length >= 8) {
@@ -124,18 +124,18 @@ export default {
                 email: this.setUser.email,
                 password: this.passwordOne,
               });
-              this.$router.push("/");
+              this.$router.push(this.localePath("/"));
             } catch (error) {
-              this.message = "Email incorrecto";
+              this.message = this.$t('login.wrongEmail');
             }
           } else {
-            this.errorMessage = "Las contraseñas deben ser iguales"
+            this.errorMessage = this.$t('login.passwordsError')
           }
         } else {
-          this.errorMessage = "Ingrese por lo menos 8 dígitos"
+          this.errorMessage = this.$t('login.passwordValidation')
         }
       } else {
-        this.lenghterrorMessage = "Ingrese por lo menos 8 dígitos"
+        this.lenghterrorMessage = this.$t('login.passwordValidation')
       }
     }
   },

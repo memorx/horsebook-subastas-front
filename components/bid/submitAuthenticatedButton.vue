@@ -24,9 +24,9 @@ export default {
   data() {
     return {
       hoverMessage: {
-        notLoggedIn: "Inicia sesión",
+        notLoggedIn: this.$t('auction.notLoggedInMsg'),
         notAuthorized:
-          "No estás autorizado para ofertar. Comunícate con el administrador al número: "
+          this.$t('auction.notAuthorizedMsg')
       },
       isAuthenticated: null,
       isAbleToBid: null,

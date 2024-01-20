@@ -14,17 +14,19 @@
     </div>
     <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
       <div class="mb-6">
-        <h1 class="text-4xl font-medium text-black">Verifica tu cuenta</h1>
-        <p class="font-normal text-base text-neutral-600 pt-2">Ingresa a tu cuenta de correo y accede al enlace que encontrarás en el correo que te hemos enviado
+        <h1 class="text-4xl font-medium text-black">{{ $t('signup.verifyYourAccount') }}</h1>
+        <p class="font-normal text-base text-neutral-600 pt-2">
+          {{ $t('signup.verifyAccountInstruction') }}
         </p>
       </div>
       <div>
-        <p class="font-normal text-base text-neutral-600">¿No recibiste el correo?
+        <p class="font-normal text-base text-neutral-600">¿
+          {{ $t('signup.emailNotReceived') }}
           <button
             type="button"
             @click=reSendEmail
             class="font-medium text-base text-black"
-          >Reenviar correo de verificación</button>
+          >{{ $t('signup.resendVerifyAccountEmail') }}</button>
         </p>
       </div>
 
@@ -93,16 +95,16 @@ export default {
       await this.$axios.$post(url, body, { headers })
         .then((response) => {
           // console.log(response);
-          this.$toast.success("El correo ha sido enviado nuevamente, porfavor revise su correo");
+          this.$toast.success(this.$t('signup.verificationEmailSendMsg'));
           this.loading = false
         })
         .catch((error) => {
           this.loading = false
           if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'El usuario ya ha sido activado') {
-            this.$toast.error("El usuario ya se encuentra activado");
-            this.$router.push('/auth/login/')
+            this.$toast.error(this.$t('signup.userHasBeenActivated'));
+            this.$router.push(this.localePath('/auth/login/'))
           } else {
-            this.$toast.error("Lo sentimos, ha ocurrido un error");
+            this.$toast.error(this.$t('general.errorMsg'));
           }
           console.error(error.response.data);
         });

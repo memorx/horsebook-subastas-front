@@ -6,10 +6,10 @@
           <table class="min-w-full" :key="tableKey">
             <thead>
               <tr>
-                <th class="table-header">Nombre</th>
-                <th class="table-header">Nacionalidad</th>
-                <th class="table-header">Oferta</th>
-                <th class="table-header">Fecha</th>
+                <th class="table-header capitalize">{{ $t('bids.name') }}</th>
+                <th class="table-header capitalize">{{ $t('bids.nationality') }}</th>
+                <th class="table-header capitalize">{{ $t('bids.bid') }}</th>
+                <th class="table-header capitalize">{{ $t('bids.date') }}</th>
               </tr>
             </thead>
             <tbody style="font-size: 13px">
