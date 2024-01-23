@@ -165,6 +165,12 @@
         "title": "Subastas",
         "auction": "Subasta",
         "auctionDate": "Fecha de Subasta",
+        "start": "Inicia",
+        "end": "Termina",
+        "registerBefore": "REGISTRATE ANTES DEL",
+        "prebid": "PRE OFERTA",
+        "highestPrebid": "PRE OFERTA MAS ALTA",
+        "beTheFirstPrebid": "SE EL PRIMERO EN PRE OFERTAR MAS DE",
         "total": "Total",
         "enterTheAuction": "Ingresar a Subasta",
         "auctionListButton": "Listado de subastas",
@@ -180,6 +186,11 @@
         "stayWithUsMsg": "QUÉDATE CON NOSOTROS SEGUIMOS CON LA SUBASTA EN VIVO",
         "winnerCongratsMsg": "FELICIDADES HAS GANADO LA SUBASTA DE {wonHorse} POR ${lastOffer} USD",
         "winnerMsg": "{winnerName} HA GANADO LA SUBASTA DE {wonHorse} POR ${lastOffer} USD",
+        "horseAuctionIsComming": "LA SUBASTA DE ESTE CABALLO ESTÁ POR COMENZAR",
+        "horsePrebidIsComming": "LA PREOFERTA DE ESTE CABALLO ESTÁ POR COMENZAR",
+        "horseAuctionIsLive": "LA SUBASTA DE ESTE CABALLO ESTÁ EN VIVO",
+        "stayTuned": "Quédate al pendiente",
+        "goToAuction": "Ir a la subasta",
         "lot": "Lote",
         "lotNo": "# de lote",
         "bestOffer": "Mejor Oferta",
@@ -193,6 +204,7 @@
         "statuses": {
             "PREBID": "Preoferta",
             "BIDDING": "En Vivo",
+            "LIVE": "En Vivo",
             "CLOSED": "Cerrada",
             "CLOSED PREBID": "Preoferta Cerrada",
             "COMING": "En Espera"
@@ -212,7 +224,9 @@
         "commission": "de comisión",
         "bidConfirmQuestion": "¿Estas seguro que quieres ofertar?",
         "prebidDiscountMsg": "Todo participante de la preoferta obtiene un 5% de descuento",
+        "youHaveDiscountMsg": "Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta",
         "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
+        "youAreTheDiscountWinnerMsg": "Has ganado {prebidWinnerDiscount}% de descuento extra",
         "discountByHorseMsg": "**Los descuentos aplican por cada caballo"
     },
     "horse": {
@@ -250,6 +264,10 @@
         "Invalid credentials or user not activated": "Las credenciales son inválidas o el usuario no ha sido activado",
         "You cannot bid after yourself": "No puedes ofertar después de ti mismo.",
         "The offer must be greater than lastOffer USD": "La oferta debe ser mayor a {lastOffer} USD",
-        "Offer closed": "Oferta cerrada"
+        "Offer closed": "Oferta cerrada",
+        "On-site offer": "En persona",
+        "On Call Offer": "Por llamada",
+        "(On-site offer)": "(En persona)",
+        "(On Call Offer)": "(Por llamada)"
     }
 }
