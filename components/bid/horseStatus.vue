@@ -29,7 +29,7 @@
       v-if="status == 'COMING'"
       class="text-white rounded-xl px-5 py-2 text-sm bg-gray-500 text-center w-38 whitespace-nowrap uppercase"
     >
-      EN ESPERA
+    {{ $t('auction.statuses.COMING') }}
     </div>
   </div>
 </template>

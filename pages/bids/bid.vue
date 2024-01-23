@@ -73,13 +73,13 @@
                     class="text-center w-full p-5 rounded-t-md"
                     style="background-color: #b99d61"
                   >
-                    <p class="text-white font-bold text-sm">PRE OFERTA MAS ALTA</p>
+                    <p class="text-white font-bold text-sm">{{ $t('auction.highestPrebid') }}</p>
                     <span v-if="lastOffer" class="text-white font-bold text-2xl"
                       >${{ lastOffer }} USD</span
                     >
                     <div v-else>
                       <span class="text-white font-bold text-2xl"
-                        >SE EL PRIMERO EN PRE OFERTAR MAS DE</span
+                        >{{ $t('auction.beTheFirstPrebid') }}</span
                       >
                       <p class="text-white font-bold text-2xl">
                         $
@@ -210,75 +210,76 @@
                 </div>
                 <div v-if="bidStatus == 'BIDDING' && horseStatus == 'BIDDING'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
                   <p class="text-black font-bold text-2xl pt-8 px-10">
-                    LA SUBASTA DE ESTE CABALLO ESTÁ EN VIVO
+                    {{ $t('auction.horseAuctionIsLive') }}
                   </p>
                   <p v-if="hasBid" class="text-center text-xs text-custom-gold">
-                    Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta
+                    {{ $t('bids.youHaveDiscountMsg') }}
                   </p>
                   <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
-                    Has ganado {{ prebidWinnerDiscount }}% de descuento extra
+                    {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
+
                   </p>
                   <p class="text-black font-bold text-xl pt-5">
                     <NuxtLink :to="`/auction/live/${bidId}`">
                       <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                        Ir a la Subasta
+                        {{ $t('auction.goToAuction') }}
                       </button>
                     </NuxtLink>
                   </p>
                 </div>
                 <div v-if="horseStatus == 'CLOSED PREBID'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
                   <p class="text-black font-bold text-2xl pt-8 px-10">
-                    LA SUBASTA DE ESTE CABALLO ESTÁ POR COMENZAR
+                    {{ $t('auction.horseAuctionIsComming') }}
                   </p>
                   <p v-if="hasBid" class="text-center text-xs text-custom-gold">
-                    Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta
+                    {{ $t('bids.youHaveDiscountMsg') }}
                   </p>
                   <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
-                    Has ganado {{ prebidWinnerDiscount }}% de descuento extra
+                    {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
                   </p>
                   <p v-if="bidStatus == 'BIDDING'" class="text-black font-bold text-xl pt-5">
                     <NuxtLink :to="`/auction/live/${bidId}`">
                     <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                      Ir a la Subasta
+                      {{ $t('auction.goToAuction') }}
                     </button>
                   </NuxtLink>
                   </p>
                   <div v-else class="text-black font-bold text-xl pt-5">
-                    Quédate al pendiente
+                    {{ $t('auction.stayTuned') }}
                     <p v-if="hasBid" class="text-center text-xs text-custom-gold">
-                      Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta
+                      {{ $t('bids.youHaveDiscountMsg') }}
                     </p>
                     <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
-                      Has ganado {{ prebidWinnerDiscount }}% de descuento extra
+                      {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
                     </p>
                   </div>
                 </div>
                 <div v-if="horseStatus =='COMMING' && bidStatus == 'COMMING'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
 
                   <p class="text-black font-bold text-2xl pt-8 px-10">
-                    LA PREOFERTA DE ESTE CABALLO ESTÁ POR COMENZAR
+                    {{ $t('auction.horsePrebidIsComming') }}
                   </p>
                   <div class="text-center w-full px-5 pt-8">
-                      <p class="font-bold text-sm">PRECIO INICIAL</p>
+                      <p class="font-bold text-sm">{{ $t('auction.startingPrice') }}</p>
                       <span class="font-bold text-2xl"
                         >${{ horseData.final_amount }} USD</span
                       >
                       <div class="border-b border-gray-300 my-4"></div>
                     </div>
                     <div class="w-full rounded-t-lg px-5">
-                      <p class="font-bold text-sm">PRE OFERTA</p>
+                      <p class="font-bold text-sm">{{ $t('auction.prebid') }}</p>
                       <span class="font-bold text-sm"
-                        >Inicia {{ PreBidDateFormat }}</span
+                        >{{ $t('auction.start') }} {{ PreBidDateFormat }}</span
                       >
                     </div>
                     <div class="w-full rounded-t-lg px-5">
                       <span class="font-bold text-sm"
-                        >Termina {{ EndPreBidDateFormat }}</span
+                        >{{ $t('auction.end') }} {{ EndPreBidDateFormat }}</span
                       >
                     </div>
                     <div class="w-full rounded-t-lg px-5">
                       <div class="border-b border-gray-300 my-4"></div>
-                      <p class="font-bold text-sm">SUBASTA EN VIVO</p>
+                      <p class="font-bold text-sm uppercase">{{ $t('home.auction.liveAuction') }}</p>
                       <span class="font-bold text-sm">{{ BidDateFormat }}</span>
 
                     </div>
@@ -290,7 +291,7 @@
                         <button
                           class="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
                         >
-                          REGISTRATE ANTES DEL {{ BidDateFormat }}
+                          {{ $t('auction.registerBefore') }} {{ BidDateFormat }}
                         </button>
                       </nuxt-link>
                     </div>
@@ -367,7 +368,7 @@
                       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         <div class="mr-4">
                           <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
-                          <span class="text-gray-600">{{ horseData.birthDate || "NA" }}</span>
+                          <span class="text-gray-600">{{ horseData.BirthDate || "NA" }}</span>
                         </div>
                         <div class="mr-4">
                           <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
@@ -732,6 +733,11 @@ export default {
           }, 6000)
           return
         }
+
+        if (message.auction) {
+          this.bidStatus = message.auction.status
+        }
+
         if (message.bids) {
           mountedThis.bids = message.bids
         }

@@ -262,6 +262,7 @@ import axios from "axios"
 import Loading from "../../../components/shared/Loading.vue"
 import statusBid from "../../../components/bid/statusBid.vue"
 import horseStatus from "../../../components/bid/horseStatus.vue"
+import ReconnectingWebSocket from "reconnecting-websocket"
 
 export default {
   components: { Loading, statusBid, horseStatus },
@@ -352,34 +353,54 @@ export default {
       ) {
         this.auctionSocket.close()
       }
+
       const url = `${this.$config.baseURLWS}/auction/${this.$route.params.id}`
-      this.auctionSocket = new WebSocket(url)
-      this.auctionSocket.onmessage = function (event) {
+      this.auctionSocket = new ReconnectingWebSocket(url)
+
+      this.auctionSocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
+        console.log('message auction socket', message)
         if (message.error) {
-          mountedThis.socketError = message.error
+          this.socketError = message.error
           return
         }
+
+        if (message.auction) {
+          console.log('trae un auction')
+          this.bidStatus = message.auction.status
+        }
+
         if (message.horses && message.horses.length > 0) {
-          mountedthis.item.horses.forEach((horse, key) => {
+          console.log('trae horses')
+          this.item.horses.forEach((horse, key) => {
             const status = message.horses.find(
               (item) => item.id === horse.local_data.id
             )
             if (status)
-              mountedthis.item.horses[key].local_data.status = status.status
+              this.item.horses[key].local_data.status = status.status
           })
         }
 
+        if(message.bid){
+          console.log('trae un bid y acutaliza final amount')
+          const key = this.item.horses.findIndex(
+            (horse) => message.bid.horse === horse.local_data.id
+          )
+          if (key >= 0)
+            this.item.horses[key].local_data.final_amount = message.bid.amount.toFixed(2)
+        }
+
         if (message.horse) {
-          const key = mountedthis.item.horses.findIndex(
+          console.log('trae un horse y busca su status')
+          const key = this.item.horses.findIndex(
             (horse) => message.horse.id === horse.local_data.id
           )
           if (key >= 0)
-            mountedthis.item.horses[key].local_data.status =
-              message.horse.status
+            this.item.horses[key].local_data.status = message.horse.status
         }
 
         if (message.prebid) {
+          console.log('trae info de prebid')
           if (message.prebid.auction.id == this.horseID) {
             const now = new Date()
             const targetDate = new Date(message.prebid.auction.end_pre_bid)
@@ -397,17 +418,18 @@ export default {
                 (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
               )
               const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
+              this.preBidTime.days = days
+              this.preBidTime.hours = hours
+              this.preBidTime.minutes = minutes
+              this.preBidTime.seconds = seconds
+
+              console.log("ACTUALIZADO EL TIMER")
             }
-
-            this.preBidTime.days = days
-            this.preBidTime.hours = hours
-            this.preBidTime.minutes = minutes
-            this.preBidTime.seconds = seconds
-
-            console.log("ACTUALIZADO EL TIMER")
           }
         }
-      }
+      })
+
+
       this.auctionSocket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           mountedThis.startBidSocket()

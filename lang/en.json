@@ -165,6 +165,12 @@
         "title": "Auctions",
         "auction": "Auction",
         "auctionDate": "Date",
+        "start": "Start",
+        "end": "End",
+        "registerBefore": "REGISTER BEFORE",
+        "prebid": "PREBID",
+        "highestPrebid": "HIGHEST PREBID",
+        "beTheFirstPrebid": "BE THE FIRST TO PREBID MORE THAN",
         "total": "Total",
         "enterTheAuction": "Enter the auction",
         "auctionListButton": "Auction listing",
@@ -180,6 +186,11 @@
         "stayWithUsMsg": "STAY WITH US WE CONTINUE WITH THE LIVE AUCTION",
         "winnerCongratsMsg": "CONGRATULATIONS YOU WON THE {wonHorse} AUCTION FOR ${lastOffer} USD",
         "winnerMsg": "{winnerName} HAS WON THE {wonHorse} AUCTION FOR ${lastOffer} USD",
+        "horseAuctionIsComming": "THE AUCTION OF THIS HORSE IS ABOUT TO BEGIN",
+        "horsePrebidIsComming": "THE PREBID ON THIS HORSE IS ABOUT TO BEGIN",
+        "horseAuctionIsLive": "THE AUCTION FOR THIS HORSE IS LIVE",
+        "stayTuned": "Stay tuned",
+        "goToAuction": "Go to Auction",
         "lot": "Lot",
         "lotNo": "Lot #",
         "bestOffer": "Best Offer",
@@ -193,6 +204,7 @@
         "statuses": {
             "PREBID": "Prebid",
             "BIDDING": "Live",
+            "LIVE": "Live",
             "CLOSED": "Closed",
             "CLOSED PREBID": "Closed Prebid",
             "COMING": "Coming"
@@ -212,7 +224,9 @@
         "commission": "commision",
         "bidConfirmQuestion": "Are you sure you want to bid?",
         "prebidDiscountMsg": "Every prebid participant gets a 5% discount",
+        "youHaveDiscountMsg": "You already have a 5% discount on this horse for having participated in the pre-offer",
         "prebidWinnerDiscountMsg": "*Prebid winner gets an extra {prebidWinnerDiscount}% discount",
+        "youAreTheDiscountWinnerMsg": "You have earned {prebidWinnerDiscount}% extra discount",
         "discountByHorseMsg": "**Discounts apply for each horse"
     },
     "horse": {
@@ -249,7 +263,11 @@
         "Invalid credentials or user not activated": "Invalid credentials or user not activated",
         "You cannot bid after yourself": "You cannot bid after yourself.",
         "The offer must be greater than lastOffer USD": "The offer must be greater than {lastOffer} USD",
-        "Offer closed": "Offer closed"
+        "Offer closed": "Offer closed",
+        "On-site offer": "On-site Offer",
+        "On Call Offer": "On Call Offer",
+        "(On-site offer)": "(On-site Offer)",
+        "(On Call Offer)": "(On Call Offer)"
     }
 
 }

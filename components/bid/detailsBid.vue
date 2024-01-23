@@ -93,8 +93,19 @@ export default {
     },
     parsedName() {
       return (bid) => {
-        if (this.hasBid)
+        if (this.hasBid && bid){
+          const specialValues = [
+            'On-site offer',
+            'On Call Offer',
+            '(On-site offer)',
+            '(On Call Offer)']
+          let fsurname = bid.user_profile?.fathers_surname
+          if (specialValues.includes(fsurname)) {
+            bid.user_profile.fathers_surname = this.$t(`backMessages.${fsurname}`)
+          }
           return (bid?.user_profile?.name ?? "") + " " + bid?.user_profile?.fathers_surname
+        }
+
         return "- -"
       }
     }

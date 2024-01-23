@@ -62,7 +62,25 @@
                   class="bg-white flex flex-col lg:items-start lg:justify-center lg:flex-row shadow-lg rounded-xl border-2 border-custom-gold">
                   <!-- Image part -->
                   <div class="w-full lg:w-1/2 h-full flex items-center justify-center">
-                     <img src="../public/white-horse.png" alt="Image 1" class="w-full h-full object-cover rounded-xl">
+                     <img
+                        v-if="auction.image"
+                        :src="auction.image"
+                        alt="foto_portada"
+                        class="w-full h-full object-cover rounded-xl"
+                        style="height: 400px"
+                        loading="lazy"
+                        />
+                     <div
+                     class="w-full md:w-1/2 h-[400px] flex justify-center items-center md:rounded-l-lg"
+                     v-else
+                        >
+                        <img
+                           class="m-auto opacity-70"
+                           src="../public/image_la_silla.png"
+                           alt="Default Horse"
+                        />
+                     </div>
+
                   </div>
 
                   <!-- Content part -->
