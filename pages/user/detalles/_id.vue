@@ -66,7 +66,7 @@
             v-if="bidStatus == 'CLOSED PREBID'"
             class="text-center text-sm font-bold"
           >
-            LA PRE OFERTA HA TERMINADO Y
+            {{ $t('auction.prebidIsEnded') }}
           </h1>
           <div
             v-if="loading == false && countdownPre == true"
@@ -81,25 +81,25 @@
                   <p class="text-center text-5xl mb-2 font-bold">
                     {{ preBidTime.days }}
                   </p>
-                  <p class="text-center text-slate-500">Días</p>
+                  <p class="text-center text-slate-500">{{ $t('cron.days') }}</p>
                 </div>
                 <div class="mx-5">
                   <p class="text-center text-5xl mb-2 font-bold">
                     {{ preBidTime.hours }}
                   </p>
-                  <p class="text-center text-slate-500">Horas</p>
+                  <p class="text-center text-slate-500">{{ $t('cron.hours') }}</p>
                 </div>
                 <div class="mx-5">
                   <p class="text-center text-5xl mb-2 font-bold">
                     {{ preBidTime.minutes }}
                   </p>
-                  <p class="text-center text-slate-500">Minutos</p>
+                  <p class="text-center text-slate-500">{{ $t('cron.minutes') }}</p>
                 </div>
                 <div class="mx-5">
                   <p class="text-center text-5xl mb-2 font-bold">
                     {{ preBidTime.seconds }}
                   </p>
-                  <p class="text-center text-slate-500">Segundos</p>
+                  <p class="text-center text-slate-500">{{ $t('cron.seconds') }}</p>
                 </div>
               </div>
             </div>

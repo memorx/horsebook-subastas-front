@@ -252,7 +252,7 @@ export default {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Debes iniciar sesión para poder ver tus datos, se te redirigirá al inicio'
+          text: this.$t('profile.mustLoginMsg')
         }).then(() => {
           window.location.href = '/auth/login';
         });
@@ -306,12 +306,12 @@ export default {
     },
     clearUserData() {
       Swal.fire({
-        title: '¿Estás seguro que deseas cambiar tu contraseña?',
-        text: 'Se te redirigirá hacia el inicio',
+        title: this.$t('profile.changePasswordConfirm'),
+        text: this.$t('profile.redirectToHome'),
         icon: 'question',
         showCancelButton: true,
-        confirmButtonText: 'Sí',
-        cancelButtonText: 'Cancelar'
+        confirmButtonText: this.$t('general.yes'),
+        cancelButtonText: this.$t('general.cancel')
       }).then((result) => {
         if (result.isConfirmed) {
           this.$store.commit("clearUserData");
