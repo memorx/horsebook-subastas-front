@@ -14,16 +14,16 @@
     </div>
     <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
       <div v-if="verifying == true && validate == false" class="mb-6">
-        <h1 class="text-4xl font-medium text-black">ESPERA UN MOMENTO</h1>
-        <p class="font-normal text-base text-neutral-600 pt-2">Tu cuenta de correo está siendo verificada</p>
+        <h1 class="text-4xl font-medium text-black">{{ $t('signup.waitAMoment') }}</h1>
+        <p class="font-normal text-base text-neutral-600 pt-2">{{ $t('signup.emailIsBeingVerified') }}</p>
       </div>
       <div v-if="verifying == false && validate == true" class="mb-6">
-        <h1 class="text-4xl font-medium text-black">BIENVENIDO</h1>
-        <p class="font-normal text-base text-neutral-600 pt-2">Tu cuenta de correo ha sido verificada y estás iniciando sesión en la aplicación...</p>
+        <h1 class="text-4xl font-medium text-black uppercase">{{ $t('general.welcome') }}</h1>
+        <p class="font-normal text-base text-neutral-600 pt-2">{{ $t('signup.emailAccountVerified') }}</p>
       </div>
       <div v-if="verifying == false && validate == false" class="mb-6">
-        <h1 class="text-4xl font-medium text-black">LO SENTIMOS</h1>
-        <p class="font-normal text-base text-neutral-600 pt-2">Tu cuenta de correo no ha podido ser verificada.</p>
+        <h1 class="text-4xl font-medium text-black">{{ $t('signup.weAreSorry') }}</h1>
+        <p class="font-normal text-base text-neutral-600 pt-2">{{ $t('signup.emailAccountNotVerified') }}</p>
       </div>
     </div>
   </div>
@@ -72,16 +72,16 @@ export default {
       await this.$axios.$post(url, body, { headers })
         .then((response) => {
           // console.log(response);
-          this.$toast.success("El codigo ha sido enviado nuevamente, porfavor revise su correo");
+          this.$toast.success(this.$t('login.'));
           this.loading = false
         })
         .catch((error) => {
           this.loading = false
-          if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'El usuario ya ha sido activado') {
+          if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'User is already activated') {
             this.$toast.error("El usuario ya se encuentra activado");
             this.$router.push(this.localePath('/auth/login/'))
           } else {
-            this.$toast.error("Lo sentimos, ha ocurrido un error");
+            this.$toast.error(this.$t('general.errorMsg'));
           }
           console.error(error.response.data);
         });
@@ -100,7 +100,7 @@ export default {
       await this.$axios.$get(url, { params })
         .then((response) => {
           console.log(response);
-          this.$toast.success("Tu cuenta ha sido verificada");
+          this.$toast.success(this.$t('signup.emailAccountHasBeenVerified'));
           this.verifying = false;
           this.validate = true;
           this.response = response;
@@ -108,12 +108,12 @@ export default {
         })
         .catch((error) => {
           this.loading = false
-          if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'El usuario ya ha sido activado') {
+          if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'User is already activated') {
             this.verifying = false;
             this.validate = false;
           } else {
             this.verifying = false;
-            this.$toast.error("Lo sentimos, ha ocurrido un error");
+            this.$toast.error(this.$t('general.errorMsg'));
           }
           console.error(error.response.data);
         });

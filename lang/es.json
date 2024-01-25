@@ -4,11 +4,13 @@
         "home": "Inicio",
         "confirm": "Confirmar",
         "cancel": "Cancelar",
+        "yes": "Sí",
         "change": "Cambiar",
         "edit": "Editar",
         "save": "Guardar",
         "select": "Seleccione",
-        "errorMsg": "Lo sentimos, ha ocurrido un error"
+        "errorMsg": "Lo sentimos, ha ocurrido un error",
+        "welcome": "Bienvenido"
     },
     "login": {
         "login": "Iniciar Sesión",
@@ -30,7 +32,7 @@
         "verifyCode": "Verifica Código",
         "codeNotReceived": "¿No recibiste el código?",
         "resendCode": "Reenviar código",
-        "resendCodeNotice": "El codigo ha sido enviado nuevamente, por favor revise su correo",
+        "resendCodeNotice": "El código ha sido enviado nuevamente, por favor revise su correo",
         "codeVerified": "Su codigo ha sido verificado"
     },
     "signup": {
@@ -52,7 +54,13 @@
         "emailNotReceived": "¿No recibiste el correo?",
         "resendVerifyAccountEmail": "Reenviar correo de verificación",
         "verificationEmailSendMsg" : "El correo ha sido enviado nuevamente, porfavor revise su correo",
-        "userHasBeenActivated" : "El usuario ya se encuentra activado"
+        "userHasBeenActivated" : "El usuario ya se encuentra activado",
+        "waitAMoment": "ESPERA UN MOMENTO",
+        "emailIsBeingVerified": "Tu cuenta de correo está siendo verificada",
+        "emailAccountVerified": "Tu cuenta de correo ha sido verificada y estás iniciando sesión en la aplicación...",
+        "weAreSorry": "LO SENTIMOS",
+        "emailAccountNotVerified": "Tu cuenta de correo no ha podido ser verificada.",
+        "emailAccountHasBeenVerified": "Tu cuenta ha sido verificada"
     },
     "profile": {
         "title": "Datos Generales",
@@ -84,7 +92,10 @@
                 "lost": "Perdida",
                 "bidding": ""
             }
-        }
+        },
+        "mustLoginMsg": "Debes iniciar sesión para poder ver tus datos, se te redirigirá al inicio",
+        "changePasswordConfirm": "¿Estás seguro que deseas cambiar tu contraseña?",
+        "redirectToHome": "Se te redirigirá hacia el inicio"
     },
     "home": {
         "main": {
@@ -123,7 +134,8 @@
                 "phone": "teléfono",
                 "email": "email",
                 "message": "mensaje"
-            }
+            },
+            "messageHasBeenSent": "El mensaje de contacto ha sido enviado"
         },
         "video": {
             "button": "Entrar"
@@ -188,7 +200,9 @@
         "winnerMsg": "{winnerName} HA GANADO LA SUBASTA DE {wonHorse} POR ${lastOffer} USD",
         "horseAuctionIsComming": "LA SUBASTA DE ESTE CABALLO ESTÁ POR COMENZAR",
         "horsePrebidIsComming": "LA PREOFERTA DE ESTE CABALLO ESTÁ POR COMENZAR",
+        "prebidIsEnded": "LA PRE OFERTA HA TERMINADO Y",
         "horseAuctionIsLive": "LA SUBASTA DE ESTE CABALLO ESTÁ EN VIVO",
+        "horseAuctionIsEnded": "La subasta de este caballo ha sido finalizada",
         "stayTuned": "Quédate al pendiente",
         "goToAuction": "Ir a la subasta",
         "lot": "Lote",
@@ -227,7 +241,11 @@
         "youHaveDiscountMsg": "Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta",
         "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
         "youAreTheDiscountWinnerMsg": "Has ganado {prebidWinnerDiscount}% de descuento extra",
-        "discountByHorseMsg": "**Los descuentos aplican por cada caballo"
+        "discountByHorseMsg": "**Los descuentos aplican por cada caballo",
+        "IN PERSON": "EN PERSONA",
+        "Call": "EN LLAMADA",
+        "aprrovedToOffer": "¡Has sido aprobado para ofertar!",
+        "rejectedToOffer": "¡Has sido rechazado para ofertar!"
     },
     "horse": {
         "dateOfBirth": "Fecha de nacimiento",

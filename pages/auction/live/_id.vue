@@ -470,9 +470,9 @@ export default {
         this.yourAreTheWinner = false
         let winnerName = this.winner.name + ' ' + this.winner.fathers_surname
         if(winnerName === 'IN PERSON') {
-          this.winnerName = 'EN PERSONA'
+          this.winnerName = this.$t('bids.IN PERSON')
         } else if(this.winner.name == 'Call') {
-          this.winnerName = 'EN LLAMADA'
+          this.winnerName = this.$t('bids.Call')
         } else {
           this.winnerName = this.winner.name
         }

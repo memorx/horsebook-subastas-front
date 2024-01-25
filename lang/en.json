@@ -4,11 +4,13 @@
         "home": "Home",
         "confirm": "Confirm",
         "cancel": "Cancel",
+        "yes": "Yes",
         "change": "Change",
         "edit": "Edit",
         "save": "Save",
         "select": "Select",
-        "errorMsg": "Sorry an error occurred"
+        "errorMsg": "Sorry an error occurred",
+        "welcome": "Welcome"
     },
     "login": {
         "login": "Login",
@@ -52,7 +54,13 @@
         "emailNotReceived": "Didn't you receive the email?",
         "resendVerifyAccountEmail": "Resend verification email",
         "verificationEmailSendMsg" : "The email has been sent again, please check your email",
-        "userHasBeenActivated" : "The user has been activated"
+        "userHasBeenActivated" : "User is already activated",
+        "waitAMoment": "WAIT A MOMENT",
+        "emailIsBeingVerified": "Your email account is being verified",
+        "emailAccountVerified": "Your email account has been verified and you are logging into the app...",
+        "weAreSorry": "WE ARE SORRY",
+        "emailAccountNotVerified": "Your email account could not be verified.",
+        "emailAccountHasBeenVerified": "Your account has been verified"
     },
     "profile": {
         "title": "Personal Profile",
@@ -84,7 +92,10 @@
                 "lost": "Lost",
                 "bidding": ""
             }
-        }
+        },
+        "mustLoginMsg": "You must log in to see your data, you will be redirected to home",
+        "changePasswordConfirm": "Are you sure you want to change your password?",
+        "redirectToHome": "You will be redirected to the beginning"
     },
     "home": {
         "main": {
@@ -94,7 +105,7 @@
         },
         "auction": {
             "title": "Auctions",
-            "auctionStartIn": "Auction start in",
+            "auctionStartIn": "Auction starts in",
             "liveAuction": "Live Auction",
             "auction": "Auction",
             "lots": "lots",
@@ -123,7 +134,8 @@
                 "phone": "phone",
                 "email": "email",
                 "message": "message"
-            }
+            },
+            "messageHasBeenSent": "The contact message has been sent"
         },
         "video": {
             "button": "watch video"
@@ -142,7 +154,7 @@
         "signUp": "Sign Up",
         "profile": "Profile",
         "logout": "Logout",
-        "liveAuction": "Auction Live"
+        "liveAuction": "Live Auction"
     },
     "footer": {
         "navigate": "Navigate",
@@ -189,6 +201,8 @@
         "horseAuctionIsComming": "THE AUCTION OF THIS HORSE IS ABOUT TO BEGIN",
         "horsePrebidIsComming": "THE PREBID ON THIS HORSE IS ABOUT TO BEGIN",
         "horseAuctionIsLive": "THE AUCTION FOR THIS HORSE IS LIVE",
+        "prebidIsEnded": "THE PRE OFFER HAS ENDED AND",
+        "horseAuctionIsEnded": "The auction for this horse has been completed",
         "stayTuned": "Stay tuned",
         "goToAuction": "Go to Auction",
         "lot": "Lot",
@@ -227,7 +241,11 @@
         "youHaveDiscountMsg": "You already have a 5% discount on this horse for having participated in the pre-offer",
         "prebidWinnerDiscountMsg": "*Prebid winner gets an extra {prebidWinnerDiscount}% discount",
         "youAreTheDiscountWinnerMsg": "You have earned {prebidWinnerDiscount}% extra discount",
-        "discountByHorseMsg": "**Discounts apply for each horse"
+        "discountByHorseMsg": "**Discounts apply for each horse",
+        "IN PERSON": "IN PERSON",
+        "Call": "IN CALL",
+        "aprrovedToOffer": "You have been approved to bid!",
+        "rejectedToOffer": "You have been rejected to bid!"
     },
     "horse": {
         "dateOfBirth": "Date of birth",

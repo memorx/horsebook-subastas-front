@@ -246,9 +246,6 @@
                   </p>
                   <div v-else class="text-black font-bold text-xl pt-5">
                     {{ $t('auction.stayTuned') }}
-                    <p v-if="hasBid" class="text-center text-xs text-custom-gold">
-                      {{ $t('bids.youHaveDiscountMsg') }}
-                    </p>
                     <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
                       {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
                     </p>
@@ -281,7 +278,6 @@
                       <div class="border-b border-gray-300 my-4"></div>
                       <p class="font-bold text-sm uppercase">{{ $t('home.auction.liveAuction') }}</p>
                       <span class="font-bold text-sm">{{ BidDateFormat }}</span>
-
                     </div>
                     <div
                       v-if="isUserAuthenticated"
@@ -371,7 +367,7 @@
                           <span class="text-gray-600">{{ horseData.BirthDate || "NA" }}</span>
                         </div>
                         <div class="mr-4">
-                          <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
+                          <span class="font-bold text-gray-700">{{ $t('horse.age') }}:</span>
                           <span class="text-gray-600">{{ horseData.Age || "NA" }}</span>
                           <span class="text-gray-600">{{ $t('dates.years') }}</span>
                         </div>
@@ -852,7 +848,7 @@ export default {
             const nextHorse = message.horse.next
             if (mountedThis.horseStatus == "CLOSED") {
               mountedThis.$toast.success(
-                "La subasta de este caballo ha sido finalizada"
+                this.$t('auction.horseAuctionIsEnded')
               )
             }
             this.winnerConfetti()

@@ -132,9 +132,9 @@ export default {
         displayToast() {
             if (this.$store.state.websocket) {
                 if (this.$store.state.isUserAbleToBid) {
-                    this.$toast.success('¡Has sido aprobado para ofertar!');
+                    this.$toast.success(this.$t('bids.aprrovedToOffer'));
                 } else {
-                    this.$toast.error('¡Has sido rechazado para ofertar!');
+                    this.$toast.error(this.$t('bids.rejectedToOffer'));
                 }
             }
         },
