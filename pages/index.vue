@@ -38,9 +38,9 @@
                         </div>
 
                         <div class="row-span-1 grid grid-cols-3 gap-4 pt-5">
-                           <div class="text-center pl-5">Días</div>
-                           <div class="text-center">Horas</div>
-                           <div class="text-center pr-5">Minutos</div>
+                           <div class="text-center pl-5">{{ $t('cron.days')}}</div>
+                           <div class="text-center">{{ $t('cron.hours')}}</div>
+                           <div class="text-center pr-5">{{ $t('cron.minutes')}}</div>
                         </div>
                      </div>
 
@@ -290,7 +290,7 @@ export default {
    methods: {
       async init() {
          await this.getNextAuction()
-         this.calculateCountdown()
+
       },
       async getNextAuction() {
          const listSubastasEndpoint = "/subastas/list-subastas/"
@@ -313,6 +313,9 @@ export default {
                      this.otherAuctions.push(auction)
                      console.log('next auction', this.nextAuction)
                   }
+               }
+               if(this.nextAuction) {
+                  this.timer = setInterval(this.calculateCountdown, 1000)
                }
             })
 
@@ -392,7 +395,7 @@ export default {
          await this.$axios.$post(url, body)
          .then((response) => {
             // console.log(response);
-            this.$toast.success("El mensaje de contacto ha sido enviado");
+            this.$toast.success(this.$t('home.contact.messageHasBeenSent'));
             this.contactInfo.name = ''
             this.contactInfo.phone = ''
             this.contactInfo.email = ''
@@ -401,7 +404,7 @@ export default {
          })
          .catch((error) => {
             this.loading = false
-            this.$toast.error("Lo sentimos, ha ocurrido un error, favor de intentar más tarde");
+            this.$toast.error(this.$t('general.errorMsg'));
             console.error(error.response.data);
          });
       },

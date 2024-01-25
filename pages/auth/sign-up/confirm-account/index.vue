@@ -100,7 +100,7 @@ export default {
         })
         .catch((error) => {
           this.loading = false
-          if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'El usuario ya ha sido activado') {
+          if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'User is already activated') {
             this.$toast.error(this.$t('signup.userHasBeenActivated'));
             this.$router.push(this.localePath('/auth/login/'))
           } else {
