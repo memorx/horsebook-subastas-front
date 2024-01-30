@@ -156,6 +156,7 @@
                           v-model="formattedManualInputAmount"
                           @input="handleInput"
                           @blur="assignManualInputAmount()"
+                          @keydown.enter.prevent
                           class="border rounded-md flex-grow w-1/4"
                         />
                         <button
