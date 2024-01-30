@@ -778,7 +778,7 @@ export default {
       }
     },
     addThousand() {
-      let currentValue = parseInt(this.inputAmount.replace(",", ""))
+      let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
       if (currentValue >= 30000) {
         currentValue += 500
       } else {
@@ -787,7 +787,7 @@ export default {
       this.inputAmount = currentValue.toLocaleString("en-US")
     },
     substractThousand() {
-      let currentValue = parseInt(this.inputAmount.replace(",", ""))
+      let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
       if (currentValue >= 30000) {
         currentValue -= 500
       } else {
@@ -923,7 +923,7 @@ export default {
     },
     submitForm(event) {
       event.preventDefault()
-      const submittedAmount = parseInt(this.formData.amount.replace(",", ""))
+      const submittedAmount = parseInt(this.formData.amount.replace(/,/g, ""))
       if (this.manualInputAmount) {
         console.log('entra a manual input')
         const submittedAmountInput = parseInt(this.manualInputAmount)
