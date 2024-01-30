@@ -11,11 +11,11 @@
     </div>
     <div class="flex items-center justify-center my-5 space-x-2">
       <button
-        class="text-black border-2 border-black px-4 py-2 rounded-md hover:bg-gray-900 hover:text-white duration-100"
+        class="text-black border-2 border-black px-4 py-2 rounded-md hover:bg-gray-900 hover:text-white duration-100 capitalize"
         style="height: 40px"
         @click="downloadImage"
       >
-        Descargar
+        {{ $t('general.download') }}
       </button>
     </div>
   </div>

@@ -31,16 +31,16 @@
 
                         <div class="row-span-3"></div>
 
-                        <div class="row-span-1 grid grid-cols-3 gap-4 pt-6 text-2xl">
+                        <div class="row-span-1 grid grid-cols-3 gap-0 pt-6 text-2xl">
                            <div class="text-center pl-5">{{ bidTime.days }}</div>
                            <div class="text-center">{{ bidTime.hours }}</div>
-                           <div class="text-center pr-5">{{ bidTime.minutes }}</div>
+                           <div class="text-center pr-8">{{ bidTime.minutes }}</div>
                         </div>
 
-                        <div class="row-span-1 grid grid-cols-3 gap-4 pt-5">
+                        <div class="row-span-1 grid grid-cols-3 gap-0 pt-5">
                            <div class="text-center pl-5">{{ $t('cron.days')}}</div>
                            <div class="text-center">{{ $t('cron.hours')}}</div>
-                           <div class="text-center pr-5">{{ $t('cron.minutes')}}</div>
+                           <div class="text- pr-5">{{ $t('cron.minutes')}}</div>
                         </div>
                      </div>
 

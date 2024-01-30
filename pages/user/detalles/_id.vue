@@ -237,7 +237,7 @@
                 {{ $t('auction.startingPrice') }}:
               </p>
               <p class="text-xs lg:text-xl font-bold text-center">
-                $ {{ horse.local_data.final_amount }} USD
+                $ {{ parseFloat(horse.local_data.final_amount.replace(/,/g, "")).toLocaleString('en-US', { maximumFractionDigits: 0 }) }} USD
               </p>
             </div>
           </div>

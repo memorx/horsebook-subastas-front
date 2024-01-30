@@ -11,6 +11,8 @@
         :submitForm="submitForm"
         :disableModal="disableModal"
         :status="horseStatus"
+        :commission="commission"
+        :taxes="taxes"
       />
       <NuxtLink :to="localePath('/')">
         <button
@@ -130,8 +132,9 @@
                         ref="manualInputAmount"
                         v-show="showInput"
                         name="amountInput"
-                        type="number"
-                        v-model="manualInputAmount"
+                        type="text"
+                        v-model="formattedManualInputAmount"
+                        @input="handleInput"
                         @blur="assignManualInputAmount()"
                         class="border rounded-md flex-grow w-1/4"
                       />
@@ -360,6 +363,7 @@ export default {
       lastOffer: "",
       showInput: false,
       manualInputAmount: "",
+      formattedManualInputAmount: "",
       isSyncEnabled: true,
       bidTime: {
         days: 0,
@@ -437,6 +441,8 @@ export default {
       wonHorse: "",
       yourAreTheWinner: false,
       hasBid: false,
+      commission: 0,
+      taxes: 0,
     }
   },
   async created() {
@@ -462,7 +468,7 @@ export default {
       await this.fetchWinner()
       this.wonHorse = this.HorsenName
 
-      if (this.winnerEmail == this.$store.state.user.user) {
+      if (this.winnerEmail == this.$store.state.user?.user) {
         this.$confetti.start()
         this.yourAreTheWinner = true
         setTimeout(() => {}, 5000)
@@ -488,8 +494,11 @@ export default {
     },
     assignManualInputAmount() {
       this.showInput = false
-      if (this.inputAmount <= this.manualInputAmount)
+      if (this.inputAmount <= this.manualInputAmount){
+        console.log('el input es menor que el manualinput')
         this.amountBase = this.manualInputAmount
+      }
+
     },
     updateEditAmount(value) {
       this.isEditingAmount = value
@@ -607,6 +616,11 @@ export default {
               10
             ) + 1000).toLocaleString("en-US")
 
+            this.inputAmount = (parseInt(
+              this.horseData.final_amount,
+              10
+            ) + 1000).toLocaleString("en-US")
+
             this.lastOffer = parseInt(
               this.horseData.final_amount
             ).toLocaleString("en-US")
@@ -621,9 +635,8 @@ export default {
 
           } else {
             this.formData.amount = (1000).toLocaleString("en-US")
-            if (!this.isEditingAmount) {
-              this.inputAmount = (1000).toLocaleString("en-US")
-          }
+            this.inputAmount = (1000).toLocaleString("en-US")
+
         }
       }
 
@@ -738,6 +751,8 @@ export default {
           this.bidImage = response.data.image
           this.videoUrl = response.data.video_url
           this.loading = false
+          this.commission = response.data.commission
+          this.taxes = response.data.taxes
 
         })
         .catch((error) => {
@@ -910,6 +925,7 @@ export default {
       event.preventDefault()
       const submittedAmount = parseInt(this.formData.amount.replace(",", ""))
       if (this.manualInputAmount) {
+        console.log('entra a manual input')
         const submittedAmountInput = parseInt(this.manualInputAmount)
         const user = JSON.parse(localStorage.getItem("setUser"))
         this.socket.send(
@@ -923,8 +939,11 @@ export default {
           })
         )
         this.manualInputAmount = ""
+        this.formattedManualInputAmount = ""
       } else {
-        const submittedAmountInput = parseInt(this.inputAmount.replace(",", ""))
+        console.log('this.inputAmount',this.inputAmount)
+        const submittedAmountInput = parseInt(this.inputAmount.replace(/,/g, ""))
+        console.log('entra en el send con monto oficial', submittedAmountInput)
         const user = JSON.parse(localStorage.getItem("setUser"))
         this.socket.send(
           JSON.stringify({
@@ -937,7 +956,28 @@ export default {
           })
         )
       }
-    }
+    },
+
+    formatNumber(value) {
+      return value.toLocaleString("en-US", { maximumFractionDigits: 0 })
+    },
+
+    handleInput(event) {
+      console.log(event.target.value)
+      const inputValue = event.target.value.replace(/[^0-9,]/g, "")
+      console.log("inputValue",inputValue)
+      const value = parseFloat(inputValue.replace(/,/g, ""))
+      console.log('value',value)
+      if (isNaN(value)) {
+        this.manualInputAmount = ""
+        this.formattedManualInputAmount = ""
+      } else {
+        this.manualInputAmount = String(value)
+        this.formattedManualInputAmount = this.formatNumber(value)
+      }
+      console.log('this.manualInputAmount',this.manualInputAmount)
+      console.log('this.formattedManualInputAmount',this.formattedManualInputAmount)
+    },
 
   }
 }
