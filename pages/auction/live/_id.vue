@@ -7,7 +7,7 @@
     <div v-if="bidStatus == 'BIDDING' && loading == false" class="bg-zinc-200 py-5 lg:px-5 md:px-3">
       <modal
         v-show="showModal"
-        :amount="manualInputAmount ? manualInputAmount : inputAmount"
+        :amount="confirmedAmount"
         :submitForm="submitForm"
         :disableModal="disableModal"
         :status="horseStatus"
@@ -443,6 +443,7 @@ export default {
       hasBid: false,
       commission: 0,
       taxes: 0,
+      confirmedAmount: "",
     }
   },
   async created() {
@@ -526,6 +527,12 @@ export default {
     },
     enableModal() {
       this.showModal = true
+      if(this.manualInputAmount){
+        this.confirmedAmount = this.manualInputAmount
+      } else {
+        this.confirmedAmount = this.inputAmount
+      }
+
     },
     disableModal() {
       this.showModal = false
@@ -923,15 +930,12 @@ export default {
     },
     submitForm(event) {
       event.preventDefault()
-      const submittedAmount = parseInt(this.formData.amount.replace(/,/g, ""))
-      if (this.manualInputAmount) {
-        console.log('entra a manual input')
-        const submittedAmountInput = parseInt(this.manualInputAmount)
+      const confirmedAmount = parseInt(this.confirmedAmount.replace(/,/g, ""))
         const user = JSON.parse(localStorage.getItem("setUser"))
         this.socket.send(
           JSON.stringify({
             bid_info: {
-              amount: submittedAmountInput
+              amount: confirmedAmount
             },
             sender: {
               email: user.user
@@ -940,22 +944,6 @@ export default {
         )
         this.manualInputAmount = ""
         this.formattedManualInputAmount = ""
-      } else {
-        console.log('this.inputAmount',this.inputAmount)
-        const submittedAmountInput = parseInt(this.inputAmount.replace(/,/g, ""))
-        console.log('entra en el send con monto oficial', submittedAmountInput)
-        const user = JSON.parse(localStorage.getItem("setUser"))
-        this.socket.send(
-          JSON.stringify({
-            bid_info: {
-              amount: submittedAmountInput
-            },
-            sender: {
-              email: user.user
-            }
-          })
-        )
-      }
     },
 
     formatNumber(value) {
