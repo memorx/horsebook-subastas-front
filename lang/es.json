@@ -10,7 +10,8 @@
         "save": "Guardar",
         "select": "Seleccione",
         "errorMsg": "Lo sentimos, ha ocurrido un error",
-        "welcome": "Bienvenido"
+        "welcome": "Bienvenido",
+        "download": "descargar"
     },
     "login": {
         "login": "Iniciar Sesión",
@@ -236,7 +237,8 @@
         "date": "fecha",
         "prebidHistory": "Historial de pre ofertas",
         "commission": "de comisión",
-        "bidConfirmQuestion": "¿Estas seguro que quieres ofertar?",
+        "prebidConfirmQuestion": "¿Estás seguro que quieres preofertar?",
+        "bidConfirmQuestion": "¿Estás seguro que quieres ofertar?",
         "prebidDiscountMsg": "Todo participante de la preoferta obtiene un 5% de descuento",
         "youHaveDiscountMsg": "Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta",
         "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",

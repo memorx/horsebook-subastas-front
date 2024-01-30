@@ -5,13 +5,13 @@
         {{ $t('bids.bidConfirmQuestion') }}
       </h2>
       <h2 v-else class="text-lg font-bold">
-        ¿Estas seguro que quieres pre ofertar?
+        {{ $t('bids.prebidConfirmQuestion') }}
       </h2>
-      <p class="text-3xl font-bold">$ {{ amount }} USD</p>
-      <h2 class="text-sm text-gray-500">$ {{ amount }} + 10% {{ $t('bids.commission') }}</h2>
+      <p class="text-3xl font-bold">$ {{ parseFloat(amount.replace(/,/g, "")).toLocaleString('en-US', { maximumFractionDigits: 0 }) }} USD</p>
+      <h2 class="text-sm text-gray-500">$ {{ parseFloat(amount.replace(/,/g, "")).toLocaleString('en-US', { maximumFractionDigits: 0 }) }} + {{ commission }}% {{ $t('bids.commission') }}</h2>
       <h2 class="text-sm text-gray-500">
         Total: $
-        {{ (parseInt(amount.replace(",", "")) * 1.1).toLocaleString("en-US") }}
+        {{ (parseFloat(amount.replace(/,/g, "")) * (1 + (commission/100))).toLocaleString('en-US', { maximumFractionDigits: 0 }) }}
       </h2>
       <div class="mt-4 flex justify-center">
         <button
@@ -37,7 +37,9 @@ export default {
     amount: "",
     submitForm: { type: Function },
     disableModal: { type: Function },
-    status: ""
+    status: "",
+    commission: 0,
+    taxes: 0,
   },
   data() {
     return {}

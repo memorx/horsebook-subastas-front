@@ -173,7 +173,7 @@
               </div>
               <div class="text-center mb-10">
                 <span class="text-gray-600 mb-5">
-                  <nuxt-link to="/auth/login" class="font-medium"
+                  <nuxt-link :to="localePath(`/auth/login`)" class="font-medium"
                     >
                     {{ $t('login.login')  }}
                     </nuxt-link
