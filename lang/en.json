@@ -10,7 +10,8 @@
         "save": "Save",
         "select": "Select",
         "errorMsg": "Sorry an error occurred",
-        "welcome": "Welcome"
+        "welcome": "Welcome",
+        "download": "download"
     },
     "login": {
         "login": "Login",
@@ -236,6 +237,7 @@
         "date": "date",
         "prebidHistory": "Prebid History",
         "commission": "commision",
+        "prebidConfirmQuestion": "Are you sure you want to prebid?",
         "bidConfirmQuestion": "Are you sure you want to bid?",
         "prebidDiscountMsg": "Every prebid participant gets a 5% discount",
         "youHaveDiscountMsg": "You already have a 5% discount on this horse for having participated in the pre-offer",

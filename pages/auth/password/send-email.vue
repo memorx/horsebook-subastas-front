@@ -49,7 +49,7 @@
           </button>
         </div>
         <div class="w-full flex items-center">
-          <nuxt-link to="/auth/login">
+          <nuxt-link :to="localePath(`/auth/login`)">
             <button
               type="button"
               class="justify-left font-medium text-base text-black underline"

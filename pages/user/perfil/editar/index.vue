@@ -370,7 +370,7 @@ export default {
     async updateProfile() {
       this.email = []
       let formData = new FormData()
-      const url = `${this.$config.baseURL}/users/update-user-profile/?email=${this.$store.state.user.user}`
+      const url = `${this.$config.baseURL}/users/update-user-profile/?email=${this.$store.state.user?.user}`
       const decoded = JWTDecode(this.$cookies.get("access_token"))
       const formattedBirthDate = new Date(this.birth_date)
         .toISOString()

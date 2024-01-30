@@ -6,6 +6,8 @@
       :submitForm="submitForm"
       :disableModal="disableModal"
       :status="horseStatus"
+      :commission="commission"
+      :taxes="taxes"
     />
 
     <div class="w-full h-auto flex flex-col justify-start pt-4 px-6">
@@ -150,8 +152,9 @@
                           ref="manualInputAmount"
                           v-show="showInput"
                           name="amountInput"
-                          type="number"
-                          v-model="manualInputAmount"
+                          type="text"
+                          v-model="formattedManualInputAmount"
+                          @input="handleInput"
                           @blur="assignManualInputAmount()"
                           class="border rounded-md flex-grow w-1/4"
                         />
@@ -215,12 +218,12 @@
                   <p v-if="hasBid" class="text-center text-xs text-custom-gold">
                     {{ $t('bids.youHaveDiscountMsg') }}
                   </p>
-                  <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
+                  <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xs text-custom-gold">
                     {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
 
                   </p>
                   <p class="text-black font-bold text-xl pt-5">
-                    <NuxtLink :to="`/auction/live/${bidId}`">
+                    <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
                       <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
                         {{ $t('auction.goToAuction') }}
                       </button>
@@ -234,11 +237,11 @@
                   <p v-if="hasBid" class="text-center text-xs text-custom-gold">
                     {{ $t('bids.youHaveDiscountMsg') }}
                   </p>
-                  <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
+                  <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xs text-custom-gold">
                     {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
                   </p>
                   <p v-if="bidStatus == 'BIDDING'" class="text-black font-bold text-xl pt-5">
-                    <NuxtLink :to="`/auction/live/${bidId}`">
+                    <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
                     <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
                       {{ $t('auction.goToAuction') }}
                     </button>
@@ -246,7 +249,7 @@
                   </p>
                   <div v-else class="text-black font-bold text-xl pt-5">
                     {{ $t('auction.stayTuned') }}
-                    <p v-if="winnerEmail == $store.state.user.user" class="text-center text-xs text-custom-gold">
+                    <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xs text-custom-gold">
                       {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
                     </p>
                   </div>
@@ -283,7 +286,7 @@
                       v-if="isUserAuthenticated"
                       class="text-center texthidden md:block mt-1"
                     >
-                      <nuxt-link to="/auth/sign-up">
+                      <nuxt-link :to="localePath(`/auth/sign-up`)">
                         <button
                           class="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
                         >
@@ -291,9 +294,7 @@
                         </button>
                       </nuxt-link>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -543,11 +544,14 @@ export default {
       isEditingAmount: false,
       firstUpdateAmount: true,
       inputAmount: "",
+      formattedManualInputAmount: "",
       horseExternalId: "",
       winnerEmail: "",
       hasBid: false,
       subscribed:false,
       prebidWinnerDiscount: 5,
+      commission: 0,
+      taxes: 0,
     }
   },
   computed: {
@@ -612,13 +616,14 @@ export default {
     async winnerConfetti() {
       await this.fetchWinner()
       if (this.horseStatus == "CLOSED" || this.horseStatus == "CLOSED PREBID") {
-        if (this.winnerEmail == this.$store.state.user.user) {
+        if (this.winnerEmail == this.$store.state.user?.user) {
           this.$confetti.start()
           setTimeout(() => {}, 5000)
         }
       }
     },
     showManualInputAmount() {
+      console.log('manual input activado')
       this.manualInputAmount = this.inputAmount
       this.showInput = true
       this.$nextTick(() => {
@@ -715,17 +720,16 @@ export default {
       const token = getUserTokenOrDefault()
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}/?token=${token}`
       this.socket = new ReconnectingWebSocket(url)
-      const mountedThis = this
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
         if (message.error) {
           let msg = message.error
           msg = msg.replace(/\./, '')
           msg = msg.replace(/\d*\.?\d* USD/, 'lastOffer USD')
-          mountedThis.errorMessage = msg
+          this.errorMessage = msg
 
           setTimeout(() => {
-            mountedThis.errorMessage = ""
+            this.errorMessage = ""
           }, 6000)
           return
         }
@@ -735,22 +739,22 @@ export default {
         }
 
         if (message.bids) {
-          mountedThis.bids = message.bids
+          this.bids = message.bids
         }
 
         if (message.has_bid) {
-          mountedThis.hasBid = message.has_bid
+          this.hasBid = message.has_bid
         }
 
         if (message.prebids && message.prebids.length > 0) {
-          mountedThis.bids = message.prebids
+          this.bids = message.prebids
         }
 
         if (message.bid) {
-          if (mountedThis.bids.length > 20) {
-            mountedThis.bids.pop()
+          if (this.bids.length > 20) {
+            this.bids.pop()
           }
-          mountedThis.bids.unshift(message.bid)
+          this.bids.unshift(message.bid)
         }
 
         // only update the initial amount if the user has not edited the input
@@ -758,51 +762,50 @@ export default {
           this.isEditingAmount = false
         }
 
-        if (mountedThis.bids.length > 0) {
-          mountedThis.lastOffer = parseInt(
-            mountedThis.bids[0]?.amount
+        if (this.bids.length > 0) {
+          this.lastOffer = parseInt(
+            this.bids[0]?.amount
           ).toLocaleString("en-US")
           let currentValue = parseInt(
-            mountedThis.formData?.amount.replace(",", "")
+            this.formData?.amount.replace(/,/g, "")
           )
           if (!this.isEditingAmount) {
-            let InputValue = parseInt(mountedThis.inputAmount.replace(",", ""))
+            let InputValue = parseInt(this.inputAmount.replace(/,/g, ""))
           }
           if (currentValue >= 30000) {
-            mountedThis.inputAmount = (
-              parseInt(mountedThis.bids[0]?.amount) + 500
+            this.inputAmount = (
+              parseInt(this.bids[0]?.amount) + 500
             ).toLocaleString("en-US")
             if (!this.isEditingAmount) {
-              mountedThis.inputAmount = (
-                parseInt(mountedThis.bids[0]?.amount) + 500
+              this.inputAmount = (
+                parseInt(this.bids[0]?.amount) + 500
               ).toLocaleString("en-US")
             }
           } else {
-            mountedThis.inputAmount = (
-              parseInt(mountedThis.bids[0]?.amount) + 1000
+            this.inputAmount = (
+              parseInt(this.bids[0]?.amount) + 1000
             ).toLocaleString("en-US")
             if (!this.isEditingAmount) {
-              mountedThis.inputAmount = (
-                parseInt(mountedThis.bids[0]?.amount) + 1000
+              this.inputAmount = (
+                parseInt(this.bids[0]?.amount) + 1000
               ).toLocaleString("en-US")
             }
           }
-        } else if (mountedThis.horseData.final_amount) {
-          mountedThis.formData.amount = parseInt(
-            mountedThis.horseData.final_amount,
+        } else if (this.horseData.final_amount) {
+          this.formData.amount = parseInt(
+            this.horseData.final_amount,
             10
           ).toLocaleString("en-US")
           if (!this.isEditingAmount) {
-            mountedThis.inputAmount = (parseInt(
-              mountedThis.horseData.final_amount,
+            this.inputAmount = (parseInt(
+              this.horseData.final_amount,
               10
             ) + 1000).toLocaleString("en-US")
           }
         } else {
-          mountedThis.formData.amount = (1000).toLocaleString("en-US")
-          if (!this.isEditingAmount) {
-            mountedThis.inputAmount = (1000).toLocaleString("en-US")
-          }
+          this.formData.amount = (1000).toLocaleString("en-US")
+          this.inputAmount = (1000).toLocaleString("en-US")
+
         }
 
         // after made the first update, don't trigger again if the user is focus on the input
@@ -813,12 +816,11 @@ export default {
       })
       this.socket.addEventListener("close", (event) => {
         if (event.code === 1006) {
-          mountedThis.startBidSocket()
+          this.startBidSocket()
         }
       })
     },
     async startAuctionSocket() {
-      const mountedThis = this
       if (
         this.auctionSocket &&
         this.auctionSocket.readyState === WebSocket.OPEN
@@ -830,50 +832,50 @@ export default {
       this.auctionSocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
         if (message.error) {
-          mountedThis.socketError = message.error
+          this.socketError = message.error
           return
         }
         if (message.horses && message.horses.length > 0) {
           message.horses.forEach((horse) => {
-            if (horse.id == mountedThis.horseId) {
-              mountedThis.horseStatus = horse.status
+            if (horse.id == this.horseId) {
+              this.horseStatus = horse.status
             }
           })
         }
 
         if (message.horse) {
-          mountedThis.horseId
-          if (message.horse.id == mountedThis.horseId) {
-            mountedThis.horseStatus = message.horse.status
+          this.horseId
+          if (message.horse.id == this.horseId) {
+            this.horseStatus = message.horse.status
             const nextHorse = message.horse.next
-            if (mountedThis.horseStatus == "CLOSED") {
-              mountedThis.$toast.success(
+            if (this.horseStatus == "CLOSED") {
+              this.$toast.success(
                 this.$t('auction.horseAuctionIsEnded')
               )
             }
             this.winnerConfetti()
 
-            if (mountedThis.horseStatus == "BIDDING") {
+            if (this.horseStatus == "BIDDING") {
               this.$confetti.stop()
             }
 
             if (nextHorse) {
-              mountedThis.$router
+              this.$router
                 .replace({
-                  query: { id: mountedThis.bidId, horseId: nextHorse }
+                  query: { id: this.bidId, horseId: nextHorse }
                 })
                 .then(() => {
-                  mountedThis.init()
+                  this.init()
                 })
             }
           }
         }
 
         if (message.prebid) {
-          if (message.prebid.horse.id == mountedThis.horseId) {
+          if (message.prebid.horse.id == this.horseId) {
             const now = new Date()
-            mountedThis.EndPreBidDate = new Date(message.prebid.horse.end_pre_bid)
-            mountedThis.calculateCountdown()
+            this.EndPreBidDate = new Date(message.prebid.horse.end_pre_bid)
+            this.calculateCountdown()
           }
         }
 
@@ -883,7 +885,7 @@ export default {
       })
       this.auctionSocket.addEventListener("close", (event) => {
         if (event.code === 1006) {
-          mountedThis.startBidSocket()
+          this.startBidSocket()
         }
       })
     },
@@ -921,8 +923,8 @@ export default {
       }
     },
     addThousand() {
-      // let currentValue = parseInt(this.formData?.amount.replace(",", ""))
-      let currentValue = parseInt(this.inputAmount.replace(",", ""))
+      // let currentValue = parseInt(this.formData?.amount.replace(/,/g, ""))
+      let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
       if (currentValue >= 30000) {
         currentValue += 500
       } else {
@@ -931,7 +933,7 @@ export default {
       this.inputAmount = currentValue.toLocaleString("en-US")
     },
     substractThousand() {
-      let currentValue = parseInt(this.inputAmount.replace(",", ""))
+      let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
       if (currentValue >= 30000) {
         currentValue -= 500
       } else {
@@ -940,7 +942,7 @@ export default {
       this.inputAmount = currentValue.toLocaleString("en-US")
     },
     parseFetchedAmount(value) {
-      let lastOfferInt = parseInt(value?.replace(",", ""))
+      let lastOfferInt = parseInt(value?.replace(/,/g, ""))
       lastOfferInt += 1000
       const lastOfferStr = lastOfferInt.toLocaleString("en-US")
       return lastOfferStr
@@ -1093,6 +1095,8 @@ export default {
           this.bidStatus = auction.status
           this.timer = setInterval(this.calculateCountdown, 1000)
           this.prebidWinnerDiscount = auction.prebid_winner_discount
+          this.commission = auction.commission
+          this.taxes = auction.taxes
         })
         .catch((error) => {
           console.error(error)
@@ -1105,9 +1109,10 @@ export default {
     },
     submitForm(event) {
       event.preventDefault()
-      const submittedAmount = parseInt(this.formData.amount.replace(",", ""))
+      const submittedAmount = parseInt(this.formData.amount.replace(/,/g, ""))
       if (this.manualInputAmount) {
         const submittedAmountInput = parseInt(this.manualInputAmount)
+        console.log("submittedAmount manual",submittedAmountInput)
         const user = JSON.parse(localStorage.getItem("setUser"))
         this.socket.send(
           JSON.stringify({
@@ -1120,8 +1125,13 @@ export default {
           })
         )
         this.manualInputAmount = ""
+        this.formattedManualInputAmount = ""
       } else {
-        const submittedAmountInput = parseInt(this.inputAmount.replace(",", ""))
+        console.log("submittedAmount", this.inputAmount.replace(/,/g, ""))
+
+        const submittedAmountInput = parseFloat(this.inputAmount.replace(/,/g, ""))
+        console.log("submittedAmount", submittedAmount)
+        console.log("submittedAmountInput", submittedAmountInput)
         const user = JSON.parse(localStorage.getItem("setUser"))
         this.socket.send(
           JSON.stringify({
@@ -1148,7 +1158,28 @@ export default {
         await axios.post(url, [], { headers: { Authorization: `Token ${token}`},
           }).then((response) => { this.subscribed = true }).catch((error) => { })
       }
-    }
+    },
+
+    formatNumber(value) {
+      return value.toLocaleString("en-US", { maximumFractionDigits: 0 })
+    },
+
+    handleInput(event) {
+      console.log(event.target.value)
+      const inputValue = event.target.value.replace(/[^0-9,]/g, "")
+      console.log("inputValue",inputValue)
+      const value = parseFloat(inputValue.replace(/,/g, ""))
+      console.log('value',value)
+      if (isNaN(value)) {
+        this.manualInputAmount = ""
+        this.formattedManualInputAmount = ""
+      } else {
+        this.manualInputAmount = String(value)
+        this.formattedManualInputAmount = this.formatNumber(value)
+      }
+      console.log('this.manualInputAmount',this.manualInputAmount)
+      console.log('this.formattedManualInputAmount',this.formattedManualInputAmount)
+    },
   }
 }
 </script>

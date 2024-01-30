@@ -128,7 +128,7 @@ export default {
 }
 
 .tool-tip-text {
-  display: block;
+  display: none;
   position: absolute;
   max-width: 600px;
   left: 50%;

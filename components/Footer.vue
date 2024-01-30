@@ -49,7 +49,7 @@
 
                 <!-- <h3 :class="[classTittleSection, 'mt-6']">Policies</h3>
                 <ul>
-                    <li><nuxt-link to="/terms">Terms & Conditions</nuxt-link></li>
+                    <li><nuxt-link to=/terms">Terms & Conditions</nuxt-link></li>
                     <li><nuxt-link to="/privacy">Privacy Policy</nuxt-link></li>
                 </ul> -->
             </div>
