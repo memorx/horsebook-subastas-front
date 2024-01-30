@@ -82,7 +82,7 @@
         "backIdentityDoc": "Documento de identidad Atras",
         "changeImage": "Cambiar imagen",
         "choooseImage": "Elige una imagen",
-        "notDocumentUploaded": "No existe un documento cargado",
+        "noDocumentUploaded": "No existe un documento cargado",
         "auctions": {
             "history": "Historial de Subastas",
             "all": "Todas",

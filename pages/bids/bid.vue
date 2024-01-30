@@ -2,7 +2,7 @@
   <div>
     <modal
       v-show="showModal"
-      :amount="manualInputAmount ? manualInputAmount : inputAmount"
+      :amount="confirmedAmount"
       :submitForm="submitForm"
       :disableModal="disableModal"
       :status="horseStatus"
@@ -552,6 +552,7 @@ export default {
       prebidWinnerDiscount: 5,
       commission: 0,
       taxes: 0,
+      confirmedAmount: "",
     }
   },
   computed: {
@@ -709,6 +710,11 @@ export default {
     },
     enableModal() {
       this.showModal = true
+      if(this.manualInputAmount){
+        this.confirmedAmount = this.manualInputAmount
+      } else {
+        this.confirmedAmount = this.inputAmount
+      }
     },
     disableModal() {
       this.showModal = false
@@ -1109,41 +1115,20 @@ export default {
     },
     submitForm(event) {
       event.preventDefault()
-      const submittedAmount = parseInt(this.formData.amount.replace(/,/g, ""))
-      if (this.manualInputAmount) {
-        const submittedAmountInput = parseInt(this.manualInputAmount)
-        console.log("submittedAmount manual",submittedAmountInput)
-        const user = JSON.parse(localStorage.getItem("setUser"))
-        this.socket.send(
-          JSON.stringify({
-            bid_info: {
-              amount: submittedAmountInput
-            },
-            sender: {
-              email: user.user
-            }
-          })
-        )
-        this.manualInputAmount = ""
-        this.formattedManualInputAmount = ""
-      } else {
-        console.log("submittedAmount", this.inputAmount.replace(/,/g, ""))
-
-        const submittedAmountInput = parseFloat(this.inputAmount.replace(/,/g, ""))
-        console.log("submittedAmount", submittedAmount)
-        console.log("submittedAmountInput", submittedAmountInput)
-        const user = JSON.parse(localStorage.getItem("setUser"))
-        this.socket.send(
-          JSON.stringify({
-            bid_info: {
-              amount: submittedAmountInput
-            },
-            sender: {
-              email: user.user
-            }
-          })
-        )
-      }
+      const confirmedAmount = parseInt(this.confirmedAmount.replace(/,/g, ""))
+      const user = JSON.parse(localStorage.getItem("setUser"))
+      this.socket.send(
+        JSON.stringify({
+          bid_info: {
+            amount: confirmedAmount
+          },
+          sender: {
+            email: user.user
+          }
+        })
+      )
+      this.manualInputAmount = ""
+      this.formattedManualInputAmount = ""
     },
 
     async subscribe() {
