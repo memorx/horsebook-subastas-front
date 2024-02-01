@@ -11,7 +11,9 @@
         "select": "Seleccione",
         "errorMsg": "Lo sentimos, ha ocurrido un error",
         "welcome": "Bienvenido",
-        "download": "descargar"
+        "download": "descargar",
+        "next": "Siguiente",
+        "previous": "Previo"
     },
     "login": {
         "login": "Iniciar Sesión",

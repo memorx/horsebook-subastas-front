@@ -225,6 +225,7 @@ export default {
    layout: 'default',
    mounted() {
       this.init()
+      this.$root.$on('update-auctions', this.updateAuction)
       // set the background image for this page
       // this.$store.commit('setBgImage', 'home-bg.jpg');
       // set the textColor on Topbar component
@@ -252,27 +253,6 @@ export default {
             email: '',
             message: '',
          },
-         newsData: [ // Placeholder data
-            {
-               id: 1,
-               image: '../public/example-new-card.png',
-               title: { en: 'English Title 1', es: 'Spanish Title 1' },
-               paragraph: { en: 'English content...', es: 'Spanish content...' }
-            },
-            {
-               id: 2,
-               image: '../public/example-new-card.png',
-               title: { en: 'English Title 2', es: 'Spanish Title 2' },
-               paragraph: { en: 'English content...', es: 'Spanish content...' }
-            },
-            {
-               id: 3,
-               image: '../public/example-new-card.png',
-               title: { en: 'English Title 3', es: 'Spanish Title 3' },
-               paragraph: { en: 'English content...', es: 'Spanish content...' }
-            }
-            // ... Add as many items as required for testing
-         ]
       }
    },
    computed: {
@@ -309,7 +289,10 @@ export default {
                         auction.status
                      )
                   ) {
-                     this.nextAuction = auction
+                     if(!(this.nextAuction?.status === 'BIDDING' && auction.status !== 'BIDDING')){
+                        this.nextAuction = auction
+                     }
+
                      this.otherAuctions.push(auction)
                      console.log('next auction', this.nextAuction)
                   }
@@ -317,7 +300,10 @@ export default {
                if(this.nextAuction) {
                   this.timer = setInterval(this.calculateCountdown, 1000)
                }
+
             })
+
+            console.log('otherAuctions', this.otherAuctions)
 
             this.loading = false
          })
@@ -430,6 +416,15 @@ export default {
          this.$refs.contactSection.$el.scrollIntoView({
             behavior: 'smooth'
          });
+      },
+
+      updateAuction(auctionUpdated) {
+
+         this.nextAuction = null
+         this.otherAuctions = []
+         setTimeout(() => {
+            this.init()
+         }, 1000)
       }
    },
    watch: {

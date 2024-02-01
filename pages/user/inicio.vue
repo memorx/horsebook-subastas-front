@@ -107,6 +107,7 @@ export default {
   },
   mounted() {
     this.getAuctions()
+    this.$root.$on('update-auctions', this.updateAuction)
   },
   methods: {
     async getAuctions() {
@@ -141,7 +142,25 @@ export default {
 
     goToDetails(id) {
       this.$router.push(this.localePath(`/user/detalles/${id}`))
+    },
+
+    updateAuction() {
+      this.nextAuctions = []
+      this.currentAuctions = []
+      setTimeout(() => {
+        this.getAuctions()
+      }, 1000);
+      /*
+        const key = this.currentAuctions.findIndex( auction => auctionUpdated.auction_id === auction.id );
+        if (key >= 0){
+          this.currentAuctions[key].status = auctionUpdated.status
+          if(auctionUpdated.status === 'CLOSED') {
+              this.currentAuctions.results.splice(key, 1)
+          }
+        }
+      */
     }
+
   }
 }
 </script>
