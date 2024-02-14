@@ -226,8 +226,22 @@ export default {
                 if (message.error) {
                     console.log(message.error);
                 }
-                if (message.auction?.id) {
+                if (message?.auction?.id) {
                     this.$data.idCurrenBid = message.auction.id
+                }
+                if (message?.status?.auction_id) {
+                    this.$data.idCurrenBid
+                    if(message.status.auction_id === this.$data.idCurrenBid &&
+                        message.status.status != 'BIDDING'
+                    ) {
+                        this.$data.idCurrenBid = 0
+                    }
+
+                    if(message.status.status === 'BIDDING') {
+                        this.$data.idCurrenBid = message.status.auction_id
+                    }
+
+                    this.$root.$emit('update-auctions', message.status)
                 }
 
             });

@@ -56,7 +56,20 @@
 
             <!-- 4. Follow Us + Social Icons -->
             <div>
-
+                <h3 :class="classTittleSection">
+                    {{ $t('footer.followUs') }}
+                </h3>
+                <div class="flex space-x-4">
+                    <a target="blank" href="https://www.instagram.com/clubhipicolasilla">
+                        <i class="fab fa-instagram fa-2x"></i>
+                    </a>
+                    <a target="blank" href="https://www.facebook.com/clubhipicolasilla">
+                        <i class="fab fa-facebook fa-2x"></i>
+                    </a>
+                    <a target="blank" href="https://www.youtube.com/@clubhipicolasilla6195">
+                        <i class="fab fa-youtube fa-2x"></i>
+                    </a>
+                </div>
             </div>
 
         </div>

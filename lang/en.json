@@ -11,7 +11,9 @@
         "select": "Select",
         "errorMsg": "Sorry an error occurred",
         "welcome": "Welcome",
-        "download": "download"
+        "download": "download",
+        "next": "Next",
+        "previous": "Previous"
     },
     "login": {
         "login": "Login",
@@ -117,7 +119,7 @@
             "title": "News",
             "paragraph": "english news paragraph",
             "button": "view all",
-            "buttonViewMore": "View more"
+            "buttonViewMore": "Read more"
         },
         "us": {
             "title": "english us title",

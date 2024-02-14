@@ -11,7 +11,9 @@
         "select": "Seleccione",
         "errorMsg": "Lo sentimos, ha ocurrido un error",
         "welcome": "Bienvenido",
-        "download": "descargar"
+        "download": "descargar",
+        "next": "Siguiente",
+        "previous": "Previo"
     },
     "login": {
         "login": "Iniciar Sesión",
@@ -225,7 +227,7 @@
             "COMING": "En Espera"
         },
         "bids": "ofertas",
-        "noVideoAvailableMsg": "No video available",
+        "noVideoAvailableMsg": "No hay video disponible",
         "notLoggedInMsg": "¡Inicia sesión por favor!",
         "notAuthorizedMsg": "No estás autorizado para ofertar. Comunícate con el administrador al número: "
     },
@@ -240,7 +242,7 @@
         "prebidConfirmQuestion": "¿Estás seguro que quieres preofertar?",
         "bidConfirmQuestion": "¿Estás seguro que quieres ofertar?",
         "prebidDiscountMsg": "Todo participante de la preoferta obtiene un 5% de descuento",
-        "youHaveDiscountMsg": "Ya tienes un 5% de descuento en este caballo por haber participado en la preofeta",
+        "youHaveDiscountMsg": "Ya tienes un 5% de descuento en este caballo por haber participado en la preoferta",
         "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
         "youAreTheDiscountWinnerMsg": "Has ganado {prebidWinnerDiscount}% de descuento extra",
         "discountByHorseMsg": "**Los descuentos aplican por cada caballo",
