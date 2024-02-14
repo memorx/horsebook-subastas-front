@@ -159,7 +159,7 @@ export default {
             )
             this.$store.dispatch('initializeWebSocketUserStatus')
 
-            this.$router.push(this.localePath("/landingPage"))
+            this.$router.push(this.localePath("/"))
           }
 
     },
