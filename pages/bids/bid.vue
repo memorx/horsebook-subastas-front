@@ -109,7 +109,7 @@
                   <div class="flex justify-center rounded-t-md">
                     <div class="mx-10 md:mx-0 my-10">
                       <p class="uppercase">{{ $t('cron.timeLeft')}}</p>
-                      <div class="md:flex md:items-center">
+                      <div class="flex flex-row md:items-center">
                         <div class="mx-5">
                           <p class="text-center text-5xl mb-2 font-bold">
                             {{ bidTime.days }}
@@ -576,7 +576,7 @@ export default {
   },
   computed: {
     isUserAuthenticated() {
-        return this.$store.state.isAuthenticated;
+      return this.$store.state.isAuthenticated;
     },
     setUser() {
       return this.$store.state.user
@@ -609,9 +609,7 @@ export default {
     }
   },
   beforeDestroy() {
-    clearInterval(this.timer)
-    this.intentionalCloseSockets()
-    this.$confetti.stop()
+    this.finalize()
     this.$store.commit('setLayoutMode', 'default'); // reset to default when leaving the page
     this.$store.commit('setTextColorTopBar', 'text-white'); // reset to default when leaving the page
   },
@@ -619,6 +617,11 @@ export default {
     this.initilize()
   },
   methods: {
+    async finalize() {
+      clearInterval(this.timer)
+      this.intentionalCloseSockets()
+      this.$confetti.stop()
+    },
     async initilize() {
       this.fetchGenres()
       this.init()
@@ -1194,7 +1197,7 @@ export default {
     goToHorse(id) {
       let path = `/bids/bid/?id=${this.bidId}&horsePositionList=${id}&horseId=${id}`
       this.$router.push({ path: this.localePath(path) })
-      this.beforeDestroy()
+      this.finalize()
 
       setTimeout(() => {
         this.initilize()
