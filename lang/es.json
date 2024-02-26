@@ -203,7 +203,7 @@
         "winnerMsg": "{winnerName} HA GANADO LA SUBASTA DE {wonHorse} POR ${lastOffer} USD",
         "horseAuctionIsComming": "LA SUBASTA DE ESTE CABALLO ESTÁ POR COMENZAR",
         "horsePrebidIsComming": "LA PREOFERTA DE ESTE CABALLO ESTÁ POR COMENZAR",
-        "prebidIsEnded": "LA PRE OFERTA HA TERMINADO Y",
+        "prebidIsEnded": "LA PRE OFERTA HA TERMINADO",
         "horseAuctionIsLive": "LA SUBASTA DE ESTE CABALLO ESTÁ EN VIVO",
         "horseAuctionIsEnded": "La subasta de este caballo ha sido finalizada",
         "stayTuned": "Quédate al pendiente",
@@ -245,6 +245,7 @@
         "youHaveDiscountMsg": "Ya tienes un 5% de descuento en este caballo por haber participado en la preoferta",
         "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
         "youAreTheDiscountWinnerMsg": "Has ganado {prebidWinnerDiscount}% de descuento extra",
+        "youAreTheDPrebidWinner": "Eres el ganador de de la preoferta este caballo",
         "discountByHorseMsg": "**Los descuentos aplican por cada caballo",
         "IN PERSON": "EN PERSONA",
         "Call": "EN LLAMADA",
@@ -265,7 +266,8 @@
         },
         "pedigreeNoImageMsg": "No hay imagen de Pedigree disponible por el momento",
         "xRaysNoImagesMsg": "No hay imágenes de Rayos X disponibles",
-        "horseTelexMsg": "Revisa los datos en"
+        "horseTelexMsg": "Revisa los datos en",
+        "prebidTimeLeft": "Tiempo restante para finalizar la preoferta"
     },
     "dates": {
         "daysOfTheWeek": {
@@ -290,6 +292,7 @@
         "On-site offer": "En persona",
         "On Call Offer": "Por llamada",
         "(On-site offer)": "(En persona)",
-        "(On Call Offer)": "(Por llamada)"
+        "(On Call Offer)": "(Por llamada)",
+        "Sorry, someone was faster than you": "Lo siento, alguien fue más rápido que tú al ofertar"
     }
 }

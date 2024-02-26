@@ -30,35 +30,35 @@
           <div class="flex items-center">
             <div class="grid grid-cols-5 gap-9">
               <input
-                type="text"
+                type="number"
                 maxlength="1"
                 class="border border-gray-300 rounded-md h-16 w-12 text-2xl text-center focus:outline-none focus:ring focus:border-blue-300"
                 @keyup="focusNext($event, 1)"
                 @paste="pasteText($event, 1)"
               />
               <input
-                type="text"
+                type="number"
                 maxlength="1"
                 class="border border-gray-300 rounded-md h-16 w-12 text-2xl text-center focus:outline-none focus:ring focus:border-blue-300"
                 @keyup="focusNext($event, 2)"
                 @paste="pasteText($event, 2)"
               />
               <input
-                type="text"
+                type="number"
                 maxlength="1"
                 class="border border-gray-300 rounded-md h-16 w-12 text-2xl text-center focus:outline-none focus:ring focus:border-blue-300"
                 @keyup="focusNext($event, 3)"
                 @paste="pasteText($event, 3)"
               />
               <input
-                type="text"
+                type="number"
                 maxlength="1"
                 class="border border-gray-300 rounded-md h-16 w-12 text-2xl text-center focus:outline-none focus:ring focus:border-blue-300"
                 @keyup="focusNext($event, 4)"
                 @paste="pasteText($event, 4)"
               />
               <input
-                type="text"
+                type="number"
                 maxlength="1"
                 class="border border-gray-300 rounded-md h-16 w-12 text-2xl text-center focus:outline-none focus:ring focus:border-blue-300"
                 @keyup="focusNext($event, 5)"

@@ -45,14 +45,14 @@
                     Monterrey, Nuevo León</p>
             </div>
             <div class="flex flex-row justify-between pb-3 px-6">
-              <button v-if="horseData.previous" @click="goToHorse(horseData.previous)" class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
+              <button v-if="horseData.previous" @click="goToHorse(horseData.previous)" class="uppercase border-0 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
                 <span class="mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 25 25"><path style="fill:#232326" d="M24 12.001H2.914l5.294-5.295-.707-.707L1 12.501l6.5 6.5.707-.707-5.293-5.293H24v-1z" data-name="Left"/></svg>
                 </span>
                 {{ $t('general.previous') }}
               </button>
               <div v-else></div>
-              <button v-if="horseData.next" @click="goToHorse(horseData.next)" class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
+              <button v-if="horseData.next" @click="goToHorse(horseData.next)" class="uppercase border-0 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
                 {{ $t('general.next') }}
                 <span class="ml-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 25 25"><path style="fill:#232326" d="m17.5 5.999-.707.707 5.293 5.293H1v1h21.086l-5.294 5.295.707.707L24 12.499l-6.5-6.5z" data-name="Right"/></svg>
@@ -254,7 +254,10 @@
                   <p v-if="hasBid" class="text-center text-xs text-custom-gold">
                     {{ $t('bids.youHaveDiscountMsg') }}
                   </p>
-                  <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xs text-custom-gold">
+                  <p v-if="winnerEmail == $store.state.user?.user && horseStatus == 'CLOSED PREBID'" class="text-center text-xl text-green-800 font-bold">
+                    {{ $t('bids.youAreTheDPrebidWinner') }}
+                  </p>
+                  <p v-if="winnerEmail == $store.state.user?.user && horseStatus == 'CLOSED PREBID'" class="text-center text-xs text-custom-gold">
                     {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
                   </p>
                   <p v-if="bidStatus == 'BIDDING'" class="text-black font-bold text-xl pt-5">
@@ -266,6 +269,9 @@
                   </p>
                   <div v-else class="text-black font-bold text-xl pt-5">
                     {{ $t('auction.stayTuned') }}
+                    <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xl text-custom-gold">
+                      {{ $t('bids.youAreTheDPrebidWinner') }}
+                    </p>
                     <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xs text-custom-gold">
                       {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
                     </p>
@@ -645,7 +651,9 @@ export default {
       if (this.horseStatus == "CLOSED" || this.horseStatus == "CLOSED PREBID") {
         if (this.winnerEmail == this.$store.state.user?.user) {
           this.$confetti.start()
-          setTimeout(() => {}, 5000)
+          setTimeout(() => {
+            this.$confetti.stop()
+          }, 8000)
         }
       }
     },
@@ -1197,6 +1205,7 @@ export default {
     goToHorse(id) {
       let path = `/bids/bid/?id=${this.bidId}&horsePositionList=${id}&horseId=${id}`
       this.$router.push({ path: this.localePath(path) })
+      this.horseId = id
       this.finalize()
 
       setTimeout(() => {
