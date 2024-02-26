@@ -48,7 +48,7 @@
           <span>{{ $t('auction.' + (item.horses.length == 1 ? "horse" : "horses")) }}</span>
         </div>
         <!-- Second Row in the second column -->
-        <div class="bg-white p-5 rounded-lg md:flex-grow">
+        <div v-if="!loading" class="bg-white p-5 rounded-lg md:flex-grow">
           <!-- PREOFERTA -->
           <h1
             v-if="bidStatus == 'COMING'"
@@ -69,7 +69,7 @@
             {{ $t('auction.prebidIsEnded') }}
           </h1>
           <div
-            v-if="loading == false && countdownPre == true"
+            v-if="loading == false && countdownPre == true && !counterIsZero(preBidTime)"
             class="flex justify-center"
           >
             <div class="mx-10 my-10">
@@ -130,8 +130,8 @@
           >
             <div class="mx-10 md:mx-0 my-10">
               <div
-                v-if="countdownSubasta == true || loading == true"
-                class="md:flex md:items-center"
+                v-if="countdownSubasta == true || loading == true && !counterIsZero(bidTime)"
+                class="flex flex-row md:items-center"
               >
                 <div class="mx-5">
                   <p class="text-center text-5xl mb-2 font-bold">
@@ -239,6 +239,70 @@
               <p class="text-xs lg:text-xl font-bold text-center">
                 $ {{ parseFloat(horse.local_data.final_amount.replace(/,/g, "")).toLocaleString('en-US', { maximumFractionDigits: 0 }) }} USD
               </p>
+              <p class="">
+                <div class="my-2">
+                  <div
+                    v-if="horse.local_data.status == 'PREBID'  && loading == false && typeof horse.countdown === 'object' && !counterIsZero(horse.countdown)"
+                    class="flex flex-row mx-auto w-fit gap-3"
+                  >
+                    <div class="md:mx-3">
+                      <p class="text-center text-2xl mb-0 md:mb-1 font-bold">
+                        {{ horse.countdown.days }}
+                      </p>
+                      <p class="text-center text-slate-500 text-xs">
+                        <span class="hidden md:block">
+                          {{ $t('cron.days') }}
+                        </span>
+                        <span class="md:hidden">
+                          D
+                        </span>
+                      </p>
+                    </div>
+                    <div class="md:mx-3">
+                      <p class="text-center text-2xl mb-0 md:mb-1 font-bold">
+                        {{ horse.countdown.hours }}
+                      </p>
+                      <p class="text-center text-slate-500 text-xs">
+                        <span class="hidden md:block">
+                          {{ $t('cron.hours') }}
+                        </span>
+                        <span class="md:hidden">
+                          H
+                        </span>
+                      </p>
+                    </div>
+                    <div class="md:mx-3">
+                      <p class="text-center text-2xl mb-0 md:mb-1 font-bold">
+                        {{ horse.countdown.minutes }}
+                      </p>
+                      <p class="text-center text-slate-500 text-xs">
+                        <span class="hidden md:block">
+                          {{ $t('cron.minutes') }}
+                        </span>
+                        <span class="md:hidden">
+                          M
+                        </span>
+                      </p>
+                    </div>
+                    <div class="md:mx-3">
+                      <p class="text-center text-2xl mb-0 md:mb-1 font-bold">
+                        {{ horse.countdown.seconds }}
+                      </p>
+                      <p class="text-center text-slate-500 text-xs">
+                        <span class="hidden md:block">
+                          {{ $t('cron.seconds') }}
+                        </span>
+                        <span class="md:hidden">
+                          S
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mx-auto w-fit text-center text-sm" v-if="horse.local_data.status == 'PREBID' && loading == false && typeof horse.countdown === 'object' && !counterIsZero(horse.countdown)">
+                    {{ $t('horse.prebidTimeLeft') }}
+                  </div>
+                </div>
+              </p>
             </div>
           </div>
           <div
@@ -291,8 +355,8 @@ export default {
       },
       id: "",
       loading: false,
-      countdownSubasta: true,
-      countdownPre: true,
+      countdownSubasta: false,
+      countdownPre: false,
       bidStatus: "",
       bidImage: ""
     }
@@ -310,14 +374,10 @@ export default {
     // Clear the timer when the component is destroyed
     clearInterval(this.timer)
     clearInterval(this.timer2)
+    clearInterval(this.timer3)
   },
   computed: {
-    shouldCallGetDetailsAuction() {
-      return this.countdownSubasta === false
-    },
-    shouldCallGetDetailsAuctionPre() {
-      return this.countdownPre === false
-    },
+
     isUserAuthenticated() {
       return this.$store.state.isAuthenticated
     },
@@ -325,25 +385,6 @@ export default {
       return this.isUserAuthenticated ? this.cards : this.guestCards
     }
   },
-  watch: {
-    shouldCallGetDetailsAuction(newValue) {
-      if (newValue) {
-        console.log("Updating Bid")
-        setTimeout(() => {
-          this.getDetailsAuction(this.id)
-        }, 1000) // 500 milliseconds = 0.5 seconds
-      }
-    },
-    shouldCallGetDetailsAuctionPre(newValue) {
-      if (newValue) {
-        console.log("Updating PreBid")
-        setTimeout(() => {
-          this.getDetailsAuction(this.id)
-        }, 1000) // 500 milliseconds = 0.5 seconds
-      }
-    }
-  },
-
   methods: {
     async startAuctionSocket() {
       const mountedThis = this
@@ -359,19 +400,19 @@ export default {
 
       this.auctionSocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
-        console.log('message auction socket', message)
+        // console.log('message auction socket', message)
         if (message.error) {
           this.socketError = message.error
           return
         }
 
         if (message.auction) {
-          console.log('trae un auction')
+          // console.log('trae un auction')
           this.bidStatus = message.auction.status
         }
 
         if (message.horses && message.horses.length > 0) {
-          console.log('trae horses')
+          // console.log('trae horses')
           this.item.horses.forEach((horse, key) => {
             const status = message.horses.find(
               (item) => item.id === horse.local_data.id
@@ -382,7 +423,7 @@ export default {
         }
 
         if(message.bid){
-          console.log('trae un bid y acutaliza final amount')
+          // console.log('trae un bid y acutaliza final amount')
           const key = this.item.horses.findIndex(
             (horse) => message.bid.horse === horse.local_data.id
           )
@@ -391,7 +432,7 @@ export default {
         }
 
         if (message.horse) {
-          console.log('trae un horse y busca su status')
+          // console.log('trae un horse y busca su status')
           const key = this.item.horses.findIndex(
             (horse) => message.horse.id === horse.local_data.id
           )
@@ -401,32 +442,24 @@ export default {
 
         if (message.prebid) {
           console.log('trae info de prebid')
-          if (message.prebid.auction.id == this.horseID) {
+          if (message.prebid.horse?.id) {
             const now = new Date()
-            const targetDate = new Date(message.prebid.auction.end_pre_bid)
-            const timeDifference = targetDate - now
 
-            if (timeDifference <= 0) {
-              this.countdownPre = false
-              clearInterval(this.timer2)
-            } else {
-              const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
-              const hours = Math.floor(
-                (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-              )
-              const minutes = Math.floor(
-                (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-              )
-              const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
-              this.preBidTime.days = days
-              this.preBidTime.hours = hours
-              this.preBidTime.minutes = minutes
-              this.preBidTime.seconds = seconds
+            const key = this.item.horses.findIndex(
+              (horse) => message.prebid.horse.id === horse.local_data.id
+            )
 
-              console.log("ACTUALIZADO EL TIMER")
-            }
+            console.log("encontro el k", key)
+            if (key >= 0)
+              this.item.horses[key].local_data.end_pre_bid = message.prebid.horse.end_pre_bid
+
+            this.calculateCountdownPerHorse()
+
           }
+
         }
+
+
       })
 
 
@@ -472,6 +505,46 @@ export default {
       })
 
     },
+
+    counterIsZero(countdown) {
+      return countdown.days === 0 && countdown.hours === 0 && countdown.minutes === 0 && countdown.seconds === 0
+    },
+
+    calculateCountdownPerHorse() {
+      // console.log('calcula el countdown')
+      this.item.horses.forEach(horse => {
+        console.log("End prebid",horse.local_data.id,horse.local_data.end_pre_bid)
+        const now = new Date()
+        const targetDate = new Date(horse.local_data.end_pre_bid)
+        const timeDifference = targetDate - now
+        let days = 0
+        let hours = 0
+        let minutes = 0
+        let seconds = 0
+
+        if (timeDifference <= 0) {
+          horse.countdownSubasta = false
+        } else {
+          days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+          hours = Math.floor(
+            (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          )
+          minutes = Math.floor(
+            (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+          )
+          seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
+        }
+
+        horse.countdown = {
+          days: days,
+          hours: hours,
+          minutes: minutes,
+          seconds: seconds
+        }
+      })
+      // console.log(this.item.horses)
+    },
+
     calculateCountdown() {
       const now = new Date()
       const targetDate = new Date(this.item.start_bid)
@@ -521,6 +594,7 @@ export default {
     async getDetailsAuction(itemId) {
       const url = this.$config.baseURL + `/subastas/list-subastas/?id=${itemId}`
       this.loading = true
+      console.warn('loading = true', this.loading)
 
       await this.$axios
         .get(url)
@@ -535,11 +609,18 @@ export default {
           )
           this.fetchImagesForAllHorses()
           this.loading = false
+          if(this.bidStatus == 'COMING') {
+            this.countdownPre = true
+          }
+          if(['CLOSED PREBID', 'PREBID', 'COMING'].includes(this.bidStatus)) {
+            this.countdownSubasta = true
+          }
           this.timer = setInterval(this.calculateCountdown, 1000)
           this.timer2 = setInterval(this.calculateCountdownPre, 1000)
+          this.timer3 = setInterval(this.calculateCountdownPerHorse, 1000)
         })
         .catch((error) => {
-          console.log(error)
+          // console.log(error)
           this.loading = false
         })
     },
