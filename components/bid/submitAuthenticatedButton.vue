@@ -1,11 +1,16 @@
 <template>
   <div class="flex-grow tool-tip-container">
-    <button class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full"
+    <button class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full mb-3"
       v-bind:class="{ disabled: !isAuthenticated || !isAbleToBid }" type="button" @click="enableModal">
       {{ buttonText }}
     </button>
-    <span v-bind:class="{ show: !isAuthenticated || !isAbleToBid }" class="tool-tip-text">
+    <span v-bind:class="{ show: !isAuthenticated || !isAbleToBid }" class="hidden md:visible tool-tip-text">
       <p>{{ hoverText }}</p>
+    </span>
+    <span v-if="!isAuthenticated" class="md:hidden">
+      <NuxtLink :to="localePath('/auth/login')" class="font-bold border-1 border-gray-500 px-3 py-2">
+        {{ hoverText }}
+      </NuxtLink>
     </span>
   </div>
 </template>
