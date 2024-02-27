@@ -269,12 +269,6 @@
                   </p>
                   <div v-else class="text-black font-bold text-xl pt-5">
                     {{ $t('auction.stayTuned') }}
-                    <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xl text-custom-gold">
-                      {{ $t('bids.youAreTheDPrebidWinner') }}
-                    </p>
-                    <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xs text-custom-gold">
-                      {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
-                    </p>
                   </div>
                 </div>
                 <div v-if="horseStatus =='COMMING' && bidStatus == 'COMMING'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
