@@ -62,26 +62,14 @@
             </div>
             <div class="w-full h-auto px-0 relative">
               <div class="w-full">
-                <Carousel :images="horseData.images" />
+                <Carousel :images="horseData.images" :auto-transition="true" ref="carousel"/>
               </div>
             </div>
             <!--video, description and bid table -->
             <div class="flex flex-col md:flex-row md:w-full md:px-6 my-6">
                 <div class="md:h1/2 md:w-1/2">
                   <div class="aspect-w-16 aspect-h-9 md:mr-5 mb-5 md:mb-0">
-                      <iframe
-                        v-if="horseData.videoUrl"
-                        class="aspect-content rounded-lg"
-                        :src="
-                          horseData.videoUrl
-                            ? `https://www.youtube.com/embed/${horseData.videoUrl}`
-                            : `https://www.youtube.com/embed/ivGNj_t6S2c`
-                        "
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                      ></iframe>
-                      <h1 v-else class="w-full text-center text-gray-700 mt-8">{{ $t('auction.noVideoAvailableMsg')}}</h1>
+                      <Carousel :images="horseData.horseVideos" ref="carouselVideos"/>
                     </div>
                 </div>
                 <!--table bid-->
@@ -506,13 +494,15 @@ export default {
         final_amount: "",
         horseTelex: "",
         next: null,
-        previous: null
+        previous: null,
+        horseVideos: [],
       },
       bidStatus: "",
       liveURL: "",
       HorseName: "",
       lastOffer: "",
       intial_pre_bid_amount: "",
+      horseId: "",
       horseID: "",
       PreBidDate: "",
       EndPreBidDate: "",
@@ -584,9 +574,6 @@ export default {
     bidId() {
       return this.$route.query.id
     },
-    horseId() {
-      return this.$route.query.horseId
-    },
     horsePositionList() {
       return this.$route.query.horsePositionList
     },
@@ -614,6 +601,7 @@ export default {
     this.$store.commit('setTextColorTopBar', 'text-white'); // reset to default when leaving the page
   },
   async mounted() {
+    this.horseId = this.$route.query.horseId
     this.initilize()
   },
   methods: {
@@ -939,6 +927,8 @@ export default {
         .then((response) => {
           const images = response.data.map((imageObj) => imageObj.url)
           this.horseData.images = images
+          this.$refs.carousel.startCarousel()
+
         })
         .catch((error) => {
           console.error(error)
@@ -1042,6 +1032,27 @@ export default {
         })
     },
 
+    async loadVideos(){
+      console.log('load videos')
+      const url = `${this.$config.baseURL}/horse-video?horse=${this.horseId}`
+
+      this.loading = true
+      await this.$axios
+        .get(url, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+        .then((response) => {
+          this.horseData.horseVideos = response.data
+          this.$refs.carouselVideos.startCarousel()
+          this.loading = false
+        })
+        .catch((error) => {
+          this.loading = false;
+        })
+    },
+
     async fetchData() {
       let listSubastasEndpoint = `/horse/${this.horseId}/info`
       let url = `${this.$config.baseURL}${listSubastasEndpoint}`
@@ -1107,6 +1118,7 @@ export default {
           this.EndPreBidDate = horse.local_data.end_pre_bid
           this.horseData.next = horse.local_data.next
           this.horseData.previous = horse.local_data.previous
+          this.loadVideos()
         })
         .catch((error) => {
           console.error(error)
@@ -1199,7 +1211,7 @@ export default {
     goToHorse(id) {
       let path = `/bids/bid/?id=${this.bidId}&horsePositionList=${id}&horseId=${id}`
       this.$router.push({ path: this.localePath(path) })
-      this.horseId = id
+      this.horseId = id.toString()
       this.finalize()
 
       setTimeout(() => {

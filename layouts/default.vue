@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div id="google_translate_element" class="mx-2"></div>
         <!-- Parent div with black background -->
         <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
             <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
@@ -47,6 +48,22 @@ export default {
         }
     },
     async mounted() {
+
+        window.googleTranslateElementInit = () => {
+            new window.google.translate.TranslateElement({
+            pageLanguage: 'es', // Idioma predeterminado
+            includedLanguages: 'es,fr,de', // Idiomas disponibles
+            layout: window.google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+            autoDisplay: false
+            }, 'google_translate_element');
+        };
+
+        // Cargar el script del widget de Google Translate
+        const script = document.createElement('script');
+        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+        script.async = true;
+        document.head.appendChild(script);
+
         await this.getUserInfo()
         this.checkAndInitializeWebSocket();
         if (!window.WebSocket) {
@@ -229,3 +246,30 @@ export default {
 };
 
 </script>
+<style>
+#google_translate_element .goog-te-gadget {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+#google_translate_element .goog-te-gadget select {
+    margin-right: 10px;
+}
+
+#google_translate_element .goog-te-gadget a {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    margin-left: 10px;
+}
+
+#google_translate_element .goog-te-gadget a img {
+    margin-right: 5px;
+}
+
+.skiptranslate {
+    display: none;
+
+}
+</style>

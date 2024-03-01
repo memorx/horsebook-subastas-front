@@ -38,6 +38,9 @@
                   :placeholder="$t('login.password')"
                 />
               </div>
+              <div class="text-red-700">
+                {{ $t('signup.passwordGuidelines') }}
+              </div>
               <div class="flex flex-col">
                 <input
                   v-model="form.confirmPassword"
@@ -342,7 +345,7 @@ export default {
         this.form.password === this.form.confirmPassword
       if (!isValidPassword) {
         this.$toast.error(
-          this.$t('signup.passwordGuidelines', {duration: 10000})
+          this.$t('signup.passwordGuidelines'), {duration: 10000}
         )
         return
       }

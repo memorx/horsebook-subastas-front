@@ -12,8 +12,8 @@
         "errorMsg": "Sorry an error occurred",
         "welcome": "Welcome",
         "download": "download",
-        "next": "Next",
-        "previous": "Previous"
+        "next": "Next Lot",
+        "previous": "Previous Lot"
     },
     "login": {
         "login": "Login",
@@ -50,7 +50,7 @@
         "termsAndConditions": "Terms and Conditions",
         "agreeConditions": "I accept the",
         "createAccount": "Create Account",
-        "passwordGuidelines": "The password must be at least 8 characters,<br>contain at least one digit,<br>one special character,<br>cannot include part of the user's attributes,<br>nor be a common or easily guessable password.",
+        "passwordGuidelines": "The password must be at least 8 characters, contain at least one digit, one special character, cannot include part of the user's attributes, nor be a common or easily guessable password.",
         "accountAlreadyExist": "Account already exists",
         "verifyYourAccount": "Verify your account",
         "verifyAccountInstruction": "Enter your email account and access the link that you will find in the email we have sent you",
