@@ -354,8 +354,6 @@ export default {
       },
       bidId: "",
       loading: false,
-      countdownSubasta: true,
-      countdownPre: true,
       bidStatus: "",
       bidImage: "",
       videoUrl: "",
