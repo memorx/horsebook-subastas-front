@@ -312,13 +312,18 @@ export default {
          })
       },
       calculateCountdown() {
-         const now = new Date();
          if (!this.nextAuction?.start_bid) return;
 
-         const targetDate = new Date(this.nextAuction.start_bid);
-         const targetDateMexico = new Date(targetDate.toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+         const targetDate = new Date(this.nextAuction.start_bid)
+         const now = new Date()
 
-         const timeDifference = targetDateMexico - now;
+         const utcOffset = targetDate.getTimezoneOffset()
+         const targetUTC = new Date(targetDate.getTime() + (utcOffset * 60 * 1000))
+
+         const utcOffsetNow = now.getTimezoneOffset()
+         const nowUTC = new Date(now.getTime() + (utcOffsetNow * 60 * 1000))
+
+         const timeDifference = targetUTC - nowUTC
 
          if (timeDifference <= 0) {
             this.countdownSubasta = false;
