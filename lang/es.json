@@ -293,6 +293,7 @@
         "On Call Offer": "Por llamada",
         "(On-site offer)": "(En persona)",
         "(On Call Offer)": "(Por llamada)",
-        "Sorry, someone was faster than you": "Lo siento, alguien fue más rápido que tú al ofertar"
+        "Sorry, someone was faster than you": "Lo siento, alguien fue más rápido que tú al ofertar",
+        "The user is not allowed to bid": "Este usuario no está autorizado para ofertar"
     }
 }

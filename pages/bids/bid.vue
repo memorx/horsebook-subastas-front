@@ -779,6 +779,14 @@ export default {
           this.bids.unshift(message.bid)
         }
 
+        if(message.delete) {
+          const idToDelete = message.delete.id
+          const key = this.bids.findIndex(bid => bid.id === idToDelete)
+          if(key !== -1) {
+            this.bids.splice(key, 1)
+          }
+        }
+
         // only update the initial amount if the user has not edited the input
         if (this.firstUpdateAmount) {
           this.isEditingAmount = false
