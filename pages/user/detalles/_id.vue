@@ -75,7 +75,7 @@
             <div class="mx-10 my-10">
               <div
                 v-if="countdownPre == true || loading == true"
-                class="md:flex md:items-center"
+                class="flex flex-row md:items-center"
               >
                 <div class="mx-5">
                   <p class="text-center text-5xl mb-2 font-bold">
