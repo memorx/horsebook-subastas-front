@@ -12,8 +12,8 @@
         "errorMsg": "Lo sentimos, ha ocurrido un error",
         "welcome": "Bienvenido",
         "download": "descargar",
-        "next": "Siguiente",
-        "previous": "Previo"
+        "next": "Lote Siguiente",
+        "previous": "Lote Anterior"
     },
     "login": {
         "login": "Iniciar Sesión",
@@ -50,7 +50,7 @@
         "termsAndConditions": "Términos y Condiciones",
         "agreeConditions": "Acepto los",
         "createAccount": "Crear Cuenta",
-        "passwordGuidelines": "La contraseña debe tener al menos 8 caracteres,<br>contener al menos un dígito,<br>un carácter especial,<br>no puede incluir parte de los atributos del usuario,<br>ni ser una contraseña común o fácil de adivinar.",
+        "passwordGuidelines": "La contraseña debe tener al menos 8 caracteres, contener al menos un dígito, un carácter especial, no puede incluir parte de los atributos del usuario, ni ser una contraseña común o fácil de adivinar.",
         "accountAlreadyExists": "Una cuenta con este mail ya existe",
         "verifyYourAccount": "Verifica tu cuenta",
         "verifyAccountInstruction": "Ingresa a tu cuenta de correo y accede al enlace que encontrarás en el correo que te hemos enviado",
@@ -293,6 +293,7 @@
         "On Call Offer": "Por llamada",
         "(On-site offer)": "(En persona)",
         "(On Call Offer)": "(Por llamada)",
-        "Sorry, someone was faster than you": "Lo siento, alguien fue más rápido que tú al ofertar"
+        "Sorry, someone was faster than you": "Lo siento, alguien fue más rápido que tú al ofertar",
+        "The user is not allowed to bid": "Este usuario no está autorizado para ofertar"
     }
 }
