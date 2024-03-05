@@ -112,7 +112,7 @@
             {{ $t('auction.auctionEndedMsg') }}
           </h1>
           <h1
-            v-if="bidStatus != 'BIDDING'"
+            v-if="bidStatus != 'BIDDING' && bidStatus != 'CLOSED'"
             class="text-center text-sm font-bold"
           >
             {{ $t('auction.auctionWillBeLivetMsg') }}
@@ -122,7 +122,6 @@
             class="text-center text-sm font-bold"
           >
             {{ $t('auction.auctionLivetMsg') }}
-
           </h1>
           <div
             v-if="loading == false && countdownSubasta == true"
@@ -130,7 +129,7 @@
           >
             <div class="mx-10 md:mx-0 my-10">
               <div
-                v-if="countdownSubasta == true || loading == true && !counterIsZero(bidTime)"
+                v-if="countdownSubasta == true && !counterIsZero(bidTime)"
                 class="flex flex-row md:items-center"
               >
                 <div class="mx-5">
@@ -509,15 +508,19 @@ export default {
 
     calculateCountdownPerHorse() {
       this.item.horses.forEach(horse => {
-        console.log("End prebid",horse.local_data.id,horse.local_data.end_pre_bid)
+
+
         const now = new Date()
         const targetDate = new Date(horse.local_data.end_pre_bid)
 
-        // Convertir la hora del servidor (México Central) a la hora local del cliente
-        const utcOffset = targetDate.getTimezoneOffset() // Diferencia de minutos entre UTC y la hora de México Central
-        const targetDateLocal = new Date(targetDate.getTime() - (utcOffset * 60 * 1000))
+        const utcOffset = targetDate.getTimezoneOffset()
+        const targetUTC = new Date(targetDate.getTime() + (utcOffset * 60 * 1000))
 
-        const timeDifference = targetDateLocal - now
+        const utcOffsetNow = now.getTimezoneOffset()
+        const nowUTC = new Date(now.getTime() + (utcOffsetNow * 60 * 1000))
+
+        const timeDifference = targetUTC - nowUTC
+
         let days = 0
         let hours = 0
         let minutes = 0
@@ -546,9 +549,12 @@ export default {
       const now = new Date()
 
       const utcOffset = targetDate.getTimezoneOffset()
-      const targetDateLocal = new Date(targetDate.getTime() - (utcOffset * 60 * 1000))
+      const targetUTC = new Date(targetDate.getTime() + (utcOffset * 60 * 1000))
 
-      const timeDifference = targetDateLocal - now
+      const utcOffsetNow = now.getTimezoneOffset()
+      const nowUTC = new Date(now.getTime() + (utcOffsetNow * 60 * 1000))
+
+      const timeDifference = targetUTC - nowUTC
 
       if (timeDifference <= 0) {
         this.countdownSubasta = false
@@ -564,17 +570,21 @@ export default {
         this.bidTime.minutes = minutes
         this.bidTime.seconds = seconds
       }
+
     },
 
     calculatePreBidCountdown() {
-      const now = new Date()
+
       const targetDate = new Date(this.item.start_pre_bid)
+      const now = new Date()
 
-      // Convertir la hora del servidor (México Central) a la hora local del cliente
-      const utcOffset = targetDate.getTimezoneOffset() // Diferencia de minutos entre UTC y la hora de México Central
-      const targetDateLocal = new Date(targetDate.getTime() - (utcOffset * 60 * 1000))
+      const utcOffset = targetDate.getTimezoneOffset()
+      const targetUTC = new Date(targetDate.getTime() + (utcOffset * 60 * 1000))
 
-      const timeDifference = targetDateLocal - now
+      const utcOffsetNow = now.getTimezoneOffset()
+      const nowUTC = new Date(now.getTime() + (utcOffsetNow * 60 * 1000))
+
+      const timeDifference = targetUTC - nowUTC
 
       if (timeDifference <= 0) {
         this.countdownPre = false
@@ -584,11 +594,13 @@ export default {
         const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
         const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60))
         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
+
         this.preBidTime.days = days
         this.preBidTime.hours = hours
         this.preBidTime.minutes = minutes
         this.preBidTime.seconds = seconds
       }
+
     },
 
     async getDetailsAuction(itemId) {
@@ -616,7 +628,7 @@ export default {
             this.countdownSubasta = true
           }
           this.timer = setInterval(this.calculateCountdown, 1000)
-          this.timer2 = setInterval(this.calculateCountdownPre, 1000)
+          this.timer2 = setInterval(this.calculatePreBidCountdown, 1000)
           this.timer3 = setInterval(this.calculateCountdownPerHorse, 1000)
         })
         .catch((error) => {
