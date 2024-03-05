@@ -293,7 +293,8 @@
         "(On-site offer)": "(On-site Offer)",
         "(On Call Offer)": "(On Call Offer)",
         "Sorry, someone was faster than you": "Sorry, someone was faster than you",
-        "The user is not allowed to bid": "The user is not allowed to bid"
+        "The user is not allowed to bid": "The user is not allowed to bid",
+        "The current bid amount is higher.": "The current bid amount is higher."
     }
 
 }
