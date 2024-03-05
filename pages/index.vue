@@ -312,52 +312,51 @@ export default {
          })
       },
       calculateCountdown() {
-         const now = new Date()
-         if(!this.nextAuction?.start_bid)
-            return
-         const targetDate = new Date(this.nextAuction.start_bid)
-         const timeDifference = targetDate - now
+         const now = new Date();
+         if (!this.nextAuction?.start_bid) return;
+
+         const targetDate = new Date(this.nextAuction.start_bid);
+         const targetDateMexico = new Date(targetDate.toLocaleString('en-US', { timeZone: 'America/Mexico_City' }));
+
+         const timeDifference = targetDateMexico - now;
 
          if (timeDifference <= 0) {
-            this.countdownSubasta = false
-            clearInterval(this.timer)
+            this.countdownSubasta = false;
+            clearInterval(this.timer);
          } else {
-            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
-            const hours = Math.floor(
-               (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-            )
-            const minutes = Math.floor(
-               (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-            )
-            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
-            this.bidTime.days = days
-            this.bidTime.hours = hours
-            this.bidTime.minutes = minutes
-            this.bidTime.seconds = seconds
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            this.bidTime.days = days;
+            this.bidTime.hours = hours;
+            this.bidTime.minutes = minutes;
+            this.bidTime.seconds = seconds;
          }
       },
 
       formatDate(dateString) {
          const daysOfWeek = [
-            this.$t('dates.daysOfTheWeek.sunday'),
-            this.$t('dates.daysOfTheWeek.monday'),
-            this.$t('dates.daysOfTheWeek.tuesday'),
-            this.$t('dates.daysOfTheWeek.wednesday'),
-            this.$t('dates.daysOfTheWeek.thursday'),
-            this.$t('dates.daysOfTheWeek.friday'),
-            this.$t('dates.daysOfTheWeek.saturday')
-         ];
+         this.$t('dates.daysOfTheWeek.sunday'),
+         this.$t('dates.daysOfTheWeek.monday'),
+         this.$t('dates.daysOfTheWeek.tuesday'),
+         this.$t('dates.daysOfTheWeek.wednesday'),
+         this.$t('dates.daysOfTheWeek.thursday'),
+         this.$t('dates.daysOfTheWeek.friday'),
+         this.$t('dates.daysOfTheWeek.saturday')
+      ];
 
-         const date = new Date(dateString);
-         const dayOfWeek = daysOfWeek[date.getDay()];
+      const date = new Date(dateString);
+      const dayOfWeek = daysOfWeek[date.getDay()];
 
-         const options = { month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false, timeZone: 'UTC' };
-         const formattedDate = date.toLocaleString('es-ES', options);
+      const options = { month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false };
+      const formattedDate = date.toLocaleString('es-ES', options);
 
-         const [datePart, timePart] = formattedDate.split(', ');
-         const [month, day] = datePart.split('/');
+      const [datePart, timePart] = formattedDate.split(', ');
+      const [month, day] = datePart.split('/');
 
-         return `${dayOfWeek} ${day}/${month} ${timePart} HS`;
+      return `${dayOfWeek} ${day}/${month} ${timePart} HS`;
       },
 
       goToAuctionDetail(auction) {

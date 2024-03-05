@@ -441,15 +441,12 @@ export default {
         }
 
         if (message.prebid) {
-          console.log('trae info de prebid')
           if (message.prebid.horse?.id) {
             const now = new Date()
 
             const key = this.item.horses.findIndex(
               (horse) => message.prebid.horse.id === horse.local_data.id
             )
-
-            console.log("encontro el k", key)
             if (key >= 0)
               this.item.horses[key].local_data.end_pre_bid = message.prebid.horse.end_pre_bid
 
@@ -511,12 +508,16 @@ export default {
     },
 
     calculateCountdownPerHorse() {
-      // console.log('calcula el countdown')
       this.item.horses.forEach(horse => {
         console.log("End prebid",horse.local_data.id,horse.local_data.end_pre_bid)
         const now = new Date()
         const targetDate = new Date(horse.local_data.end_pre_bid)
-        const timeDifference = targetDate - now
+
+        // Convertir la hora del servidor (México Central) a la hora local del cliente
+        const utcOffset = targetDate.getTimezoneOffset() // Diferencia de minutos entre UTC y la hora de México Central
+        const targetDateLocal = new Date(targetDate.getTime() - (utcOffset * 60 * 1000))
+
+        const timeDifference = targetDateLocal - now
         let days = 0
         let hours = 0
         let minutes = 0
@@ -526,12 +527,8 @@ export default {
           horse.countdownSubasta = false
         } else {
           days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
-          hours = Math.floor(
-            (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-          )
-          minutes = Math.floor(
-            (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-          )
+          hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+          minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60))
           seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
         }
 
@@ -542,48 +539,50 @@ export default {
           seconds: seconds
         }
       })
-      // console.log(this.item.horses)
     },
 
     calculateCountdown() {
-      const now = new Date()
       const targetDate = new Date(this.item.start_bid)
-      const timeDifference = targetDate - now
+      const now = new Date()
+
+      const utcOffset = targetDate.getTimezoneOffset()
+      const targetDateLocal = new Date(targetDate.getTime() - (utcOffset * 60 * 1000))
+
+      const timeDifference = targetDateLocal - now
 
       if (timeDifference <= 0) {
         this.countdownSubasta = false
         clearInterval(this.timer)
       } else {
         const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
-        const hours = Math.floor(
-          (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        )
-        const minutes = Math.floor(
-          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-        )
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60))
         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
+
         this.bidTime.days = days
         this.bidTime.hours = hours
         this.bidTime.minutes = minutes
         this.bidTime.seconds = seconds
       }
     },
-    calculateCountdownPre() {
+
+    calculatePreBidCountdown() {
       const now = new Date()
       const targetDate = new Date(this.item.start_pre_bid)
-      const timeDifference = targetDate - now
+
+      // Convertir la hora del servidor (México Central) a la hora local del cliente
+      const utcOffset = targetDate.getTimezoneOffset() // Diferencia de minutos entre UTC y la hora de México Central
+      const targetDateLocal = new Date(targetDate.getTime() - (utcOffset * 60 * 1000))
+
+      const timeDifference = targetDateLocal - now
 
       if (timeDifference <= 0) {
         this.countdownPre = false
         clearInterval(this.timer2)
       } else {
         const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
-        const hours = Math.floor(
-          (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        )
-        const minutes = Math.floor(
-          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-        )
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60))
         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
         this.preBidTime.days = days
         this.preBidTime.hours = hours
@@ -591,6 +590,7 @@ export default {
         this.preBidTime.seconds = seconds
       }
     },
+
     async getDetailsAuction(itemId) {
       const url = this.$config.baseURL + `/subastas/list-subastas/?id=${itemId}`
       this.loading = true
