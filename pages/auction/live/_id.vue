@@ -113,7 +113,7 @@
                     {{ $t('auction.bidOnThisLot') }}
                   </p>
                   <form @submit="submitForm">
-                    <div class="flex items-center space-x-2 mb-5">
+                    <div class="flex items-center space-x-2 mb-1">
                       <button
                         class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
                         type="button"
@@ -142,7 +142,7 @@
                       <button
                         class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
                         type="button"
-                        @click="addThousand"
+                        @click="addThousand()"
                       >
                         +
                       </button>
@@ -175,6 +175,22 @@
                       {{ $t(`backMessages.${errorMessage}`,{"lastOffer": lastOffer}) }}
                     </div>
                   </div>
+                </div>
+                <div v-if="prebidWinner.email === this.$store.state.user?.user" class="mb-2">
+                  <p class="text-center text-lg text-green-900 font-bold">
+                    {{ $t('bids.youAreTheDPrebidWinner') }}
+                  </p>
+                  <p class="text-center text-lg text-green-900">
+                    {{ $t('bids.prebidWinnerDiscountMsg', { 'prebidWinnerDiscount': prebidWinnerDiscount }) }}
+                  </p>
+                  <p class="text-center text-base text-red-600">
+                    {{ $t('bids.discountByHorseMsg')}}
+                  </p>
+                </div>
+                <div v-else-if="prebidWinner?.country">
+                  <p class="text-center text-lg text-black uppercase font-bold">
+                    {{ $t('auction.preBidWinnerMsg', { 'winnerName': prebidWinner.country.name }) }}
+                  </p>
                 </div>
                 <div v-if="bids.length > 0">
                   <div class="mx-5">
@@ -324,6 +340,8 @@ import SubmitAuthenticatedButton from "~/components/bid/submitAuthenticatedButto
 import getUserTokenOrDefault from "~/utils/getUserTokenOrDefault"
 import modal from "~/components/bid/modal.vue"
 import ReconnectingWebSocket from "reconnecting-websocket"
+import Swal from 'sweetalert2'
+
 
 export default {
   components: {
@@ -432,23 +450,26 @@ export default {
       bids: [],
       preBids: [],
       errorMessage: "",
-      winner: "",
+      winner: {},
       winnerName: "",
+      prebidWinner: {},
       isEditingAmount: false,
       inputAmount: "",
-      winnerEmail: "",
       wonHorse: "",
       yourAreTheWinner: false,
       hasBid: false,
       commission: 0,
       taxes: 0,
       confirmedAmount: "",
+      prebidWinnerDiscount: 0,
+      increments: [],
     }
   },
   async created() {
     const auctionId = this.$route.params.id
     this.bidId = auctionId
     await this.getDetailsAuction()
+    await this.loadIncrements()
     this.startAuctionSocket()
   },
   mounted() {
@@ -486,20 +507,86 @@ export default {
     },
 
     showManualInputAmount() {
-      this.manualInputAmount = this.inputAmount
+      let baseIncrement =this.getIncrement()
+      this.manualInputAmount = String(baseIncrement)
+      this.formattedManualInputAmount = this.formatNumber(baseIncrement)
+
       this.showInput = true
       this.$nextTick(() => {
         this.$refs.manualInputAmount.focus()
+        this.$refs.manualInputAmount.select()
       })
     },
+
     assignManualInputAmount() {
+      if(!this.validateManualAmount())
+        return
+
       this.showInput = false
       if (this.inputAmount <= this.manualInputAmount){
-        console.log('el input es menor que el manualinput')
         this.amountBase = this.manualInputAmount
       }
 
     },
+
+    validateManualAmount() {
+
+      let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
+      let manualInputAmount = parseInt(this.manualInputAmount.replace(/,/g, ""))
+
+      if(!manualInputAmount)
+        return false
+
+      let incrementAmount = this.calculateIncrement(lastOffer)
+      let diff =  manualInputAmount - lastOffer
+
+      let module = diff % incrementAmount
+      let factor = Math.ceil( diff / incrementAmount )
+      let minAmount = lastOffer + incrementAmount
+      // console.log('manualInputAmount', this.manualInputAmount)
+      // console.log('diff', diff)
+      // console.log('lastOffer', lastOffer)
+      // console.log('module', module)
+      // console.log('factor', factor)
+      if( manualInputAmount < minAmount || module != 0) {
+        let suggestedAmount = null
+        if(manualInputAmount < minAmount){
+          suggestedAmount = minAmount
+        } else {
+          suggestedAmount = lastOffer + incrementAmount * factor
+        }
+
+        console.log('suggestedAmount', suggestedAmount)
+        Swal.fire({
+          title: this.$t('bids.incrementValidationErrorTitle'),
+          text: this.$t('bids.incrementValidationError', {"increment":  '$'+this.formatNumber(incrementAmount), "suggestedAmount": '$'+this.formatNumber(suggestedAmount) }),
+          icon: 'error',
+          showCancelButton: true,
+          confirmButtonText: this.$t('general.yes'),
+          cancelButtonText: this.$t('general.cancel')
+        }).then((result) => {
+          this.showInput = false
+          if (result.isConfirmed) {
+            this.manualInputAmount = String(suggestedAmount)
+            this.formattedManualInputAmount = this.formatNumber(suggestedAmount)
+            this.enableModal()
+
+          } else {
+            let baseIncrement =this.getIncrement()
+            this.inputAmount = this.formatNumber(baseIncrement)
+            this.manualInputAmount = String(baseIncrement)
+            this.formattedManualInputAmount = this.formatNumber(baseIncrement)
+          }
+        })
+
+        return false
+      } else {
+        return true
+      }
+
+
+    },
+
     updateEditAmount(value) {
       this.isEditingAmount = value
     },
@@ -531,8 +618,8 @@ export default {
       } else {
         this.confirmedAmount = this.inputAmount
       }
-
     },
+
     disableModal() {
       this.showModal = false
     },
@@ -605,46 +692,23 @@ export default {
             this.bids[0]?.amount
           ).toLocaleString("en-US")
 
-
-          let currentValue = parseInt(this.bids[0]?.amount)
-
-          console.error("Revisar currentValue", currentValue);
-          if (currentValue >= 30000) {
-            this.inputAmount = (
-              currentValue + 500
-            ).toLocaleString("en-US")
+          this.inputAmount = this.getIncrement().toLocaleString("en-US")
 
 
-          } else if(this.bids[0]?.amount) {
-
-            this.inputAmount = (
-              currentValue + 1000
-            ).toLocaleString("en-US")
-
-          }
         } else {
           if (this.horseData.final_amount != "") {
-
-            this.formData.amount = (parseInt(
-              this.horseData.final_amount,
-              10
-            ) + 1000).toLocaleString("en-US")
-
-            this.inputAmount = (parseInt(
-              this.horseData.final_amount,
-              10
-            ) + 1000).toLocaleString("en-US")
 
             this.lastOffer = parseInt(
               this.horseData.final_amount
             ).toLocaleString("en-US")
 
+            this.formData.amount = this.getIncrement().toLocaleString("en-US")
+
+            this.inputAmount = this.getIncrement().toLocaleString("en-US")
+
             if (!this.isEditingAmount) {
 
-              this.inputAmount = (parseInt(
-                this.horseData.final_amount,
-                10
-              ) + 1000).toLocaleString("en-US")
+              this.inputAmount = this.getIncrement().toLocaleString("en-US")
             }
 
           } else {
@@ -688,8 +752,10 @@ export default {
               this.$confetti.stop()
               this.wonHorse = ""
               this.winner = ""
+              this.prebidWinner = {}
               this.closeBidSocket()
               this.fetchData()
+              this.fetchprebidWinner()
             }
           });
         }
@@ -701,18 +767,18 @@ export default {
             // El horse actual se ha cerrado, restablecer horseID y cerrar el socket.
             this.horseStatus = 'CLOSED'
             this.winnerConfetti()
-            this.horseID = null;
-            this.closeBidSocket();
+            this.horseID = null
+            this.closeBidSocket()
           } else if (horse.status === 'BIDDING') {
             // El horse actual está en proceso de subasta, actualizar horseID, fetch data y reiniciar el socket.
-            this.horseID = horse.id;
-            this.$confetti.stop();
+            this.horseID = horse.id
+            this.$confetti.stop()
             this.wonHorse = ""
-            this.winner = ""
+            this.winner = {}
             this.firstUpdateAmount = true
             this.isEditingAmount = false
-            this.closeBidSocket();
-            this.fetchData();
+            this.closeBidSocket()
+            this.fetchData()
           }
         }
 
@@ -767,6 +833,7 @@ export default {
           this.loading = false
           this.commission = response.data.commission
           this.taxes = response.data.taxes
+          this.prebidWinnerDiscount = response.data.prebid_winner_discount
 
         })
         .catch((error) => {
@@ -791,23 +858,32 @@ export default {
         return null
       }
     },
+    getIncrement() {
+      let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
+      let incrementAmount = this.calculateIncrement(lastOffer)
+      return incrementAmount + lastOffer
+    },
+
     addThousand() {
       let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
-      if (currentValue >= 30000) {
-        currentValue += 500
-      } else {
-        currentValue += 1000
-      }
+      let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
+      let incrementAmount = this.calculateIncrement(lastOffer)
+      currentValue += incrementAmount
       this.inputAmount = currentValue.toLocaleString("en-US")
     },
+
     substractThousand() {
       let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
-      if (currentValue >= 30000) {
-        currentValue -= 500
+      let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
+      let incrementAmount = this.calculateIncrement(currentValue)
+      let minIncrement = this.calculateIncrement(lastOffer)
+      let minAmount = lastOffer + minIncrement
+      let amount = currentValue - incrementAmount
+      if(amount < minAmount) {
+        this.inputAmount = minAmount.toLocaleString("en-US")
       } else {
-        currentValue -= 1000
+        this.inputAmount = amount.toLocaleString("en-US")
       }
-      this.inputAmount = currentValue.toLocaleString("en-US")
     },
 
     toggleTabs: function (tabNumber) {
@@ -861,6 +937,35 @@ export default {
           console.error("Error fetching winner:", error)
         })
     },
+
+    async fetchprebidWinner() {
+      let winnerEndpoint = "/subastas/prebid-winner/"
+      let url = `${this.$config.baseURL}${winnerEndpoint}`
+
+      let params = {
+        subasta_id: this.bidId,
+        horse_id: this.horseID,
+        pre_bid: "true"
+      }
+      const token = getUserTokenOrDefault()
+
+      await axios
+        .get(url, {
+          headers: {
+            Authorization: `Token ${token}`
+          },
+          params: params
+        })
+        .then((response) => {
+          this.prebidWinner = response.data.user_profile
+          console.log("this.prebidWinner", this.prebidWinner)
+        })
+        .catch((error) => {
+          // Handle errors
+          console.error("Error fetching prebid winner:", error)
+        })
+    },
+
 
     async fetchData() {
       let listSubastasEndpoint = `/horse/${this.horseID}/info`
@@ -953,9 +1058,43 @@ export default {
         this.formattedManualInputAmount = ""
     },
 
+    async loadIncrements(){
+
+      if(!this.bidId) return
+
+      const url = `${this.$config.baseURL}/amount-limit-increment?auction=${this.bidId}`
+      this.loading = true
+      await this.$axios
+          .get(url, {
+              headers: {
+                  'Content-Type': 'multipart/form-data',
+              }
+          })
+          .then((response) => {
+              this.increments = response.data.sort((a, b) => a.limit - b.limit)
+              this.loading = false
+          })
+          .catch((error) => {
+              this.loading = false
+          })
+    },
+
     formatNumber(value) {
       return value.toLocaleString("en-US", { maximumFractionDigits: 0 })
     },
+
+    calculateIncrement(currentValue) {
+      // Buscar el incremento correspondiente basado en el currentValue
+
+      for (let i = 0; i < this.increments.length; i++) {
+        if (currentValue <= this.increments[i].limit) {
+          return this.increments[i].increment;
+        }
+      }
+      // Si no se encuentra ningún incremento, devolver 1000 o un valor predeterminado
+      return 1000; // o un valor predeterminado según tu lógica
+    },
+
 
     handleInput(event) {
       console.log(event.target.value)
@@ -963,6 +1102,7 @@ export default {
       console.log("inputValue",inputValue)
       const value = parseFloat(inputValue.replace(/,/g, ""))
       console.log('value',value)
+
       if (isNaN(value)) {
         this.manualInputAmount = ""
         this.formattedManualInputAmount = ""
@@ -970,8 +1110,6 @@ export default {
         this.manualInputAmount = String(value)
         this.formattedManualInputAmount = this.formatNumber(value)
       }
-      console.log('this.manualInputAmount',this.manualInputAmount)
-      console.log('this.formattedManualInputAmount',this.formattedManualInputAmount)
     },
 
   }

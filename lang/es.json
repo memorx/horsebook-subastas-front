@@ -201,6 +201,7 @@
         "stayWithUsMsg": "QUÉDATE CON NOSOTROS SEGUIMOS CON LA SUBASTA EN VIVO",
         "winnerCongratsMsg": "FELICIDADES HAS GANADO LA SUBASTA DE {wonHorse} POR ${lastOffer} USD",
         "winnerMsg": "{winnerName} HA GANADO LA SUBASTA DE {wonHorse} POR ${lastOffer} USD",
+        "preBidWinnerMsg": "{winnerName} HA GANADO LA PREOFERTA DE ESTE CABALLO",
         "horseAuctionIsComming": "LA SUBASTA DE ESTE CABALLO ESTÁ POR COMENZAR",
         "horsePrebidIsComming": "LA PREOFERTA DE ESTE CABALLO ESTÁ POR COMENZAR",
         "prebidIsEnded": "LA PRE OFERTA HA TERMINADO",
@@ -246,11 +247,13 @@
         "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
         "youAreTheDiscountWinnerMsg": "Has ganado {prebidWinnerDiscount}% de descuento extra",
         "youAreTheDPrebidWinner": "Eres el ganador de de la preoferta este caballo",
-        "discountByHorseMsg": "**Los descuentos aplican por cada caballo",
+        "discountByHorseMsg": "**Los descuentos aplican por cada caballo, es necesario ganar el caballo para recibir el descuento.",
         "IN PERSON": "EN PERSONA",
         "Call": "EN LLAMADA",
         "aprrovedToOffer": "¡Has sido aprobado para ofertar!",
-        "rejectedToOffer": "¡Has sido rechazado para ofertar!"
+        "rejectedToOffer": "¡Has sido rechazado para ofertar!",
+        "incrementValidationErrorTitle": "Oferta no permitida",
+        "incrementValidationError": "La oferta debe aumentar en múltiplos de {increment} ¿deseas subirla a {suggestedAmount}?"
     },
     "horse": {
         "dateOfBirth": "Fecha de nacimiento",
