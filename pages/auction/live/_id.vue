@@ -204,6 +204,7 @@
                       :horseID="horseID"
                       :bids="this.bids"
                       :hasBid="this.hasBid"
+                      :privateInformation="this.privateInformation"
                     />
                   </div>
                 </div>
@@ -462,6 +463,7 @@ export default {
       taxes: 0,
       confirmedAmount: "",
       prebidWinnerDiscount: 0,
+      privateInformation: true,
       increments: [],
     }
   },
@@ -834,6 +836,7 @@ export default {
           this.commission = response.data.commission
           this.taxes = response.data.taxes
           this.prebidWinnerDiscount = response.data.prebid_winner_discount
+          this.privateInformation = response.data.private_information
 
         })
         .catch((error) => {

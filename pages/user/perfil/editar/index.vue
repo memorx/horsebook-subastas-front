@@ -77,7 +77,7 @@
       <div class="border-b border-gray-300 my-4"></div>
       <div class="grid md:grid-cols-4 grid-cols-1 gap-4 mb-5">
         <div class="flex flex-col">
-          <label class="text-black-600 font-medium pr-2">{{ $t('profile.nacionality') }}:</label>
+          <label class="text-black-600 font-medium pr-2">{{ $t('profile.nationality') }}:</label>
           <select
             v-if="nationalities.length > 0"
             v-model="selectedNationalityCode"

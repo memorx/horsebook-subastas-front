@@ -140,8 +140,7 @@
                               </div>
                            </div>
                         </div>
-                        <button type="button"
-                           class="lg:px-12 px-6 md:px-8 py-2 border-1 border-custom-gold rounded-2xl buttonClass w-full bg-[#BDBDBD] text-white  uppercase extrabold text-base lg:text-xl"
+                        <button class="bg-black py-3 px-5 text-white rounded-lg uppercase font-bold" type="button"
                            @click="goToAuctionDetail(auction)">
                            {{ $t('home.auction.participateInTheAuction') }}
                         </button>

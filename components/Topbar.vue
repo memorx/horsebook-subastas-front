@@ -4,7 +4,7 @@
         <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent" >
             <!-- Logo or brand -->
             <nuxt-link :to="localePath('/')">
-                <img src="../public/image_la_silla.png" alt="logo" style="width: 40px;">
+                <img src="../public/image_la_silla.png" alt="logo" style="width: 140px;">
             </nuxt-link>
 
             <!-- Navigation items -->

@@ -72,7 +72,7 @@
         "fathersSurname": "Apellido Paterno",
         "mothersMaidenName": "Apellido Materno",
         "birthdate": "Fecha de Nacimiento",
-        "nacionality": "Nacionalidad",
+        "nationality": "Nacionalidad",
         "country": "País",
         "state": "Estado",
         "city": "Ciudad",
