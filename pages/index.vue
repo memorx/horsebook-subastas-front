@@ -1,6 +1,6 @@
 <template>
-   <div class="h-auto flex justify-center md:px-4 bg-transparent ">
-      <div class="w-11/12 flex flex-col items-center sm:space-x-4">
+   <div class="h-auto flex justify-center md:px-4 bg">
+      <div class="w-11/12 flex flex-col items-center sm:space-x-4 bg-transparent">
 
          <!-- Main section web -->
          <div class="items-center justify-center md:grid  h-auto md:h-1/2 lg:h-screen w-full my-12 md:my-6 grid-1 md:grid-cols-2 gap-4">
@@ -449,6 +449,20 @@ export default {
    background-repeat: no-repeat;
    height: 305px;
    width: 330px;
+}
+
+.bg {
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, .4), rgba(0, 0, 0, 1)), url('../public/landing-background.jpeg');
+    background-size: 150%;
+    background-position: center calc(0% - 10%);
+    background-repeat: no-repeat;
+}
+@media only screen and (max-width: 1024px) {
+    .bg {
+      background-image: linear-gradient(to bottom, rgba(0, 0, 0, .4), rgba(0, 0, 0, 1)), url('../public/landing-bg.png');
+      background-position: center top;
+      background-size: 100%;
+    }
 }
 
 @keyframes blink {
