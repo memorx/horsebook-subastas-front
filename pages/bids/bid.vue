@@ -565,6 +565,7 @@ export default {
       taxes: 0,
       confirmedAmount: "",
       increments: [],
+      incrementHistory: [],
     }
   },
   computed: {
@@ -666,37 +667,45 @@ export default {
 
     },
 
-    validateManualAmount() {
+    validateIncrement(currentValue, amount) {
+      //console.log('validateIncrement', currentValue, amount)
+      if(currentValue < amount) {
+        currentValue = this.addIncrement(currentValue)
+        return this.validateIncrement(currentValue, amount)
+      } else {
+          return currentValue
+      }
 
+    },
+
+    addIncrement(currentValue) {
+      let incrementAmount = this.calculateIncrement(currentValue)
+      currentValue += incrementAmount
+      return currentValue
+    },
+
+    validateManualAmount() {
       let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
       let manualInputAmount = parseInt(this.manualInputAmount.replace(/,/g, ""))
 
       if(!manualInputAmount)
         return false
 
-      let incrementAmount = this.calculateIncrement(lastOffer)
-      let diff =  manualInputAmount - lastOffer
+      let suggestedAmount = this.validateIncrement(lastOffer, manualInputAmount)
+      let minAmount = this.addIncrement(lastOffer)
 
-      let module = diff % incrementAmount
-      let factor = Math.ceil( diff / incrementAmount )
-      let minAmount = lastOffer + incrementAmount
-      // console.log('manualInputAmount', this.manualInputAmount)
-      // console.log('diff', diff)
-      // console.log('lastOffer', lastOffer)
-      // console.log('module', module)
-      // console.log('factor', factor)
-      if( manualInputAmount < minAmount || module != 0) {
-        let suggestedAmount = null
+      if(suggestedAmount === manualInputAmount) {
+        return true
+      } else {
+
         if(manualInputAmount < minAmount){
           suggestedAmount = minAmount
-        } else {
-          suggestedAmount = lastOffer + incrementAmount * factor
         }
 
-        console.log('suggestedAmount', suggestedAmount)
+        // console.log('suggestedAmount', suggestedAmount)
         Swal.fire({
           title: this.$t('bids.incrementValidationErrorTitle'),
-          text: this.$t('bids.incrementValidationError', {"increment":  '$'+this.formatNumber(incrementAmount), "suggestedAmount": '$'+this.formatNumber(suggestedAmount) }),
+          text: this.$t('bids.incrementValidationError', { "suggestedAmount": '$'+this.formatNumber(suggestedAmount) }),
           icon: 'error',
           showCancelButton: true,
           confirmButtonText: this.$t('general.yes'),
@@ -715,13 +724,8 @@ export default {
             this.formattedManualInputAmount = this.formatNumber(baseIncrement)
           }
         })
-
         return false
-      } else {
-        return true
       }
-
-
     },
 
     updateEditAmount(value) {
@@ -1013,24 +1017,24 @@ export default {
 
     addThousand() {
       let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
-      let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
       let incrementAmount = this.calculateIncrement(currentValue)
       currentValue += incrementAmount
+      this.incrementHistory.push(currentValue)
       this.inputAmount = currentValue.toLocaleString("en-US")
     },
 
     substractThousand() {
-      let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
-      let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
-      let incrementAmount = this.calculateIncrement(currentValue)
-      let minIncrement = this.calculateIncrement(lastOffer)
-      let minAmount = lastOffer + minIncrement
-      let amount = currentValue - incrementAmount
-      if(amount < minAmount) {
-        this.inputAmount = minAmount.toLocaleString("en-US")
+      let amount
+      if (this.incrementHistory.length === 0) {
+        console.log("No hay historial para retroceder.")
+        amount = this.getIncrement()
       } else {
-        this.inputAmount = amount.toLocaleString("en-US")
+        let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
+        amount = this.incrementHistory.pop()
+        if(currentValue === amount)
+          amount = this.incrementHistory.pop()
       }
+      this.inputAmount = amount.toLocaleString("en-US")
     },
 
     parseFetchedAmount(value) {
