@@ -253,7 +253,7 @@
         "aprrovedToOffer": "¡Has sido aprobado para ofertar!",
         "rejectedToOffer": "¡Has sido rechazado para ofertar!",
         "incrementValidationErrorTitle": "Oferta no permitida",
-        "incrementValidationError": "La oferta debe aumentar en múltiplos de {increment} ¿deseas subirla a {suggestedAmount}?"
+        "incrementValidationError": "¿Deseas subirla a {suggestedAmount}?"
     },
     "horse": {
         "dateOfBirth": "Fecha de nacimiento",

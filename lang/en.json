@@ -253,7 +253,7 @@
         "aprrovedToOffer": "You have been approved to bid!",
         "rejectedToOffer": "You have been rejected to bid!",
         "incrementValidationErrorTitle": "Offer not allowed",
-        "incrementValidationError": "The bid must increase by multiples of {increment} do you want to raise it to {suggestedAmount}?"
+        "incrementValidationError": "Do you want to raise it to {suggestedAmount}?"
     },
     "horse": {
         "dateOfBirth": "Date of birth",

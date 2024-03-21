@@ -107,13 +107,18 @@ export default {
     locales: [
       {
         code: 'en',
-        name: 'english',
+        name: 'English',
         file: 'en.json'
       },
       {
         code: 'es',
         name: 'Español',
         file: 'es.json'
+      },
+      {
+        code: 'fr',
+        name: 'French',
+        file: 'fr.json'
       }
     ],
     lazy: true,
