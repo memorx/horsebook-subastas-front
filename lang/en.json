@@ -72,7 +72,7 @@
         "fathersSurname": "Lastname",
         "mothersMaidenName": "Mothers Maiden Name",
         "birthdate": "Birthdate",
-        "nacionality": "Nacionality",
+        "nationality": "nationality",
         "country": "Country",
         "state": "State",
         "city": "City",
@@ -118,7 +118,7 @@
         "news": {
             "title": "News",
             "paragraph": "english news paragraph",
-            "button": "view all",
+            "button": "see all",
             "buttonViewMore": "Read more"
         },
         "us": {
@@ -201,6 +201,7 @@
         "stayWithUsMsg": "STAY WITH US WE CONTINUE WITH THE LIVE AUCTION",
         "winnerCongratsMsg": "CONGRATULATIONS YOU WON THE {wonHorse} AUCTION FOR ${lastOffer} USD",
         "winnerMsg": "{winnerName} HAS WON THE {wonHorse} AUCTION FOR ${lastOffer} USD",
+        "preBidWinnerMsg": "{winnerName} HAS WON THE PREBID FOR THIS HORSE",
         "horseAuctionIsComming": "THE AUCTION OF THIS HORSE IS ABOUT TO BEGIN",
         "horsePrebidIsComming": "THE PREBID ON THIS HORSE IS ABOUT TO BEGIN",
         "horseAuctionIsLive": "THE AUCTION FOR THIS HORSE IS LIVE",
@@ -250,7 +251,9 @@
         "IN PERSON": "IN PERSON",
         "Call": "IN CALL",
         "aprrovedToOffer": "You have been approved to bid!",
-        "rejectedToOffer": "You have been rejected to bid!"
+        "rejectedToOffer": "You have been rejected to bid!",
+        "incrementValidationErrorTitle": "Offer not allowed",
+        "incrementValidationError": "Do you want to raise it to {suggestedAmount}?"
     },
     "horse": {
         "dateOfBirth": "Date of birth",

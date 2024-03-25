@@ -97,7 +97,7 @@
                   <div class="flex justify-center rounded-t-md">
                     <div class="mx-10 md:mx-0 my-10">
                       <p class="uppercase">{{ $t('cron.timeLeft')}}</p>
-                      <div class="flex flex-row md:items-center">
+                      <div class="flex flex-row justify-center md:items-center">
                         <div class="mx-5">
                           <p class="text-center text-5xl mb-2 font-bold">
                             {{ bidTime.days }}
@@ -450,6 +450,8 @@ import modal from "../../components/bid/modal.vue"
 import horseStatus from "../../components/bid/horseStatus.vue"
 import statusBid from "../../components/bid/statusBid.vue"
 import ReconnectingWebSocket from "reconnecting-websocket"
+import Swal from 'sweetalert2'
+
 
 export default {
   components: {
@@ -562,6 +564,8 @@ export default {
       commission: 0,
       taxes: 0,
       confirmedAmount: "",
+      increments: [],
+      incrementHistory: [],
     }
   },
   computed: {
@@ -613,6 +617,7 @@ export default {
     async initilize() {
       this.fetchGenres()
       this.init()
+      await this.loadIncrements()
       this.startAuctionSocket()
       this.$store.commit('setLayoutMode', 'lightMode'); // set to 'lightMode' or 'default'
       this.$store.commit('setTextColorTopBar', 'text-black'); // set to 'text-black' or 'text-white'
@@ -640,18 +645,89 @@ export default {
       }
     },
     showManualInputAmount() {
-      console.log('manual input activado')
-      this.manualInputAmount = this.inputAmount
+      let baseIncrement =this.getIncrement()
+      this.manualInputAmount = String(baseIncrement)
+      this.formattedManualInputAmount = this.formatNumber(baseIncrement)
+
       this.showInput = true
       this.$nextTick(() => {
         this.$refs.manualInputAmount.focus()
+        this.$refs.manualInputAmount.select()
       })
     },
+
     assignManualInputAmount() {
+      if(!this.validateManualAmount())
+        return
+
       this.showInput = false
-      if (this.inputAmount <= this.manualInputAmount)
+      if (this.inputAmount <= this.manualInputAmount){
         this.amountBase = this.manualInputAmount
+      }
+
     },
+
+    validateIncrement(currentValue, amount) {
+      //console.log('validateIncrement', currentValue, amount)
+      if(currentValue < amount) {
+        currentValue = this.addIncrement(currentValue)
+        return this.validateIncrement(currentValue, amount)
+      } else {
+          return currentValue
+      }
+
+    },
+
+    addIncrement(currentValue) {
+      let incrementAmount = this.calculateIncrement(currentValue)
+      currentValue += incrementAmount
+      return currentValue
+    },
+
+    validateManualAmount() {
+      let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
+      let manualInputAmount = parseInt(this.manualInputAmount.replace(/,/g, ""))
+
+      if(!manualInputAmount)
+        return false
+
+      let suggestedAmount = this.validateIncrement(lastOffer, manualInputAmount)
+      let minAmount = this.addIncrement(lastOffer)
+
+      if(suggestedAmount === manualInputAmount) {
+        return true
+      } else {
+
+        if(manualInputAmount < minAmount){
+          suggestedAmount = minAmount
+        }
+
+        // console.log('suggestedAmount', suggestedAmount)
+        Swal.fire({
+          title: this.$t('bids.incrementValidationErrorTitle'),
+          text: this.$t('bids.incrementValidationError', { "suggestedAmount": '$'+this.formatNumber(suggestedAmount) }),
+          icon: 'error',
+          showCancelButton: true,
+          confirmButtonText: this.$t('general.yes'),
+          cancelButtonText: this.$t('general.cancel')
+        }).then((result) => {
+          this.showInput = false
+          if (result.isConfirmed) {
+            this.manualInputAmount = String(suggestedAmount)
+            this.formattedManualInputAmount = this.formatNumber(suggestedAmount)
+            this.enableModal()
+
+          } else {
+            let baseIncrement =this.getIncrement()
+            this.inputAmount = this.formatNumber(baseIncrement)
+            this.manualInputAmount = String(baseIncrement)
+            this.formattedManualInputAmount = this.formatNumber(baseIncrement)
+          }
+        })
+        return false
+      }
+    },
+
     updateEditAmount(value) {
       this.isEditingAmount = value
     },
@@ -796,42 +872,21 @@ export default {
           this.lastOffer = parseInt(
             this.bids[0]?.amount
           ).toLocaleString("en-US")
-          let currentValue = parseInt(
-            this.formData?.amount.replace(/,/g, "")
-          )
-          if (!this.isEditingAmount) {
-            let InputValue = parseInt(this.inputAmount.replace(/,/g, ""))
-          }
-          if (currentValue >= 30000) {
-            this.inputAmount = (
-              parseInt(this.bids[0]?.amount) + 500
-            ).toLocaleString("en-US")
-            if (!this.isEditingAmount) {
-              this.inputAmount = (
-                parseInt(this.bids[0]?.amount) + 500
-              ).toLocaleString("en-US")
-            }
-          } else {
-            this.inputAmount = (
-              parseInt(this.bids[0]?.amount) + 1000
-            ).toLocaleString("en-US")
-            if (!this.isEditingAmount) {
-              this.inputAmount = (
-                parseInt(this.bids[0]?.amount) + 1000
-              ).toLocaleString("en-US")
-            }
-          }
+
+          this.inputAmount = this.getIncrement().toLocaleString("en-US")
+
         } else if (this.horseData.final_amount) {
           this.formData.amount = parseInt(
             this.horseData.final_amount,
             10
           ).toLocaleString("en-US")
-          if (!this.isEditingAmount) {
-            this.inputAmount = (parseInt(
-              this.horseData.final_amount,
-              10
-            ) + 1000).toLocaleString("en-US")
-          }
+
+          this.lastOffer = parseInt(
+            this.horseData.final_amount
+          ).toLocaleString("en-US")
+
+          this.inputAmount = this.getIncrement().toLocaleString("en-US")
+
         } else {
           this.formData.amount = (1000).toLocaleString("en-US")
           this.inputAmount = (1000).toLocaleString("en-US")
@@ -954,25 +1009,34 @@ export default {
         return null
       }
     },
+    getIncrement() {
+      let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
+      let incrementAmount = this.calculateIncrement(lastOffer)
+      return incrementAmount + lastOffer
+    },
+
     addThousand() {
-      // let currentValue = parseInt(this.formData?.amount.replace(/,/g, ""))
       let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
-      if (currentValue >= 30000) {
-        currentValue += 500
-      } else {
-        currentValue += 1000
-      }
+      let incrementAmount = this.calculateIncrement(currentValue)
+      currentValue += incrementAmount
+      this.incrementHistory.push(currentValue)
       this.inputAmount = currentValue.toLocaleString("en-US")
     },
+
     substractThousand() {
-      let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
-      if (currentValue >= 30000) {
-        currentValue -= 500
+      let amount
+      if (this.incrementHistory.length === 0) {
+        console.log("No hay historial para retroceder.")
+        amount = this.getIncrement()
       } else {
-        currentValue -= 1000
+        let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
+        amount = this.incrementHistory.pop()
+        if(currentValue === amount)
+          amount = this.incrementHistory.pop()
       }
-      this.inputAmount = currentValue.toLocaleString("en-US")
+      this.inputAmount = amount.toLocaleString("en-US")
     },
+
     parseFetchedAmount(value) {
       let lastOfferInt = parseInt(value?.replace(/,/g, ""))
       lastOfferInt += 1000
@@ -1158,6 +1222,28 @@ export default {
           console.error(error)
         })
     },
+
+    async loadIncrements(){
+
+    if(!this.bidId) return
+
+    const url = `${this.$config.baseURL}/amount-limit-increment?auction=${this.bidId}`
+    this.loading = true
+    await this.$axios
+        .get(url, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        })
+        .then((response) => {
+            this.increments = response.data.sort((a, b) => a.limit - b.limit)
+            this.loading = false
+        })
+        .catch((error) => {
+            this.loading = false
+        })
+    },
+
     statusOffer(BidDate) {
       const CurrentDate = new Date()
       const StartBid = new Date(BidDate)
@@ -1199,6 +1285,16 @@ export default {
       return value.toLocaleString("en-US", { maximumFractionDigits: 0 })
     },
 
+    calculateIncrement(currentValue) {
+      // Buscar el incremento correspondiente basado en el currentValue
+      for (let i = 0; i < this.increments.length; i++) {
+        if (currentValue <= this.increments[i].limit) {
+          return this.increments[i].increment;
+        }
+      }
+      // Si no se encuentra ningún incremento, devolver 1000 o un valor predeterminado
+      return 1000; // o un valor predeterminado según tu lógica
+    },
     handleInput(event) {
       console.log(event.target.value)
       const inputValue = event.target.value.replace(/[^0-9,]/g, "")

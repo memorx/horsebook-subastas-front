@@ -26,7 +26,7 @@
             </p>
             <p class="text-md font-bold mb-5">{{ $t('login.email') }}: <span class="font-medium">{{ email?.email }}</span></p>
             <p class="text-md font-bold mb-5">{{ $t('signup.phone') }}: <span class="font-medium">{{ email?.phone }}</span></p>
-            <p class="text-md font-bold mb-5">{{ $t('profile.nacionality') }}: <span class="font-medium">{{ selectedNationality }}</span>
+            <p class="text-md font-bold mb-5">{{ $t('profile.nationality') }}: <span class="font-medium">{{ selectedNationality }}</span>
             </p>
           </div>
           <div class="flex flex-col">

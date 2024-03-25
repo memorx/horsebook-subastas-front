@@ -21,6 +21,7 @@ export const mutations = {
   },
   setIsUserAbleToBid(state, isAbleToBid) {
     state.isUserAbleToBid = isAbleToBid
+    localStorage.setItem("isUserAbleToBid", isAbleToBid)
   },
   setSingUpData(state, value) {
     state.singUpData = value
@@ -69,7 +70,7 @@ export const actions = {
   async initializeWebSocketUserStatus({ commit, state }) {
     // set the user id in the store & set state of
     if (!state.websocket && state.isAuthenticated && state.user.id) {
-      console.log("websocket inside")
+      // console.log("websocket inside")
       const url = `${this.$config.baseURLWS}/user-status/${state.user.id}`
       const socket = await new WebSocket(url)
 
@@ -121,4 +122,3 @@ export const actions = {
   }
   // ... other actions
 }
-

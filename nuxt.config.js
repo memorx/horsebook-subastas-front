@@ -3,12 +3,12 @@ require('dotenv').config()
 export default {
   components: true,
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
-  ssr: false,
+  target: 'server',
+  ssr: true,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Horsebook',
+    title: 'Subasta La Silla',
     htmlAttrs: {
       lang: 'es'
     },
@@ -78,6 +78,21 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    /*
+    splitChunks: {
+      layouts: false,
+      pages: true,
+      commons: true,
+      vendors: true,
+      runtime: true,
+      pagesSplit: true,
+      pagesSplitThreshold: 1000, // Umbral de tamaño para dividir las páginas
+      commonsSplit: true,
+      commonsSplitThreshold: 10000, // Umbral de tamaño para dividir los módulos comunes
+      client: true,
+      server: true
+    }
+    */
   },
   publicRuntimeConfig: {
     // baseURL: 'http://localhost:8000/api'
@@ -92,13 +107,18 @@ export default {
     locales: [
       {
         code: 'en',
-        name: 'english',
+        name: 'English',
         file: 'en.json'
       },
       {
         code: 'es',
         name: 'Español',
         file: 'es.json'
+      },
+      {
+        code: 'fr',
+        name: 'French',
+        file: 'fr.json'
       }
     ],
     lazy: true,
