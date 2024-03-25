@@ -136,6 +136,19 @@ export default {
         //  listen for resize events
         window.addEventListener('resize', this.handleResize);
         this.handleResize(); // Call it initially to set the width
+
+        const isAuthenticated = this.$cookies.get('access_token')
+        if (isAuthenticated) {
+            this.$store.commit('authenticate', true)
+            const user = JSON.parse(localStorage.getItem("setUser"))
+            console.log('user', user)
+            this.$store.commit("setUser", {
+                user: user.user,
+                token: user.token,
+                id: user.id
+            })
+            this.$store.commit("setIsUserAbleToBid", localStorage.getItem("isUserAbleToBid"))
+        }
     },
     beforeDestroy() {
         this.intentionalCloseSockets();
@@ -197,6 +210,7 @@ export default {
             this.$store.commit("closeWebSocket");
             Cookies.remove('access_token');
             localStorage.removeItem("setUser");
+            localStorage.removeItem("isUserAbleToBid");
             this.$router.push(this.localePath('/'))
         },
         async handleScrollIntoContact() {
@@ -230,7 +244,7 @@ export default {
             this.auctionSocket = new ReconnectingWebSocket(auctionUrl);
 
             this.auctionSocket.addEventListener('open', (event) => {
-                console.log('Conexión abierta:', event);
+                //console.log('Conexión abierta:', event);
             });
 
             this.auctionSocket.addEventListener('message', (event) => {

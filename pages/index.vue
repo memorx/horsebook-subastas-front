@@ -293,7 +293,7 @@ export default {
                      }
 
                      this.otherAuctions.push(auction)
-                     console.log('next auction', this.nextAuction)
+                     //console.log('next auction', this.nextAuction)
                   }
                }
                if(this.nextAuction) {
@@ -302,7 +302,7 @@ export default {
 
             })
 
-            console.log('otherAuctions', this.otherAuctions)
+            //console.log('otherAuctions', this.otherAuctions)
 
             this.loading = false
          })
