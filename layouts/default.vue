@@ -48,7 +48,7 @@ export default {
         }
     },
     async mounted() {
-
+        /* comment google translate option
         window.googleTranslateElementInit = () => {
             new window.google.translate.TranslateElement({
             pageLanguage: 'es', // Idioma predeterminado
@@ -63,7 +63,7 @@ export default {
         script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
         script.async = true;
         document.head.appendChild(script);
-
+        */
         await this.getUserInfo()
         this.checkAndInitializeWebSocket();
         if (!window.WebSocket) {

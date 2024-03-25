@@ -6,7 +6,7 @@
           <table class="min-w-full" :key="tableKey">
             <thead>
               <tr>
-                <th class="table-header capitalize">{{ $t('bids.name') }}</th>
+                <th v-if="!privateInformation" class="table-header capitalize">{{ $t('bids.name') }}</th>
                 <th class="table-header capitalize">{{ $t('bids.nationality') }}</th>
                 <th class="table-header capitalize">{{ $t('bids.bid') }}</th>
                 <th class="table-header capitalize">{{ $t('bids.date') }}</th>
@@ -14,7 +14,7 @@
             </thead>
             <tbody style="font-size: 13px">
               <tr v-if="index < 20" v-for="(bid, index) in bids" :key="bid?.id">
-                <td class="table-cell border-y text-center">
+                <td v-if="!privateInformation" class="table-cell border-y text-center">
                   {{ parsedName(bid) }}
                 </td>
                 <td class="table-cell border-y text-center">
@@ -55,6 +55,9 @@ export default {
     },
     bids: {},
     hasBid:{
+      type: Boolean,
+    },
+    privateInformation: {
       type: Boolean,
     }
   },

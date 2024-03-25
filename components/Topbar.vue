@@ -4,7 +4,7 @@
         <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent" >
             <!-- Logo or brand -->
             <nuxt-link :to="localePath('/')">
-                <img src="../public/image_la_silla.png" alt="logo" style="width: 40px;">
+                <img src="../public/image_la_silla.png" alt="logo" style="width: 140px;">
             </nuxt-link>
 
             <!-- Navigation items -->
@@ -52,16 +52,18 @@
                                 buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
                                 containerClass="w-1/2" :onClick="logout" />
                         </div>
-                        <nuxt-link :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
-                            class="cursor-pointer" aria-haspopup="listbox" aria-expanded="true"
-                            aria-labelledby="listbox-label">
+                        <div class="relative w-16">
+                            <button @click="toggleDropdown" aria-haspopup="listbox" :aria-expanded="isDropdownOpen.toString()" aria-labelledby="listbox-label">
                             <span class="flex items-center">
-                                <img v-if="$i18n.locale === 'en'" src="../public/flag-mex.png" alt="mexico-flag"
-                                    class="mr-2 h-6 w-6 flex-shrink-0 rounded-full">
-                                <img v-if="$i18n.locale === 'es'" src="../public/flag-USA.png" alt="flag-usa"
-                                    class="mr-2 h-6 w-6 flex-shrink-0 rounded-full">
+                                <img :src="currentFlag" :alt="currentLocale" class="mr-2 h-4 w-auto">
                             </span>
-                        </nuxt-link>
+                            </button>
+                            <div v-if="isDropdownOpen" @click="toggleDropdown" class="absolute top-full left-0 mt-1 w-full bg-white border rounded shadow-lg">
+                                <nuxt-link v-if="locale!=currentLocale" v-for="(locale, index) in locales" :key="index" :to="switchLocalePath(locale)" @click="isDropdownOpen=false" class="block px-4 py-2 hover:bg-gray-100 flex items-center space-x-2">
+                                    <img :src="getFlag(locale)" :alt="locale" class="mr-2 h-4 w-auto">
+                                </nuxt-link>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,6 +126,7 @@ export default {
             isIntentionalReconnectAuction: false,
             moveToHome: false,
             windowWidth: window.innerWidth,
+            isDropdownOpen: false,
         }
     },
     mounted () {
@@ -133,6 +136,19 @@ export default {
         //  listen for resize events
         window.addEventListener('resize', this.handleResize);
         this.handleResize(); // Call it initially to set the width
+
+        const isAuthenticated = this.$cookies.get('access_token')
+        if (isAuthenticated) {
+            this.$store.commit('authenticate', true)
+            const user = JSON.parse(localStorage.getItem("setUser"))
+            console.log('user', user)
+            this.$store.commit("setUser", {
+                user: user.user,
+                token: user.token,
+                id: user.id
+            })
+            this.$store.commit("setIsUserAbleToBid", localStorage.getItem("isUserAbleToBid"))
+        }
     },
     beforeDestroy() {
         this.intentionalCloseSockets();
@@ -155,6 +171,15 @@ export default {
         },
         gradientMobileColor() {
             return 'bg-gradient-to-b from-[#353535] to-[#000000]'
+        },
+        locales() {
+            return this.$i18n.locales.map(locale => locale.code);
+        },
+        currentLocale() {
+            return this.$i18n.locale;
+        },
+        currentFlag() {
+            return this.getFlag(this.currentLocale);
         },
     },
     methods: {
@@ -185,6 +210,7 @@ export default {
             this.$store.commit("closeWebSocket");
             Cookies.remove('access_token');
             localStorage.removeItem("setUser");
+            localStorage.removeItem("isUserAbleToBid");
             this.$router.push(this.localePath('/'))
         },
         async handleScrollIntoContact() {
@@ -218,7 +244,7 @@ export default {
             this.auctionSocket = new ReconnectingWebSocket(auctionUrl);
 
             this.auctionSocket.addEventListener('open', (event) => {
-                console.log('Conexión abierta:', event);
+                //console.log('Conexión abierta:', event);
             });
 
             this.auctionSocket.addEventListener('message', (event) => {
@@ -262,6 +288,13 @@ export default {
                 this.$router.push({ path: this.localePath(path) })
             }
         },
+
+        toggleDropdown() {
+            this.isDropdownOpen = !this.isDropdownOpen;
+        },
+        getFlag(locale) {
+            return require(`~/public/flag-${locale}.png`)
+        }
     },
 }
 </script>
