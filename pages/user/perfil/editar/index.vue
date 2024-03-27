@@ -115,9 +115,10 @@
         <div class="flex flex-col">
           <label for="state" class="text-black-600 font-medium">{{ $t('profile.state') }}:</label>
           <select
-            v-if="states.length > 0"
             @change="() => { fetchCities() }"
             v-model="selectedStateCode"
+            :disabled="states.length === 0"
+            :class="states.length === 0 ? 'bg-gray-300' : ''"
             class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
             <option value="" class="text-gray-500 text-center" disabled>{{ $t('general.select') }}</option>
@@ -125,17 +126,13 @@
               {{ state.name }}
             </option>
           </select>
-          <select
-            v-else
-            disabled
-            class="w-full rounded-md px-4 py-2 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          ></select>
         </div>
         <div class="flex flex-col">
           <label for="state" class="text-black-600 font-medium">{{ $t('profile.city') }}:</label>
           <select
-            v-if="cities.length > 0"
             v-model="selectedCityCode"
+            :disabled="cities.length === 0"
+            :class="cities.length === 0 ? 'bg-gray-300' : ''"
             class="w-full rounded-md px-4 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           >
             <option value="" class="text-gray-500 text-center" disabled>{{ $t('general.select') }}</option>
@@ -143,11 +140,6 @@
               {{ city.name }}
             </option>
           </select>
-          <select
-            v-else
-            disabled
-            class="w-full rounded-md px-4 border bg-gray-300 border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-          ></select>
         </div>
       </div>
       <div class="grid md:grid-cols-4 grid-cols-1 gap-4 mb-5">
@@ -275,14 +267,14 @@ export default {
       selectedCountry: "",
       selectedCountryCode: "",
       selectedCity: "",
-      selectedCityCode: "",
+      selectedCityCode: null,
       cities: [],
       countries: [],
       states: [],
       nationalities: [],
       selectedDialCode: "",
       selectedState: "",
-      selectedStateCode: "",
+      selectedStateCode: null,
       selectedDialCode: "",
       selectedNationality: "",
       selectedNationalityCode: "",
@@ -348,6 +340,8 @@ export default {
         .catch((error) => {
           console
         })
+      this.selectedStateCode = null
+      this.selectedCityCode = null
     },
     async fetchCities() {
       const endpoint = "/cities"
@@ -366,6 +360,7 @@ export default {
         .catch((error) => {
           console
         })
+        this.selectedCityCode = null
     },
     async updateProfile() {
       this.email = []
