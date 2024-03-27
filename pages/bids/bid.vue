@@ -349,7 +349,7 @@
         {{ $t('horse.tabs.xRays')}}
       </button>
     </div>
-    <div class="flex flex-col md:flex-row -mx-4">
+    <div class="flex flex-col md:flex-row">
       <div style="flex: 7">
         <div class="flex flex-wrap">
           <div class="w-full">
@@ -357,7 +357,7 @@
             <div
               class="relative flex flex-col min-w-0 break-words w-full mb-6"
             >
-              <div class="px-4 flex-auto">
+              <div class="flex-auto">
                 <div class="tab-content tab-space">
                   <div
                     class="mb-4 bg-white p-5 mx-5"
