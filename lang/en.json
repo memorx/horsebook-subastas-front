@@ -103,7 +103,7 @@
     "home": {
         "main": {
             "title": "Welcome",
-            "paragraph": "english main paragraph",
+            "paragraph": "",
             "button": "Auctions"
         },
         "auction": {
@@ -117,8 +117,8 @@
         },
         "news": {
             "title": "News",
-            "paragraph": "english news paragraph",
-            "button": "see all",
+            "paragraph": "Quality is inherited",
+            "button": "Auctions",
             "buttonViewMore": "Read more"
         },
         "us": {

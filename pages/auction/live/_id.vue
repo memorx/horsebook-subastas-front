@@ -510,7 +510,7 @@ export default {
     },
 
     showManualInputAmount() {
-      let baseIncrement =this.getIncrement()
+      let baseIncrement = this.getIncrement()
       this.manualInputAmount = String(baseIncrement)
       this.formattedManualInputAmount = this.formatNumber(baseIncrement)
 
@@ -583,14 +583,19 @@ export default {
             this.enableModal()
 
           } else {
-            let baseIncrement =this.getIncrement()
-            this.inputAmount = this.formatNumber(baseIncrement)
-            this.manualInputAmount = String(baseIncrement)
-            this.formattedManualInputAmount = this.formatNumber(baseIncrement)
+            this.resetAmounts()
           }
         })
         return false
       }
+    },
+
+    resetAmounts() {
+      let baseIncrement = this.getIncrement()
+      this.inputAmount = this.formatNumber(baseIncrement)
+      this.manualInputAmount = ""
+      this.formattedManualInputAmount = ""
+      this.incrementHistory = []
     },
 
     updateEditAmount(value) {
@@ -628,6 +633,7 @@ export default {
 
     disableModal() {
       this.showModal = false
+      this.resetAmounts()
     },
 
     async intentionalCloseSockets() {
@@ -750,7 +756,7 @@ export default {
         }
 
         if (message.horses && message.horses.length > 0) {
-          console.log(this.item)
+
           this.item.horses.forEach((horse, key) => {
             const curHorse = message.horses.find( item => item.status === 'BIDDING' );
             if(curHorse.id != this.horseID){
@@ -829,7 +835,6 @@ export default {
       await this.$axios
         .get(url)
         .then((response) => {
-          console.log("llega al response", response)
           this.item.start_bid = response.data.start_bid
           this.item.start_pre_bid = response.data.start_pre_bid
           this.item.horses = response.data.horses
@@ -882,7 +887,6 @@ export default {
     substractThousand() {
       let amount
       if (this.incrementHistory.length === 0) {
-        console.log("No hay historial para retroceder.")
         amount = this.getIncrement()
       } else {
         let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
@@ -965,7 +969,6 @@ export default {
         })
         .then((response) => {
           this.prebidWinner = response.data.user_profile
-          console.log("this.prebidWinner", this.prebidWinner)
         })
         .catch((error) => {
           // Handle errors
@@ -1103,11 +1106,8 @@ export default {
 
 
     handleInput(event) {
-      console.log(event.target.value)
       const inputValue = event.target.value.replace(/[^0-9,]/g, "")
-      console.log("inputValue",inputValue)
       const value = parseFloat(inputValue.replace(/,/g, ""))
-      console.log('value',value)
 
       if (isNaN(value)) {
         this.manualInputAmount = ""
