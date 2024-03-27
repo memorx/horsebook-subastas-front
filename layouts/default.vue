@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="google_translate_element" class="mx-2"></div>
+        <div id="google_translate_element" class="w-full overflow-x-hidden"></div>
         <!-- Parent div with black background -->
         <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
             <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
@@ -247,6 +247,11 @@ export default {
 
 </script>
 <style>
+#google_translate_element {
+    width: 100%; /* Ancho máximo para que no sobrepase la pantalla */
+    margin: 0 auto; /* Centrar el widget horizontalmente */
+    overflow-x: hidden; /* Ocultar cualquier desbordamiento horizontal */
+}
 #google_translate_element .goog-te-gadget {
     display: flex;
     align-items: center;

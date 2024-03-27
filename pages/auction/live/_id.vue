@@ -261,7 +261,7 @@
               >
             </p>
           </div>
-          <div class="mt-4 flex flex-col md:flex-row -mx-4">
+          <div class="mt-4 flex flex-col md:flex-row">
             <div style="flex: 7">
             <div class="flex flex-wrap">
               <div class="w-full">
