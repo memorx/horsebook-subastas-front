@@ -83,7 +83,7 @@
         "frontIdentityDoc": "Documento de identidad Enfrente",
         "backIdentityDoc": "Documento de identidad Atras",
         "changeImage": "Cambiar imagen",
-        "choooseImage": "Elige una imagen",
+        "chooseImage": "Elige una imagen",
         "noDocumentUploaded": "No existe un documento cargado",
         "auctions": {
             "history": "Historial de Subastas",
@@ -124,12 +124,12 @@
         "us": {
             "title": "Nosotros",
             "subTitle": "Asiste al lugar de remate o de forma remota",
-            "paragraph": "Podrás ver, escuchar y participar haciendo tus posturas en tiempo real. Organiza tu propio remate, puedes registrarte y subir los caballos que quieres subastar, deberas de pagar la comision por la publicacion del articulo y especificar las condiciones de reamte del mismo.",
+            "paragraph": "Podrás ver, escuchar y participar haciendo tus posturas en tiempo real. Organiza tu propio remate, puedes registrarte y subir los caballos que quieres subastar, deberas de pagar la comision por la publicacion del articulo y especificar las condiciones de remate del mismo.",
             "button": "Ver más"
         },
         "contact": {
             "title": "Contacto",
-            "subTitle": "¡Nos interesa saber de ti! ",
+            "subTitle": "¡Nos interesa saber de ti!",
             "paragraph": "Si tienes alguna duda de como participar en nuestras subastas o quieres ponerte en contacto con nosotros, envíanos un mesaje en el siguiente formulario.",
             "button": "enviar",
             "form": {
