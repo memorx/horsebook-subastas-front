@@ -55,16 +55,9 @@
                             {{ $t('topBar.news') }}
                         </nuxt-link>
                     </li>
-                    <li>
-                        <nuxt-link :to="$i18n.locale === 'es' ? switchLocalePath('en') : switchLocalePath('es')"
-                            class="cursor-pointer" aria-haspopup="listbox" aria-expanded="true"
-                            aria-labelledby="listbox-label">
-                            <span class="flex items-center">
-                                <img v-if="$i18n.locale === 'en'" src="../public/flag-mex.png" alt="mexico-flag"
-                                    class="mr-2 h-6 w-6 flex-shrink-0 rounded-full">
-                                <img v-if="$i18n.locale === 'es'" src="../public/flag-USA.png" alt="flag-usa"
-                                    class="mr-2 h-6 w-6 flex-shrink-0 rounded-full">
-                            </span>
+                    <li class="flex flex-row">
+                        <nuxt-link v-for="(locale, index) in locales" :key="index" :to="switchLocalePath(locale)" @click="isDropdownOpen=false" class="px-4 py-2 hover:bg-gray-100 flex items-center">
+                            <img :src="getFlag(locale)" :alt="locale" class="mr-2 h-4 w-auto">
                         </nuxt-link>
                     </li>
 
@@ -113,6 +106,15 @@ export default {
                 return this.$route.path === route ? 'text-custom-gold' : this.$store.state.textColorTopBar ?  `text-white lg:${this.$store.state.textColorTopBar}` : 'text-white';
             }
         },
+        locales() {
+            return this.$i18n.locales.map(locale => locale.code);
+        },
+        currentLocale() {
+            return this.$i18n.locale;
+        },
+        currentFlag() {
+            return this.getFlag(this.currentLocale);
+        },
     },
     methods: {
         navigateToLogin() {
@@ -147,6 +149,9 @@ export default {
         closeMenu() {
             this.$emit('handle-close-menu');
         },
+        getFlag(locale) {
+            return require(`~/public/flag-${locale}.png`)
+        }
     }
 };
 </script>

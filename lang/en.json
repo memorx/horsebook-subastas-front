@@ -103,7 +103,7 @@
     "home": {
         "main": {
             "title": "Welcome",
-            "paragraph": "english main paragraph",
+            "paragraph": "",
             "button": "Auctions"
         },
         "auction": {
