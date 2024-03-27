@@ -718,14 +718,19 @@ export default {
             this.enableModal()
 
           } else {
-            let baseIncrement =this.getIncrement()
-            this.inputAmount = this.formatNumber(baseIncrement)
-            this.manualInputAmount = String(baseIncrement)
-            this.formattedManualInputAmount = this.formatNumber(baseIncrement)
+            this.resetAmounts()
           }
         })
         return false
       }
+    },
+
+    resetAmounts() {
+      let baseIncrement = this.getIncrement()
+      this.inputAmount = this.formatNumber(baseIncrement)
+      this.manualInputAmount = ""
+      this.formattedManualInputAmount = ""
+      this.incrementHistory = []
     },
 
     updateEditAmount(value) {
@@ -810,6 +815,7 @@ export default {
     },
     disableModal() {
       this.showModal = false
+      this.resetAmounts()
     },
     async startBidSocket() {
       if (this.socket && this.socket.readyState === WebSocket.OPEN) {
@@ -1026,7 +1032,7 @@ export default {
     substractThousand() {
       let amount
       if (this.incrementHistory.length === 0) {
-        console.log("No hay historial para retroceder.")
+        // console.log("No hay historial para retroceder.")
         amount = this.getIncrement()
       } else {
         let currentValue = parseInt(this.inputAmount.replace(/,/g, ""))
@@ -1037,12 +1043,6 @@ export default {
       this.inputAmount = amount.toLocaleString("en-US")
     },
 
-    parseFetchedAmount(value) {
-      let lastOfferInt = parseInt(value?.replace(/,/g, ""))
-      lastOfferInt += 1000
-      const lastOfferStr = lastOfferInt.toLocaleString("en-US")
-      return lastOfferStr
-    },
     preloadAmount() {
       const lastOffer = this.lastOffer
       const lastOfferStr = this.formData?.amount.toLocaleString("en-US")
@@ -1296,11 +1296,8 @@ export default {
       return 1000; // o un valor predeterminado según tu lógica
     },
     handleInput(event) {
-      console.log(event.target.value)
       const inputValue = event.target.value.replace(/[^0-9,]/g, "")
-      console.log("inputValue",inputValue)
       const value = parseFloat(inputValue.replace(/,/g, ""))
-      console.log('value',value)
       if (isNaN(value)) {
         this.manualInputAmount = ""
         this.formattedManualInputAmount = ""
@@ -1308,8 +1305,8 @@ export default {
         this.manualInputAmount = String(value)
         this.formattedManualInputAmount = this.formatNumber(value)
       }
-      console.log('this.manualInputAmount',this.manualInputAmount)
-      console.log('this.formattedManualInputAmount',this.formattedManualInputAmount)
+      // console.log('this.manualInputAmount',this.manualInputAmount)
+      // console.log('this.formattedManualInputAmount',this.formattedManualInputAmount)
     },
 
     goToHorse(id) {
