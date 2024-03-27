@@ -81,13 +81,13 @@
         <div class="flex flex-col p-4 w-full">
             <span class="text-white mb-2">Síguenos:</span>
             <div class="flex space-x-4">
-                <a href="https://instagram.com" target="_blank" class="text-white hover:text-gray-300">
+                <a href="https://www.instagram.com/clubhipicolasilla" target="_blank" class="text-white hover:text-gray-300">
                     <i class="fab fa-instagram fa-2x"></i>
                 </a>
-                <a href="https://facebook.com" target="_blank" class="text-white hover:text-gray-300">
+                <a href="https://www.facebook.com/clubhipicolasilla" target="_blank" class="text-white hover:text-gray-300">
                     <i class="fab fa-facebook fa-2x"></i>
                 </a>
-                <a href="https://youtube.com" target="_blank" class="text-white hover:text-gray-300">
+                <a href="https://www.youtube.com/@clubhipicolasilla6195" target="_blank" class="text-white hover:text-gray-300">
                     <i class="fab fa-youtube fa-2x"></i>
                 </a>
             </div>

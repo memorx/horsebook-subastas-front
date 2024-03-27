@@ -83,7 +83,7 @@
         "frontIdentityDoc": "Identity document in front",
         "backIdentityDoc": "Identity document in back",
         "changeImage": "Change image",
-        "choooseImage": "Chooose an image",
+        "chooseImage": "Chooose an image",
         "noDocumentUploaded": "There is no document uploaded",
         "auctions": {
             "history": "Auction History",
@@ -118,19 +118,19 @@
         "news": {
             "title": "News",
             "paragraph": "english news paragraph",
-            "button": "see all",
+            "button": "See all",
             "buttonViewMore": "Read more"
         },
         "us": {
-            "title": "english us title",
-            "subTitle": "english us subtitle",
-            "paragraph": "english us paragraph",
-            "button": "english us button"
+            "title": "Us",
+            "subTitle": "Attends at the auction site or remotely",
+            "paragraph": "You will be able to watch, listen and participate by placing your bids in real time. Organise your own auction, you can register and upload the horses you want to auction, you must pay the commission for the publication of the item and specify the auction conditions.",
+            "button": "More"
         },
         "contact": {
-            "title": "contact",
-            "subTitle": "english contact subtitle",
-            "paragraph": "english contact paragraph",
+            "title": "Contact",
+            "subTitle": "We are interested in hearing from you!",
+            "paragraph": "If you have any questions about how to participate in our auctions or want to contact us, send us a message in the following form.",
             "button": "submit",
             "form": {
                 "name": "name",

@@ -17,7 +17,7 @@
             </div>
 
             <!-- Image -->
-            <button v-if="nextAuction" @click="goToAuctionDetail(nextAuction)" exact class="w-45 mx-auto order-1 md:order-2 flex flex-col items-center justify-center space-y-4" :class="(nextAuction?.status == 'BIDDING') ? 'animate-blink' : ''">
+            <button v-if="nextAuction" @click="goToAuctionDetail(nextAuction)" exact class="w-full w-max-45 mx-auto order-1 md:order-2 flex flex-col items-center justify-center space-y-4 overflow-x-hidden" :class="(nextAuction?.status == 'BIDDING') ? 'animate-blink' : ''">
 
                   <ContentTile :title="nextAuction?.notes ? nextAuction?.notes : ''"
                      :paragraph="(nextAuction?.status == 'BIDDING') ? $t('home.auction.liveAuction') : $t('home.auction.auctionStartIn')" :buttonLabel="null" headingLevel="2"

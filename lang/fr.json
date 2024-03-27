@@ -83,7 +83,7 @@
         "frontIdentityDoc": "Document d'identité devant",
         "backIdentityDoc": "Document d'identité derrière",
         "changeImage": "Changer l'image",
-        "choooseImage": "Choisissez une image",
+        "chooseImage": "Choisissez une image",
         "noDocumentUploaded": "Aucun document téléchargé",
         "auctions": {
             "history": "Historique des enchères",
