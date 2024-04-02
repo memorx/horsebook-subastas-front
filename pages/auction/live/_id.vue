@@ -154,7 +154,7 @@
                         />
                       </div>
                     </div>
-                    <div class="lg:hidden text-center mt-5 w-full">
+                    <div class="lg:hidden text-center mt-5 w-full h-24 md:h-auto">
                       <SubmitAuthenticatedButton
                         :enable-modal="enableModal"
                         :button-text="$t('bids.offer')"
@@ -176,7 +176,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="prebidWinner.email === this.$store.state.user?.user" class="mb-2">
+                <div v-if="prebidWinner.email && prebidWinner.email === this.$store.state.user?.user" class="mb-2">
                   <p class="text-center text-lg text-green-900 font-bold">
                     {{ $t('bids.youAreTheDPrebidWinner') }}
                   </p>
@@ -270,7 +270,7 @@
                 <div
                   class="relative flex flex-col min-w-0 break-words w-full mb-6 rounded"
                 >
-                  <div class="px-4 flex-auto">
+                  <div class="flex-auto">
                     <div class="tab-content tab-space">
                       <div
                         class="mb-4 bg-white p-5 mx-5 rounded-lg"
