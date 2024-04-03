@@ -158,15 +158,11 @@ export default {
     async reSendCode() {
       this.loading = true
       const url = this.$config.baseURL + "/users/re-send-email/";
-      const token = `Token ${this.$config.apiToken}`
-      const headers = {
-        Authorization: token,
-      };
       const body = {
         "email": this.setUser.email
       }
       console.log(body, "BODY")
-      await this.$axios.$post(url, body, { headers })
+      await this.$axios.$post(url, body, {})
         .then((response) => {
           console.log(response);
           this.$toast.success(this.$t('login.resendCodeNotice'));
