@@ -1,68 +1,89 @@
 <template>
-  <div class="flex containerGeneral h-full bg-white">
-    <Loading v-if="loading"
-      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
-    <div class="flex items-center justify-center flex-1 rightSide">
-      <div class="flex flex-col items-center w-4/5 limiter">
-        <div class="logo mt-8">
-          <img src="../../../public/image_la_silla.png" alt="logo" />
-        </div>
-        <div class="flex flex-col items-center w-full mt-8 title">
-          <h1 class="sesion font-medium text-4xl text-black">Recuperar contraseña</h1>
-          <p class="horsebook font-normal text-base text-neutral-600">Confirme su nueva contraseña
-          </p>
-        </div>
-        <form class="w-full mt-12 space-y-6" @submit.prevent=validatePasswords>
-          <div class="flex flex-col w-full gap-6">
-            <div class="flex flex-col w-full ">
-              <div>
-                <label for="passwordOne" class="titleInput font-medium text-base text-black">
-                  Contraseña
-                </label>
-              </div>
-              <div class="place-items-end">
-                <label for="passwordOne" class="block text-sm font-medium text-red-800">
-                  {{ lenghterrorMessage }}
-                </label>
-              </div>
-            </div>
-            <input v-model="passwordOne" required type="password" name="passwordOne" id="passwordOne"
-              class="styleInput p-2 w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-              placeholder="Contraseña">
-
-          </div>
-          <div class="flex flex-col w-full gap-6">
-            <div class="flex flex-col w-full ">
-              <div>
-                <label for="passwordTwo" class="titleInput font-medium text-base text-black">
-                  Repita su contraseña
-                </label>
-              </div>
-              <div class="place-items-end">
-                <label for="passwordTwo" class="block text-sm font-medium text-red-800">
-                  {{ errorMessage }}
-                </label>
-              </div>
-            </div>
-            <input v-model="passwordTwo" required type="password" name="passwordOne" id="passwordOne"
-              class="styleInput p-2 w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-              placeholder="Repita su contraseña">
-          </div>
-          <div class="border border-black border-solid flex flex-col w-full mt-6 overflow-visible bg-black">
-            <button type="submit" :disabled="disableButton"
-              class="py-2 px-4 bg-black text-white rounded-lg border border-black border-solid font-aeonik font-medium text-base">
-              Restablecer contraseña
-            </button>
-          </div>
-
-          <div class="text-gray-800 text-center text-xl font-semibold py-4">
-            {{ message }}
-          </div>
-        </form>
-      </div>
+  <div class="flex h-screen">
+    <Loading
+      v-if="loading"
+      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+    />
+    <div class="w-1/2 hidden md:block">
+      <img
+        src="../../../public/horse_white.png"
+        alt="logo"
+        class="w-full object-cover"
+        style="height: 100vh;"
+      />
     </div>
-    <div class="lg:flex hidden flex-1 leftSide ">
-      <img src="../../../public/image_horsebook_login.png" alt="logo-login" class="w-full h-full object-cover" />
+    <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
+      <div class="mb-6">
+        <h1 class="text-4xl font-medium text-black">{{ $t('login.recoverPassword') }}</h1>
+        <p class="font-normal text-base text-neutral-600 pt-2">{{ $t('login.confirmPassword') }}</p>
+      </div>
+      <form
+        class="w-full mt-2 space-y-4"
+        @submit.prevent=validatePasswords
+      >
+        <div class="flex flex-col w-full mb-4">
+          <label
+            for="passwordOne"
+            class="text-black-600 font-medium"
+          >
+            Contraseña
+          </label>
+          <input
+            v-model="passwordOne"
+            required
+            type="password"
+            name="passwordOne"
+            id="passwordOne"
+            class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            :placeholder="$t('login.password')"
+          >
+        </div>
+        <div class="place-items-end">
+          <label
+            for="passwordOne"
+            class="text-black-600 font-medium"
+          >
+            {{ lenghterrorMessage }}
+          </label>
+        </div>
+        <div class="flex flex-col w-full mb-4">
+          <label
+            for="passwordTwo"
+            class="titleInput font-medium text-base text-black"
+          >
+            {{ $t('login.confirmNewPassword') }}
+          </label>
+          <input
+            v-model="passwordTwo"
+            required
+            type="password"
+            name="passwordOne"
+            id="passwordOne"
+            class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            :placeholder="$t('login.confirmNewPassword')"
+          >
+          <div class="place-items-end">
+            <label
+              for="passwordTwo"
+              class="block text-sm font-medium text-red-800"
+            >
+              {{ errorMessage }}
+            </label>
+          </div>
+        </div>
+        <div class="mb-4 text-right">
+          <button
+            type="submit"
+            :disabled="disableButton"
+            class="py-3 px-5 rounded-md bg-black text-white"
+          >
+            {{ $t('general.change') }}
+          </button>
+        </div>
+        <div class="text-gray-800 text-center text-xl font-semibold py-4">
+          {{ message }}
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -90,7 +111,7 @@ export default {
   },
   methods: {
     redirect() {
-      this.$router.push({ path: '/' })
+      this.$router.push({ path: this.localePath('/') })
     },
     async validatePasswords() {
       if (this.passwordOne.length >= 8) {
@@ -103,18 +124,18 @@ export default {
                 email: this.setUser.email,
                 password: this.passwordOne,
               });
-              this.$router.push("/");
+              this.$router.push(this.localePath("/"));
             } catch (error) {
-              this.message = "Email incorrecto";
+              this.message = this.$t('login.wrongEmail');
             }
           } else {
-            this.errorMessage = "Las contraseñas deben ser iguales"
+            this.errorMessage = this.$t('login.passwordsError')
           }
         } else {
-          this.errorMessage = "Ingrese por lo menos 8 dígitos"
+          this.errorMessage = this.$t('login.passwordValidation')
         }
       } else {
-        this.lenghterrorMessage = "Ingrese por lo menos 8 dígitos"
+        this.lenghterrorMessage = this.$t('login.passwordValidation')
       }
     }
   },

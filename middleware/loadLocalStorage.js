@@ -1,32 +1,74 @@
+import { Console } from "console";
+import { parse } from "cookieparser";
+import Cookies from "js-cookie";
+import jwtDecode from "jwt-decode";
 
-export default function ({ store }) {
-  if (process.client) {
-      const storedSingUpData = localStorage.getItem('singUpData');
-      if (storedSingUpData) {
-          const parsedData = JSON.parse(storedSingUpData);
-          console.log('loading singUpData from localStore:', parsedData);
-          store.commit('setSingUpData', parsedData);
-      }
+const storageScopes = {
+  signUpData: "singUpData",
+  userCredentials: "setUser",
+  horseDetail: "horseDetail",
+  userInformation: "userInformation"
+}
 
-      const storedUser = localStorage.getItem('setUser');
-      if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
-          console.log('loading user from localStore:', parsedUser);
-          store.commit('setUser', parsedUser);
-      }
+const retrieveUserInformationOrDefault = (app) => {
+  const cookie = app.$cookies.get('access_token');
 
-      const storedHorseDetails = localStorage.getItem('horseDetails');
-      if (storedHorseDetails) {
-          const parsedHorseDetails = JSON.parse(storedHorseDetails);
-          console.log('loading horseDetails from localStore:', parsedHorseDetails);
-          store.commit('setHorseDetails', parsedHorseDetails);
-      }
-      const storedUserInformation=localStorage.getItem("userInformation");
-      if(storedUserInformation){
-        const parsedUserInformation= JSON.parse(storedUserInformation);
-        console.log("loading user infor from localStore:", parsedUserInformation);
-        store.commit("setUserInformation", parsedUserInformation);
-      }
+  if (!cookie) {
+    return {
+      isAuthenticated: false,
+      token: app.$config.apiToken
+    }
   }
 
+  const decodedObject = jwtDecode(cookie)
+  return {
+    isAuthenticated: true,
+    token: decodedObject.token,
+    user: decodedObject.email,
+    id: decodedObject.id,
+    isAbleToBid: decodedObject.isAbleToBid || false
+  }
+}
+
+const setUserInLocalStorage = (setUserObject) => {
+  const userInLocalStorage = localStorage.getItem(
+    storageScopes.userCredentials
+  )
+
+  if (!userInLocalStorage) {
+    localStorage.setItem(storageScopes.userCredentials, setUserObject)
+  }
+}
+
+export default function ({ app, store }) {
+  if (process.client) {
+    const storedSingUpData = localStorage.getItem('singUpData');
+    if (storedSingUpData) {
+      const parsedData = JSON.parse(storedSingUpData);
+      // console.log('loading singUpData from localStore:', parsedData);
+      store.commit('setSingUpData', parsedData);
+    }
+
+    const { isAuthenticated, isAbleToBid, ...authenticatedObject } = retrieveUserInformationOrDefault(app)
+    store.commit('authenticate', isAuthenticated);
+    if (isAuthenticated) {
+      setUserInLocalStorage(authenticatedObject);
+      store.commit('setUser', authenticatedObject);
+      store.commit('setIsUserAbleToBid', isAbleToBid);
+    }
+
+    const storedHorseDetails = localStorage.getItem('horseDetails');
+    if (storedHorseDetails) {
+      const parsedHorseDetails = JSON.parse(storedHorseDetails);
+      // console.log('loading horseDetails from localStore:', parsedHorseDetails);
+      store.commit('setHorseDetails', parsedHorseDetails);
+    }
+
+    const storedUserInformation = localStorage.getItem("userInformation");
+    if (storedUserInformation) {
+      const parsedUserInformation = JSON.parse(storedUserInformation);
+      // console.log("loading user infor from localStore:", parsedUserInformation);
+      store.commit("setUserInformation", parsedUserInformation);
+    }
+  }
 }

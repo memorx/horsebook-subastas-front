@@ -1,45 +1,63 @@
 <template>
-  <div class="flex containerGeneral h-full bg-white">
-    <Loading v-if="loading"
-      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
-    <div class="flex items-center justify-center flex-1 rightSide">
-      <div class="flex flex-col items-center w-4/5 limiter">
-        <div class="logo mt-8">
-          <img src="../../../public/image_la_silla.png" alt="logo" />
-        </div>
-        <div class="flex flex-col items-center w-full mt-8 title">
-          <h1 class="sesion font-medium text-4xl text-black pt-2">Recuperar contraseña</h1>
-          <p class="horsebook font-normal text-base text-neutral-600 pt-2">Envie un codigo a su mail
-          </p>
-        </div>
-        <form class="w-full mt-12 space-y-6" @submit.prevent=userResetPassword>
-          <div class="flex flex-col w-full gap-6">
-            <div class="flex flex-col w-full ">
-              <div>
-                <label for="email" class="titleInput font-medium text-base text-black">
-                  Email
-                </label>
-              </div>
-            </div>
-            <input v-model="email" required type="email" name="email" id="email"
-              class="styleInput p-2 w-full h-14 px-6 bg-white border border-neutral-300 rounded-lg"
-              placeholder="Ingrese su email">
-
-          </div>
-          <div class="border border-black border-solid flex flex-col w-full mt-6 overflow-visible bg-black">
-            <button type="submit"
-              class="py-2 px-4 bg-black text-white rounded-lg border border-black border-solid font-aeonik font-medium text-base">
-              Enviar mail
-            </button>
-          </div>
-          <div class="text-gray-800 text-center text-xl font-semibold py-4">
+  <div class="flex h-screen">
+    <Loading
+      v-if="loading"
+      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+    />
+    <div class="w-1/2 hidden md:block">
+      <img
+        src="../../../public/horse_white.png"
+        alt="logo"
+        class="w-full object-cover"
+        style="height: 100vh;"
+      />
+    </div>
+    <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
+      <div class="mb-6">
+        <h1 class="text-4xl font-medium text-black">{{ $t('login.recoverPassword') }}</h1>
+        <p class="font-normal text-base text-neutral-600 pt-2">
+          {{ $t('login.recoverPasswordTxt') }}
+        </p>
+      </div>
+      <form @submit.prevent=userResetPassword>
+        <div class="flex flex-col w-full mb-4">
+          <label
+            for="email"
+            class="text-black-600 font-medium"
+          >
+            {{ $t('login.email') }}
+          </label>
+          <input
+            v-model="email"
+            required
+            type="email"
+            name="email"
+            id="email"
+            class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            :placeholder="$t('login.enterYourEmail')"
+          >
+          <div class="text-gray-800 text-center text-xl font-semibold">
             {{ message }}
           </div>
-        </form>
-      </div>
-    </div>
-    <div class="lg:flex hidden flex-1 leftSide ">
-      <img src="../../../public/image_horsebook_login.png" alt="logo-login" class="w-full h-full object-cover" />
+        </div>
+        <div class="mb-4 text-right">
+          <button
+            type="submit"
+            class="py-3 px-5 rounded-md bg-black text-white"
+          >
+            {{ $t('login.sendMail') }}
+          </button>
+        </div>
+        <div class="w-full flex items-center">
+          <nuxt-link :to="localePath(`/auth/login`)">
+            <button
+              type="button"
+              class="justify-left font-medium text-base text-black underline"
+            > {{ $t('general.back') }}
+            </button>
+          </nuxt-link>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -71,7 +89,7 @@ export default {
         });
         console.log(response, "RESPONSE")
         this.$store.commit('setUser', data);
-        this.$router.push('/auth/password/forgot-password')
+        this.$router.push(this.localePath('/auth/password/forgot-password'))
         console.log(response, "RESPONSE")
       } catch (error) {
         console.log(error, "ERROR")

@@ -1,360 +1,183 @@
-<!--  -->
 <template>
-  <div class="flex containerGeneral h-full bg-white">
-    <div class="flex items-center justify-center flex-1 rightSide">
-      <div class="flex flex-col items-center w-4/5 limiter">
-        <div class="text-center">
-          <img src="../../public/image_la_silla.png" alt="logo"
-            class="w-20 h-20 mt-4 ml-4 lg:ml-0 lg:mr-4 float-right lg:float-none lg:inline-block">
-          <h1 class="text-3xl font-medium text-black mt-4">Iniciar sesión</h1>
-          <p class="text-gray-600 mt-2">Ingresa tus datos para entrar a HorseBook</p>
+  <div class="bg-zinc-200 p-5 lg:p-10">
+    <div
+      class="h-full p-5 lg:p-10 bg-white rounded-3xl flex justify-center items-center"
+    >
+      <div class="w-full lg:w-1/2">
+        <div class="text-center mb-10">
+
+          <h1 class="text-4xl font-extrabold text-black">{{ $t('login.login') }}</h1>
         </div>
-        <form class="w-full space-y-6" @submit.prevent="userLogin">
-          <div class="space-y-2">
-            <p v-for="error in errorMsg" :key="error" class="text-red-600 text-sm leading-tight text-center">
-              {{ error }}
-            </p>
-          </div>
-          <div class="w-full space-y-4">
-            <div class="flex flex-col">
-              <label for="email" class="text-black-600 font-medium">Email</label>
-              <input
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar email" id="email" name="email" type="email" autocomplete="email" required
-                v-model="login.email" @focus="errorMsg = ''">
+        <div class="border border-black rounded-3xl px-5 py-10">
+          <form @submit.prevent="userLogin">
+            <div class="space-y-3 mb-4">
+              <p
+                v-for="error in errorMsg"
+                :key="error"
+                class="text-red-600 text-sm leading-tight text-center"
+              >
+                {{ error }}
+              </p>
             </div>
-            <div class="flex flex-col">
-              <label for="password" class="text-black-600 font-medium">Contraseña</label>
-              <input
-                class="mt-1 rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                placeholder="Ingresar contraseña" id="password" name="password" type="password"
-                autocomplete="current-password" required v-model="login.password" @focus="errorMsg = ''">
+            <div class="w-full space-y-5 mb-5">
+              <div class="flex flex-col">
+                <input
+                  class="border-t-0 border-x-0 focus:ring-0"
+                  :placeholder="$t('login.email')"
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  required
+                  v-model="login.email"
+                  @focus="errorMsg = ''"
+                />
+              </div>
+              <div class="flex">
+                <input
+                  class="border-t-0 border-x-0 focus:ring-0 w-full"
+                  :placeholder="$t('login.password')"
+                  id="password"
+                  name="password"
+                  :type="show ? 'text' : 'password'"
+                  autocomplete="current-password"
+                  required
+                  v-model="login.password"
+                  @focus="errorMsg = ''"
+                />
+                <span @click="()=>{show = !show}" class="h-full my-auto">
+                  <svg v-if="!show" class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
+                    <path d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
+                  </svg>
+                  <svg v-else class="w-6 h-6 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="m2 13.587 3.055-3.055A4.913 4.913 0 0 1 5 10a5.006 5.006 0 0 1 5-5c.178.008.356.026.532.054l1.744-1.744A8.973 8.973 0 0 0 10 3C4.612 3 0 8.336 0 10a6.49 6.49 0 0 0 2 3.587Z"/>
+                    <path d="m12.7 8.714 6.007-6.007a1 1 0 1 0-1.414-1.414L11.286 7.3a2.98 2.98 0 0 0-.588-.21l-.035-.01a2.981 2.981 0 0 0-3.584 3.583c0 .012.008.022.01.033.05.204.12.401.211.59l-6.007 6.007a1 1 0 1 0 1.414 1.414L8.714 12.7c.189.091.386.162.59.211.011 0 .021.007.033.01a2.981 2.981 0 0 0 3.584-3.584c0-.012-.008-.023-.011-.035a3.05 3.05 0 0 0-.21-.588Z"/>
+                    <path d="M17.821 6.593 14.964 9.45a4.952 4.952 0 0 1-5.514 5.514L7.665 16.75c.767.165 1.55.25 2.335.251 6.453 0 10-5.258 10-7 0-1.166-1.637-2.874-2.179-3.407Z"/>
+                  </svg>
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="flex justify-between items-center">
-            <div class="flex items-center">
-              <input type="checkbox" id="remember-me" name="remember-me" class="mr-2">
-              <label for="remember-me" class="text-gray-600">Recordarme</label>
+            <div class="flex flex-wrap mb-10">
+              <div class="w-1/2 items-center">
+                <!--
+                <input
+                  type="checkbox"
+                  id="remember-me"
+                  name="remember-me"
+                  class="mr-2"
+                />
+                <label for="remember-me" class="text-gray-600"
+                  >Recordarme</label
+                >
+                -->
+              </div>
+              <span class="w-1/2 text-gray-400 text-right">
+                <nuxt-link :to="localePath('/auth/password/send-email')">
+                  {{ $t('login.forgotPassword') }}
+                </nuxt-link>
+              </span>
             </div>
-            <nuxt-link to="/auth/password/send-email" class="text-gray-600 cursor-pointer">Olvidé
-              mi
-              contraseña</nuxt-link>
-          </div>
-          <button type="submit"
-            class="w-full py-3 rounded-md bg-black text-white font-medium hover:bg-black-600 focus:outline-none focus:bg-black-600 transition duration-150 ease-in-out">Ingresar</button>
-          <div class="text-center mt-4">
-            <span class="text-gray-600">¿No tienes cuenta?</span>
-            <nuxt-link to="/auth/sign-up" class="font-medium text-base text-black">Resgístrate ahora</nuxt-link>
-          </div>
-        </form>
+            <div class="text-center mb-10">
+              <button
+                type="submit"
+                class="py-3 px-10 rounded-full bg-[#BFA753] text-white uppercase"
+              >
+                {{ $t('login.login') }}
+              </button>
+            </div>
+            <div class="text-center">
+              <span class="text-gray-400">
+                <nuxt-link :to="localePath('/auth/sign-up')" class="">{{ $t('login.signUp') }}</nuxt-link>
+              </span>
+            </div>
+            <!-- <div class="w-full text-center mt-5">
+              <nuxt-link to="/" class="">Ingresar a subastas</nuxt-link>
+            </div> -->
+          </form>
+        </div>
       </div>
-    </div>
-    <div class="lg:flex hidden flex-1 leftSide ">
-      <img src="../../public/image_horsebook_login.png" alt="logo-login" class="w-full h-full object-cover" />
     </div>
   </div>
 </template>
-<style scoped>
-.containerGeneral {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  background: white;
-}
 
-/* @font-face {
-  font-family: 'Aeonik';
-  src: url('/fonts/Aeonik-Regular.ttf') format('truetype');
-} */
-.rightSide {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-basis: 43%;
-}
-
-.limiter {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 35px;
-  width: 60%;
-}
-
-
-
-.title {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  gap: 10px;
-  width: 397px;
-}
-
-
-.sesion {
-
-  margin: 0;
-  font-family: 'Aeonik', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 34px;
-  line-height: 42px;
-  /* identical to box height, or 124% */
-
-
-  color: #000000;
-}
-
-.horsebook {
-  margin: 0;
-  font-family: 'Aeonik', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 21px;
-  /* identical to box height */
-
-  text-align: center;
-
-  /* Neutral / 60 */
-
-  color: #939094;
-}
-
-.wrapperInputs {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 397px;
-}
-
-
-.styleInput {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 15px 22px;
-  gap: 8px;
-  width: 398px;
-  height: 54px;
-  background: #FFFFFF;
-  border: 1.5px solid #E0E0E0;
-  border-radius: 8px;
-  /* flex: none;
-  order: 1;
-  align-self: stretch;
-  flex-grow: 0; */
-}
-
-
-.containerInput {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.titleInput {
-  font-family: 'Aeonik', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-
-}
-
-.containerInput input {
-  width: 398px;
-  height: 54px;
-
-  background: #FFFFFF;
-  border: 1.5px solid #E0E0E0;
-  border-radius: 8px;
-}
-
-
-.containerButton {
-  display: flex;
-  flex-direction: column;
-  /* width: 100%; */
-  gap: 10px;
-  width: 397px;
-}
-
-.buttonCta {
-  background-color: black;
-  height: 40px;
-  color: white;
-  width: 100%;
-}
-
-.helps {
-  display: flex;
-  justify-content: space-between;
-}
-
-.leftSide {
-  flex-basis: 57%;
-  /* background: (image.png); */
-}
-
-.Recordarme {
-  display: flex;
-  align-items: center;
-  color: #787579;
-}
-
-.Recordarme label {
-  margin-left: 8px;
-  color: #787579;
-}
-
-.Recordarme input[type="checkbox"] {
-  color: #787579;
-}
-
-.Recordarme span {
-  font-family: 'Aeonik', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  /* identical to box height, or 143% */
-
-  display: flex;
-  align-items: center;
-  text-align: center;
-  letter-spacing: 0.1px;
-
-  /* Neutral / 50  */
-
-  color: #787579;
-}
-
-.OlvideMiContra {
-  color: #1F2A44;
-  display: flex;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  margin-left: 20px;
-  /* o la cantidad de espacio que desees */
-  font-family: 'Aeonik', sans-serif;
-}
-
-.signUp {
-  display: flex;
-  justify-content: center;
-
-}
-
-.signUpp {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px;
-  gap: 12px;
-}
-
-.signUppp {
-  font-family: 'Aeonik', sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
-  /* identical to box height */
-
-
-  text-align: center;
-
-  /* Neutral / 60 */
-
-  color: #939094;
-
-
-}
-
-.signUppp a {
-  color: rgb(0, 0, 0);
-  /* text-decoration: underline; */
-
-}
-</style>
 <script>
+import Cookie from "js-cookie"
 
-import { env } from 'process';
-import Cookie from 'js-cookie'
-import axios from 'axios'
 export default {
-  layout: 'auth',
-  // authenticated: false,
+  layout: "auth",
   data() {
     return {
       login: {
-        email: '',
-        password: ''
+        email: "",
+        password: ""
       },
-      errorMsg: ''
+      errorMsg: "",
+      show: false,
     }
   },
 
   methods: {
     async userLogin() {
-      // Login the user
-      const url = this.$config.baseURL + '/users/login-app/'
-      const headers = {
-        Authorization: "Token 0119158e9e647cc58e9c895fa08316b2a5b03df4",
-        // Authorization: "Token " + process.env.TOKEN,
-      };
+      const url = this.$config.baseURL + "/users/login-app/"
+      const headers = {}
       const formData = new FormData()
-      formData.append('email', this.login.email)
-      formData.append('password', this.login.password)
-      await this.$axios.$post(url, formData, { headers })
+      formData.append("email", this.login.email)
+      formData.append("password", this.login.password)
+      await this.$axios
+        .$post(url, formData, { headers })
         .then((response) => {
+          console.log(response)
           if (response.token) {
             const HMACSHA256 = (stringToSign, secret) => {
-              const crypto = require('crypto')
-              return crypto.createHmac('sha256', secret).update(stringToSign).digest('base64')
+              const crypto = require("crypto")
+              return crypto
+                .createHmac("sha256", secret)
+                .update(stringToSign)
+                .digest("base64")
             }
             const header = {
-              "alg": "HS256",
-              "typ": "JWT"
+              alg: "HS256",
+              typ: "JWT"
             }
             const encodedHeaders = btoa(JSON.stringify(header))
             const claims = {
-              "email": this.login.email,
-              "token": response.token
+              email: this.login.email,
+              token: response.token,
+              id: `${response.data.id}`,
+              isAbleToBid: response.data.app_user_profile.bid || false
             }
             const encodedPlayload = btoa(JSON.stringify(claims))
-            const signature = HMACSHA256(`${encodedHeaders}.${encodedPlayload}`, "mysecret")
+            const signature = HMACSHA256(
+              `${encodedHeaders}.${encodedPlayload}`,
+              "mysecret"
+            )
             const encodedSignature = btoa(signature)
             const jwt = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
-            // Set JWT to the cookie
             Cookie.set("access_token", jwt)
-
-            // Set the user information in the store
-            this.$store.commit('setUser', { email: this.login.email, token: response.token })
-            console.log(this.$store, "STORE")
-
-            // Redirect to the home page
-            this.$router.push('/user/inicioo')
+            this.$store.commit("authenticate", true)
+            this.$store.commit("setUser", {
+              email: this.login.email,
+              token: response.token,
+              id: `${response.data.id}`
+            })
+            this.$store.commit(
+              "setIsUserAbleToBid",
+              response.data.app_user_profile.bid
+            )
+            this.$router.push(this.localePath("/"))
           }
         })
         .catch((error) => {
-          console.log(error.response.data)
+          console.log(error)
           if (error.response.status === 400) {
-            this.$toast.error(error.response.data.detail)
+            const msg = error.response.data.detail
+            this.$toast.error(this.$t(`backMessages.${msg}`))
           } else if (error.response.status === 401) {
             this.$toast.error(error.response.data.detail)
             this.$toast.error(error.response.data.message)
           }
         })
-    },
-
+    }
   }
 }
 </script>

@@ -1,517 +1,165 @@
 <template>
-  <div class="container">
-    <Loading v-if="loading"
-      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50" />
-    <NavBarProfile />
-    <div class="containerAll">
-      <div class="mainn">
-        <div class="mainTitle">
-          <p class="title font-montserrat">{{ email.name }}</p>
-          <p class="titleEmail font-montserrat">{{ email.email }}</p>
-        </div>
-        <div class="buttonAcomodate">
-          <button class="buttonEditContainer">
-            <a href="/user/perfil/editar">
-              <p class="buttonEdit font-montserrat">Editar perfil</p>
-            </a>
+  <div class="p-5 bg-zinc-200">
+    <Loading
+      v-if="loading"
+      class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+    />
+    <div>
+      <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
+        <p class="text-xl text-white font-bold">{{ $t('profile.title') }}</p>
+        <NuxtLink :to="localePath('/user/perfil/editar')">
+          <button class="bg-white text-black p-2 rounded-lg">
+            <i class="fas fa-pencil-alt mr-2 text-blue-500"></i> {{ $t('general.edit') }}
           </button>
-        </div>
-        <!-- <p>Editar perfil</p> -->
+        </NuxtLink>
       </div>
-      <div class="main">
-        <p class="generalDates font-montserrat">Datos generales</p>
-        <div v-if="1 > 0" class="containerGeneralDates">
-          <p class="name font-montserrat">Nombre (s)</p>
-          <p class="nameStyle font-montserrat">{{ email.name }}</p>
-          <p class="lastNameMother font-montserrat">Apellido materno</p>
-          <p class="nameStyle font-montserrat">Del valle</p>
-          <p class="celphone font-montserrat">Teléfono</p>
-          <p class="nameStyle font-montserrat">{{ email.phone }}</p>
-          <p class="date font-montserrat">Fecha de nacimiento</p>
-          <p class="nameStyle font-montserrat">{{ email.birth_date }}</p>
-        </div>
-        <div class="containerGeneralDatess">
-          <p class="lastNameFather font-montserrat">Apellido paterno</p>
-          <p class="lastNameFatherStyle font-montserrat">{{ email.fathers_surname
-          }}</p>
-          <p class="country font-montserrat">Nacionalidad</p>
-          <p class="lastNameFatherStyle font-montserrat">{{ email.nationality }}</p>
-          <p class="email font-montserrat">Email</p>
-          <p class="lastNameFatherStyle font-montserrat">{{ email.email }}</p>
-          <p class="id font-montserrat">Pasaporte / ID</p>
-          <p class="lastNameFatherStyle font-montserrat">{{ email.identification_document }}</p>
-        </div>
-      </div>
-      <!-- <div class="framee1">
-        <div class="dividerr"></div>
-      </div> -->
-      <div class="pt-20">
-        <div class="w-full h-[1px] bg-[#EAECF0]"></div>
-      </div>
-      <div class="main2">
-        <p class="generalDates font-montserrat">Datos de domicilio</p>
-        <div class="containerGeneralDatesHouse">
-          <p class="name font-montserrat">Pais</p>
-          <p class="nameStyle font-montserrat">{{ email.country }}</p>
-          <p class="lastNameMother font-montserrat">Ciudad</p>
-          <p class="nameStyle font-montserrat">{{ email.state }}</p>
-          <p class="celphone font-montserrat">Número exterior</p>
-          <p class="nameStyle font-montserrat">{{ email.outdoor_number }}</p>
-          <p class="date font-montserrat">CP</p>
-          <p class="nameStyle font-montserrat">{{ email.zip_code }}</p>
-        </div>
-        <div class="containerGeneralDatessHouse">
-          <p class="lastNameFather font-montserrat">Estado</p>
-          <p class="lastNameFatherStyle font-montserrat">{{ email.municipalitie }}</p>
-          <p class="country font-montserrat">Calle</p>
-          <p class="lastNameFatherStyle font-montserrat">{{ email.street }}</p>
-          <p class="email font-montserrat">Número interior</p>
-          <p class="lastNameFatherStyle font-montserrat">{{ email.interior_number }}</p>
-        </div>
-      </div>
-      <div class="pt-20">
-        <div class="w-full h-[1px] bg-[#EAECF0]"></div>
-      </div>
-      <div class="main3">
-        <p class="generalDates font-montserrat">Seguridad</p>
-        <div class="containerGeneralDatesSecurity">
-          <p class="name font-montserrat">Contraseña</p>
-          <p class="nameStyle font-montserrat">******</p>
-        </div>
-      </div>
-      <div class="pt-20">
-        <div class="w-full h-[1px] bg-[#EAECF0]"></div>
-      </div>
-      <div class="w-full h-full flex">
-        <p class="not-italic font-semibold text-base leading-6 text-gray-900 pt-32 pl-8 font-montserrat">Histórico</p>
-        <div class="pt-[180px] pl-[180px] ">
-          <div class="border border-[#EAECF0]">
-            <p class="ml-6 font-montserrat not-italic font-semibold leading-7 text-[#101828]">Historial de subastas
+      <div class="bg-white rounded-b-lg p-6 md:p-10 mb-5">
+        <div class="grid md:grid-cols-2 grid-cols-1 gap-4 my-5">
+          <div class="flex flex-col">
+            <p class="text-md font-bold mb-5">{{ $t('profile.name') }}: <span class="font-medium">{{ email?.name }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.fathersSurname') }}: <span class="font-medium">{{ email?.fathers_surname
+            }}</span>
             </p>
-            <div class="pt-4">
-              <div class="w-full h-[1px] bg-[#EAECF0]"></div>
-            </div>
-            <div class="pt-[40px] ml-6 w-full flex flex-row">
-              <div class="box-border flex flex-row items-start isolate border p-0 rounded-lg border-[#D0D5DD] filterr">
-                <button
-                  :class="['flex flex-row justify-center items-center gap-2 w-[100px] h-10 text-[#1D2939] px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'all', 'bg-[#D0D5DD]': selectedStatus === 'all' }]"
-                  @click="selectedStatus = 'all'">
-                  <p class="not-italic font-semibold text-sm leading-5 text-[#1D2939] font-montserrat">Todas</p>
-                </button>
-                <button
-                  :class="['flex flex-row justify-center items-center gap-2 w-[95px] h-10 px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'won', 'bg-[#D0D5DD]': selectedStatus === 'won' }]"
-                  @click="selectedStatus = 'won'">
-                  <p :class="['not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat', { 'text-[#1D2939] font-semibold': selectedStatus === 'won' }]"
-                    @click="selectedStatus = 'won'">Ganadas</p>
-                </button>
-                <button
-                  :class="['flex flex-row justify-center items-center gap-2 w-[95px] h-10 px-4 py-2.5 border-r-[#D0D5DD] border font-montserrat', { 'bg-white': selectedStatus !== 'lost', 'bg-[#D0D5DD]': selectedStatus === 'lost' }]"
-                  @click="selectedStatus = 'lost'">
-                  <p class="not-italic font-medium text-sm leading-5 text-[#344054] font-montserrat">Perdidas</p>
-                </button>
-              </div>
-            </div>
-            <table class="bg-white mt-12 ml-6  ">
-              <thead>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat py-4">
-                  <div class="flex">Subasta</div>
-                </th>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
-                  <div class="flex">Total</div>
-                </th>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
-                  <div class="flex">Fecha</div>
-                </th>
-                <th class="not-italic font-semibold text-sm leading-[18px] text-[#475467] font-montserrat px-16 py-4">
-                  <div class="flex">Estado</div>
-                </th>
-              </thead>
-              <tbody>
-                <tr v-for="    record     in     filteredRecords    " :key="record.bid_date">
-                  <td class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top  py-4">
-                    <div class="flex">
-                      Subasta {{ record.subasta.id }}
-                    </div>
-                  </td>
-                  <td
-                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
-                    <div class="flex">
-                      {{ record.highest_bid }}
-                    </div>
-                  </td>
-                  <td
-                    class="not-italic font-semibold text-sm leading-5 text-[#101828] font-montserrat align-top px-16 py-4">
-                    <div class="flex">
-                      {{ new Date(record.bid_date).toLocaleString() }}
-                    </div>
-                  </td>
-                  <td class="not-italic font-semibold text-sm leading-5 font-montserrat align-top px-16 py-4"
-                    :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }">
-                    <div class="flex">
-                      {{ record.status === 'won' ? 'Ganada' : (record.status === 'lost' ? 'Perdida' : '') }}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <p class="text-md font-bold mb-5">{{ $t('profile.mothersMaidenName') }}: <span class="font-medium">{{ email?.mothers_maiden_name
+            }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.birthdate') }}: <span class="font-medium">{{ email?.birth_date }}</span>
+            </p>
+            <p class="text-md font-bold mb-5">{{ $t('login.email') }}: <span class="font-medium">{{ email?.email }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('signup.phone') }}: <span class="font-medium">{{ email?.phone }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.nationality') }}: <span class="font-medium">{{ selectedNationality }}</span>
+            </p>
           </div>
+          <div class="flex flex-col">
+            <p class="text-md font-bold mb-5">{{ $t('profile.country') }}: <span class="font-medium">{{ selectedCountry }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.state') }}: <span class="font-medium">{{ selectedState }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.city') }}: <span class="font-medium">{{ selectedCity }}</span>
+            </p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.street') }}: <span class="font-medium">{{ email?.street }}</span></p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.exteriorNo') }}: <span class="font-medium">{{ email?.outdoor_number }}</span>
+            </p>
+            <p class="text-md font-bold mb-5">{{ $t('profile.interiorNo') }}: <span class="font-medium">{{ email?.interior_number
+            }}</span>
+            <p class="text-md font-bold mb-5">{{ $t('profile.zipCode') }}: <span class="font-medium">{{ email?.zip_code }}</span></p>
+            </p>
+          </div>
+          <p
+            v-if="email?.official_document"
+            class="text-md font-bold mb-5"
+          >{{ $t('profile.frontIdentityDoc') }}: <span>
+              <img
+                class="rounded-lg"
+                :src="email?.official_document"
+                alt="official_document"
+              >
+            </span>
+          </p>
+          <p
+            v-else
+            class="text-md font-bold mb-5"
+          >{{ $t('profile.frontIdentityDoc') }}: <span class="font-medium">{{ $t('profile.noDocumentUploaded') }}</span>
+          </p>
+          <p
+            v-if="email?.official_document_back"
+            class="text-md font-bold mb-5"
+          >{{ $t('profile.backIdentityDoc') }}: <span>
+              <img
+                class="rounded-lg"
+                :src="email?.official_document_back"
+                alt="official_document"
+              >
+            </span>
+          </p>
+          <p
+            v-else
+            class="text-md font-bold mb-5"
+          >{{ $t('profile.backIdentityDoc') }}: <span class="font-medium">{{ $t('profile.noDocumentUploaded') }}</span>
+          </p>
         </div>
+      </div>
+    </div>
+    <!-- <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
+      <p class="text-xl text-white font-bold">SEGURIDAD</p>
+      <NuxtLink to="/user/perfil/editar">
+        <button
+          @click="clearUserData"
+          class="bg-white text-black p-2 rounded-lg"
+        >
+          <i class="fas fa-pencil-alt mr-2 text-blue-500"></i> Cambiar contraseña
+        </button>
+      </NuxtLink>
+    </div> -->
+    <!-- <div class="bg-white rounded-b-lg p-6 md:p-10 mb-5">
+      <p class="text-md font-bold mb-5">Contraseña: <span class="font-light">**********</span></p>
+    </div> -->
+    <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
+      <p class="text-xl text-white font-bold">{{ $t('profile.auctions.history') }}</p>
+      <div>
+        <button
+          :class="selectedStatus == 'all' ? 'bg-white text-black py-1 px-8 rounded-lg font-bold' : 'bg-gray-400 text-white py-1 px-8 rounded-lg'"
+          @click="selectedStatus = 'all'"
+        >
+          {{ $t('profile.auctions.all') }}
+        </button>
+        <button
+          :class="selectedStatus == 'won' ? 'bg-white text-black py-1 px-8 rounded-lg font-bold' : 'bg-gray-400 text-white py-1 px-8 rounded-lg'"
+          @click="selectedStatus = 'won'"
+        >
+          {{ $t('profile.auctions.won') }}
+        </button>
+        <button
+          :class="selectedStatus == 'lost' ? 'bg-white text-black py-1 px-8 rounded-lg font-bold' : 'bg-gray-400 text-white py-1 px-8 rounded-lg'"
+          @click="selectedStatus = 'lost'"
+        >
+          {{ $t('profile.auctions.lost') }}
+        </button>
+      </div>
+    </div>
+    <div class="bg-white rounded-b-lg p-6 md:p-10 mb-5">
+      <div class="overflow-x-auto rounded-lg">
+        <table class="min-w-full rounded-lg bg-gray-300">
+          <thead>
+            <tr class="bg-gray-700 text-white">
+              <th class="table-header capitalize">{{ $t('auction.auction') }}</th>
+              <th class="table-header capitalize">{{ $t('auction.horse') }}</th>
+              <th class="table-header capitalize">{{ $t('auction.auctionDate') }}</th>
+              <th class="table-header capitalize">{{ $t('auction.total') }}</th>
+              <th class="table-header capitalize">{{ $t('auction.status') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="record in filteredRecords"
+              :key="record.bid_date"
+            >
+              <td class="table-cell border-y text-center text-sm font-bold">{{ record.subasta.id }}</td>
+              <td class="table-cell border-y text-center text-sm">{{ record.horse.external_data.name }}</td>
+              <td class="table-cell border-y text-center text-sm">{{ new Date(record.bid_date).toLocaleString() }}</td>
+              <td class="table-cell border-y text-center text-sm font-bold">$ {{ record.highest_bid }} USD</td>
+              <td
+                class="table-cell border-y text-center"
+                :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }"
+              >
+
+                {{ $t(`profile.auctions.status.${record.status}`) }}
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </template>
-<style>
-.filterr {
-  filter: drop-shadow(0px 1px 2px rgba(16, 24, 40, 0.05));
-}
 
-
-
-.buttonAcomodate {
-  padding-top: 40px;
-}
-
-.buttonEditContainer {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0px;
-  gap: 8px;
-  width: 117px;
-  height: 40px;
-  background: #171618;
-  border: 1px solid #171618;
-  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
-}
-
-.buttonEdit {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  color: #FFFFFF;
-}
-
-.lastNameFatherStyle {
-
-  font-style: normal;
-  font-size: 16px;
-  font-weight: 500px;
-  line-height: 24px;
-  color: #344054;
-  padding-left: 90px;
-}
-
-.nameStyle {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  padding-left: 90px;
-  /* identical to box height, or 150% */
-
-
-  /* Gray/700 */
-
-  color: #344054;
-}
-
-.mainTitle {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  background: #F9F9F9;
-}
-
-.titleEmail {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #475467;
-  padding-left: 30px;
-  padding-top: 10px;
-}
-
-.title {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 30px;
-  line-height: 38px;
-  padding-left: 30px;
-  padding-top: 10px;
-}
-
-.mainn {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  background: #F9F9F9;
-}
-
-.containerGeneralDatesHistory {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-left: 68px;
-}
-
-.containerGeneralDatesSecurity {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-left: 60px;
-}
-
-.containerGeneralDatesHouse {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.containerGeneralDatessHouse {
-  display: flex;
-  flex-direction: column;
-  /* justify-content: space-between; */
-  align-items: flex-start;
-  padding-left: 185px;
-}
-
-.main4 {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-.main3 {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-.containerAll {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.main2 {
-  display: flex;
-  height: 100%;
-  width: 100%;
-}
-
-.framee1 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 8px 0px 0px;
-  gap: 8px;
-  width: 100vh;
-  height: 9px;
-}
-
-.dividerr {
-  padding-top: 100%;
-  width: 100;
-  height: 1px;
-  background: #EAECF0;
-}
-
-.id {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: #667085;
-  padding-top: 52px;
-  padding-left: 90px;
-}
-
-.email {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: #667085;
-  padding-top: 52px;
-  padding-left: 90px;
-}
-
-.country {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: #667085;
-  padding-top: 52px;
-  padding-left: 90px;
-}
-
-.lastNameFather {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: #667085;
-  padding-top: 142px;
-  padding-left: 90px;
-}
-
-.containerGeneralDatess {
-  display: flex;
-  flex-direction: column;
-  /* justify-content: space-between; */
-  align-items: flex-start;
-  padding-left: 158px;
-}
-
-.date {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: #667085;
-  padding-top: 52px;
-  padding-left: 90px;
-}
-
-.celphone {
-
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: #667085;
-  padding-top: 52px;
-  padding-left: 90px;
-}
-
-.lastNameMother {
-
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: #667085;
-  padding-top: 52px;
-  padding-left: 90px;
-}
-
-.name {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: #667085;
-  padding-top: 142px;
-  padding-left: 90px;
-}
-
-.containerGeneralDates {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding-left: 15px;
-  /* padding: 0px; */
-}
-
-.generalDates {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-  color: #101828;
-  padding-top: 140px;
-  padding-left: 30px;
-}
-
-.main {
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-
-.title {
-  display: flex;
-  align-items: center;
-  padding-top: 35px;
-  gap: 48px;
-
-  width: 100%;
-  height: 100%;
-}
-
-.containerRegister {
-  width: 100vh;
-  height: 100vh;
-}
-
-.containerRegisterTitle {
-  width: 100vh;
-  height: 100vh;
-}
-
-.container {
-  display: flex;
-  padding: 0px;
-  width: 100%;
-  height: 100%
-}
-
-.dashboard {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0px;
-
-  position: absolute;
-  width: 1440px;
-  height: 2538px;
-  left: 0px;
-  top: 78px;
-
-  background: #FCFCFD;
-}
-
-.sideBar {
-  box-sizing: border-box;
-
-
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 0px;
-
-  width: 280px;
-  height: 70vh;
-
-
-
-  background: #F9FAFB;
-
-
-  border-right: 1px solid #EAECF0;
-
-
-}
-</style>
 <script>
 import JWTDecode from 'jwt-decode';
 import Loading from '../../../components/shared/Loading.vue';
-import moment from 'moment';
-import NavBarProfile from "../../../components/NavBar/NavBarProfile"
+import Swal from 'sweetalert2';
+import getUserTokenOrDefault from '../../../utils/getUserTokenOrDefault';
+
 
 export default {
-  components: { Loading, NavBarProfile },
+  components: { Loading },
   data() {
     return {
       loading: false,
@@ -519,11 +167,21 @@ export default {
       email: [],
       info: [],
       profile: null,
-      selectedStatus: "all"
+      selectedStatus: "all",
+      countries: [],
+      states: [],
+      cities: [],
+      selectedCountry: '',
+      selectedState: '',
+      selectedCity: '',
+      selectedNationality: '',
     }
   },
-  mounted() {
+  created() {
     this.getInfo();
+  },
+  mounted() {
+    this.validateUser();
     this.getAuctionsRecord();
   },
   computed: {
@@ -534,22 +192,81 @@ export default {
       if (this.selectedStatus === 'all') {
         return this.info.records; // Mostrar todas las subastas
       } else if (this.selectedStatus === 'won') {
-        return this.info.records.filter(record => record.status === 'won'); // Mostrar subastas ganadas
+        return this.info.records?.filter(record => record.status === 'won'); // Mostrar subastas ganadas
       } else if (this.selectedStatus === 'lost') {
-        return this.info.records.filter(record => record.status === 'lost'); // Mostrar subastas perdidas
+        return this.info.records?.filter(record => record.status === 'lost'); // Mostrar subastas perdidas
       }
     }
   },
+
   methods: {
+    fetchCountries() {
+      const endpoint = '/countries';
+      const url = `${this.$config.baseURL}${endpoint}`;
+      axios
+        .get(url)
+        .then(response => {
+          const countries = response.data;
+          this.countries = countries;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    async fetchStates() {
+      const endpoint = '/states'
+      const url = `${this.$config.baseURL}${endpoint}`
+      const code = this.selectedCountryCode
+      axios.get(url, {
+        params: {
+          country: code
+        },
+      })
+        .then(response => {
+          const states = response.data
+          this.states = states
+        })
+        .catch(error => {
+          console
+        })
+    },
+    async fetchCities() {
+      const endpoint = '/cities'
+      const url = `${this.$config.baseURL}${endpoint}`
+      const code = this.selectedStateCode
+      axios.get(url, {
+        params: {
+          state: code
+        },
+      })
+        .then(response => {
+          const cities = response.data
+          this.cities = cities
+        })
+        .catch(error => {
+          console
+        })
+    },
+    validateUser() {
+      if (!this.$store.state.user) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: this.$t('profile.mustLoginMsg')
+        }).then(() => {
+          window.location.href = '/auth/login';
+        });
+      }
+    },
+
     async getInfo() {
       this.email = [];
-      const url = `${this.$config.baseURL}/users/list-app-users/?pre_register=true&email=${this.$store.state.user.email}`;
-      const decoded = JWTDecode(this.$cookies.get('access_token'));
-
-      if (decoded) {
-        const token = "7992136a01a768227f14718e20efe5fa077a0db9"; // Replace with your token value
+      const token = getUserTokenOrDefault()
+      const decoded = JWTDecode(this.$cookies.get("access_token"));
+      const url = `${this.$config.baseURL}/users/me`;
+      if (token) {
         const headers = {
-          Authorization: `Token ${decoded.token}`,
+          Authorization: `Token ${token}`,
         };
 
         this.loading = true;
@@ -557,7 +274,11 @@ export default {
         try {
           const response = await this.$axios.get(url, { headers });
           this.email = response.data.app_user_profile;
-          this.profile = response.data.app_user_profile; // Almacenar los datos del perfil en la variable "profile"
+          this.profile = response.data.app_user_profile;
+          this.selectedCountry = this.email.country.name
+          this.selectedState = this.email.state.name
+          this.selectedCity = this.email.municipalitie.name
+          this.selectedNationality = this.email.nationality.name
           this.loading = false;
         } catch (error) {
           this.loading = false;
@@ -566,8 +287,8 @@ export default {
     },
     async getAuctionsRecord() {
       this.info = [];
-      const url = `${this.$config.baseURL}/subastas/get-auction-records?email=${this.$store.state.user.email}`
       const decoded = JWTDecode(this.$cookies.get("access_token"));
+      const url = `${this.$config.baseURL}/subastas/get-auction-records?email=${decoded.email}`
       if (decoded) {
         const headers = {
           Authorization: `Token ${decoded.token}`,
@@ -582,6 +303,21 @@ export default {
           this.loading = false;
         }
       }
+    },
+    clearUserData() {
+      Swal.fire({
+        title: this.$t('profile.changePasswordConfirm'),
+        text: this.$t('profile.redirectToHome'),
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: this.$t('general.yes'),
+        cancelButtonText: this.$t('general.cancel')
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$store.commit("clearUserData");
+          window.location.href = '/auth/login';
+        }
+      });
     }
   }
 }
