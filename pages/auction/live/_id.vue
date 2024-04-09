@@ -736,11 +736,7 @@ export default {
           this.isEditingAmount = true
         }
       })
-      this.socket.addEventListener("close", (event) => {
-        if (event.code === 1006) {
-          this.startBidSocket()
-        }
-      })
+
     },
 
     async startAuctionSocket() {
