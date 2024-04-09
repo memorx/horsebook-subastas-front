@@ -8,7 +8,7 @@ export default () => {
     if (!cookie) {
         // console.log("Se usa el default token")
         // return '0119158e9e647cc58e9c895fa08316b2a5b03df4'
-        return process.env.API_TOKEN
+        return
     }
 
     const decoded = jwtDecode(cookie)

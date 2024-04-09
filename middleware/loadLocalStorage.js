@@ -16,7 +16,7 @@ const retrieveUserInformationOrDefault = (app) => {
   if (!cookie) {
     return {
       isAuthenticated: false,
-      token: app.$config.apiToken
+      token: ''
     }
   }
 
