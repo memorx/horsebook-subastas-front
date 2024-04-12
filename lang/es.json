@@ -131,7 +131,7 @@
         "contact": {
             "title": "Contacto",
             "subTitle": "¡Nos interesa saber de ti!",
-            "paragraph": "Si tienes alguna duda de como participar en nuestras subastas o quieres ponerte en contacto con nosotros, envíanos un mesaje en el siguiente formulario.",
+            "paragraph": "Si tienes alguna duda de como participar en nuestras subastas o quieres ponerte en contacto con nosotros, envíanos un mensaje en el siguiente formulario.",
             "button": "enviar",
             "form": {
                 "name": "nombre",
