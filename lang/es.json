@@ -103,7 +103,8 @@
     "home": {
         "main": {
             "title": "La calidad se hereda",
-            "paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus rutrum, nunc eu luctus aliquam, nisi lectus volutpat ante, a elementum lorem mi ac nisl. Praesent congue risus id.",
+            "paragraph": "Bienvenido a nuestra emocionante plataforma de subasta de caballos! Sumérgete en el mundo de la equitación mientras exploras nuestra selección de magníficos caballos.",
+            "paragraph2": "¡Prepárate para vivir emocionantes subastas!",
             "button": "ver subastas"
         },
         "auction": {
@@ -246,7 +247,7 @@
         "youHaveDiscountMsg": "Ya tienes un 5% de descuento en este caballo por haber participado en la preoferta",
         "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
         "youAreTheDiscountWinnerMsg": "Has ganado {prebidWinnerDiscount}% de descuento extra",
-        "youAreTheDPrebidWinner": "Eres el ganador de de la preoferta este caballo",
+        "youAreTheDPrebidWinner": "Eres el ganador de la preoferta este caballo",
         "discountByHorseMsg": "**Los descuentos aplican por cada caballo, es necesario ganar el caballo para recibir el descuento.",
         "IN PERSON": "EN PERSONA",
         "Call": "EN LLAMADA",

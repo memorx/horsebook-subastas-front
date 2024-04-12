@@ -78,28 +78,28 @@
                 class="flex flex-row md:items-center"
               >
                 <div class="mx-5">
-                  <p class="text-center text-5xl mb-2 font-bold">
+                  <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                     {{ preBidTime.days }}
                   </p>
-                  <p class="text-center text-slate-500">{{ $t('cron.days') }}</p>
+                  <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.days') }}</p>
                 </div>
                 <div class="mx-5">
-                  <p class="text-center text-5xl mb-2 font-bold">
+                  <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                     {{ preBidTime.hours }}
                   </p>
-                  <p class="text-center text-slate-500">{{ $t('cron.hours') }}</p>
+                  <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.hours') }}</p>
                 </div>
                 <div class="mx-5">
-                  <p class="text-center text-5xl mb-2 font-bold">
+                  <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                     {{ preBidTime.minutes }}
                   </p>
-                  <p class="text-center text-slate-500">{{ $t('cron.minutes') }}</p>
+                  <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.minutes') }}</p>
                 </div>
                 <div class="mx-5">
-                  <p class="text-center text-5xl mb-2 font-bold">
+                  <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                     {{ preBidTime.seconds }}
                   </p>
-                  <p class="text-center text-slate-500">{{ $t('cron.seconds') }}</p>
+                  <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.seconds') }}</p>
                 </div>
               </div>
             </div>
@@ -133,34 +133,34 @@
                 class="flex flex-row md:items-center"
               >
                 <div class="mx-5">
-                  <p class="text-center text-5xl mb-2 font-bold">
+                  <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                     {{ bidTime.days }}
                   </p>
-                  <p class="text-center text-slate-500 capitalize">
+                  <p class="text-center text-sm md:text-xl text-slate-500">
                     {{ $t('cron.days') }}
                   </p>
                 </div>
                 <div class="mx-5">
-                  <p class="text-center text-5xl mb-2 font-bold">
+                  <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                     {{ bidTime.hours }}
                   </p>
-                  <p class="text-center text-slate-500 capitalize">
+                  <p class="text-center text-sm md:text-xl text-slate-500">
                     {{ $t('cron.hours') }}
                   </p>
                 </div>
                 <div class="mx-5">
-                  <p class="text-center text-5xl mb-2 font-bold">
+                  <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                     {{ bidTime.minutes }}
                   </p>
-                  <p class="text-center text-slate-500 capitalize">
+                  <p class="text-center text-sm md:text-xl text-slate-500">
                     {{ $t('cron.minutes') }}
                   </p>
                 </div>
                 <div class="mx-5">
-                  <p class="text-center text-5xl mb-2 font-bold">
+                  <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                     {{ bidTime.seconds }}
                   </p>
-                  <p class="text-center text-slate-500 capitalize">
+                  <p class="text-center text-sm md:text-xl text-slate-500">
                     {{ $t('cron.seconds') }}
                   </p>
                 </div>
@@ -248,7 +248,7 @@
                       <p class="text-center text-2xl mb-0 md:mb-1 font-bold">
                         {{ horse.countdown.days }}
                       </p>
-                      <p class="text-center text-slate-500 text-xs">
+                      <p class="text-center text-sm md:text-xl text-slate-500 text-xs">
                         <span class="hidden md:block">
                           {{ $t('cron.days') }}
                         </span>
@@ -261,7 +261,7 @@
                       <p class="text-center text-2xl mb-0 md:mb-1 font-bold">
                         {{ horse.countdown.hours }}
                       </p>
-                      <p class="text-center text-slate-500 text-xs">
+                      <p class="text-center text-sm md:text-xl text-slate-500 text-xs">
                         <span class="hidden md:block">
                           {{ $t('cron.hours') }}
                         </span>
@@ -274,7 +274,7 @@
                       <p class="text-center text-2xl mb-0 md:mb-1 font-bold">
                         {{ horse.countdown.minutes }}
                       </p>
-                      <p class="text-center text-slate-500 text-xs">
+                      <p class="text-center text-sm md:text-xl text-slate-500 text-xs">
                         <span class="hidden md:block">
                           {{ $t('cron.minutes') }}
                         </span>
@@ -287,7 +287,7 @@
                       <p class="text-center text-2xl mb-0 md:mb-1 font-bold">
                         {{ horse.countdown.seconds }}
                       </p>
-                      <p class="text-center text-slate-500 text-xs">
+                      <p class="text-center text-sm md:text-xl text-slate-500 text-xs">
                         <span class="hidden md:block">
                           {{ $t('cron.seconds') }}
                         </span>
