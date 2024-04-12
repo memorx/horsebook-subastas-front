@@ -40,7 +40,7 @@
               <div v-if="horseID" class="fade">
                 <div class="mb-4 sm:mb-0 p-0 mx-5 flex flex-col">
                   <h2 class="text-xl font-bold">
-                    Galería de: {{ HorsenName }}
+                    Galería de: {{ HorseName }}
                   </h2>
                   <div>
                     <div class="w-full">
@@ -73,7 +73,7 @@
             <transition name="fade">
               <div v-if="horseID" class="fade text-lg font-bold flex flex-col md:flex-row">
                 <span class="capitalize mr-2">{{  $t('auction.horseBeingAuctioned') }}: </span>
-                <span class="text-2xl text-red-500">{{ HorsenName }}</span>
+                <span class="text-2xl text-red-500">{{ HorseName }}</span>
               </div>
             </transition>
           </div>
@@ -279,7 +279,7 @@
                           <span class="text-2xl font-bold">{{ $t('horse.tabs.xRays') }}</span>
                         </div>
                         <p>
-                          <xRayGallery :images="horseData.xRayGallery" />
+                          <xRayGallery :images="horseData.xRayGallery" :horse_id="horse_id" :horse_name="HorseName"/>
                         </p>
                       </div>
 
@@ -410,7 +410,7 @@ export default {
         horseTelex: ""
       },
       liveURL: "",
-      HorsenName: "",
+      HorseName: "",
       intial_pre_bid_amount: "",
       horseID: "",
       externalHorseID: "",
@@ -490,7 +490,7 @@ export default {
 
     async winnerConfetti() {
       await this.fetchWinner()
-      this.wonHorse = this.HorsenName
+      this.wonHorse = this.HorseName
 
       if (this.winnerEmail == this.$store.state.user?.user) {
         this.$confetti.start()
@@ -924,7 +924,7 @@ export default {
       let params = {
         subasta_id: this.bidId,
         horse_id: this.horseID,
-        pre_bid: this.horseStatus === "CLOSED" ? "false" : "true"
+        pre_bid: this.horseStatus === "CLOSED" ? false : true
       }
       const token = getUserTokenOrDefault()
 
@@ -952,7 +952,7 @@ export default {
       let params = {
         subasta_id: this.bidId,
         horse_id: this.horseID,
-        pre_bid: "true"
+        pre_bid: true
       }
       const token = getUserTokenOrDefault()
 
@@ -983,7 +983,7 @@ export default {
             const horse = response.data
             this.horse = horse
             //name
-            this.HorsenName = horse.external_data.name
+            this.HorseName = horse.external_data.name
             //horse ID
             this.externalHorseID = horse.external_data.id
             this.horseIDForm = horse.local_data.id
