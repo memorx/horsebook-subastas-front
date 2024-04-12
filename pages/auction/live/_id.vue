@@ -670,7 +670,7 @@ export default {
           return
         }
         if (message.bids) {
-          this.bids = message.bids
+          this.bids = message.bids.slice(0, 20)
         }
 
         if (message.has_bid) {
@@ -768,7 +768,7 @@ export default {
           });
         }
 
-
+        console.log("message.horse",message.horse)
         if (message.horse) {
           const horse = message.horse;
           if (horse.id === this.horseID && horse.status === 'CLOSED') {
@@ -777,7 +777,7 @@ export default {
             this.winnerConfetti()
             this.horseID = null
             this.closeBidSocket()
-          } else if (horse.status === 'BIDDING') {
+          } else if (horse.id !== this.horseID && horse.status === 'BIDDING') {
             // El horse actual está en proceso de subasta, actualizar horseID, fetch data y reiniciar el socket.
             this.horseID = horse.id
             this.$confetti.stop()
@@ -1035,6 +1035,7 @@ export default {
               ).toLocaleString("en-US")
             this.horseData.horseTelex = horse.local_data.horsetelex_url
             this.startBidSocket()
+            console.log('se abre de nuevo el socket')
 
       }catch(e) {
         console.log(e)
