@@ -460,7 +460,7 @@
                     }"
                   >
                     <p>
-                      <xRayGallery :images="horseData.xRayGallery" :horse_id="horseId"/>
+                      <xRayGallery :images="horseData.xRayGallery" :horse_id="horseId" :horse_name="HorseName"/>
                     </p>
                   </div>
                 </div>
@@ -1160,7 +1160,7 @@ export default {
       let params = {
         subasta_id: this.bidId,
         horse_id: this.horseId,
-        pre_bid: this.horseStatus === "CLOSED" ? "false" : "true"
+        pre_bid: this.horseStatus === "CLOSED" ? false : true
       }
       const token = getUserTokenOrDefault()
 
