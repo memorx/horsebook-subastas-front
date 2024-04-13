@@ -6,7 +6,7 @@
          <div class="items-center justify-center md:grid  h-auto md:h-1/2 lg:h-screen w-full my-12 md:my-6 grid-1 md:grid-cols-2 gap-4">
             <!-- Content -->
             <div class="order-2 md:order-1 flex flex-col items-center justify-center space-y-4 w-full md:w-auto">
-               <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')"
+               <ContentTile :title="$t('home.main.title')" :paragraph="$t('home.main.paragraph')" :paragraph2="$t('home.main.paragraph2')"
                   :buttonLabel="$t('home.main.button') ? $t('home.main.button') : null" @button-clicked="handleShowBids"
                   headingLevel="1" :classOverrides="{
                      container: 'flex flex-col items-center md:items-start w-full md:w-auto',

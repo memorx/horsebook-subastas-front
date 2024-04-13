@@ -102,8 +102,9 @@
     },
     "home": {
         "main": {
-            "title": "Bienvenue",
-            "paragraph": "paragraphe principal en français",
+            "title": "Bienvenue sur notre plateforme passionnante de vente aux enchères de chevaux !",
+            "paragraph": "Plongez-vous dans le monde de l'équitation en explorant notre sélection de magnifiques chevaux.",
+            "paragraph2": "Préparez-vous à vivre des enchères passionnantes !",
             "button": "Enchères"
         },
         "auction": {

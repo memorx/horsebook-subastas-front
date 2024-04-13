@@ -68,11 +68,47 @@
             <!--video, description and bid table -->
             <div class="flex flex-col md:flex-row md:w-full md:px-6 my-6">
                 <div class="md:h1/2 md:w-1/2">
-                  <div class="aspect-w-16 aspect-h-9 md:mr-5 mb-5 md:mb-0">
+                  <div class="aspect-w-16 md:mr-5 mb-5 md:mb-0">
                       <Carousel :images="horseData.horseVideos" ref="carouselVideos"/>
                     </div>
                 </div>
                 <!--table bid-->
+
+                <div v-if="bidStatus == 'COMING' && horseStatus == 'COMING'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
+                  <h1 v-if="!counterIsZero(preBidTime)" class="text-center text-sm font-bold pt-10">
+                    {{ $t('auction.preOfferStartMsg')  }}
+                  </h1>
+                  <div v-if="!counterIsZero(preBidTime)" class="flex justify-center">
+                    <div class="mx-10 my-10">
+                      <div class="flex flex-row md:items-center">
+                        <div class="mx-5">
+                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                            {{ preBidTime.days }}
+                          </p>
+                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.days') }}</p>
+                        </div>
+                        <div class="mx-5">
+                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                            {{ preBidTime.hours }}
+                          </p>
+                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.hours') }}</p>
+                        </div>
+                        <div class="mx-5">
+                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                            {{ preBidTime.minutes }}
+                          </p>
+                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.minutes') }}</p>
+                        </div>
+                        <div class="mx-5">
+                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                            {{ preBidTime.seconds }}
+                          </p>
+                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.seconds') }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <div v-if="bidStatus == 'PREBID' && horseStatus == 'PREBID'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
                   <div
@@ -424,7 +460,7 @@
                     }"
                   >
                     <p>
-                      <xRayGallery :images="horseData.xRayGallery" :horse_id="horseId"/>
+                      <xRayGallery :images="horseData.xRayGallery" :horse_id="horseId" :horse_name="HorseName"/>
                     </p>
                   </div>
                 </div>
@@ -470,6 +506,12 @@ export default {
       showInput: false,
       manualInputAmount: "",
       isSyncEnabled: true,
+      preBidTime: {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+      },
       bidTime: {
         days: 0,
         hours: 0,
@@ -782,6 +824,41 @@ export default {
         this.bidTime.seconds = seconds
       }
     },
+
+    calculatePreBidCountdown() {
+
+      const targetDate = new Date(this.PreBidDate)
+      const now = new Date()
+
+      const utcOffset = targetDate.getTimezoneOffset()
+      const targetUTC = new Date(targetDate.getTime() + (utcOffset * 60 * 1000))
+
+      const utcOffsetNow = now.getTimezoneOffset()
+      const nowUTC = new Date(now.getTime() + (utcOffsetNow * 60 * 1000))
+
+      const timeDifference = targetUTC - nowUTC
+
+      if (timeDifference <= 0) {
+        this.countdownPre = false
+        clearInterval(this.timer2)
+      } else {
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60))
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
+
+        this.preBidTime.days = days
+        this.preBidTime.hours = hours
+        this.preBidTime.minutes = minutes
+        this.preBidTime.seconds = seconds
+      }
+
+    },
+
+    counterIsZero(countdown) {
+      return countdown.days === 0 && countdown.hours === 0 && countdown.minutes === 0 && countdown.seconds === 0
+    },
+
     async intentionalCloseSockets() {
       this.closeBidSocket()
       this.closeAuctionSocket()
@@ -1083,7 +1160,7 @@ export default {
       let params = {
         subasta_id: this.bidId,
         horse_id: this.horseId,
-        pre_bid: this.horseStatus === "CLOSED" ? "false" : "true"
+        pre_bid: this.horseStatus === "CLOSED" ? false : true
       }
       const token = getUserTokenOrDefault()
 
@@ -1214,6 +1291,7 @@ export default {
           this.EndBidDateFormat = this.formatted(auction.end_bid)
           this.bidStatus = auction.status
           this.timer = setInterval(this.calculateCountdown, 1000)
+          this.timer = setInterval(this.calculatePreBidCountdown, 1000)
           this.prebidWinnerDiscount = auction.prebid_winner_discount
           this.commission = auction.commission
           this.taxes = auction.taxes

@@ -102,8 +102,9 @@
     },
     "home": {
         "main": {
-            "title": "Welcome",
-            "paragraph": "",
+            "title": "Welcome to our exciting horse auction platform!",
+            "paragraph": "Immerse yourself in the world of horse riding as you explore our selection of magnificent horses",
+            "paragraph2": "Get ready to experience exciting auctions!",
             "button": "Auctions"
         },
         "auction": {

@@ -26,7 +26,6 @@
 
 <script>
 import axios from 'axios'
-import JSZip from "jszip"
 import JWTDecode from "jwt-decode"
 import { saveAs } from "file-saver"
 
@@ -34,32 +33,30 @@ export default {
   name: "xRayGallery",
   props: {
     images: Array,
-    horse_id: String
+    horse_id: String,
+    horse_name: String
   },
   methods: {
     async downloadImage() {
-      const zip = new JSZip()
-
-      const imagePromises = this.images.map(async (imageUrl, index) => {
-        const response = await fetch(imageUrl)
-        const blob = await response.blob()
-        zip.file(`xray${index + 1}.jpg`, blob) // Assuming the images are in jpg format
-      })
-
-      // Wait for all images to be fetched and added to the zip
-      await Promise.all(imagePromises)
-
       // Generate the zip and trigger the download
-      const zipBlob = await zip.generateAsync({ type: "blob" })
-      saveAs(zipBlob, "xrayImages.zip")
       const decoded = JWTDecode(this.$cookies.get("access_token"))
-      const url = `${this.$config.baseURL}/xray/download-email/`
+      const url = `${this.$config.baseURL}/xray/download/`
       axios.get(url, {
+        responseType: 'blob',
         params: {
           horse_id: this.horse_id
         }, headers: {
           Authorization: `Token ${decoded.token}`
-        }}).catch((error) => {
+        }}).then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          const filename = this.horse_name + '_xrays.zip'
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }).catch((error) => {
           console.log(error)
         })
     }
