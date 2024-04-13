@@ -162,7 +162,7 @@
          <div class=" w-full my-2 md:my-6 grid grid-1 lg:grid-cols-2 gap-4">
             <!-- Content on the left -->
             <div class="flex flex-col items-center justify-start space-y-4 w-full">
-               <ContentTile :title="$t('home.contact.subTitle')" :paragraph="$t('home.contact.paragraph')" :paragraph2="$t('home.contact.paragraph2')"
+               <ContentTile :title="$t('home.contact.subTitle')" :paragraph="$t('home.contact.paragraph')"
                   :buttonLabel="null" headingLevel="2" :classOverrides="{
                      container: 'w-full sm:w-full md:w-2/3 lg:w-full ',
                      title: 'text-white text-xl md:text-2xl lg:text-3xl uppercase font-roboto my-2 md:my-3 lg:my-4 text-center md:text-left',
