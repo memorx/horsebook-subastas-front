@@ -13,7 +13,8 @@
         "welcome": "Bienvenue",
         "download": "Télécharger",
         "next": "Lot Suivant",
-        "previous": "Lot Précédent"
+        "previous": "Lot Précédent",
+        "close": "Fermer"
     },
     "login": {
         "login": "Connexion",
@@ -129,9 +130,9 @@
             "button": "bouton nous en français"
         },
         "contact": {
-            "title": "contact",
-            "subTitle": "sous-titre de contact en français",
-            "paragraph": "paragraphe de contact en français",
+            "title": "Contact",
+            "subTitle": "Nous sommes intéressés à vous entendre !",
+            "paragraph": "Si vous avez des questions sur la participation à nos enchères ou si vous souhaitez nous contacter, envoyez-nous un message via le formulaire ci-dessous.",
             "button": "soumettre",
             "form": {
                 "name": "nom",
@@ -142,7 +143,8 @@
             "messageHasBeenSent": "Le message de contact a été envoyé"
         },
         "video": {
-            "button": "regarder la vidéo"
+            "button": "sauter la vidéo",
+            "title": "Bienvenue aux Subasta La Silla"
         },
         "exampleTitle": "Titre d'exemple",
         "exampleParagraph": "Ceci est un exemple de paragraphe pour div",

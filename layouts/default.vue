@@ -113,9 +113,9 @@ export default {
     methods: {
         showWelcomeModalMethod() {
             Swal.fire({
-                title: this.$i18n.locale === 'es' ? 'Bienvenido a HorseBook Subastas' : 'Welcome to HorseBook Auctions',
-                text: this.$i18n.locale === 'es' ? 'Tu mensaje de bienvenida aquí' : 'Your welcome message here',
-                confirmButtonText: this.$i18n.locale === 'es' ? 'Cerrar' : 'Close',
+                title: this.$t('home.video.title'),
+                text: '',
+                confirmButtonText: this.$t('general.close'),
                 confirmButtonColor: '#3085d6',
                 allowOutsideClick: false,
             }).then((result) => {

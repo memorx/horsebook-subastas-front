@@ -43,7 +43,9 @@
                     {{ $t('topBar.contact') }}
                 </h3>
                 <div class="font-robotom capitalize">
+                    <!--
                     <p><span class="normal-case">{{ contactInfo.email }}</span></p>
+                    -->
                     <p>{{ contactInfo?.app_user_profile?.phone }}</p>
                 </div>
 
