@@ -49,12 +49,14 @@
                             {{ $t('topBar.contact') }}
                         </button>
                     </li>
+                    <!--
                     <li>
                         <nuxt-link
                             :class="[activePageClass('/news'), 'uppercase font-roboto']" :to="localePath('/news')">
                             {{ $t('topBar.news') }}
                         </nuxt-link>
                     </li>
+                    -->
                     <li class="flex flex-row">
                         <nuxt-link v-for="(locale, index) in locales" :key="index" :to="switchLocalePath(locale)" @click="isDropdownOpen=false" class="px-4 py-2 hover:bg-gray-100 flex items-center">
                             <img :src="getFlag(locale)" :alt="locale" class="mr-2 h-4 w-auto">
