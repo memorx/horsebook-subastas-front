@@ -13,7 +13,8 @@
         "welcome": "Bienvenido",
         "download": "descargar",
         "next": "Lote Siguiente",
-        "previous": "Lote Anterior"
+        "previous": "Lote Anterior",
+        "close": "Cerrar"
     },
     "login": {
         "login": "Iniciar Sesión",
@@ -142,7 +143,8 @@
             "messageHasBeenSent": "El mensaje de contacto ha sido enviado"
         },
         "video": {
-            "button": "Entrar"
+            "button": "saltar video",
+            "title": "Bienvenido a Subasata La Silla"
         },
         "exampleTitle": "Título de ejemplo",
         "exampleParagraph":  "Este es un párrafo de ejemplo para el div",
