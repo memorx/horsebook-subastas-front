@@ -41,11 +41,14 @@ import Swal from 'sweetalert2';
 
 export default {
     beforeMount() {
+        this.showVideo = false
+        /*
         if (!Cookie.get('videoPlayed')) {
             this.showVideo = true;
         } else {
             this.showVideo = false;
         }
+        */
     },
     async mounted() {
         /* comment google translate option
