@@ -82,25 +82,25 @@
                     <div class="mx-10 my-10">
                       <div class="flex flex-row md:items-center">
                         <div class="mx-5">
-                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                          <p class="text-center text-xl md:text-5xl mb-2 font-bold">
                             {{ preBidTime.days }}
                           </p>
                           <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.days') }}</p>
                         </div>
                         <div class="mx-5">
-                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                          <p class="text-center text-xl md:text-5xl mb-2 font-bold">
                             {{ preBidTime.hours }}
                           </p>
                           <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.hours') }}</p>
                         </div>
                         <div class="mx-5">
-                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                          <p class="text-center text-xl md:text-5xl mb-2 font-bold">
                             {{ preBidTime.minutes }}
                           </p>
                           <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.minutes') }}</p>
                         </div>
                         <div class="mx-5">
-                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                          <p class="text-center text-xl md:text-5xl mb-2 font-bold">
                             {{ preBidTime.seconds }}
                           </p>
                           <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.seconds') }}</p>
@@ -130,33 +130,33 @@
                       </p>
                     </div>
                   </div>
-                  <div class="flex justify-center rounded-t-md">
+                  <div class="md:flex justify-center rounded-t-md">
                     <div class="mx-10 md:mx-0 my-10">
                       <p class="uppercase">{{ $t('cron.timeLeft')}}</p>
                       <div class="flex flex-row justify-center md:items-center">
                         <div class="mx-5">
-                          <p class="text-center text-5xl mb-2 font-bold">
+                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                             {{ bidTime.days }}
                           </p>
-                          <p class="text-center text-black">{{ $t('cron.days')}}</p>
+                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.days')}}</p>
                         </div>
                         <div class="mx-5">
-                          <p class="text-center text-5xl mb-2 font-bold">
+                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                             {{ bidTime.hours }}
                           </p>
-                          <p class="text-center text-black">{{ $t('cron.hours')}}</p>
+                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.hours')}}</p>
                         </div>
                         <div class="mx-5">
-                          <p class="text-center text-5xl mb-2 font-bold">
+                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                             {{ bidTime.minutes }}
                           </p>
-                          <p class="text-center text-black">{{ $t('cron.minutes')}}</p>
+                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.minutes')}}</p>
                         </div>
                         <div class="mx-5">
-                          <p class="text-center text-5xl mb-2 font-bold">
+                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
                             {{ bidTime.seconds }}
                           </p>
-                          <p class="text-center text-black">{{ $t('cron.seconds')}}</p>
+                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.seconds')}}</p>
                         </div>
                       </div>
                       <p class="text-center text-xs text-custom-gold">
@@ -231,9 +231,44 @@
                         v-if="errorMessage"
                         class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
                       >
-                        {{ $t(`backMessages.${errorMessage}`,{"lastOffer": lastOffer}) }}
+                      {{ $t(`backMessages.${errorMessage}`,{"lastOffer": lastOffer}) }}
                       </div>
                     </div>
+                  </div>
+                  <div v-if="winnerEmail === this.$store.state.user?.user" class="flex flex-row font-bold text-green-800 items-center justify-center" >
+                    <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                      width="25px" height="25px" viewBox="0 0 121.352 121.352"
+                      xml:space="preserve">
+                    <g>
+                      <g>
+                        <g>
+                          <path d="M14.058,112.273c-2.671,0-5.174-1.659-6.123-4.319c-1.206-3.381,0.558-7.1,3.939-8.305
+                            c8.797-3.145,18.032-8.08,19.576-10.444c2.219-7.225,9.508-23.93,9.82-24.645c1.437-3.29,5.27-4.792,8.559-3.354
+                            c3.29,1.438,4.791,5.269,3.354,8.559c-2.062,4.719-7.76,18.121-9.35,23.401c-2.609,8.664-18.407,15.452-27.592,18.727
+                            C15.52,112.151,14.783,112.273,14.058,112.273z"/>
+                          <path d="M65.87,121.352c-0.763,0-1.538-0.136-2.294-0.421c-3.358-1.268-5.054-5.018-3.787-8.376
+                            c2.805-7.434,5.827-16.579,6.66-20.561c-2.797-2.67-9.536-8.242-15.298-12.741c-2.83-2.21-3.332-6.294-1.123-9.124
+                            c2.21-2.828,6.295-3.33,9.124-1.122c17.609,13.751,19.027,16.47,19.633,17.63c1.21,2.32,2.716,5.208-6.833,30.508
+                            C70.969,119.747,68.497,121.352,65.87,121.352z"/>
+                          <circle cx="76.713" cy="14.166" r="14.166"/>
+                          <g>
+                            <path d="M68.121,26.851c0,0,1.546,0.19,2.986,0.859c1.375,0.64,2.783,1.641,2.783,1.641l0.036,0.024
+                              c3.896,2.979,6.987,8.574,4.649,13.91L66.033,71.93c-2.727,6.223-10.594,7.369-16.32,4.86c-0.975-0.427-1.907-0.958-2.773-1.583
+                              c-4.06-2.921-7.093-8.293-4.722-13.708l12.545-28.645C57.09,27.538,63.32,26.015,68.121,26.851z"/>
+                          </g>
+                          <path d="M28.649,50.542c-1.12,0-2.25-0.34-3.225-1.048c-2.458-1.783-3.006-5.22-1.224-7.679
+                            c2.7-3.724,9.596-12.598,15.307-14.555c5.321-1.824,21.093-0.901,25.8-0.575c3.03,0.21,5.316,2.836,5.106,5.867
+                            c-0.209,3.029-2.805,5.313-5.866,5.107c-8.536-0.589-19.204-0.728-21.479,0.009c-1.657,0.663-6.417,5.722-9.963,10.605
+                            C32.029,49.755,30.351,50.542,28.649,50.542z"/>
+                          <path d="M85.548,44.799c-5.263,0-10.754-0.317-13.907-0.536c-3.03-0.21-5.316-2.836-5.106-5.867
+                            c0.209-3.029,2.8-5.319,5.866-5.107c8.536,0.591,19.204,0.728,21.478-0.009c1.666-0.666,6.426-5.725,9.964-10.604
+                            c1.784-2.458,5.222-3.007,7.682-1.224c2.459,1.783,3.007,5.222,1.225,7.681c-2.7,3.724-9.597,12.597-15.308,14.554
+                            C94.971,44.535,90.355,44.799,85.548,44.799z"/>
+                        </g>
+                      </g>
+                    </g>
+                    </svg>
+                    {{ $t(`bids.yourAreWinningPreOffer`) }}
                   </div>
                   <div v-if="bids.length > 0">
                     <div class="mx-5">
@@ -248,6 +283,7 @@
                         :horseID="horseID"
                         :bids="this.bids"
                         :hasBid="this.hasBid"
+                        :privateInformation="this.privateInformation"
                       />
                     </div>
                   </div>
@@ -291,8 +327,23 @@
                     </button>
                   </NuxtLink>
                   </p>
-                  <div v-else class="text-black font-bold text-xl pt-5">
+                  <div v-else class="flex flex-col text-black font-bold text-xl pt-5">
                     {{ $t('auction.stayTuned') }}
+                    <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
+                      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
+                        {{ $t('auction.goToAuction') }}
+                      </button>
+                    </NuxtLink>
+                  </div>
+                </div>
+                <div v-if="bidStatus == 'BIDDING' && (horseStatus == 'CLOSED' || horseStatus == 'COMMING')" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
+                  <div class="flex flex-col text-black font-bold text-xl pt-5">
+                    {{ $t('auction.stayTuned') }}
+                    <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
+                      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
+                        {{ $t('auction.goToAuction') }}
+                      </button>
+                    </NuxtLink>
                   </div>
                 </div>
                 <div v-if="horseStatus =='COMMING' && bidStatus == 'COMMING'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
@@ -336,6 +387,7 @@
                       </nuxt-link>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -574,18 +626,18 @@ export default {
       genders: "",
       genreMapping: {
         null: "",
-        0: "Potranca",
-        1: "Vacía",
-        2: "Gestante",
-        3: "Portadora",
-        4: "Donadora",
-        5: "Nana",
-        6: "Potro",
-        7: "Entero",
-        8: "Semental",
-        9: "Semental aprobado",
-        10: "Castrado",
-        11: "Nano"
+        0: "Yegua", //"Potranca"
+        1: "Yegua", //"Vacía",
+        2: "Yegua", //"Gestante",
+        3: "Yegua", //"Portadora",
+        4: "Yegua", //"Donadora",
+        5: "Yegua", //"Nana",
+        6: "Macho", //"Potro",
+        7: "Macho", //"Entero",
+        8: "Macho", //"Semental",
+        9: "Macho", //"Semental aprobado",
+        10: "Macho Castrado", //"Castrado",
+        11: "Macho", //"Nano"
       },
       socket: null,
       bids: [],
@@ -603,11 +655,13 @@ export default {
       hasBid: false,
       subscribed:false,
       prebidWinnerDiscount: 5,
+      privateInformation: true,
       commission: 0,
       taxes: 0,
       confirmedAmount: "",
       increments: [],
       incrementHistory: [],
+
     }
   },
   computed: {
@@ -678,7 +732,7 @@ export default {
     async winnerConfetti() {
       await this.fetchWinner()
       if (this.horseStatus == "CLOSED" || this.horseStatus == "CLOSED PREBID") {
-        if (this.winnerEmail == this.$store.state.user?.user) {
+        if (this.winnerEmail == this.$store.state.user?.user && this.winnerEmail && this.$store.state.user?.user) {
           this.$confetti.start()
           setTimeout(() => {
             this.$confetti.stop()
@@ -854,6 +908,7 @@ export default {
       }
 
     },
+
 
     counterIsZero(countdown) {
       return countdown.days === 0 && countdown.hours === 0 && countdown.minutes === 0 && countdown.seconds === 0
@@ -1293,6 +1348,7 @@ export default {
           this.timer = setInterval(this.calculateCountdown, 1000)
           this.timer = setInterval(this.calculatePreBidCountdown, 1000)
           this.prebidWinnerDiscount = auction.prebid_winner_discount
+          this.privateInformation = auction.private_information
           this.commission = auction.commission
           this.taxes = auction.taxes
         })

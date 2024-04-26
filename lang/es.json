@@ -99,7 +99,8 @@
         },
         "mustLoginMsg": "Debes iniciar sesión para poder ver tus datos, se te redirigirá al inicio",
         "changePasswordConfirm": "¿Estás seguro que deseas cambiar tu contraseña?",
-        "redirectToHome": "Se te redirigirá hacia el inicio"
+        "redirectToHome": "Se te redirigirá hacia el inicio",
+        "unsubscribedMsg": "Ahora tu correo ha sido dado de baja para recibir correos"
     },
     "home": {
         "main": {
@@ -256,7 +257,9 @@
         "aprrovedToOffer": "¡Has sido aprobado para ofertar!",
         "rejectedToOffer": "¡Has sido rechazado para ofertar!",
         "incrementValidationErrorTitle": "Oferta no permitida",
-        "incrementValidationError": "¿Deseas subirla a {suggestedAmount}?"
+        "incrementValidationError": "¿Deseas subirla a {suggestedAmount}?",
+        "yourAreWinningPreOffer": "Estás ganando la preoferta",
+        "yourAreWinningAuction": "Estás ganando la subasta"
     },
     "horse": {
         "dateOfBirth": "Fecha de nacimiento",
