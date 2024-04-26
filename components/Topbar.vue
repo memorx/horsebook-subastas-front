@@ -209,6 +209,7 @@ export default {
             this.$store.commit('authenticate', false);
             this.$store.commit('clearUserData');
             this.$store.commit("closeWebSocket");
+            this.$store.commit("setUser", null);
             Cookies.remove('access_token');
             localStorage.removeItem("setUser");
             localStorage.removeItem("isUserAbleToBid");

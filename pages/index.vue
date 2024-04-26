@@ -282,20 +282,14 @@ export default {
          .then((response) => {
             response.data.results.map((auction) => {
 
-               if (auction.status != "CLOSED") {
-                  if (
-                     ["PREBID", "COMING", "CLOSED PREBID", "BIDDING"].includes(
-                        auction.status
-                     )
-                  ) {
-                     if(!(this.nextAuction?.status === 'BIDDING' && auction.status !== 'BIDDING')){
-                        this.nextAuction = auction
-                     }
-
-                     this.otherAuctions.push(auction)
-                     //console.log('next auction', this.nextAuction)
-                  }
+               if(!(this.nextAuction?.status === 'BIDDING' && auction.status !== 'BIDDING')){
+                  this.nextAuction = auction
                }
+
+               this.otherAuctions.push(auction)
+               //console.log('next auction', this.nextAuction)
+
+
                if(this.nextAuction) {
                   this.timer = setInterval(this.calculateCountdown, 1000)
                }
@@ -364,7 +358,6 @@ export default {
       },
 
       goToAuctionDetail(auction) {
-         console.log('si se hace', auction)
          const basePath = auction.status === 'BIDDING' ? '/auction/live' : '/user/detalles';
          const path = `${basePath}/${auction.id}`;
          this.$router.push({ path: this.localePath(path) });

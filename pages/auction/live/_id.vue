@@ -90,7 +90,64 @@
                   <h2 class="font-bold text-3xl mx-auto text-center text-yellow-600">
                       {{ $t('auction.stayWithUsMsg') }}
                   </h2>
+                  <table v-if="!horseID && item?.horses?.length" class="w-full leading-normal pt-5">
+                    <thead>
+                        <tr>
+                            <th colspan="2"
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                {{ $t('auction.horses') }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="horse in item.horses" :key="horse.id" v-if="horse.local_data.show">
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                <div class="flex auctions-center">
+                                    <div class="flex-shrink-0 w-16 h-16">
+                                        <img v-if="horse.external_data.image_path" class="w-full h-full rounded-full"
+                                        :src="apiImg + horse.external_data.image_path"
+                                            alt="" />
+                                        <svg class="w-full h-full rounded-full" v-else xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" version="1.1" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;" viewBox="0 0 230 166.25" x="0px" y="0px" fill-rule="evenodd" clip-rule="evenodd">
+                                        <circle cx="115" cy="100" r="140" fill="#d1d1d1" />
+                                            <defs><style type="text/css">
+                                            .fil0 {fill:black }
+                                        </style></defs><g><path class="fil0" d="M201 7c-4,2 -7,5 -11,8 0,0 -2,8 -4,11 0,1 2,2 2,2 2,-3 13,-11 13,-21z"/><path class="fil0" d="M169 21c-12,0 -16,-12 -30,-15 -18,0 -34,23 -56,-6 16,37 45,8 56,27 -17,-14 -44,13 -74,-1 20,18 29,4 48,11 0,0 -13,-1 -24,1 -24,4 -38,-1 -49,-24 4,15 11,26 25,31 -44,0 -22,-40 -53,-41 21,6 13,36 33,48 -33,-3 -15,-24 -45,-32 23,7 11,35 37,53 6,4 0,12 4,21 4,9 39,7 48,-2 10,-8 -18,-13 -23,-21 -4,-9 -4,-22 12,-21 25,0 33,16 58,6 -8,1 -18,-3 -19,-8 -3,-4 0,-8 6,-4 7,6 24,4 24,4 -27,-17 14,-8 19,-7 -6,-11 11,-10 16,-11 0,0 -9,6 -11,12 13,-3 24,22 27,15 13,10 22,58 -7,19 4,18 42,35 27,46 0,0 0,0 -1,1 0,0 0,0 0,0l0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0c2,1 5,0 6,-2 1,-7 0,-14 -3,-19 4,4 5,9 4,15 2,0 2,-3 3,-5 4,-6 3,-10 0,-16 -6,-10 -23,-31 -24,-42 0,-8 -2,-6 -5,-11 -5,-7 -2,-9 -14,-17 5,-7 9,-27 6,-26 -4,2 -15,16 -21,21zm28 29c1,1 1,3 0,4 0,0 1,0 1,-1 0,4 -3,3 -4,2 0,1 6,2 5,-1 0,0 1,0 2,0 -1,0 -2,-1 -2,-2 0,0 -1,0 -1,0 1,0 2,-1 2,-1 -2,0 -2,0 -3,-1zm-5 3c0,-2 0,-3 1,-3 0,0 -1,0 -2,0 2,-2 6,-2 7,-1 0,0 0,0 0,0 -1,0 -1,0 -1,0 0,0 0,0 0,0 2,1 3,0 4,0 0,0 -2,0 -2,0 0,0 0,0 -1,-1 -2,0 -4,0 -5,0 0,0 0,0 0,0 0,0 -1,0 -1,0 0,0 0,0 1,0 -1,0 -2,0 -2,0 0,0 1,1 1,1 -1,0 -2,0 -2,-1 0,1 0,1 0,1 -1,0 -1,0 -2,-2 0,2 2,4 3,3 0,1 0,2 1,3zm-3 -50c0,2 0,10 -3,16 0,1 -5,2 -5,2 0,0 5,-7 8,-18zm37 96c-1,2 -1,6 -1,8 1,3 1,1 1,1 1,0 1,0 1,0 1,-2 1,-4 0,-6 0,-1 0,-1 -1,-1 -1,0 0,-1 0,-2z"/><path class="fil0" d="M153 90c-17,-7 -43,46 -45,42 0,-22 20,-47 51,-66 -20,24 24,38 29,16 0,0 2,10 2,15 1,5 14,13 14,13 2,2 2,6 5,8 0,0 -2,-3 -2,-8 3,8 9,9 9,11 0,2 -2,3 -3,3 -1,0 -6,1 -8,-2 -1,0 -4,-7 -4,-7 -6,3 -14,-14 -18,-16 -6,-3 -24,0 -30,-9z"/></g></svg>
+                                    </div>
+                                    <div class="w-full mt-4 text-center md:ml-3 md:text-left">
+                                        <p class="text-center font-bold">{{ horse.external_data.name }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                              <div class="flex flex-col mt-2">
+                                  <horseStatus
+                                    :status="horse.local_data.status"
+                                    :bid-status="bidStatus"
+                                  />
+                                  <div class="flex text-center mx-auto mt-2">
+                                      <div v-if="horse.local_data.status == 'COMING' || horse.local_data.status == 'CLOSED PREBID'"
+                                          class="text-black">
+                                          {{ formattedFinalAmount(horse.local_data.final_amount) }}
+                                      </div>
+                                      <div v-if="horse.local_data.status == 'BIDDING' || horse.local_data.status == 'PREBID'"
+                                          class="text-black font-bold blink center">
+                                          {{ formattedFinalAmount(horse.local_data.final_amount) }}
+                                      </div>
+                                      <div v-if="horse.local_data.status == 'CLOSED'"
+                                          class="text-gray-800">
+                                          {{ formattedFinalAmount(horse.local_data.final_amount) }}
+                                      </div>
+                                  </div>
+                                  <Button class="mx-auto mt-4 bg-black hover:bg-gray-950 text-white font-normal py-2 px-4 rounded-md" @click="goToDetail(horse, index)">
+                                      Ver detalles
+                                  </Button>
+                              </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
               </div>
+
 
 
               <div v-else class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
@@ -192,6 +249,41 @@
                     {{ $t('auction.preBidWinnerMsg', { 'winnerName': prebidWinner.country.name }) }}
                   </p>
                 </div>
+                <div v-if="bids && bids.length > 0 && bids[0].user_profile.email === this.$store.state.user?.user" class="flex flex-row font-bold text-green-800 items-center justify-center" >
+                  <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="25px" height="25px" viewBox="0 0 121.352 121.352"
+                    xml:space="preserve">
+                  <g>
+                    <g>
+                      <g>
+                        <path d="M14.058,112.273c-2.671,0-5.174-1.659-6.123-4.319c-1.206-3.381,0.558-7.1,3.939-8.305
+                          c8.797-3.145,18.032-8.08,19.576-10.444c2.219-7.225,9.508-23.93,9.82-24.645c1.437-3.29,5.27-4.792,8.559-3.354
+                          c3.29,1.438,4.791,5.269,3.354,8.559c-2.062,4.719-7.76,18.121-9.35,23.401c-2.609,8.664-18.407,15.452-27.592,18.727
+                          C15.52,112.151,14.783,112.273,14.058,112.273z"/>
+                        <path d="M65.87,121.352c-0.763,0-1.538-0.136-2.294-0.421c-3.358-1.268-5.054-5.018-3.787-8.376
+                          c2.805-7.434,5.827-16.579,6.66-20.561c-2.797-2.67-9.536-8.242-15.298-12.741c-2.83-2.21-3.332-6.294-1.123-9.124
+                          c2.21-2.828,6.295-3.33,9.124-1.122c17.609,13.751,19.027,16.47,19.633,17.63c1.21,2.32,2.716,5.208-6.833,30.508
+                          C70.969,119.747,68.497,121.352,65.87,121.352z"/>
+                        <circle cx="76.713" cy="14.166" r="14.166"/>
+                        <g>
+                          <path d="M68.121,26.851c0,0,1.546,0.19,2.986,0.859c1.375,0.64,2.783,1.641,2.783,1.641l0.036,0.024
+                            c3.896,2.979,6.987,8.574,4.649,13.91L66.033,71.93c-2.727,6.223-10.594,7.369-16.32,4.86c-0.975-0.427-1.907-0.958-2.773-1.583
+                            c-4.06-2.921-7.093-8.293-4.722-13.708l12.545-28.645C57.09,27.538,63.32,26.015,68.121,26.851z"/>
+                        </g>
+                        <path d="M28.649,50.542c-1.12,0-2.25-0.34-3.225-1.048c-2.458-1.783-3.006-5.22-1.224-7.679
+                          c2.7-3.724,9.596-12.598,15.307-14.555c5.321-1.824,21.093-0.901,25.8-0.575c3.03,0.21,5.316,2.836,5.106,5.867
+                          c-0.209,3.029-2.805,5.313-5.866,5.107c-8.536-0.589-19.204-0.728-21.479,0.009c-1.657,0.663-6.417,5.722-9.963,10.605
+                          C32.029,49.755,30.351,50.542,28.649,50.542z"/>
+                        <path d="M85.548,44.799c-5.263,0-10.754-0.317-13.907-0.536c-3.03-0.21-5.316-2.836-5.106-5.867
+                          c0.209-3.029,2.8-5.319,5.866-5.107c8.536,0.591,19.204,0.728,21.478-0.009c1.666-0.666,6.426-5.725,9.964-10.604
+                          c1.784-2.458,5.222-3.007,7.682-1.224c2.459,1.783,3.007,5.222,1.225,7.681c-2.7,3.724-9.597,12.597-15.308,14.554
+                          C94.971,44.535,90.355,44.799,85.548,44.799z"/>
+                      </g>
+                    </g>
+                  </g>
+                  </svg>
+                  {{ $t(`bids.yourAreWinningAuction`) }}
+                </div>
                 <div v-if="bids.length > 0">
                   <div class="mx-5">
                     <div class="border-b border-gray-300 my-4"></div>
@@ -220,10 +312,10 @@
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               <div class="mr-4">
                 <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
-                <span class="text-gray-600">{{ horseData.birthDate || "NA" }}</span>
+                <span class="text-gray-600">{{ horseData.BirthDate || "NA" }}</span>
               </div>
               <div class="mr-4">
-                <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
+                <span class="font-bold text-gray-700">{{ $t('horse.age') }}:</span>
                 <span class="text-gray-600">{{ horseData.Age || "NA" }}</span>
                 <span class="text-gray-600">{{ $t('dates.years') }}</span>
               </div>
@@ -434,18 +526,18 @@ export default {
       genders: "",
       genreMapping: {
         null: "",
-        0: "Potranca",
-        1: "Vacía",
-        2: "Gestante",
-        3: "Portadora",
-        4: "Donadora",
-        5: "Nana",
-        6: "Potro",
-        7: "Entero",
-        8: "Semental",
-        9: "Semental aprobado",
-        10: "Castrado",
-        11: "Nano"
+        0: "Yegua", //"Potranca"
+        1: "Yegua", //"Vacía",
+        2: "Yegua", //"Gestante",
+        3: "Yegua", //"Portadora",
+        4: "Yegua", //"Donadora",
+        5: "Yegua", //"Nana",
+        6: "Macho", //"Potro",
+        7: "Macho", //"Entero",
+        8: "Macho", //"Semental",
+        9: "Macho", //"Semental aprobado",
+        10: "Macho Castrado", //"Castrado",
+        11: "Macho", //"Nano"
       },
       socket: null,
       bids: [],
@@ -492,7 +584,7 @@ export default {
       await this.fetchWinner()
       this.wonHorse = this.HorseName
 
-      if (this.winnerEmail == this.$store.state.user?.user) {
+      if (this.winnerEmail == this.$store.state.user?.user && this.winnerEmail && this.$store.state.user?.user) {
         this.$confetti.start()
         this.yourAreTheWinner = true
         setTimeout(() => {}, 5000)
@@ -755,7 +847,7 @@ export default {
 
           this.item.horses.forEach((horse, key) => {
             const curHorse = message.horses.find( item => item.status === 'BIDDING' );
-            if(curHorse.id != this.horseID){
+            if(curHorse?.id != this.horseID){
               this.horseID = curHorse.id
               this.$confetti.stop()
               this.wonHorse = ""
@@ -1113,6 +1205,29 @@ export default {
         this.manualInputAmount = String(value)
         this.formattedManualInputAmount = this.formatNumber(value)
       }
+    },
+    goToDetail(horse, index) {
+      let path = `/bids/bid/?live=1&id=${this.bidId}&horsePositionList=${index}&horseId=${horse.local_data.id}`
+      this.$router.push({ path: this.localePath(path) })
+    },
+
+    formattedFinalAmount(value) {
+        if (typeof value === 'number' || (typeof value === 'string' && !isNaN(value))) {
+        // Convierte el valor a un número
+        const numericValue = parseFloat(value);
+
+        if (!isNaN(numericValue)) {
+          // Formatea el valor numérico como moneda sin decimales
+          return numericValue.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }) + ' USD';
+        }
+      }
+
+      return '';
     },
 
   }

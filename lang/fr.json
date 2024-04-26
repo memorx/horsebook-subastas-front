@@ -99,7 +99,8 @@
         },
         "mustLoginMsg": "Vous devez vous connecter pour voir vos données, vous serez redirigé vers l'accueil",
         "changePasswordConfirm": "Êtes-vous sûr de vouloir changer votre mot de passe?",
-        "redirectToHome": "Vous serez redirigé vers le début"
+        "redirectToHome": "Vous serez redirigé vers le début",
+        "unsubscribedMsg": "Votre e-mail a maintenant été désabonné de la réception d'e-mails"
     },
     "home": {
         "main": {
@@ -256,7 +257,9 @@
         "aprrovedToOffer": "Vous avez été approuvé pour enchérir!",
         "rejectedToOffer": "Vous avez été rejeté pour enchérir!",
         "incrementValidationErrorTitle": "Offre non autorisée",
-        "incrementValidationError": "voulez-vous l'augmenter à {suggestedAmount}?"
+        "incrementValidationError": "voulez-vous l'augmenter à {suggestedAmount}?",
+        "yourAreWinningPreOffer": "Vous gagnez la pré-offre",
+        "yourAreWinningAuction": "Vous remportez l'enchère"
     },
     "horse": {
         "dateOfBirth": "Date de naissance",
