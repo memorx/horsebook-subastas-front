@@ -120,9 +120,8 @@ export default {
         .get(url)
         .then((response) => {
           response.data.results.map((auction) => {
-            if (auction.status != "CLOSED") {
               if (
-                ["PREBID", "BIDDING", "COMING", "CLOSED PREBID"].includes(
+                ["PREBID", "BIDDING", "COMING", "CLOSED PREBID", "CLOSED"].includes(
                   auction.status
                 )
               ) {
@@ -130,7 +129,7 @@ export default {
               } else {
                 this.nextAuctions.push(auction)
               }
-            }
+
           })
 
           this.loading = false

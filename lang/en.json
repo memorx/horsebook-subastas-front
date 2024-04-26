@@ -99,7 +99,8 @@
         },
         "mustLoginMsg": "You must log in to see your data, you will be redirected to home",
         "changePasswordConfirm": "Are you sure you want to change your password?",
-        "redirectToHome": "You will be redirected to the beginning"
+        "redirectToHome": "You will be redirected to the beginning",
+        "unsubscribedMsg": "Now your email has been unsubscribed from receiving emails"
     },
     "home": {
         "main": {
@@ -256,7 +257,9 @@
         "aprrovedToOffer": "You have been approved to bid!",
         "rejectedToOffer": "You have been rejected to bid!",
         "incrementValidationErrorTitle": "Offer not allowed",
-        "incrementValidationError": "Do you want to raise it to {suggestedAmount}?"
+        "incrementValidationError": "Do you want to raise it to {suggestedAmount}?",
+        "yourAreWinningPreOffer": "You are winning the pre-offer",
+        "yourAreWinningAuction": "You are winning the auction"
     },
     "horse": {
         "dateOfBirth": "Date of birth",
