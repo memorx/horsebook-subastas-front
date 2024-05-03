@@ -30,7 +30,7 @@
             <div class="mb-4 sm:mb-0 p-0 mx-5 pb-5">
             <iframe
               class="aspect-content rounded-lg h-96 w-full"
-              :src="`https://www.youtube.com/embed/${extractYouTubeId(videoUrl)}`"
+              :src="`https://www.youtube.com/embed/${extractYouTubeId(videoUrl)}?rel=0`"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
@@ -102,8 +102,8 @@
                     <tbody>
                         <tr v-for="horse in item.horses" :key="horse.id" v-if="horse.local_data.show">
                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                <div class="flex auctions-center">
-                                    <div class="flex-shrink-0 w-16 h-16">
+                                <div class="flex flex-col md:flex-row items-center md:items-center">
+                                    <div class="w-16 h-16 flex-shrink-0">
                                         <img v-if="horse.external_data.image_path" class="w-full h-full rounded-full"
                                         :src="apiImg + horse.external_data.image_path"
                                             alt="" />
@@ -434,6 +434,7 @@ import getUserTokenOrDefault from "~/utils/getUserTokenOrDefault"
 import modal from "~/components/bid/modal.vue"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import Swal from 'sweetalert2'
+import { extractYouTubeId } from '~/utils/youtubeUtils'
 
 
 export default {
@@ -946,18 +947,7 @@ export default {
       this.$set(horse, "showDetails", !horse.showDetails)
     },
 
-    extractYouTubeId(url) {
-      if (url) {
-        try {
-          const parsedUrl = new URL(url)
-          return parsedUrl.searchParams.get("v")
-        } catch (error) {
-          return null
-        }
-      } else {
-        return null
-      }
-    },
+    extractYouTubeId,
     getIncrement() {
       let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
       let incrementAmount = this.calculateIncrement(lastOffer)

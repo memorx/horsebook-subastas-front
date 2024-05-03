@@ -180,16 +180,16 @@
       >
         <!-- Card content -->
         <div class="relative bg-white rounded-tl-3xl w-full">
-          <div class="absolute z-50 m-2">
+          <div class="absolute z-30 m-2">
             <horseStatus
               :status="horse.local_data.status"
               :bid-status="bidStatus"
             />
           </div>
           <img
-            v-if="getImageUrl(horse.local_data.horse_id)"
-            :src="getImageUrl(horse.local_data.horse_id)"
-            class="w-full flex-1 object-cover rounded-tl-3xl rounded-br-3xl opacity-90 hover:opacity-100 transition-opacity h-40 lg:h-64"
+            v-if="horse.external_data.image_path_thumbnail"
+            :src="`${apiImg}${horse.external_data.image_path_thumbnail}`"
+            class="w-full flex-1 object-cover rounded-tl-3xl rounded-br-3xl hover:brightness-110 transition-opacity h-40 lg:h-80"
           />
           <div
             v-else
@@ -357,7 +357,8 @@ export default {
       countdownSubasta: false,
       countdownPre: false,
       bidStatus: "",
-      bidImage: ""
+      bidImage: "",
+      apiImg: "https://storage.googleapis.com/horsebook/",
     }
   },
   async created() {

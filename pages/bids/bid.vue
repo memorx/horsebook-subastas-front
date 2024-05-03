@@ -539,7 +539,7 @@ import horseStatus from "../../components/bid/horseStatus.vue"
 import statusBid from "../../components/bid/statusBid.vue"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import Swal from 'sweetalert2'
-
+import { extractYouTubeId } from '~/utils/youtubeUtils'
 
 export default {
   components: {
@@ -592,6 +592,7 @@ export default {
         next: null,
         previous: null,
         horseVideos: [],
+        image: ""
       },
       bidStatus: "",
       liveURL: "",
@@ -1122,8 +1123,8 @@ export default {
         this.formData.amount = initialAmount.toLocaleString("en-US")
       }
     },
-    fetchHorseImages() {
-      axios
+    async fetchHorseImages() {
+      await axios
         .get(this.$config.baseLaSilla + `/horses/${this.horseID}/images`)
         .then((response) => {
           const images = response.data.map((imageObj) => imageObj.url)
@@ -1134,19 +1135,10 @@ export default {
         .catch((error) => {
           console.error(error)
         })
+        this.horseData.images.unshift(this.horseData.image)
+
     },
-    extractYouTubeId(url) {
-      if (url) {
-        try {
-          const parsedUrl = new URL(url)
-          return parsedUrl.searchParams.get("v")
-        } catch (error) {
-          return null
-        }
-      } else {
-        return null
-      }
-    },
+    extractYouTubeId,
     getIncrement() {
       let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
       let incrementAmount = this.calculateIncrement(lastOffer)
@@ -1322,6 +1314,7 @@ export default {
           this.EndPreBidDate = horse.local_data.end_pre_bid
           this.horseData.next = horse.local_data.next
           this.horseData.previous = horse.local_data.previous
+          this.horseData.image = this.apiImg + horse.external_data.image_path
           this.loadVideos()
         })
         .catch((error) => {
