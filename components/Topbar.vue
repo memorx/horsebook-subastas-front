@@ -126,7 +126,7 @@ export default {
             socket: null, // Socket para auction
             isIntentionalReconnectAuction: false,
             moveToHome: false,
-            windowWidth: window.innerWidth,
+            windowWidth: process.client ? window.innerWidth : 0,
             isDropdownOpen: false,
         }
     },
