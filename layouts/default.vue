@@ -2,7 +2,7 @@
     <div>
         <div id="google_translate_element" class="w-full overflow-x-hidden"></div>
         <!-- Parent div with black background -->
-        <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
+       <!--  <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
             <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
                 <source src="/video-home.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -10,9 +10,9 @@
             <ReusableButton containerClass="mb-12 fixed z-50 bottom-5 w-auto text-white left-1/2 transform -translate-x-1/2"
                 buttonClass="uppercase text-sm md:text-base lg:text-lg" :onClick="closeVideo"
                 :buttonText="$t('home.video.button')" />
-        </div>
+        </div> -->
 
-        <div v-else>
+        <div>
             <div :class="[`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] `, bgLayoutMode]">
                 <!-- Your TopBar Component bg-[url('/home-bg.jpg')] -->
 

@@ -5,7 +5,7 @@
         <transition name="fade" mode="out-in">
             <iframe v-if="currentImage !== null && typeof currentImage === 'object'"
                 class="rounded-lg absolute inset-0 w-full h-full object-cover" :src="currentImage.video_url
-            ? `https://www.youtube.com/embed/${extractYouTubeId(currentImage.video_url)}`
+            ? `https://www.youtube.com/embed/${extractYouTubeId(currentImage.video_url)}?rel=0`
             : `https://www.youtube.com/embed/ivGNj_t6S2c`
             " frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import { extractYouTubeId } from '~/utils/youtubeUtils'
+
 export default {
     name: 'Carousel',
     props: {
@@ -97,6 +99,7 @@ export default {
         clearInterval(this.imageInterval);
     },
     methods: {
+        extractYouTubeId,
         startCarousel() {
             clearInterval(this.imageInterval)
             this.currentImageIndex = 0
@@ -142,18 +145,6 @@ export default {
         closeEnlargeImage() {
             this.enlargedImageIndex = null
             this.startInterval()
-        },
-        extractYouTubeId(url) {
-            if (url) {
-                try {
-                    const parsedUrl = new URL(url)
-                    return parsedUrl.searchParams.get("v")
-                } catch (error) {
-                    return null
-                }
-            } else {
-                return null
-            }
         },
     },
     computed: {

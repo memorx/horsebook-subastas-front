@@ -20,7 +20,7 @@
         </p>
       </div>
       <div>
-        <p class="font-normal text-base text-neutral-600">¿
+        <p class="font-normal text-base text-neutral-600">
           {{ $t('signup.emailNotReceived') }}
           <button
             type="button"
