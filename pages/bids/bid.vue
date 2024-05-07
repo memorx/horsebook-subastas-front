@@ -393,15 +393,16 @@
     </div>
             <!-- END NEW DESIGN-->
 
-    <div class="md:hidden mx-5">
-      <select v-model="openTab"
-      class="w-full rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500 mb-1"
-      >
-          <option :value="1">{{ $t('horse.tabs.horseData')}}</option>
-          <option :value="2">{{ $t('horse.tabs.pedigree')}}</option>
-          <option :value="3">{{ $t('horse.tabs.xRays')}}</option>
-      </select>
+    <div class="md:hidden mx-5 border border-gray-300 rounded-t-md">
+      <div class="flex">
+        <button @click="openTab = 1" :class="{'bg-gray-200': openTab === 1, 'bg-gray-100': openTab !== 1}" class="flex-1 text-xs px-2 py-5 focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500">{{ $t('horse.tabs.horseData')}}</button>
+        <div class="w-px bg-gray-300"></div> <!-- Separador vertical -->
+        <button @click="openTab = 2" :class="{'bg-gray-200': openTab === 2, 'bg-gray-100': openTab !== 2}" class="flex-1 text-xs px-2 py-5 focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500">{{ $t('horse.tabs.pedigree')}}</button>
+        <div class="w-px bg-gray-300"></div> <!-- Separador vertical -->
+        <button @click="openTab = 3" :class="{'bg-gray-200': openTab === 3, 'bg-gray-100': openTab !== 3}" class="flex-1 text-xs px-2 py-5 focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500">{{ $t('horse.tabs.xRays')}}</button>
+      </div>
     </div>
+
     <div class="hidden md:show md:flex md:flex-row h-16 p-0 mx-5 bg-[#D9D9D9]">
       <button
         class="w-48 h-16 font-bold"
@@ -455,38 +456,36 @@
                     }"
                   >
                     <p>
-                      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        <div class="mr-4">
+                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div v-if="horseData.BirthDate" class="mr-4">
                           <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
                           <span class="text-gray-600">{{ horseData.BirthDate || "NA" }}</span>
                         </div>
-                        <div class="mr-4">
+                        <div v-if="horseData.Age" class="mr-4">
                           <span class="font-bold text-gray-700">{{ $t('horse.age') }}:</span>
                           <span class="text-gray-600">{{ horseData.Age || "NA" }}</span>
                           <span class="text-gray-600">{{ $t('dates.years') }}</span>
                         </div>
-
-                        <div class="mr-4">
+                        <div v-if="horseData.registerNumber" class="mr-4">
                           <span class="font-bold text-gray-700">{{ $t('horse.registerNo') }}:</span>
-                          <span class="text-gray-600">{{
-                            horseData.registerNumber || "NA"
-                          }}</span>
+                          <span class="text-gray-600">{{ horseData.registerNumber || "NA" }}</span>
                         </div>
-                        <div class="mr-4">
+                        <div v-if="horseData.Height" class="mr-4">
                           <span class="font-bold text-gray-700">{{ $t('horse.height') }}:</span>
                           <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
                           <span class="text-gray-600">m</span>
                         </div>
-                        <div class="mr-4">
+                        <div v-if="horseData.Genre" class="mr-4">
                           <span class="font-bold text-gray-700">{{ $t('horse.gender') }}:</span>
                           <span class="text-gray-600">{{ horseData.Genre || "NA" }}</span>
                         </div>
-                        <div class="mr-4">
+                        <div v-if="horseData.Hatchery" class="mr-4">
                           <span class="font-bold text-gray-700">{{ $t('horse.birthLocation') }}:</span>
                           <span class="text-gray-600">{{ horseData.Hatchery || "NA" }}</span>
                         </div>
                       </div>
                     </p>
+
                   </div>
                   <div
                     class="mb-4 bg-white p-5 mx-5"
@@ -1177,8 +1176,12 @@ export default {
     },
     calculateAge() {
       const today = moment()
-      return today.diff(this.birthDate, "years")
+      const birthDate = moment(this.birthDate)
+      const yearsDiff = today.year() - birthDate.year()
+
+      return yearsDiff ? yearsDiff : 1
     },
+
     formatted(date) {
       const dateformat = date ? moment(date).format("DD/MM/YYYY") : ""
       return dateformat

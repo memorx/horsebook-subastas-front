@@ -7,11 +7,11 @@
     <span v-bind:class="{ show: !isAuthenticated || !isAbleToBid }" class="hidden md:visible tool-tip-text">
       <p>{{ hoverText }}</p>
     </span>
-    <span v-if="!isAuthenticated" class="md:hidden">
+    <div v-if="!isAuthenticated" class="md:hidden pb-5">
       <NuxtLink :to="localePath('/auth/login')" class="font-bold border-1 border-gray-500 px-3 py-2">
         {{ hoverText }}
       </NuxtLink>
-    </span>
+    </div>
   </div>
 </template>
 
