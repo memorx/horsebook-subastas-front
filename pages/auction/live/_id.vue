@@ -978,10 +978,15 @@ export default {
     toggleTabs: function (tabNumber) {
       this.openTab = tabNumber
     },
+
     calculateAge() {
       const today = moment()
-      return today.diff(this.birthDate, "years")
+      const birthDate = moment(this.birthDate)
+      const yearsDiff = today.year() - birthDate.year()
+
+      return yearsDiff ? yearsDiff : 1
     },
+
     formatted(date) {
       const dateformat = moment(date).format("DD/MM/YYYY")
       return dateformat
