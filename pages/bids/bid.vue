@@ -1123,18 +1123,22 @@ export default {
       }
     },
     async fetchHorseImages() {
+      this.horseData.images = new Array()
       await axios
         .get(this.$config.baseLaSilla + `/horses/${this.horseID}/images`)
         .then((response) => {
-          const images = response.data.map((imageObj) => imageObj.url)
-          this.horseData.images = images
-          this.$refs.carousel.startCarousel()
+          if (response.data && response.data.length > 0) {
+            const images = response.data.map((imageObj) => imageObj.url)
+            this.horseData.images = images
+            this.$refs.carousel.startCarousel()
+          }
 
         })
         .catch((error) => {
           console.error(error)
         })
-        this.horseData.images.unshift(this.horseData.image)
+        if(this.horseData.image && this.horseData.image !== null)
+          this.horseData.images.unshift(this.horseData.image)
 
     },
     extractYouTubeId,
@@ -1232,7 +1236,7 @@ export default {
     },
 
     async loadVideos(){
-      console.log('load videos')
+      // console.log('load videos')
       const url = `${this.$config.baseURL}/horse-video?horse=${this.horseId}`
 
       this.loading = true
@@ -1317,7 +1321,7 @@ export default {
           this.EndPreBidDate = horse.local_data.end_pre_bid
           this.horseData.next = horse.local_data.next
           this.horseData.previous = horse.local_data.previous
-          this.horseData.image = this.apiImg + horse.external_data.image_path
+          this.horseData.image = horse.external_data.image_path ? this.apiImg + horse.external_data.image_path : null
           this.loadVideos()
         })
         .catch((error) => {
