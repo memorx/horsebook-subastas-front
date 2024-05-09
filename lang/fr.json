@@ -14,7 +14,9 @@
         "download": "Télécharger",
         "next": "Lot Suivant",
         "previous": "Lot Précédent",
-        "close": "Fermer"
+        "close": "Fermer",
+        "privateModeNotice": "L'utilisation de la plateforme en mode incognito ou privé n'est pas recommandée"
+
     },
     "login": {
         "login": "Connexion",
