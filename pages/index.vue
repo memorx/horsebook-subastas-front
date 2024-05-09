@@ -213,12 +213,12 @@
       </div>
    </div>
 </template>
-
 <script>
 import ContentTile from '~/components/ContentTile.vue';
 import SectionTitle from '~/components/SectionTitle.vue';
 import ReusableButton from '~/components/ReusableButton.vue';
 import statusBid from "~/components/bid/statusBid.vue";
+import { detectIncognito } from "detectincognitojs";
 
 export default {
    layout: 'default',
@@ -229,6 +229,13 @@ export default {
       // this.$store.commit('setBgImage', 'home-bg.jpg');
       // set the textColor on Topbar component
       // this.$store.commit('setTextColorTopBar', 'text-black');
+
+      detectIncognito().then((result) => {
+         console.log(result.browserName, result.isPrivate)
+         if(result.isPrivate)
+            this.$toast.error(this.$t('general.privateModeNotice'))
+      });
+
    },
    components: {
       ContentTile,
