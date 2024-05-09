@@ -22,7 +22,6 @@
     "cookieparser": "^0.1.0",
     "core-js": "^3.19.3",
     "crypto-js": "^4.1.1",
-    "detectincognitojs": "^1.3.5",
     "dotenv": "^16.0.3",
     "file-saver": "^2.0.5",
     "fs": "^0.0.1-security",

@@ -14,9 +14,7 @@
         "download": "download",
         "next": "Next Lot",
         "previous": "Previous Lot",
-        "close": "Close",
-        "privateModeNotice": "The use of the platform in incognito or private mode is not recommended"
-
+        "close": "Close"
     },
     "login": {
         "login": "Login",
