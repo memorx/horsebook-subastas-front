@@ -193,7 +193,7 @@
           />
           <div
             v-else
-            class="flex justify-center items-center bg-gray-400 w-full h-40 lg:h-80 rounded-tl-3xl rounded-br-3xl"
+            class="flex justify-center items-center bg-gray-400 w-full h-40 lg:h-64 rounded-tl-3xl rounded-br-3xl"
           >
             <img
               class="m-auto opacity-70 h-1/2"
