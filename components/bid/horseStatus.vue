@@ -9,13 +9,13 @@
     </div>
     <div
       v-if="status == 'BIDDING'"
-      class="text-white rounded-fullsm:px-5 py-1 text-[10px] md:text-sm bg-green-400 text-center w-38 blink whitespace-nowrap uppercase"
+      class="text-white rounded-full px-2 sm:px-5 py-1 text-[10px] md:text-sm bg-green-400 text-center w-38 blink whitespace-nowrap uppercase"
     >
     {{ $t('auction.statuses.LIVE') }}
     </div>
     <div
       v-if="status == 'CLOSED'"
-      class="text-white rounded-full sm:px-5 py-1 text-[10px] md:text-sm bg-red-400 text-center w-38 whitespace-nowrap uppercase"
+      class="text-white rounded-full px-2 sm:px-5 py-1 text-[10px] md:text-sm bg-red-400 text-center w-38 whitespace-nowrap uppercase"
     >
     {{ $t('auction.statuses.CLOSED') }}
     </div>
@@ -27,7 +27,7 @@
     </div>
     <div
       v-if="status == 'COMING'"
-      class="text-white rounded-full sm:px-5 py-1 text-[10px] md:text-sm bg-gray-500 text-center w-38 whitespace-nowrap uppercase"
+      class="text-white rounded-full px-2 sm:px-5 py-1 text-[10px] md:text-sm bg-gray-500 text-center w-38 whitespace-nowrap uppercase"
     >
     {{ $t('auction.statuses.COMING') }}
     </div>

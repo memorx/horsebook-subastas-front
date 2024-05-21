@@ -15,7 +15,7 @@
             <div class="w full h-auto mx-6 my-4 md:my-8">
                 <button
                     class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
-                    @click="() => this.$router.push(this.localePath(`/user/detalles/${bidId}`))"
+                    @click="() => backTo()"
                 >
                     <span class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"><img
                             src="../../public/arrow-black.png" /></span>
@@ -676,6 +676,9 @@ export default {
     },
     horsePositionList() {
       return this.$route.query.horsePositionList
+    },
+    fromToBack() {
+      return this.$route.query.from
     },
     isCurrentDate() {
       const CurrentDate = new Date()
@@ -1452,6 +1455,14 @@ export default {
       setTimeout(() => {
         this.initilize()
       }, 1000)
+    },
+    backTo() {
+      if(!this.fromToBack) {
+        return this.$router.push(this.localePath(`/user/detalles/${this.bidId}`))
+      } else if(this.fromToBack == 'auction') {
+        return this.$router.push(this.localePath(`/auction/live/${this.bidId}`))
+      }
+
     },
   }
 }
