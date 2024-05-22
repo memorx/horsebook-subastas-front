@@ -292,7 +292,7 @@
                   <p class="text-black font-bold text-2xl pt-8 px-10">
                     {{ $t('auction.horseAuctionIsLive') }}
                   </p>
-                  <p v-if="hasBid" class="text-center text-xs text-custom-gold">
+                  <p v-if="hasPreBid" class="text-center text-xs text-custom-gold">
                     {{ $t('bids.youHaveDiscountMsg') }}
                   </p>
                   <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xs text-custom-gold">
@@ -311,7 +311,7 @@
                   <p class="text-black font-bold text-2xl pt-8 px-10">
                     {{ $t('auction.horseAuctionIsComming') }}
                   </p>
-                  <p v-if="hasBid" class="text-center text-xs text-custom-gold">
+                  <p v-if="hasPreBid" class="text-center text-xs text-custom-gold">
                     {{ $t('bids.youHaveDiscountMsg') }}
                   </p>
                   <p v-if="winnerEmail == $store.state.user?.user && horseStatus == 'CLOSED PREBID'" class="text-center text-xl text-green-800 font-bold">
@@ -653,6 +653,7 @@ export default {
       horseExternalId: "",
       winnerEmail: "",
       hasBid: false,
+      hasPreBid: false,
       subscribed:false,
       prebidWinnerDiscount: 5,
       privateInformation: true,
@@ -983,6 +984,10 @@ export default {
 
         if (message.has_bid) {
           this.hasBid = message.has_bid
+        }
+
+        if (message.has_prebid) {
+          this.hasPreBid = message.has_prebid
         }
 
         if (message.prebids && message.prebids.length > 0) {

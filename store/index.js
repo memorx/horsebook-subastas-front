@@ -3,7 +3,8 @@ import Cookie from "js-cookie"
 
 export const state = () => ({
   isAuthenticated: false,
-  : false,
+  isUserAbleToBid: false,
+  showToast: false,
   singUpData: {},
   setUser: {},
   horseDetails: {},
@@ -19,11 +20,15 @@ export const mutations = {
   authenticate(state, value) {
     state.isAuthenticated = value
   },
-  set(state, isAbleToBid) {
-    if(state. != isAbleToBid) {
-      state. = isAbleToBid
-      localStorage.setItem("", isAbleToBid)
+  setIsUserAbleToBid(state, isAbleToBid) {
+    if(state.isUserAbleToBid != isAbleToBid) {
+      state.isUserAbleToBid = isAbleToBid
+      localStorage.setItem("isUserAbleToBid", isAbleToBid)
     }
+  },
+  setShowToast(state) {
+      state.showToast = true
+      localStorage.setItem("showToast", true)
   },
   setSingUpData(state, value) {
     state.singUpData = value
@@ -110,7 +115,8 @@ export const actions = {
           Cookie.set("access_token", jwt)
 
           // update the store
-          commit("set", data.user.status)
+          commit("setIsUserAbleToBid", data.user.status)
+          commit("setShowToast")
           // console.log("data.user.status", data.user.status);
         }
       }
