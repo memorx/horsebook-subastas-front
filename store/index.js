@@ -4,6 +4,7 @@ import Cookie from "js-cookie"
 export const state = () => ({
   isAuthenticated: false,
   isUserAbleToBid: false,
+  showToast: false,
   singUpData: {},
   setUser: {},
   horseDetails: {},
@@ -20,8 +21,14 @@ export const mutations = {
     state.isAuthenticated = value
   },
   setIsUserAbleToBid(state, isAbleToBid) {
-    state.isUserAbleToBid = isAbleToBid
-    localStorage.setItem("isUserAbleToBid", isAbleToBid)
+    if(state.isUserAbleToBid != isAbleToBid) {
+      state.isUserAbleToBid = isAbleToBid
+      localStorage.setItem("isUserAbleToBid", isAbleToBid)
+    }
+  },
+  setShowToast(state) {
+      state.showToast = true
+      localStorage.setItem("showToast", true)
   },
   setSingUpData(state, value) {
     state.singUpData = value
@@ -109,6 +116,7 @@ export const actions = {
 
           // update the store
           commit("setIsUserAbleToBid", data.user.status)
+          commit("setShowToast")
           // console.log("data.user.status", data.user.status);
         }
       }
