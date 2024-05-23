@@ -73,7 +73,9 @@
             <transition name="fade">
               <div v-if="horseID" class="fade text-lg font-bold flex flex-col md:flex-row">
                 <span class="capitalize mr-2">{{  $t('auction.horseBeingAuctioned') }}: </span>
-                <span class="text-2xl text-red-500">{{ HorseName }}</span>
+                <NuxtLink :to="`/bids/bid?id=${bidId}&horsePositionList=0&horseId=${horseID}&from=auction`" class="mb-2">
+                  <span class="text-2xl text-red-500">{{ HorseName }}</span>
+                </NuxtLink>
               </div>
             </transition>
           </div>
@@ -310,32 +312,32 @@
         <div v-if="horseID" class="fade flex flex-col">
           <div class="mt-4 bg-white p-5 mx-5 rounded-lg">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              <div class="mr-4">
+              <div v-if="horseData.BirthDate" class="mr-4">
                 <span class="font-bold text-gray-700">{{ $t('horse.dateOfBirth') }}:</span>
                 <span class="text-gray-600">{{ horseData.BirthDate || "NA" }}</span>
               </div>
-              <div class="mr-4">
+              <div v-if="horseData.Age" class="mr-4">
                 <span class="font-bold text-gray-700">{{ $t('horse.age') }}:</span>
                 <span class="text-gray-600">{{ horseData.Age || "NA" }}</span>
                 <span class="text-gray-600">{{ $t('dates.years') }}</span>
               </div>
 
-              <div class="mr-4">
+              <div v-if="horseData.registerNumber" class="mr-4">
                 <span class="font-bold text-gray-700">{{ $t('horse.registerNo') }}:</span>
                 <span class="text-gray-600">{{
                   horseData.registerNumber || "NA"
                 }}</span>
               </div>
-              <div class="mr-4">
+              <div v-if="horseData.Height" class="mr-4">
                 <span class="font-bold text-gray-700">{{ $t('horse.height') }}:</span>
                 <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
                 <span class="text-gray-600">m</span>
               </div>
-              <div class="mr-4">
+              <div v-if="horseData.Genre" class="mr-4">
                 <span class="font-bold text-gray-700">{{ $t('horse.gender') }}:</span>
                 <span class="text-gray-600">{{ horseData.Genre || "NA" }}</span>
               </div>
-              <div class="mr-4">
+              <div v-if="horseData.Hatchery" class="mr-4">
                 <span class="font-bold text-gray-700">{{ $t('horse.birthLocation') }}:</span>
                 <span class="text-gray-600">{{ horseData.Hatchery || "NA" }}</span>
               </div>
@@ -371,7 +373,7 @@
                           <span class="text-2xl font-bold">{{ $t('horse.tabs.xRays') }}</span>
                         </div>
                         <p>
-                          <xRayGallery :images="horseData.xRayGallery" :horse_id="horse_id" :horse_name="HorseName"/>
+                          <xRayGallery :images="horseData.xRayGallery" :horse_id="horseID" :horse_name="HorseName"/>
                         </p>
                       </div>
 

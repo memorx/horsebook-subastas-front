@@ -149,7 +149,7 @@ export default {
               id: `${response.data.id}`,
             })
             this.$store.commit(
-              "setIsUserAbleToBid",
+              "set",
               response.data.app_user_profile.bid
             )
             this.$store.dispatch('initializeWebSocketUserStatus')

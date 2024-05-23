@@ -15,7 +15,7 @@
             <div class="w full h-auto mx-6 my-4 md:my-8">
                 <button
                     class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
-                    @click="() => this.$router.push(this.localePath(`/user/detalles/${bidId}`))"
+                    @click="() => backTo()"
                 >
                     <span class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"><img
                             src="../../public/arrow-black.png" /></span>
@@ -292,7 +292,7 @@
                   <p class="text-black font-bold text-2xl pt-8 px-10">
                     {{ $t('auction.horseAuctionIsLive') }}
                   </p>
-                  <p v-if="hasBid" class="text-center text-xs text-custom-gold">
+                  <p v-if="hasPreBid" class="text-center text-xs text-custom-gold">
                     {{ $t('bids.youHaveDiscountMsg') }}
                   </p>
                   <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xs text-custom-gold">
@@ -311,7 +311,7 @@
                   <p class="text-black font-bold text-2xl pt-8 px-10">
                     {{ $t('auction.horseAuctionIsComming') }}
                   </p>
-                  <p v-if="hasBid" class="text-center text-xs text-custom-gold">
+                  <p v-if="hasPreBid" class="text-center text-xs text-custom-gold">
                     {{ $t('bids.youHaveDiscountMsg') }}
                   </p>
                   <p v-if="winnerEmail == $store.state.user?.user && horseStatus == 'CLOSED PREBID'" class="text-center text-xl text-green-800 font-bold">
@@ -653,6 +653,7 @@ export default {
       horseExternalId: "",
       winnerEmail: "",
       hasBid: false,
+      hasPreBid: false,
       subscribed:false,
       prebidWinnerDiscount: 5,
       privateInformation: true,
@@ -676,6 +677,9 @@ export default {
     },
     horsePositionList() {
       return this.$route.query.horsePositionList
+    },
+    fromToBack() {
+      return this.$route.query.from
     },
     isCurrentDate() {
       const CurrentDate = new Date()
@@ -980,6 +984,10 @@ export default {
 
         if (message.has_bid) {
           this.hasBid = message.has_bid
+        }
+
+        if (message.has_prebid) {
+          this.hasPreBid = message.has_prebid
         }
 
         if (message.prebids && message.prebids.length > 0) {
@@ -1452,6 +1460,14 @@ export default {
       setTimeout(() => {
         this.initilize()
       }, 1000)
+    },
+    backTo() {
+      if(!this.fromToBack) {
+        return this.$router.push(this.localePath(`/user/detalles/${this.bidId}`))
+      } else if(this.fromToBack == 'auction') {
+        return this.$router.push(this.localePath(`/auction/live/${this.bidId}`))
+      }
+
     },
   }
 }

@@ -150,7 +150,7 @@ export default {
             }
         },
         displayToast() {
-            if (this.$store.state.websocket) {
+            if (this.$store.state.websocket && this.$store.state.showToast) {
                 if (this.$store.state.isUserAbleToBid) {
                     this.$toast.success(this.$t('bids.aprrovedToOffer'));
                 } else {
