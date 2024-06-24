@@ -28,8 +28,7 @@
                             <nuxt-link :class="activePageClass('/user/inicio')" :to="localePath('/user/inicio')"> {{
                                 $t('topBar.bids') }}</nuxt-link>
                             <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link> -->
-                            <!-- <nuxt-link :class="activePageClass('/news')" :to="localePath('/news')">{{ $t('topBar.news') }}</nuxt-link>
-                            -->
+                            <nuxt-link :class="activePageClass('/news')" :to="localePath('/news')">{{ $t('topBar.news') }}</nuxt-link>
                             <button class="uppercase text-xs font-roboto" @click="handleScrollIntoContact">
                                 {{ $t('topBar.contact') }}
                             </button>
