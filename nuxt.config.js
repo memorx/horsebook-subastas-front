@@ -72,7 +72,7 @@ export default {
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     // baseURL: 'http://localhost:8000/api'
-    baseURL: process.env.BASE_URL || "https://subastas-api-preprod.alluxi.com/api",
+    baseURL: process.env.BASE_URL || "https://subastas-api-stage.alluxi.com/api",
     baseLaSilla: "https://horsebookls.com//api"
   },
 
@@ -96,8 +96,8 @@ export default {
   },
   publicRuntimeConfig: {
     // baseURL: 'http://localhost:8000/api'
-    baseURL: process.env.BASE_URL || "https://subastas-api-preprod.alluxi.com/api",
-    baseURLWS: process.env.BASE_URLWS || "wss://subastas-api-preprod.alluxi.com/ws",
+    baseURL: process.env.BASE_URL || "https://subastas-api-stage.alluxi.com/api",
+    baseURLWS: process.env.BASE_URLWS || "wss://subastas-api-stage.alluxi.com/ws",
     baseLaSilla: "https://www.horsebookls.com/api",
   },
 
