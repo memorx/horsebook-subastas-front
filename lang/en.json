@@ -151,7 +151,8 @@
         },
         "exampleTitle": "Example Title",
         "exampleParagraph": "This is an example paragraph for div",
-        "exampleButton": "Example Button"
+        "exampleButton": "Example Button",
+        "youngHorses": "young\nhorses"
     },
     "topBar": {
         "home": "Home",
