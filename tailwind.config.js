@@ -17,7 +17,8 @@ module.exports = {
         'gray-disabled': '#F2F2F2',
         'red-form': '#CF4343',
         'custom-gold': '#BFA753',
-        'light-mode': '#E3E4E5'
+        'light-mode': '#E3E4E5',
+        'gold-100': '#f9d275'
       },
       borderWidth: {
         1: '1px'

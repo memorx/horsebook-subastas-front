@@ -151,7 +151,8 @@
         },
         "exampleTitle": "Titre d'exemple",
         "exampleParagraph": "Ceci est un exemple de paragraphe pour div",
-        "exampleButton": "Bouton d'exemple"
+        "exampleButton": "Bouton d'exemple",
+        "youngHorses": "jeunes\nchevaux"
     },
     "topBar": {
         "home": "Accueil",
