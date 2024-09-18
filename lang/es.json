@@ -252,7 +252,7 @@
         "youHaveDiscountMsg": "Ya tienes un 5% de descuento en este caballo por haber participado en la preoferta",
         "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
         "youAreTheDiscountWinnerMsg": "Has ganado {prebidWinnerDiscount}% de descuento extra",
-        "youAreTheDPrebidWinner": "Eres el ganador de la preoferta este caballo",
+        "youAreTheDPrebidWinner": "Eres el ganador de la preoferta de este caballo",
         "discountByHorseMsg": "**Los descuentos aplican por cada caballo, es necesario ganar el caballo para recibir el descuento.",
         "IN PERSON": "EN PERSONA",
         "Call": "EN LLAMADA",

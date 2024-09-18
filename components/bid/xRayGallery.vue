@@ -33,7 +33,7 @@ export default {
   name: "xRayGallery",
   props: {
     images: Array,
-    horse_id: String,
+    horse_id: [String, Number],
     horse_name: String
   },
   computed: {
