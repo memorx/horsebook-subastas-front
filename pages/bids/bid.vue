@@ -1084,7 +1084,6 @@ export default {
                 this.$t('auction.horseAuctionIsEnded')
               )
             }
-            this.winnerConfetti()
 
             if (this.horseStatus == "BIDDING") {
               this.$confetti.stop()
@@ -1113,12 +1112,15 @@ export default {
         if (message.auction) {
           this.bidStatus = message.auction.status;
         }
+
+        this.winnerConfetti()
       })
       this.auctionSocket.addEventListener("close", (event) => {
         if (event.code === 1006) {
           this.startBidSocket()
         }
       })
+
     },
     setInitialAmount() {
       if (this.formData?.amount) {
@@ -1236,6 +1238,7 @@ export default {
         .then((response) => {
           this.winnerEmail = response.data.user_profile.email
           this.winner = response.data.user_profile
+          console.log('actualiza winner', response.data)
         })
         .catch((error) => {
           // Handle errors

@@ -235,7 +235,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="prebidWinner.email && prebidWinner.email === this.$store.state.user?.user" class="mb-2">
+                <div v-if="prebidWinner?.email && prebidWinner?.email === this.$store.state.user?.user" class="mb-2">
                   <p class="text-center text-lg text-green-900 font-bold">
                     {{ $t('bids.youAreTheDPrebidWinner') }}
                   </p>
@@ -578,7 +578,11 @@ export default {
     clearInterval(this.timer)
     clearInterval(this.timer2)
     this.intentionalCloseSockets()
-    this.$confetti.stop()
+    if (this.$confetti && typeof this.$confetti.stop === 'function') {
+      this.$confetti.stop()
+    } else {
+      console.warn('Confetti plugin not available or stop method not found')
+    }
   },
 
   methods: {
@@ -847,12 +851,30 @@ export default {
         }
 
         if (message.horses && message.horses.length > 0) {
+          this.item.horses = this.item.horses.map(horse => {
+            const updatedHorse = message.horses.find(h => h.id === horse.local_data.id);
+            if (updatedHorse) {
+              return {
+                ...horse,
+                local_data: {
+                  ...horse.local_data,
+                  status: updatedHorse.status,
+                  final_amount: updatedHorse.final_amount
+                }
+              };
+            }
+            return horse
+          });
 
           this.item.horses.forEach((horse, key) => {
             const curHorse = message.horses.find( item => item.status === 'BIDDING' );
             if(curHorse?.id != this.horseID){
               this.horseID = curHorse.id
-              this.$confetti.stop()
+              if (this.$confetti && typeof this.$confetti.stop === 'function') {
+                this.$confetti.stop()
+              } else {
+                console.warn('Confetti plugin not available or stop method not found')
+              }
               this.wonHorse = ""
               this.winner = ""
               this.prebidWinner = {}
@@ -865,7 +887,22 @@ export default {
 
         console.log("message.horse",message.horse)
         if (message.horse) {
-          const horse = message.horse;
+          const horse = message.horse
+
+          this.item.horses = this.item.horses.map(h => {
+            if (h.local_data.id === horse.id) {
+              return {
+                ...h,
+                local_data: {
+                  ...h.local_data,
+                  status: horse.status,
+                  final_amount: horse.final_amount
+                }
+              };
+            }
+            return h
+          })
+
           if (horse.id === this.horseID && horse.status === 'CLOSED') {
             // El horse actual se ha cerrado, restablecer horseID y cerrar el socket.
             this.horseStatus = 'CLOSED'
@@ -875,7 +912,11 @@ export default {
           } else if (horse.id !== this.horseID && horse.status === 'BIDDING') {
             // El horse actual está en proceso de subasta, actualizar horseID, fetch data y reiniciar el socket.
             this.horseID = horse.id
-            this.$confetti.stop()
+            if (this.$confetti && typeof this.$confetti.stop === 'function') {
+              this.$confetti.stop()
+            } else {
+              console.warn('Confetti plugin not available or stop method not found')
+            }
             this.wonHorse = ""
             this.winner = {}
             this.firstUpdateAmount = true
@@ -888,6 +929,8 @@ export default {
         if (message.auction) {
             this.bidStatus = message.auction.status;
         }
+        this.fetchprebidWinner()
+        this.fetchWinner()
 
       });
     },
@@ -1125,7 +1168,6 @@ export default {
             this.horseData.horseTelex = horse.local_data.horsetelex_url
             this.startBidSocket()
             console.log('se abre de nuevo el socket')
-
       }catch(e) {
         console.log(e)
       }
