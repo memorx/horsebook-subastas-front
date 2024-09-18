@@ -91,7 +91,7 @@
                      </div>
 
                      <!-- Content part -->
-                     <div class="w-full lg:w-1/2 flex items-center justify-start px-12 py-4 h-full">
+                     <div class="w-full lg:w-1/2 flex items-center justify-start px-2 md:px-12 py-4 h-full">
                         <div class="flex flex-col w-full h-full justify-between">
                            <div class="xl:mt-6">
                               <!-- Placeholder content, replace with your content -->
