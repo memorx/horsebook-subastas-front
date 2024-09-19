@@ -1,7 +1,8 @@
 <template>
    <div>
-      <div class="h-auto bg2 px-8 md:px-16 font-roboto pb-8 md:pb-16">
-         <p class="text-gold-100 text-3xl md:text-6xl lg:text-7xl font-bold uppercase">
+      <div class="w-100 px-8 md:px-16 font-roboto pb-8 md:pb-16">
+         <img src="../public/Banner-promo-Subasta 2024.jpg" alt="logo" class="w-100">
+         <!-- <p class="text-gold-100 text-3xl md:text-6xl lg:text-7xl font-bold uppercase">
             {{ $t('home.auction.auction') }}
          </p>
          <p class="text-gold-100 text-xl md:text-4xl lg:text-5xl font-bold uppercase">
@@ -14,7 +15,7 @@
             <img src="../public/image_la_silla.png" alt="logo" class="w-20 h-20 md:w-36 md:h-36 lg:w-48 lg:h-48">
             <p class="text-red-600 text-3xl md:text-6xl lg:text-7xl font-medium uppercase text-center ml-8"
                style="white-space: pre-line">{{ $t('home.youngHorses') }}</p>
-         </div>
+         </div> -->
       </div>
       <div class="h-auto flex justify-center md:px-4 bg">
          <div class="w-11/12 flex flex-col items-center sm:space-x-4 bg-transparent">
