@@ -1,16 +1,15 @@
 <template>
     <div>
-        <div id="google_translate_element" class="w-full overflow-x-hidden"></div>
         <!-- Parent div with black background -->
-       <!--  <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
+        <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
             <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
                 <source src="/video-home.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <ReusableButton containerClass="mb-12 fixed z-50 bottom-5 w-auto text-white left-1/2 transform -translate-x-1/2"
-                buttonClass="uppercase text-sm md:text-base lg:text-lg" :onClick="closeVideo"
+            <ReusableButton containerClass="mb-12 fixed z-50 bottom-5 w-auto  left-1/2 transform -translate-x-1/2"
+                buttonClass="uppercase text-black font-bold text-sm md:text-base lg:text-lg" :onClick="closeVideo"
                 :buttonText="$t('home.video.button')" />
-        </div> -->
+        </div>
 
         <div>
             <div :class="[`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] `, bgLayoutMode]">
@@ -42,31 +41,16 @@ import Swal from 'sweetalert2';
 export default {
     beforeMount() {
         this.showVideo = false
-        /*
+
         if (!Cookie.get('videoPlayed')) {
             this.showVideo = true;
         } else {
             this.showVideo = false;
         }
-        */
+
     },
     async mounted() {
-        /* comment google translate option
-        window.googleTranslateElementInit = () => {
-            new window.google.translate.TranslateElement({
-            pageLanguage: 'es', // Idioma predeterminado
-            includedLanguages: 'es,fr,de', // Idiomas disponibles
-            layout: window.google.translate.TranslateElement.InlineLayout.HORIZONTAL,
-            autoDisplay: false
-            }, 'google_translate_element');
-        };
 
-        // Cargar el script del widget de Google Translate
-        const script = document.createElement('script');
-        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-        script.async = true;
-        document.head.appendChild(script);
-        */
         await this.getUserInfo()
         this.checkAndInitializeWebSocket();
         if (!window.WebSocket) {
@@ -100,7 +84,7 @@ export default {
     },
     data() {
         return {
-            showVideo: true,
+            showVideo: false,
             isMobileMenuOpen: false,
             showWelcomeModal: !Cookie.get('videoPlayed')
         }
@@ -132,19 +116,19 @@ export default {
         handleWelcomeModalClose() {
             this.showWelcomeModal = false;
             this.playVideoWithSound();
-            console.log('Closing welcome modal');
+            // console.log('Closing welcome modal');
         },
         playVideoWithSound() {
-            console.log('Playing video with sound');
+            // console.log('Playing video with sound');
             if (this.showVideo) {
                 const videoPlayer = this.$refs.videoPlayer;
                 videoPlayer.muted = false;
                 videoPlayer.play();
-                console.log('Playing video with sound');
+                // console.log('Playing video with sound');
             }
         },
         checkAndInitializeWebSocket() {
-            console.log('Checking and initializing websocket');
+            // console.log('Checking and initializing websocket');
             if (this.$store.state.isAuthenticated && this.$store.state.user.id) {
                 this.$store.dispatch('initializeWebSocketUserStatus');
             }
@@ -171,7 +155,7 @@ export default {
 
                 //Check if the cookie needs to update
                 if (response.data.app_user_profile.bid !== decoded.isAbleToBid) {
-                    console.log("Updating user bid status on the cookie");
+                    // console.log("Updating user bid status on the cookie");
                     //before updating the cookie
                     const HMACSHA256 = (stringToSign, secret) => {
                         const crypto = require("crypto")
@@ -249,35 +233,3 @@ export default {
 };
 
 </script>
-<style>
-#google_translate_element {
-    width: 100%; /* Ancho máximo para que no sobrepase la pantalla */
-    margin: 0 auto; /* Centrar el widget horizontalmente */
-    overflow-x: hidden; /* Ocultar cualquier desbordamiento horizontal */
-}
-#google_translate_element .goog-te-gadget {
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-}
-
-#google_translate_element .goog-te-gadget select {
-    margin-right: 10px;
-}
-
-#google_translate_element .goog-te-gadget a {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    margin-left: 10px;
-}
-
-#google_translate_element .goog-te-gadget a img {
-    margin-right: 5px;
-}
-
-.skiptranslate {
-    display: none;
-
-}
-</style>

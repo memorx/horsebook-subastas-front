@@ -62,7 +62,7 @@ export default {
           link.click();
           document.body.removeChild(link);
         }).catch((error) => {
-          console.log(error)
+          // console.log(error)
         })
     }
   }
