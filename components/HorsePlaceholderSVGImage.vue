@@ -10,6 +10,6 @@
 
 <script>
 export default {
-  name: 'HorsePlaceholderSVG'
+  name: 'HorsePlaceholderSVGImage'
 }
 </script>
