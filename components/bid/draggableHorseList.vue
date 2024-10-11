@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import HorsePlaceholderSVG from '../HorsePlaceholderSVG.vue'
+import HorsePlaceholderSVG from '~/components/HorsePlaceholderSVGImage'
 import Cookie from 'js-cookie'
 
 export default {
