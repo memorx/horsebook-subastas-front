@@ -261,7 +261,10 @@
         "incrementValidationErrorTitle": "Oferta no permitida",
         "incrementValidationError": "¿Deseas subirla a {suggestedAmount}?",
         "yourAreWinningPreOffer": "Estás ganando la preoferta",
-        "yourAreWinningAuction": "Estás ganando la subasta"
+        "yourAreWinningAuction": "Estás ganando la subasta",
+        "prebidDiscountApplied": "Descuento por participar en la preoferta aplicado:",
+        "prebidWinnerDiscountApplied": "Descuento por ganar la preoferta aplicado:",
+        "priceExcludesCommission": "Este precio no incluye comisiones"
     },
     "horse": {
         "dateOfBirth": "Fecha de nacimiento",

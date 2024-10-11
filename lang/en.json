@@ -262,7 +262,10 @@
         "incrementValidationErrorTitle": "Offer not allowed",
         "incrementValidationError": "Do you want to raise it to {suggestedAmount}?",
         "yourAreWinningPreOffer": "You are winning the pre-offer",
-        "yourAreWinningAuction": "You are winning the auction"
+        "yourAreWinningAuction": "You are winning the auction",
+        "prebidDiscountApplied": "Pre-bid participation discount applied:",
+        "prebidWinnerDiscountApplied": "Pre-bid winner discount applied:",
+        "priceExcludesCommission": "This price does not include commissions"
     },
     "horse": {
         "dateOfBirth": "Date of birth",

@@ -48,7 +48,7 @@ export default {
     }
   },
   mounted() {
-    console.log(`Bid: ${this.bidStatus} Horse: ${this.status}`)
+    // console.log(`Bid: ${this.bidStatus} Horse: ${this.status}`)
   }
 }
 </script>
