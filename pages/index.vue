@@ -245,7 +245,7 @@ export default {
       // this.$store.commit('setTextColorTopBar', 'text-black');
 
       detectIncognito().then((result) => {
-         console.log(result.browserName, result.isPrivate)
+         // console.log(result.browserName, result.isPrivate)
          if (result.isPrivate)
             this.$toast.error(this.$t('general.privateModeNotice'))
       });
@@ -308,7 +308,7 @@ export default {
                   }
 
                   this.otherAuctions.push(auction)
-                  //console.log('next auction', this.nextAuction)
+                  //// console.log('next auction', this.nextAuction)
 
 
                   if (this.nextAuction) {
@@ -317,7 +317,7 @@ export default {
 
                })
 
-               //console.log('otherAuctions', this.otherAuctions)
+               //// console.log('otherAuctions', this.otherAuctions)
 
                this.loading = false
             })

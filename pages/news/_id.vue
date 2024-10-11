@@ -60,7 +60,8 @@ export default {
                     this.post = response.data
                     this.images = [this.post.image2, this.post.image3]
                 })
-                .catch((error) => { console.log(error) })
+                .catch((error) => {  console.log(error)
+                })
         }
 
     }

@@ -172,7 +172,7 @@
                   </div>
                   <div class="px-5 mt-5">
                     <p class="text-sm font-bold uppercase">PRE{{ $t('auction.bidOnThisLot') }}</p>
-                    <form @submit="submitForm">
+                    <form @submit="submitForm" v-if="isUserAuthenticated && isUserAbleToBid">
                       <div class="flex items-center space-x-2">
                         <button
                           class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
@@ -220,6 +220,14 @@
                         />
                       </div>
                     </form>
+                    <div v-else-if="!isUserAuthenticated" class="py-5">
+                      <nuxt-link :to="loginPath" class="text-blue-500 font-bold" >
+                        {{ $t('auction.notLoggedInMsg') }}
+                      </nuxt-link>
+                    </div>
+                    <div v-else-if="!isUserAbleToBid" class="my-5 py-5 text-center w-full text-red-600 border-1 border-dashed border-red-700">
+                      {{ $t('auction.notAuthorizedMsg') }} {{ adminPhone?.replace(/\s/gi, '') }}
+                    </div>
                     <div>
                       <div
                         v-if="successMessage"
@@ -662,12 +670,19 @@ export default {
       confirmedAmount: "",
       increments: [],
       incrementHistory: [],
-
+      adminPhone: "",
     }
   },
   computed: {
     isUserAuthenticated() {
       return this.$store.state.isAuthenticated;
+    },
+    isUserAbleToBid() {
+      return this.$store.state.isUserAbleToBid;
+    },
+    loginPath() {
+      const currentPath = this.$route.fullPath;
+      return this.localePath(`/auth/login?redirect=${encodeURIComponent(currentPath)}`);
     },
     setUser() {
       return this.$store.state.user
@@ -715,6 +730,7 @@ export default {
       this.$confetti.stop()
     },
     async initilize() {
+      this.adminPhone = await this.fetchAdministratorPhone()
       this.fetchGenres()
       this.init()
       await this.loadIncrements()
@@ -731,6 +747,24 @@ export default {
               Authorization: `Token ${token}`
             },
           }).then((response) => { this.subscribed = true }).catch((error) => { })
+    },
+
+    async fetchAdministratorPhone() {
+      const url = `${this.$config.baseURL}/contact/info/`
+      const token = getUserTokenOrDefault()
+
+      if (token) {
+        try {
+          const response = await axios.get(url, {
+            headers: { Authorization: `Token ${token}` }
+          })
+          return response.data.app_user_profile.phone.replace("T. ", "")
+        } catch (error) {
+          console.error("Error retrieving administrator phone: ", error)
+          return ""
+        }
+      }
+      return ""
     },
 
     async winnerConfetti() {
@@ -768,7 +802,7 @@ export default {
     },
 
     validateIncrement(currentValue, amount) {
-      //console.log('validateIncrement', currentValue, amount)
+      //// console.log('validateIncrement', currentValue, amount)
       if(currentValue < amount) {
         currentValue = this.addIncrement(currentValue)
         return this.validateIncrement(currentValue, amount)
@@ -780,32 +814,24 @@ export default {
 
     addIncrement(currentValue) {
       let incrementAmount = this.calculateIncrement(currentValue)
-      currentValue += incrementAmount
-      return currentValue
+      return currentValue + incrementAmount
     },
 
     validateManualAmount() {
       let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
       let manualInputAmount = parseInt(this.manualInputAmount.replace(/,/g, ""))
 
-      if(!manualInputAmount)
+      if (!manualInputAmount)
         return false
 
-      let suggestedAmount = this.validateIncrement(lastOffer, manualInputAmount)
       let minAmount = this.addIncrement(lastOffer)
 
-      if(suggestedAmount === manualInputAmount) {
+      if (manualInputAmount >= minAmount) {
         return true
       } else {
-
-        if(manualInputAmount < minAmount){
-          suggestedAmount = minAmount
-        }
-
-        // console.log('suggestedAmount', suggestedAmount)
         Swal.fire({
           title: this.$t('bids.incrementValidationErrorTitle'),
-          text: this.$t('bids.incrementValidationError', { "suggestedAmount": '$'+this.formatNumber(suggestedAmount) }),
+          text: this.$t('bids.incrementValidationError', { "suggestedAmount": '$'+this.formatNumber(minAmount) }),
           icon: 'error',
           showCancelButton: true,
           confirmButtonText: this.$t('general.yes'),
@@ -813,10 +839,9 @@ export default {
         }).then((result) => {
           this.showInput = false
           if (result.isConfirmed) {
-            this.manualInputAmount = String(suggestedAmount)
-            this.formattedManualInputAmount = this.formatNumber(suggestedAmount)
+            this.manualInputAmount = String(minAmount)
+            this.formattedManualInputAmount = this.formatNumber(minAmount)
             this.enableModal()
-
           } else {
             this.resetAmounts()
           }
@@ -1238,7 +1263,7 @@ export default {
         .then((response) => {
           this.winnerEmail = response.data.user_profile.email
           this.winner = response.data.user_profile
-          console.log('actualiza winner', response.data)
+          // console.log('actualiza winner', response.data)
         })
         .catch((error) => {
           // Handle errors
@@ -1431,15 +1456,14 @@ export default {
     },
 
     calculateIncrement(currentValue) {
-      // Buscar el incremento correspondiente basado en el currentValue
       for (let i = 0; i < this.increments.length; i++) {
-        if (currentValue <= this.increments[i].limit) {
+        if (currentValue < this.increments[i].limit) {
           return this.increments[i].increment;
         }
       }
-      // Si no se encuentra ningún incremento, devolver 1000 o un valor predeterminado
-      return 1000; // o un valor predeterminado según tu lógica
+      return (this.increments.length > 0 ? this.increments[this.increments.length - 1].increment : 1000);
     },
+
     handleInput(event) {
       const inputValue = event.target.value.replace(/[^0-9,]/g, "")
       const value = parseFloat(inputValue.replace(/,/g, ""))

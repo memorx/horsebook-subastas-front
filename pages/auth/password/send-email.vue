@@ -81,18 +81,18 @@ export default {
           email: this.email,
           resend: false
         };
-        console.log(data, "DATA")
+        // console.log(data, "DATA")
         const response = await axios.post(this.$config.baseURL + "/users/send-code-reset-password/", data, {
           headers: {
             'Content-Type': 'application/json'
           }
         });
-        console.log(response, "RESPONSE")
+        // console.log(response, "RESPONSE")
         this.$store.commit('setUser', data);
         this.$router.push(this.localePath('/auth/password/forgot-password'))
-        console.log(response, "RESPONSE")
+        // console.log(response, "RESPONSE")
       } catch (error) {
-        console.log(error, "ERROR")
+        // console.log(error, "ERROR")
         this.$toast.error("Usuario no encontrado");
       }
     },

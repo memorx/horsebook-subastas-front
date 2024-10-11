@@ -426,7 +426,7 @@ export default {
           const response = await this.$axios.put(url, formData, { headers })
           this.$router.push(this.localePath("/user/perfil"))
         } catch (error) {
-          console.log(error, "ERROR")
+          // console.log(error, "ERROR")
           this.loading = false
         }
       }

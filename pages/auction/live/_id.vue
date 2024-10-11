@@ -13,6 +13,9 @@
         :status="horseStatus"
         :commission="commission"
         :taxes="taxes"
+        :prebidWinner="prebidWinner?.email && prebidWinner?.email === this.$store.state.user?.user"
+        :prebidWinnerDiscount="prebidWinnerDiscount"
+        :hasPreBid="hasPreBid"
       />
       <NuxtLink :to="localePath('/')">
         <button
@@ -140,9 +143,9 @@
                                           {{ formattedFinalAmount(horse.local_data.final_amount) }}
                                       </div>
                                   </div>
-                                  <Button class="mx-auto mt-4 bg-black hover:bg-gray-950 text-white font-normal py-2 px-4 rounded-md" @click="goToDetail(horse, index)">
+                                  <Link :href="`/bids/bid/?from=auction&id=${bidId}&horsePositionList=${horse.id}&horseId=${horse.local_data.id}`" class="mx-auto mt-4 bg-black hover:bg-gray-950 text-white font-normal py-2 px-4 rounded-md">
                                       Ver detalles
-                                  </Button>
+                                  </Link>
                               </div>
                             </td>
                         </tr>
@@ -171,7 +174,7 @@
                   <p class="text-sm font-bold uppercase">
                     {{ $t('auction.bidOnThisLot') }}
                   </p>
-                  <form @submit="submitForm">
+                  <form @submit="submitForm" v-if="isUserAuthenticated && isUserAbleToBid">
                     <div class="flex items-center space-x-2 mb-1">
                       <button
                         class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
@@ -220,6 +223,14 @@
                       />
                     </div>
                   </form>
+                  <div v-else-if="!isUserAuthenticated" class="py-5 text-center w-full">
+                    <nuxt-link :to="loginPath" class="text-blue-500 font-bold" >
+                      {{ $t('auction.notLoggedInMsg') }}
+                    </nuxt-link>
+                  </div>
+                  <div v-else-if="!isUserAbleToBid" class="my-5 py-5 text-center w-full text-red-600 border-1 border-dashed border-red-700">
+                    {{ $t('auction.notAuthorizedMsg') }} {{ adminPhone?.replace(/\s/gi, '') }}
+                  </div>
                   <div>
                     <div
                       v-if="successMessage"
@@ -234,6 +245,11 @@
                       {{ $t(`backMessages.${errorMessage}`,{"lastOffer": lastOffer}) }}
                     </div>
                   </div>
+                </div>
+                <div>
+                  <p v-if="hasPreBid" class="text-center text-xs text-custom-gold">
+                    {{ $t('bids.youHaveDiscountMsg') }}
+                  </p>
                 </div>
                 <div v-if="prebidWinner?.email && prebidWinner?.email === this.$store.state.user?.user" class="mb-2">
                   <p class="text-center text-lg text-green-900 font-bold">
@@ -416,7 +432,6 @@
         </button>
       </NuxtLink>
     </div>
-
   </div>
 </template>
 
@@ -437,6 +452,7 @@ import modal from "~/components/bid/modal.vue"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import Swal from 'sweetalert2'
 import { extractYouTubeId } from '~/utils/youtubeUtils'
+import DraggableHorseList from '~/components/bid/draggableHorseList.vue'
 
 
 export default {
@@ -451,6 +467,7 @@ export default {
     Carousel,
     SubmitAuthenticatedButton,
     modal,
+    DraggableHorseList,
 
    },
   data() {
@@ -554,6 +571,7 @@ export default {
       wonHorse: "",
       yourAreTheWinner: false,
       hasBid: false,
+      hasPreBid: false,
       commission: 0,
       taxes: 0,
       confirmedAmount: "",
@@ -561,9 +579,23 @@ export default {
       privateInformation: true,
       increments: [],
       incrementHistory: [],
+      adminPhone: "",
+    }
+  },
+  computed: {
+    isUserAuthenticated() {
+      return this.$store.state.isAuthenticated;
+    },
+    isUserAbleToBid() {
+      return this.$store.state.isUserAbleToBid;
+    },
+    loginPath() {
+      const currentPath = this.$route.fullPath;
+      return this.localePath(`/auth/login?redirect=${encodeURIComponent(currentPath)}`);
     }
   },
   async created() {
+    this.adminPhone = await this.fetchAdministratorPhone()
     const auctionId = this.$route.params.id
     this.bidId = auctionId
     await this.getDetailsAuction()
@@ -594,7 +626,9 @@ export default {
       if (this.winnerEmail == this.$store.state.user?.user && this.winnerEmail && this.$store.state.user?.user) {
         this.$confetti.start()
         this.yourAreTheWinner = true
-        setTimeout(() => {}, 5000)
+        setTimeout(() => {
+            this.$confetti.stop()
+          }, 8000)
       } else {
         this.yourAreTheWinner = false
         let winnerName = this.winner.name + ' ' + this.winner.fathers_surname
@@ -632,7 +666,7 @@ export default {
     },
 
     validateIncrement(currentValue, amount) {
-      //console.log('validateIncrement', currentValue, amount)
+      //// console.log('validateIncrement', currentValue, amount)
       if(currentValue < amount) {
         currentValue = this.addIncrement(currentValue)
         return this.validateIncrement(currentValue, amount)
@@ -644,32 +678,23 @@ export default {
 
     addIncrement(currentValue) {
       let incrementAmount = this.calculateIncrement(currentValue)
-      currentValue += incrementAmount
-      return currentValue
+      return currentValue + incrementAmount
     },
 
     validateManualAmount() {
       let lastOffer = parseInt(this.lastOffer.replace(/,/g, ""))
       let manualInputAmount = parseInt(this.manualInputAmount.replace(/,/g, ""))
 
-      if(!manualInputAmount)
+      if (!manualInputAmount)
         return false
 
-      let suggestedAmount = this.validateIncrement(lastOffer, manualInputAmount)
       let minAmount = this.addIncrement(lastOffer)
-
-      if(suggestedAmount === manualInputAmount) {
+      if (manualInputAmount >= minAmount) {
         return true
       } else {
-
-        if(manualInputAmount < minAmount){
-          suggestedAmount = minAmount
-        }
-
-        // console.log('suggestedAmount', suggestedAmount)
         Swal.fire({
           title: this.$t('bids.incrementValidationErrorTitle'),
-          text: this.$t('bids.incrementValidationError', { "suggestedAmount": '$'+this.formatNumber(suggestedAmount) }),
+          text: this.$t('bids.incrementValidationError', { "suggestedAmount": '$'+this.formatNumber(minAmount) }),
           icon: 'error',
           showCancelButton: true,
           confirmButtonText: this.$t('general.yes'),
@@ -677,10 +702,9 @@ export default {
         }).then((result) => {
           this.showInput = false
           if (result.isConfirmed) {
-            this.manualInputAmount = String(suggestedAmount)
-            this.formattedManualInputAmount = this.formatNumber(suggestedAmount)
+            this.manualInputAmount = String(minAmount)
+            this.formattedManualInputAmount = this.formatNumber(minAmount)
             this.enableModal()
-
           } else {
             this.resetAmounts()
           }
@@ -776,6 +800,10 @@ export default {
           this.hasBid = message.has_bid
         }
 
+        if (message.has_prebid) {
+          this.hasPreBid = message.has_prebid
+        }
+
         if (message.bid) {
           if (this.bids.length > 20) {
             this.bids.pop()
@@ -839,18 +867,17 @@ export default {
     },
 
     async startAuctionSocket() {
-
       const url = `${this.$config.baseURLWS}/auction/${this.bidId}`;
       this.auctionSocket = new ReconnectingWebSocket(url);
 
       this.auctionSocket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data);
-        if(message.error){
-          this.socketError = message.error
-          return
+        if (message.error) {
+          this.socketError = message.error;
+          return;
         }
 
-        if (message.horses && message.horses.length > 0) {
+        if (message.horses && message.horses.length > 0 && this.item && this.item.horses) {
           this.item.horses = this.item.horses.map(horse => {
             const updatedHorse = message.horses.find(h => h.id === horse.local_data.id);
             if (updatedHorse) {
@@ -863,75 +890,78 @@ export default {
                 }
               };
             }
-            return horse
+            return horse;
           });
 
-          this.item.horses.forEach((horse, key) => {
-            const curHorse = message.horses.find( item => item.status === 'BIDDING' );
-            if(curHorse?.id != this.horseID){
-              this.horseID = curHorse.id
-              if (this.$confetti && typeof this.$confetti.stop === 'function') {
-                this.$confetti.stop()
-              } else {
-                console.warn('Confetti plugin not available or stop method not found')
+          if (Array.isArray(this.item.horses)) {
+            this.item.horses.forEach((horse, key) => {
+              const curHorse = message.horses.find(item => item.status === 'BIDDING');
+              if (curHorse && curHorse.id !== this.horseID) {
+                this.horseID = curHorse.id;
+                if (this.$confetti && typeof this.$confetti.stop === 'function') {
+                  this.$confetti.stop();
+                } else {
+                  console.warn('Plugin de confeti no disponible o método stop no encontrado');
+                }
+                this.wonHorse = "";
+                this.winner = "";
+                this.prebidWinner = {};
+                this.closeBidSocket();
+                this.fetchData();
+                this.fetchprebidWinner();
               }
-              this.wonHorse = ""
-              this.winner = ""
-              this.prebidWinner = {}
-              this.closeBidSocket()
-              this.fetchData()
-              this.fetchprebidWinner()
-            }
-          });
+            });
+          }
         }
 
-        console.log("message.horse",message.horse)
         if (message.horse) {
-          const horse = message.horse
+          const horse = message.horse;
 
-          this.item.horses = this.item.horses.map(h => {
-            if (h.local_data.id === horse.id) {
-              return {
-                ...h,
-                local_data: {
-                  ...h.local_data,
-                  status: horse.status,
-                  final_amount: horse.final_amount
-                }
-              };
-            }
-            return h
-          })
+          if (this.item && this.item.horses) {
+            this.item.horses = this.item.horses.map(h => {
+              if (h.local_data.id === horse.id) {
+                return {
+                  ...h,
+                  local_data: {
+                    ...h.local_data,
+                    status: horse.status,
+                    final_amount: horse.final_amount
+                  }
+                };
+              }
+              return h;
+            });
+          }
 
           if (horse.id === this.horseID && horse.status === 'CLOSED') {
-            // El horse actual se ha cerrado, restablecer horseID y cerrar el socket.
-            this.horseStatus = 'CLOSED'
-            this.winnerConfetti()
-            this.horseID = null
-            this.closeBidSocket()
+            // El caballo actual se ha cerrado, restablecer horseID y cerrar el socket.
+            this.horseStatus = 'CLOSED';
+            this.winnerConfetti();
+            this.horseID = null;
+            this.closeBidSocket();
           } else if (horse.id !== this.horseID && horse.status === 'BIDDING') {
-            // El horse actual está en proceso de subasta, actualizar horseID, fetch data y reiniciar el socket.
-            this.horseID = horse.id
+            // El caballo actual está en proceso de subasta, actualizar horseID, fetch data y reiniciar el socket.
+            this.horseID = horse.id;
             if (this.$confetti && typeof this.$confetti.stop === 'function') {
-              this.$confetti.stop()
+              this.$confetti.stop();
             } else {
-              console.warn('Confetti plugin not available or stop method not found')
+              console.warn('Plugin de confeti no disponible o método stop no encontrado');
             }
-            this.wonHorse = ""
-            this.winner = {}
-            this.firstUpdateAmount = true
-            this.isEditingAmount = false
-            this.closeBidSocket()
-            this.fetchData()
+            this.wonHorse = "";
+            this.winner = {};
+            this.firstUpdateAmount = true;
+            this.isEditingAmount = false;
+            this.closeBidSocket();
+            this.fetchData();
           }
         }
 
         if (message.auction) {
-            this.bidStatus = message.auction.status;
+          this.bidStatus = message.auction.status;
         }
-        this.fetchprebidWinner()
-        this.fetchWinner()
 
+        this.fetchprebidWinner();
+        this.fetchWinner();
       });
     },
 
@@ -983,7 +1013,7 @@ export default {
 
         })
         .catch((error) => {
-          console.log(error)
+          // console.log(error)
           this.loading = false
         })
     },
@@ -1167,9 +1197,9 @@ export default {
               ).toLocaleString("en-US")
             this.horseData.horseTelex = horse.local_data.horsetelex_url
             this.startBidSocket()
-            console.log('se abre de nuevo el socket')
+            // console.log('se abre de nuevo el socket')
       }catch(e) {
-        console.log(e)
+        // console.log(e)
       }
     },
 
@@ -1221,15 +1251,13 @@ export default {
       return value.toLocaleString("en-US", { maximumFractionDigits: 0 })
     },
 
-    calculateIncrement(currentValue, direction) {
-      // Buscar el incremento correspondiente basado en el currentValue
+    calculateIncrement(currentValue) {
       for (let i = 0; i < this.increments.length; i++) {
         if (currentValue < this.increments[i].limit) {
-          return this.increments[i].increment;
+          return this.increments[i].increment
         }
       }
-      // Si no se encuentra ningún incremento, devolver 1000 o un valor predeterminado
-      return 1000; // o un valor predeterminado según tu lógica
+      return (this.increments.length > 0 ? this.increments[this.increments.length - 1].increment : 1000)
     },
 
 
@@ -1246,7 +1274,7 @@ export default {
       }
     },
     goToDetail(horse, index) {
-      let path = `/bids/bid/?live=1&id=${this.bidId}&horsePositionList=${index}&horseId=${horse.local_data.id}`
+      let path = `/bids/bid/?from=auction&id=${this.bidId}&horsePositionList=${index}&horseId=${horse.local_data.id}`
       this.$router.push({ path: this.localePath(path) })
     },
 
@@ -1267,6 +1295,24 @@ export default {
       }
 
       return '';
+    },
+
+    async fetchAdministratorPhone() {
+      const url = `${this.$config.baseURL}/contact/info/`
+      const token = getUserTokenOrDefault()
+
+      if (token) {
+        try {
+          const response = await axios.get(url, {
+            headers: { Authorization: `Token ${token}` }
+          })
+          return response.data.app_user_profile.phone.replace("T. ", "")
+        } catch (error) {
+          console.error("Error retrieving administrator phone: ", error)
+          return ""
+        }
+      }
+      return ""
     },
 
   }

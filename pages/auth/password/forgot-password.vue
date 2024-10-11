@@ -161,10 +161,10 @@ export default {
       const body = {
         "email": this.setUser.email
       }
-      console.log(body, "BODY")
+      // console.log(body, "BODY")
       await this.$axios.$post(url, body, {})
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           this.$toast.success(this.$t('login.resendCodeNotice'));
           this.loading = false
         })
@@ -177,7 +177,7 @@ export default {
           // } else {
           //   this.$toast.error("Lo sentimos, ha ocurrido un error");
           // }
-          console.log(error);
+          // console.log(error);
         });
     },
     handleSubmit() {
@@ -187,7 +187,7 @@ export default {
         "email": this.setUser.email,
         "code": verification_code
       }
-      console.log(data, "DATA")
+      // console.log(data, "DATA")
       // call the request to create App User
       this.verificationCode(data);
     },
@@ -200,7 +200,7 @@ export default {
       const body = data
       await this.$axios.$post(url, body)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           this.$toast.success(this.$t('login.codeVerified'));
           this.$router.push(this.localePath('/auth/password/reset-password'))
           this.loading = false
@@ -213,7 +213,7 @@ export default {
           // } else {
           //   this.$toast.error("Lo sentimos, ha ocurrido un error");
           // }
-          console.log(error);
+          // console.log(error);
         });
     }
 

@@ -307,12 +307,15 @@
           <div
             class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
           >
-            <button
-              @click="goToDetail(horse, index)"
-              class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105 text-xs md:text-xl xl:text-xl"
+            <a
+              :href="localePath(`/bids/bid/?id=${id}&horsePositionList=${index}&horseId=${horse.local_data.id}`)"
+              rel="noopener noreferrer"
+              class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
             >
-              {{ $t('auction.enter') }}
-            </button>
+              <span class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105 text-xs md:text-xl xl:text-xl flex items-center justify-center">
+                {{ $t('auction.enter') }}
+              </span>
+            </a>
           </div>
         </div>
       </div>
