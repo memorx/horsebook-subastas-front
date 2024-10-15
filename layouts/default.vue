@@ -1,14 +1,24 @@
 <template>
     <div>
-        <!-- Parent div with black background -->
-        <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
-            <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
-                <source src="/video-home.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <ReusableButton containerClass="mb-12 fixed z-50 bottom-5 w-auto rounded-full text-white left-1/2 transform -translate-x-1/2"
-                buttonClass="uppercase text-sm md:text-base lg:text-lg font-bold bg-black bg-opacity-50 backdrop-blur-sm" :onClick="closeVideo"
-                :buttonText="$t('home.video.button')" />
+        <!-- Contenedor del video y botón -->
+        <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', { 'invisible opacity-0': !showVideo }]">
+            <div :class="['w-full h-full', bgLayoutMode]">
+                <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
+                    <source src="/video-home.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <nuxt-link
+                    to="#"
+                    @click.native.prevent="closeVideo"
+                    :class="[
+                        'mb-12 fixed z-50 bottom-5 w-auto rounded-full text-white left-1/2 transform -translate-x-1/2',
+                        'uppercase text-sm md:text-base lg:text-lg font-bold bg-black bg-opacity-50 backdrop-blur-sm',
+                        'px-4 py-2 inline-block transition-all duration-300 hover:bg-opacity-70'
+                    ]"
+                >
+                    {{ $t('home.video.button') }}
+                </nuxt-link>
+            </div>
         </div>
 
         <div>
@@ -192,7 +202,11 @@ export default {
         closeVideo() {
             console.log('Cerrando video');
             this.showVideo = false;
-            this.$refs.videoPlayer.pause();
+
+            if (this.$refs.videoPlayer) {
+                this.$refs.videoPlayer.pause();
+                this.$refs.videoPlayer.currentTime = 0;
+            }
 
             Cookie.set('videoPlayed', '1', { expires: 365 });
 
@@ -231,3 +245,12 @@ export default {
 };
 
 </script>
+
+<style scoped>
+.invisible {
+    visibility: hidden;
+}
+.opacity-0 {
+    opacity: 0;
+}
+</style>
