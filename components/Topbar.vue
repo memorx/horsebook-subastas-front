@@ -122,7 +122,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export default {
     components: {
-        DraggableHorseList
+        // DraggableHorseList
     },
     props: {
         toggleMenu: {
