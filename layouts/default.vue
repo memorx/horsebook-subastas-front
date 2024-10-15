@@ -76,7 +76,7 @@ export default {
     },
     data() {
         return {
-            showVideo: false,
+            showVideo: true,
             isMobileMenuOpen: false,
             showWelcomeModal: !Cookie.get('videoPlayed')
         }
