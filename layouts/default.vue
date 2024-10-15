@@ -1,15 +1,15 @@
 <template>
     <div>
         <!-- Parent div with black background -->
-       <!--  <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
+        <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
             <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
                 <source src="/video-home.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <ReusableButton containerClass="mb-12 fixed z-50 bottom-5 w-auto text-white left-1/2 transform -translate-x-1/2"
-                buttonClass="uppercase text-sm md:text-base lg:text-lg" :onClick="closeVideo"
+            <ReusableButton containerClass="mb-12 fixed z-50 bottom-5 w-auto rounded-full text-white left-1/2 transform -translate-x-1/2"
+                buttonClass="uppercase text-sm md:text-base lg:text-lg font-bold bg-black bg-opacity-50 backdrop-blur-sm" :onClick="closeVideo"
                 :buttonText="$t('home.video.button')" />
-        </div> -->
+        </div>
 
         <div>
             <div :class="[`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] `, bgLayoutMode]">
@@ -40,17 +40,9 @@ import Swal from 'sweetalert2';
 
 export default {
     beforeMount() {
-        this.showVideo = false
-        /*
-        if (!Cookie.get('videoPlayed')) {
-            this.showVideo = true;
-        } else {
-            this.showVideo = false;
-        }
-        */
+        this.showVideo = !Cookie.get('videoPlayed');
     },
     async mounted() {
-
         await this.getUserInfo()
         this.checkAndInitializeWebSocket();
         if (!window.WebSocket) {
@@ -84,7 +76,7 @@ export default {
     },
     data() {
         return {
-            showVideo: true,
+            showVideo: false,
             isMobileMenuOpen: false,
             showWelcomeModal: !Cookie.get('videoPlayed')
         }
