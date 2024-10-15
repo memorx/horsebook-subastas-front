@@ -99,6 +99,7 @@
                 </button>
             </div>
         </div>
+        <!--
         <client-only>
             <DraggableHorseList
                 v-if="shouldShowDraggableBubbles"
@@ -109,13 +110,14 @@
                 @horse-status-changed="updateAuctionData"
             />
         </client-only>
+        -->
     </nav>
 </template>
 
 <script>
 import Cookies from "js-cookie";
 import ReusableButton from "~/components/ReusableButton.vue";
-import DraggableHorseList from "~/components/bid/draggableHorseList.vue";
+// import DraggableHorseList from "~/components/bid/draggableHorseList.vue";
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export default {
