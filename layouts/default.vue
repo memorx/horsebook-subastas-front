@@ -3,7 +3,7 @@
         <!-- Parent div with black background -->
         <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
             <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
-                <source src="/video-home.webm" type="video/webm">
+                <source src="/video-home.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <ReusableButton containerClass="mb-12 fixed z-50 bottom-5 w-auto rounded-full text-white left-1/2 transform -translate-x-1/2"
@@ -40,7 +40,7 @@ import Swal from 'sweetalert2';
 
 export default {
     beforeMount() {
-        this.showVideo = !Cookie.get('videoPlayed');
+        this.showVideo = this.shouldShowVideo();
     },
     async mounted() {
         await this.getUserInfo()
@@ -190,11 +190,13 @@ export default {
             }
         },
         closeVideo() {
-            this.showVideo = false; // hides the video and close button
-            this.$refs.videoPlayer.pause(); // stops the video playback
+            console.log('Cerrando video');
+            this.showVideo = false;
+            this.$refs.videoPlayer.pause();
 
-            // Set the cookie to remember the video has been played
-            Cookie.set('videoPlayed', 'true', { expires: 365 }); // set it to expire in 365 days. Adjust as needed.
+            Cookie.set('videoPlayed', '1', { expires: 365 });
+
+            console.log('Estado de videoPlayed:', Cookie.get('videoPlayed'));
         },
         playVideo() {
             this.$refs.videoPlayer.play();
@@ -220,7 +222,11 @@ export default {
         },
         hanldeCloseMenu() {
             this.isMobileMenuOpen = false;
-        }
+        },
+        shouldShowVideo() {
+            const videoPlayed = Cookie.get('videoPlayed');
+            return videoPlayed === undefined || parseInt(videoPlayed) !== 1;
+        },
     },
 };
 
