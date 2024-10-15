@@ -10,11 +10,11 @@
             <!-- Navigation items -->
             <div class="flex items-center space-x-4">
                 <div class="flex justify-right">
-                    <a @click="goToCurrenAuction()" v-if="currentAuctionId"
+                    <a @click="goToCurrenAuction()" v-if="idCurrenBid"
                     :class="['hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                         class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
-                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': currentAuctionId != 0 }" stroke-width="1"
+                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
                         fill="none" />
                     </svg>
                         {{ $t('topBar.liveAuction') }}
@@ -28,7 +28,7 @@
                             <nuxt-link :class="activePageClass('/user/inicio')" :to="localePath('/user/inicio')"> {{
                                 $t('topBar.bids') }}</nuxt-link>
                             <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link> -->
-                            <!-- <nuxt-link :class="activePageClass('/news')" :to="localePath('/news')">{{ $t('topBar.news') }}</nuxt-link> -->
+                            <nuxt-link :class="activePageClass('/news')" :to="localePath('/news')">{{ $t('topBar.news') }}</nuxt-link>
                             <button class="uppercase text-xs font-roboto" @click="handleScrollIntoContact">
                                 {{ $t('topBar.contact') }}
                             </button>
@@ -82,11 +82,11 @@
 
                 <div v-if="!isMobileMenuOpen">
                     <div class="flex justify-right">
-                    <a @click="goToCurrenAuction()" v-if="currentAuctionId"
+                    <a @click="goToCurrenAuction()" v-if="idCurrenBid"
                     :class="['hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer']">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                         class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
-                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': currentAuctionId != 0 }" stroke-width="1"
+                        <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': idCurrenBid != 0 }" stroke-width="1"
                         fill="none" />
                     </svg>
                         {{ $t('topBar.liveAuction') }}
@@ -99,31 +99,15 @@
                 </button>
             </div>
         </div>
-        <!--
-        <client-only>
-            <DraggableHorseList
-                v-if="shouldShowDraggableBubbles"
-                :bidId="currentAuctionId"
-                :horses="auctionHorses"
-                :currentHorseId="currentHorseId"
-                :apiImg="apiImg"
-                @horse-status-changed="updateAuctionData"
-            />
-        </client-only>
-        -->
     </nav>
 </template>
 
 <script>
 import Cookies from "js-cookie";
 import ReusableButton from "~/components/ReusableButton.vue";
-// import DraggableHorseList from "~/components/bid/draggableHorseList.vue";
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export default {
-    components: {
-        // DraggableHorseList
-    },
     props: {
         toggleMenu: {
             type: Function,
@@ -137,27 +121,18 @@ export default {
     data () {
         return {
             username: "",
+            idCurrenBid: 0,
             socket: null, // Socket para auction
             isIntentionalReconnectAuction: false,
             moveToHome: false,
             windowWidth: process.client ? window.innerWidth : 0,
             isDropdownOpen: false,
-            currentAuctionId: null,
-            auctionHorses: [],
-            currentHorseId: null,
-            apiImg: "https://storage.googleapis.com/horsebook/",
-            showDraggableBubbles: false,
-            auctionsSocket: null,
-            auctionSocket: null,
-            bidStatus: '',
         }
     },
-
-    async mounted () {
+    mounted () {
         this.getuserMail();
         this.intentionalCloseSockets();
         this.startSocket();
-
         //  listen for resize events
         window.addEventListener('resize', this.handleResize);
         this.handleResize(); // Call it initially to set the width
@@ -166,7 +141,7 @@ export default {
         if (isAuthenticated) {
             this.$store.commit('authenticate', true)
             const user = JSON.parse(localStorage.getItem("setUser"))
-            // console.log('user', user)
+            console.log('user', user)
             this.$store.commit("setUser", {
                 user: user.user,
                 token: user.token,
@@ -206,9 +181,6 @@ export default {
         currentFlag() {
             return this.getFlag(this.currentLocale);
         },
-        shouldShowDraggableBubbles() {
-            return this.bidStatus === 'BIDDING' && this.auctionHorses.length > 0;
-        }
     },
     methods: {
         handleResize() {
@@ -256,15 +228,12 @@ export default {
             }
         },
         async intentionalCloseSockets() {
-            this.closeauctionsSocket();
+            this.closeAuctionSocket();
         },
-        async closeauctionsSocket() {
+        async closeAuctionSocket() {
             this.isIntentionalReconnectAuction = true;
-            if (this.auctionsSocket) {
-                this.auctionsSocket.close();
-            }
-            if (this.auctionSocket) {
-                this.auctionSocket.close();
+            if (this.socket) {
+                this.socket.close();
             }
             this.isIntentionalReconnectAuction = false;
 
@@ -273,175 +242,50 @@ export default {
             // WebSocket for auction
             const auctionUrl = `${this.$config.baseURLWS}/auctions`;
 
-            this.auctionsSocket = new ReconnectingWebSocket(auctionUrl);
+            this.auctionSocket = new ReconnectingWebSocket(auctionUrl);
 
-            this.auctionsSocket.addEventListener('open', (event) => {
-                //// console.log('Conexión abierta:', event);
+            this.auctionSocket.addEventListener('open', (event) => {
+                //console.log('Conexión abierta:', event);
             });
 
-            this.auctionsSocket.addEventListener('message', (event) => {
-
-
+            this.auctionSocket.addEventListener('message', (event) => {
                 const message = JSON.parse(event.data);
                 if (message.error) {
-                    // console.log(message.error);
+                    console.log(message.error);
                 }
-
-                console.warn("se abre el socket", message)
-
                 if (message?.auction?.id) {
-                    this.$data.currentAuctionId = message.auction.id
-                    this.startAuctionSocket();
+                    this.$data.idCurrenBid = message.auction.id
                 }
                 if (message?.status?.auction_id) {
-                    this.$data.currentAuctionId
-                    if(message.status.auction_id === this.$data.currentAuctionId &&
+                    this.$data.idCurrenBid
+                    if(message.status.auction_id === this.$data.idCurrenBid &&
                         message.status.status != 'BIDDING'
                     ) {
-                        this.$data.currentAuctionId = 0
+                        this.$data.idCurrenBid = 0
                     }
 
                     if(message.status.status === 'BIDDING') {
-                        this.$data.currentAuctionId = message.status.auction_id
+                        this.$data.idCurrenBid = message.status.auction_id
                     }
 
                     this.$root.$emit('update-auctions', message.status)
                 }
-                console.warn("se maneja handleAuctionMessage")
-                this.handleAuctionMessage(message);
-
 
             });
 
-            this.auctionsSocket.addEventListener('close', (event) => {
-                // console.log('Conexión cerrada auction socket:', event);
+            this.auctionSocket.addEventListener('close', (event) => {
+                console.log('Conexión cerrada auction socket:', event);
             });
 
-            this.auctionsSocket.addEventListener('error', (error) => {
+            this.auctionSocket.addEventListener('error', (error) => {
                 console.error('Error de conexión auction socket:', error);
             });
 
         },
-
-        async startAuctionSocket() {
-            const url = `${this.$config.baseURLWS}/auction/${this.currentAuctionId}`;
-            this.auctionSocket = new ReconnectingWebSocket(url);
-
-            this.auctionSocket.addEventListener("message", (event) => {
-                const message = JSON.parse(event.data);
-                if (message.error) {
-                    this.socketError = message.error;
-                    return;
-                }
-
-                if (this.horses) {
-                    this.horses = this.horses.map(h => {
-                        if (h.local_data.id === horse.id) {
-                            return {
-                            ...h,
-                            local_data: {
-                                ...h.local_data,
-                                status: horse.status,
-                                final_amount: horse.final_amount
-                            }
-                            };
-                        }
-                        return h;
-                    });
-                }
-                this.fetchAuctionDetails();
-            });
-            },
-
-        async handleAuctionMessage(message) {
-            // Caso 1: El mensaje contiene información de una nueva subasta
-            if (message?.auction?.id) {
-                this.currentAuctionId = message.auction.id;
-
-                // Si es una nueva subasta o la subasta actual ha cambiado
-                if (this.currentAuctionId !== this.currentAuctionId) {
-                    this.currentAuctionId = this.currentAuctionId;
-                    await this.fetchAuctionDetails();
-                }
-            }
-
-            // Caso 2: El mensaje contiene información del estado de la subasta
-            if (message?.status?.auction_id) {
-                const newAuctionId = message.status.auction_id;
-                const newStatus = message.status.status;
-
-                if (newStatus === 'BIDDING') {
-                if (this.currentAuctionId !== newAuctionId) {
-                    this.currentAuctionId = newAuctionId;
-                    await this.fetchAuctionDetails();
-                } else {
-                    // La subasta actual cambió de estado a BIDDING
-                    this.showDraggableBubbles = true;
-                    await this.fetchAuctionDetails();
-                }
-                } else if (this.currentAuctionId === newAuctionId) {
-                // La subasta actual cambió a un estado que no es BIDDING
-                this.showDraggableBubbles = false;
-                this.currentAuctionId = null;
-                this.auctionHorses = [];
-                this.currentHorseId = null;
-                }
-
-                // Si el estado cambia a algo que no es BIDDING, actualizar currentAuctionId
-                if (newStatus !== 'BIDDING' && this.currentAuctionId === newAuctionId) {
-                this.currentAuctionId = 0;
-                }
-
-                this.$root.$emit('update-auctions', message.status);
-            } else {
-                await this.fetchAuctionDetails();
-            }
-            console.log("MESSAGE", message);
-                // Actualizar la visibilidad de DraggableHorseBubbles
-                this.updateDraggableBubblesVisibility();
-            },
-
-            updateDraggableBubblesVisibility() {
-                this.showDraggableBubbles = this.currentAuctionId !== null && this.currentAuctionId !== 0 || auctionHorses;
-            },
-
-            async fetchAuctionDetails() {
-            if (!this.currentAuctionId) return;
-
-            const url = `${this.$config.baseURL}/subastas/list-subastas/?id=${this.currentAuctionId}`;
-
-            try {
-                const response = await this.$axios.get(url);
-                const data = response.data;
-
-                this.updateAuctionData(data);
-            } catch (error) {
-                console.error('Error al obtener detalles de la subasta:', error);
-                this.$toast.error('Error al obtener detalles de la subasta');
-            }
-        },
-
-        updateAuctionData(data) {
-            this.bidStatus = data.status;
-            this.bidId = data.id;
-            this.auctionHorses = data.horses || [];
-            this.currentHorseId = data.currentHorseId;
-
-            // Actualizar showDraggableBubbles basado en el estado de la subasta
-            this.updateDraggableBubblesVisibility();
-
-            // Si hay caballos, establece el currentHorseId al primer caballo en BIDDING o al primero de la lista
-            if (this.auctionHorses.length > 0) {
-                const biddingHorse = this.auctionHorses.find(horse => horse.local_data.status === 'BIDDING');
-                this.currentHorseId = biddingHorse ? biddingHorse.local_data.id : this.auctionHorses[0].local_data.id;
-            }
-        },
-
-
         async goToCurrenAuction() {
 
-            if (this.currentAuctionId) {
-                let path = `/auction/live/${this.currentAuctionId}`
+            if (this.idCurrenBid) {
+                let path = `/auction/live/${this.idCurrenBid}`
                 this.$router.push({ path: this.localePath(path) })
             }
         },
@@ -451,8 +295,7 @@ export default {
         },
         getFlag(locale) {
             return require(`~/public/flag-${locale}.png`)
-        },
-
+        }
     },
 }
 </script>
