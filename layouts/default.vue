@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Contenedor del video y botón -->
-        <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', { 'invisible opacity-0': !showVideo }]">
+        <div :style="{ display: showVideo ? 'block' : 'none' }" class="fixed z-30 inset-0 w-screen h-screen">
             <div :class="['w-full h-full', bgLayoutMode]">
                 <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
                     <source src="/video-home.mp4" type="video/mp4">
