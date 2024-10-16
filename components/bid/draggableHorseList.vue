@@ -20,6 +20,7 @@
         >
           <NuxtLink
             :to="getHorseLink(horse)"
+            @click.native="handleHorseClick(horse)"
             class="block w-12 h-12 rounded-full overflow-hidden cursor-pointer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             :class="{ 'ring-2 ring-green-500': horse.local_data.id === currentHorseId }"
           >
@@ -55,6 +56,7 @@
 <script>
 import HorsePlaceholderSVG from '~/components/HorsePlaceholderSVGImage'
 import Cookie from 'js-cookie'
+import { EventBus } from '../../utils/eventBus'
 
 export default {
   components: {
@@ -159,6 +161,23 @@ export default {
     },
     getHorseLink(horse) {
       return `/bids/bid/?from=auction&id=${this.bidId}&horsePositionList=${horse.local_data.lot}&horseId=${horse.local_data.id}`
+    },
+
+    handleHorseClick(horse) {
+      if (this.$route.name && this.$route.name.startsWith('bids-bid')) {
+        this.$router.replace({
+          query: {
+            ...this.$route.query,
+            id: this.bidId,
+            horseId: horse.local_data.id,
+            horsePositionList: horse.local_data.lot
+          }
+        }).then(() => {
+          EventBus.$emit('horse-changed', horse.local_data.id)
+        }).catch(error => {
+          console.error('Error al cambiar de caballo:', error)
+        })
+      }
     },
     savePositionToCookie() {
       const position = {
