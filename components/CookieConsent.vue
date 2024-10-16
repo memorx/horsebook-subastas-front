@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!consentGiven">
+  <div v-if="!consentGiven" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4">
     <p>Este sitio utiliza cookies para mejorar tu experiencia. ¿Aceptas el uso de cookies?</p>
     <button @click="acceptCookies" class="bg-custom-gold hover:bg-gold-100 text-black font-bold py-2 px-4 rounded">
       Aceptar

@@ -547,6 +547,7 @@ import statusBid from "../../components/bid/statusBid.vue"
 import ReconnectingWebSocket from "reconnecting-websocket"
 import Swal from 'sweetalert2'
 import { extractYouTubeId } from '~/utils/youtubeUtils'
+import { EventBus } from '../../utils/eventBus'
 
 export default {
   components: {
@@ -718,12 +719,18 @@ export default {
     this.finalize()
     this.$store.commit('setLayoutMode', 'default'); // reset to default when leaving the page
     this.$store.commit('setTextColorTopBar', 'text-white'); // reset to default when leaving the page
+    EventBus.$off('horse-changed', this.handleHorseChange)
   },
   async mounted() {
     this.horseId = this.$route.query.horseId
     this.initilize()
+    EventBus.$on('horse-changed', this.handleHorseChange)
   },
   methods: {
+    handleHorseChange(horseId) {
+      this.horseId = horseId
+      this.init()
+    },
     async finalize() {
       clearInterval(this.timer)
       this.intentionalCloseSockets()

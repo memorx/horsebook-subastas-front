@@ -285,7 +285,7 @@ export default {
                     // console.log(message.error);
                 }
 
-                console.warn("se abre el socket", message)
+                // console.warn("se abre el socket", message)
 
                 if (message?.auction?.id) {
                     this.$data.currentAuctionId = message.auction.id
@@ -305,7 +305,7 @@ export default {
 
                     this.$root.$emit('update-auctions', message.status)
                 }
-                console.warn("se maneja handleAuctionMessage")
+                // console.warn("se maneja handleAuctionMessage")
                 this.handleAuctionMessage(message);
 
 
