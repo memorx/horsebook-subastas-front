@@ -37,6 +37,7 @@
             </div>
             <Footer @handle-close-menu="hanldeCloseMenu"/>
         </div>
+        <cookie-consent />
     </div>
 </template>
 
@@ -47,6 +48,7 @@ import MobileMenu from '~/components/MobileMenu.vue';
 import JWTDecode from "jwt-decode"
 import Cookie from "js-cookie"
 import Swal from 'sweetalert2';
+import CookieConsent from '~/components/CookieConsent.vue';
 
 export default {
     beforeMount() {
@@ -82,7 +84,8 @@ export default {
     components: {
         Topbar,
         Footer,
-        MobileMenu
+        MobileMenu,
+        CookieConsent
     },
     data() {
         return {
