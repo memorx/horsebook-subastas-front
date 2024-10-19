@@ -17,6 +17,7 @@
         <div v-else class="h-9"></div>
         <div v-for="horse in visibleHorses" :key="horse.local_data.id"
           class="w-16 h-20 mb-1 relative"
+          @mousedown.right.prevent="handleRightClick(horse)"
         >
           <NuxtLink
             :to="getHorseLink(horse)"
@@ -60,7 +61,8 @@ import { EventBus } from '../../utils/eventBus'
 
 export default {
   components: {
-    HorsePlaceholderSVG
+    HorsePlaceholderSVG,
+    EventBus
   },
   props: {
     bidId: {
@@ -89,6 +91,8 @@ export default {
       startY: 0,
       left: 5,
       top: window.innerHeight - 600,
+      isContextMenuOpen: false,
+      contextMenuHorseId: null,
     }
   },
   computed: {
@@ -118,6 +122,7 @@ export default {
     document.addEventListener('touchmove', this.onDrag)
     document.addEventListener('touchend', this.stopDrag)
     window.addEventListener('beforeunload', this.savePositionToCookie)
+    document.addEventListener('click', this.handleDocumentClick)
   },
   beforeDestroy() {
     document.removeEventListener('mousemove', this.onDrag)
@@ -125,6 +130,7 @@ export default {
     document.removeEventListener('touchmove', this.onDrag)
     document.removeEventListener('touchend', this.stopDrag)
     window.removeEventListener('beforeunload', this.savePositionToCookie)
+    document.removeEventListener('click', this.handleDocumentClick)
   },
   methods: {
     handlePrevious() {
@@ -160,6 +166,9 @@ export default {
       this.savePositionToCookie()
     },
     getHorseLink(horse) {
+      if (this.$route.name && this.$route.name.startsWith('bids-bid') && !this.isContextMenuOpen) {
+        return '#'
+      }
       return `/bids/bid/?from=auction&id=${this.bidId}&horsePositionList=${horse.local_data.lot}&horseId=${horse.local_data.id}`
     },
 
@@ -177,6 +186,16 @@ export default {
         }).catch(error => {
           console.error('Error al cambiar de caballo:', error)
         })
+      }
+    },
+    handleRightClick(horse) {
+      this.isContextMenuOpen = true
+      this.contextMenuHorseId = horse.local_data.id
+    },
+    handleDocumentClick(event) {
+      if (this.isContextMenuOpen && !event.target.closest('.context-menu')) {
+        this.isContextMenuOpen = false
+        this.contextMenuHorseId = null
       }
     },
     savePositionToCookie() {

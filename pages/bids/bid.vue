@@ -10,397 +10,413 @@
       :taxes="taxes"
     />
 
+    <!-- Encabezado común -->
     <div class="w-full h-auto flex flex-col justify-start pt-4 px-6">
-        <div class="flex-grow bg-[#EDEDED] rounded-lg mb-4 h-full ">
-            <div class="w full h-auto mx-6 my-4 md:my-8">
-                <button
-                    class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
-                    @click="() => backTo()"
-                >
-                    <span class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"><img
-                            src="../../public/arrow-black.png" /></span>
-                            {{ $t('general.back') }}
-                </button>
+      <div class="flex-grow bg-[#EDEDED] rounded-lg mb-4 h-full ">
+        <div class="w full h-auto mx-6 my-4 md:my-8">
+          <button
+            class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
+            @click="() => backTo()"
+          >
+            <span class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"><img
+                src="../../public/arrow-black.png" /></span>
+            {{ $t('general.back') }}
+          </button>
+        </div>
+        <div class="flex flex-col md:flex-row-reverse h-auto mx-6 my-4 md:my-8">
+          <div class="flex justify-end md:w-1/3">
+            <div>
+              <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
             </div>
-            <div class="flex flex-col md:flex-row-reverse h-auto mx-6 my-4 md:my-8">
-                <div class="flex justify-end md:w-1/3">
-                  <div>
-                    <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
+          </div>
+          <h1 class="flex flex-row mt-3 md:mt-0 md:w-2/3">
+            <span class="text-base md:text-2xl lg:text-3xl xl:text-4xl font-roboto font-extrabold">
+              {{ HorseName }}
+            </span>
+            <button v-if="isUserAuthenticated" class="text-lg text-left ml-3" :class="subscribed? 'text-yellow-500' : 'text-black'">
+              <i class="icon fas fa-bell" v-on:click="() => {subscribe()}" :title="!subscribed? 'Activar notificaciones' : 'Desactivar notificaciones'"></i>
+            </button>
+          </h1>
+        </div>
+        <div class="flex flex-col h-auto mx-6 my-4 md:my-8 relative">
+          <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
+            {{ $t('auction.lotNo') }} {{ horseData.Lot }}
+          </p>
+          <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
+            Monterrey, Nuevo León</p>
+        </div>
+        <div class="flex flex-row justify-between pb-3 px-6">
+          <button v-if="horseData.previous" @click="goToHorse(horseData.previous)" class="uppercase border-0 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
+            <span class="mr-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 25 25"><path style="fill:#232326" d="M24 12.001H2.914l5.294-5.295-.707-.707L1 12.501l6.5 6.5.707-.707-5.293-5.293H24v-1z" data-name="Left"/></svg>
+            </span>
+            {{ $t('general.previous') }}
+          </button>
+          <div v-else></div>
+          <button v-if="horseData.next" @click="goToHorse(horseData.next)" class="uppercase border-0 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
+            {{ $t('general.next') }}
+            <span class="ml-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 25 25"><path style="fill:#232326" d="m17.5 5.999-.707.707 5.293 5.293H1v1h21.086l-5.294 5.295.707.707L24 12.499l-6.5-6.5z" data-name="Right"/></svg>
+            </span>
+          </button>
+          <div v-else></div>
+        </div>
+        <div class="w-full h-auto px-0 relative">
+          <div class="w-full">
+            <Carousel :images="horseData.images" :auto-transition="true" ref="carousel"/>
+          </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="flex flex-col md:flex-row md:w-full md:px-6 my-6">
+          <!-- Columna izquierda (video) -->
+          <div class="md:h1/2 md:w-1/2">
+            <div class="aspect-w-16 md:mr-5 mb-5 md:mb-0">
+              <Carousel :images="horseData.horseVideos" ref="carouselVideos"/>
+            </div>
+          </div>
+
+          <!-- Columna derecha (información de la subasta) -->
+          <div class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
+            <!-- Estado: COMING -->
+            <div v-if="bidStatus == 'COMING' && horseStatus == 'COMING'">
+              <h1 v-if="!counterIsZero(preBidTime)" class="text-center text-sm font-bold pt-10">
+                {{ $t('auction.preOfferStartMsg')  }}
+              </h1>
+              <div v-if="!counterIsZero(preBidTime)" class="flex justify-center">
+                <div class="mx-10 my-10">
+                  <div class="flex flex-row md:items-center">
+                    <div class="mx-5">
+                      <p class="text-center text-xl md:text-5xl mb-2 font-bold">
+                        {{ preBidTime.days }}
+                      </p>
+                      <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.days') }}</p>
+                    </div>
+                    <div class="mx-5">
+                      <p class="text-center text-xl md:text-5xl mb-2 font-bold">
+                        {{ preBidTime.hours }}
+                      </p>
+                      <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.hours') }}</p>
+                    </div>
+                    <div class="mx-5">
+                      <p class="text-center text-xl md:text-5xl mb-2 font-bold">
+                        {{ preBidTime.minutes }}
+                      </p>
+                      <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.minutes') }}</p>
+                    </div>
+                    <div class="mx-5">
+                      <p class="text-center text-xl md:text-5xl mb-2 font-bold">
+                        {{ preBidTime.seconds }}
+                      </p>
+                      <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.seconds') }}</p>
+                    </div>
                   </div>
                 </div>
-                <h1 class="flex flex-row mt-3 md:mt-0 md:w-2/3">
-                    <span class="text-base md:text-2xl lg:text-3xl xl:text-4xl font-roboto font-extrabold">
-                      {{ HorseName }}
-                    </span>
-                    <button v-if="isUserAuthenticated" class="text-lg text-left ml-3" :class="subscribed? 'text-yellow-500' : 'text-black'">
-                      <i class="icon fas fa-bell" v-on:click="() => {subscribe()}" :title="!subscribed? 'Activar notificaciones' : 'Desactivar notificaciones'"></i>
-                    </button>
-                </h1>
-            </div>
-            <div class="flex flex-col h-auto mx-6 my-4 md:my-8 relative">
-                <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
-                  {{ $t('auction.lotNo') }} {{ horseData.Lot }}
-                </p>
-                <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
-                    Monterrey, Nuevo León</p>
-            </div>
-            <div class="flex flex-row justify-between pb-3 px-6">
-              <button v-if="horseData.previous" @click="goToHorse(horseData.previous)" class="uppercase border-0 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
-                <span class="mr-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 25 25"><path style="fill:#232326" d="M24 12.001H2.914l5.294-5.295-.707-.707L1 12.501l6.5 6.5.707-.707-5.293-5.293H24v-1z" data-name="Left"/></svg>
-                </span>
-                {{ $t('general.previous') }}
-              </button>
-              <div v-else></div>
-              <button v-if="horseData.next" @click="goToHorse(horseData.next)" class="uppercase border-0 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
-                {{ $t('general.next') }}
-                <span class="ml-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 25 25"><path style="fill:#232326" d="m17.5 5.999-.707.707 5.293 5.293H1v1h21.086l-5.294 5.295.707.707L24 12.499l-6.5-6.5z" data-name="Right"/></svg>
-                </span>
-              </button>
-              <div v-else></div>
-            </div>
-            <div class="w-full h-auto px-0 relative">
-              <div class="w-full">
-                <Carousel :images="horseData.images" :auto-transition="true" ref="carousel"/>
               </div>
             </div>
-            <!--video, description and bid table -->
-            <div class="flex flex-col md:flex-row md:w-full md:px-6 my-6">
-                <div class="md:h1/2 md:w-1/2">
-                  <div class="aspect-w-16 md:mr-5 mb-5 md:mb-0">
-                      <Carousel :images="horseData.horseVideos" ref="carouselVideos"/>
-                    </div>
-                </div>
-                <!--table bid-->
 
-                <div v-if="bidStatus == 'COMING' && horseStatus == 'COMING'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
-                  <h1 v-if="!counterIsZero(preBidTime)" class="text-center text-sm font-bold pt-10">
-                    {{ $t('auction.preOfferStartMsg')  }}
-                  </h1>
-                  <div v-if="!counterIsZero(preBidTime)" class="flex justify-center">
-                    <div class="mx-10 my-10">
-                      <div class="flex flex-row md:items-center">
-                        <div class="mx-5">
-                          <p class="text-center text-xl md:text-5xl mb-2 font-bold">
-                            {{ preBidTime.days }}
-                          </p>
-                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.days') }}</p>
-                        </div>
-                        <div class="mx-5">
-                          <p class="text-center text-xl md:text-5xl mb-2 font-bold">
-                            {{ preBidTime.hours }}
-                          </p>
-                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.hours') }}</p>
-                        </div>
-                        <div class="mx-5">
-                          <p class="text-center text-xl md:text-5xl mb-2 font-bold">
-                            {{ preBidTime.minutes }}
-                          </p>
-                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.minutes') }}</p>
-                        </div>
-                        <div class="mx-5">
-                          <p class="text-center text-xl md:text-5xl mb-2 font-bold">
-                            {{ preBidTime.seconds }}
-                          </p>
-                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.seconds') }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div v-if="bidStatus == 'PREBID' && horseStatus == 'PREBID'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
-                  <div
-                    class="text-center w-full p-5 rounded-t-md"
-                    style="background-color: #b99d61"
+            <!-- Estado: PREBID -->
+            <div v-if="bidStatus == 'PREBID' && horseStatus == 'PREBID'">
+              <div
+                class="text-center w-full p-5 rounded-t-md"
+                style="background-color: #b99d61"
+              >
+                <p class="text-white font-bold text-sm">{{ $t('auction.highestPrebid') }}</p>
+                <span v-if="lastOffer" class="text-white font-bold text-2xl"
+                  >${{ lastOffer }} USD</span
+                >
+                <div v-else>
+                  <span class="text-white font-bold text-2xl"
+                    >{{ $t('auction.beTheFirstPrebid') }}</span
                   >
-                    <p class="text-white font-bold text-sm">{{ $t('auction.highestPrebid') }}</p>
-                    <span v-if="lastOffer" class="text-white font-bold text-2xl"
-                      >${{ lastOffer }} USD</span
-                    >
-                    <div v-else>
-                      <span class="text-white font-bold text-2xl"
-                        >{{ $t('auction.beTheFirstPrebid') }}</span
-                      >
-                      <p class="text-white font-bold text-2xl">
-                        $
-                        {{ parseInt(horseData.final_amount).toLocaleString("en-US") }}
-                        USD
-                      </p>
-                    </div>
-                  </div>
-                  <div class="md:flex justify-center rounded-t-md">
-                    <div class="mx-10 md:mx-0 my-10">
-                      <p class="uppercase">{{ $t('cron.timeLeft')}}</p>
-                      <div class="flex flex-row justify-center md:items-center">
-                        <div class="mx-5">
-                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
-                            {{ bidTime.days }}
-                          </p>
-                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.days')}}</p>
-                        </div>
-                        <div class="mx-5">
-                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
-                            {{ bidTime.hours }}
-                          </p>
-                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.hours')}}</p>
-                        </div>
-                        <div class="mx-5">
-                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
-                            {{ bidTime.minutes }}
-                          </p>
-                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.minutes')}}</p>
-                        </div>
-                        <div class="mx-5">
-                          <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
-                            {{ bidTime.seconds }}
-                          </p>
-                          <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.seconds')}}</p>
-                        </div>
-                      </div>
-                      <p class="text-center text-xs text-custom-gold">
-                        {{ $t('bids.prebidDiscountMsg')}}
-                      </p>
-                      <p class="text-center text-xs text-custom-gold">
-                        {{ $t('bids.prebidWinnerDiscountMsg', { 'prebidWinnerDiscount': prebidWinnerDiscount }) }}
-                      </p>
-                      <p class="text-center text-xs text-red-400">
-                        {{ $t('bids.discountByHorseMsg')}}
-                      </p>
-                    </div>
-                  </div>
-                  <div class="px-5 mt-5">
-                    <p class="text-sm font-bold uppercase">PRE{{ $t('auction.bidOnThisLot') }}</p>
-                    <form @submit="submitForm" v-if="isUserAuthenticated && isUserAbleToBid">
-                      <div class="flex items-center space-x-2">
-                        <button
-                          class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
-                          type="button"
-                          @click="substractThousand"
-                        >
-                          -
-                        </button>
-                        <p
-                          @click="showManualInputAmount()"
-                          v-show="!showInput"
-                          class="border border-black rounded-md flex-grow w-1/4 h-10 flex items-center justify-center"
-                        >
-                          {{ inputAmount }}
-                        </p>
-                        <input
-                          ref="manualInputAmount"
-                          v-show="showInput"
-                          name="amountInput"
-                          type="text"
-                          v-model="formattedManualInputAmount"
-                          @input="handleInput"
-                          @blur="assignManualInputAmount()"
-                          @keydown.enter.prevent
-                          class="border rounded-md flex-grow w-1/4"
-                        />
-                        <button
-                          class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
-                          type="button"
-                          @click="addThousand"
-                        >
-                          +
-                        </button>
-                        <div class="hidden lg:block">
-                          <SubmitAuthenticatedButton
-                            :enable-modal="enableModal"
-                            :button-text="$t('bids.offer')"
-                          />
-                        </div>
-                      </div>
-                      <div class="lg:hidden text-center mt-5 w-full">
-                        <SubmitAuthenticatedButton
-                          :enable-modal="enableModal"
-                          :button-text="$t('bids.offer')"
-                        />
-                      </div>
-                    </form>
-                    <div v-else-if="!isUserAuthenticated" class="py-5">
-                      <nuxt-link :to="loginPath" class="text-blue-500 font-bold" >
-                        {{ $t('auction.notLoggedInMsg') }}
-                      </nuxt-link>
-                    </div>
-                    <div v-else-if="!isUserAbleToBid" class="my-5 py-5 text-center w-full text-red-600 border-1 border-dashed border-red-700">
-                      {{ $t('auction.notAuthorizedMsg') }} {{ adminPhone?.replace(/\s/gi, '') }}
-                    </div>
-                    <div>
-                      <div
-                        v-if="successMessage"
-                        class="bg-green-100 text-green-800 p-4 my-4 rounded-lg shadow-md"
-                      >
-                        {{ successMessage }}
-                      </div>
-                      <div
-                        v-if="errorMessage"
-                        class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
-                      >
-                      {{ $t(`backMessages.${errorMessage}`,{"lastOffer": lastOffer}) }}
-                      </div>
-                    </div>
-                  </div>
-                  <div v-if="winnerEmail === this.$store.state.user?.user" class="flex flex-row font-bold text-green-800 items-center justify-center" >
-                    <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                      width="25px" height="25px" viewBox="0 0 121.352 121.352"
-                      xml:space="preserve">
-                    <g>
-                      <g>
-                        <g>
-                          <path d="M14.058,112.273c-2.671,0-5.174-1.659-6.123-4.319c-1.206-3.381,0.558-7.1,3.939-8.305
-                            c8.797-3.145,18.032-8.08,19.576-10.444c2.219-7.225,9.508-23.93,9.82-24.645c1.437-3.29,5.27-4.792,8.559-3.354
-                            c3.29,1.438,4.791,5.269,3.354,8.559c-2.062,4.719-7.76,18.121-9.35,23.401c-2.609,8.664-18.407,15.452-27.592,18.727
-                            C15.52,112.151,14.783,112.273,14.058,112.273z"/>
-                          <path d="M65.87,121.352c-0.763,0-1.538-0.136-2.294-0.421c-3.358-1.268-5.054-5.018-3.787-8.376
-                            c2.805-7.434,5.827-16.579,6.66-20.561c-2.797-2.67-9.536-8.242-15.298-12.741c-2.83-2.21-3.332-6.294-1.123-9.124
-                            c2.21-2.828,6.295-3.33,9.124-1.122c17.609,13.751,19.027,16.47,19.633,17.63c1.21,2.32,2.716,5.208-6.833,30.508
-                            C70.969,119.747,68.497,121.352,65.87,121.352z"/>
-                          <circle cx="76.713" cy="14.166" r="14.166"/>
-                          <g>
-                            <path d="M68.121,26.851c0,0,1.546,0.19,2.986,0.859c1.375,0.64,2.783,1.641,2.783,1.641l0.036,0.024
-                              c3.896,2.979,6.987,8.574,4.649,13.91L66.033,71.93c-2.727,6.223-10.594,7.369-16.32,4.86c-0.975-0.427-1.907-0.958-2.773-1.583
-                              c-4.06-2.921-7.093-8.293-4.722-13.708l12.545-28.645C57.09,27.538,63.32,26.015,68.121,26.851z"/>
-                          </g>
-                          <path d="M28.649,50.542c-1.12,0-2.25-0.34-3.225-1.048c-2.458-1.783-3.006-5.22-1.224-7.679
-                            c2.7-3.724,9.596-12.598,15.307-14.555c5.321-1.824,21.093-0.901,25.8-0.575c3.03,0.21,5.316,2.836,5.106,5.867
-                            c-0.209,3.029-2.805,5.313-5.866,5.107c-8.536-0.589-19.204-0.728-21.479,0.009c-1.657,0.663-6.417,5.722-9.963,10.605
-                            C32.029,49.755,30.351,50.542,28.649,50.542z"/>
-                          <path d="M85.548,44.799c-5.263,0-10.754-0.317-13.907-0.536c-3.03-0.21-5.316-2.836-5.106-5.867
-                            c0.209-3.029,2.8-5.319,5.866-5.107c8.536,0.591,19.204,0.728,21.478-0.009c1.666-0.666,6.426-5.725,9.964-10.604
-                            c1.784-2.458,5.222-3.007,7.682-1.224c2.459,1.783,3.007,5.222,1.225,7.681c-2.7,3.724-9.597,12.597-15.308,14.554
-                            C94.971,44.535,90.355,44.799,85.548,44.799z"/>
-                        </g>
-                      </g>
-                    </g>
-                    </svg>
-                    {{ $t(`bids.yourAreWinningPreOffer`) }}
-                  </div>
-                  <div v-if="bids.length > 0">
+                  <p class="text-white font-bold text-2xl">
+                    $
+                    {{ parseInt(horseData.final_amount).toLocaleString("en-US") }}
+                    USD
+                  </p>
+                </div>
+              </div>
+              <div class="md:flex justify-center rounded-t-md">
+                <div class="mx-10 md:mx-0 my-10">
+                  <p class="uppercase">{{ $t('cron.timeLeft')}}</p>
+                  <div class="flex flex-row justify-center md:items-center">
                     <div class="mx-5">
-                      <div class="border-b border-gray-300 my-4"></div>
-                      <p class="text-sm font-bold uppercase">{{ $t('bids.prebidHistory')}}</p>
-                      <div class="border-b border-gray-300 my-4"></div>
+                      <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                        {{ bidTime.days }}
+                      </p>
+                      <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.days')}}</p>
                     </div>
-                    <div class="px-4" style="flex: 5">
-                      <Bids
-                        ref="detailsBid"
-                        :bidId="bidId"
-                        :horseID="horseID"
-                        :bids="this.bids"
-                        :hasBid="this.hasBid"
-                        :privateInformation="this.privateInformation"
+                    <div class="mx-5">
+                      <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                        {{ bidTime.hours }}
+                      </p>
+                      <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.hours')}}</p>
+                    </div>
+                    <div class="mx-5">
+                      <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                        {{ bidTime.minutes }}
+                      </p>
+                      <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.minutes')}}</p>
+                    </div>
+                    <div class="mx-5">
+                      <p class="text-center text-2xl md:text-5xl mb-2 font-bold">
+                        {{ bidTime.seconds }}
+                      </p>
+                      <p class="text-center text-sm md:text-xl text-slate-500">{{ $t('cron.seconds')}}</p>
+                    </div>
+                  </div>
+                  <p class="text-center text-xs text-custom-gold">
+                    {{ $t('bids.prebidDiscountMsg')}}
+                  </p>
+                  <p class="text-center text-xs text-custom-gold">
+                    {{ $t('bids.prebidWinnerDiscountMsg', { 'prebidWinnerDiscount': prebidWinnerDiscount }) }}
+                  </p>
+                  <p class="text-center text-xs text-red-400">
+                    {{ $t('bids.discountByHorseMsg')}}
+                  </p>
+                </div>
+              </div>
+              <div class="px-5 mt-5">
+                <p class="text-sm font-bold uppercase">PRE{{ $t('auction.bidOnThisLot') }}</p>
+                <form @submit="submitForm" v-if="isUserAuthenticated && isUserAbleToBid">
+                  <div class="flex items-center space-x-2">
+                    <button
+                      class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
+                      type="button"
+                      @click="substractThousand"
+                    >
+                      -
+                    </button>
+                    <p
+                      @click="showManualInputAmount()"
+                      v-show="!showInput"
+                      class="border border-black rounded-md flex-grow w-1/4 h-10 flex items-center justify-center"
+                    >
+                      {{ inputAmount }}
+                    </p>
+                    <input
+                      ref="manualInputAmount"
+                      v-show="showInput"
+                      name="amountInput"
+                      type="text"
+                      v-model="formattedManualInputAmount"
+                      @input="handleInput"
+                      @blur="assignManualInputAmount()"
+                      @keydown.enter.prevent
+                      class="border rounded-md flex-grow w-1/4"
+                    />
+                    <button
+                      class="px-4 py-2 rounded-md hover:bg-gray-300 duration-100 border-1 border-gray-600"
+                      type="button"
+                      @click="addThousand"
+                    >
+                      +
+                    </button>
+                    <div class="hidden lg:block">
+                      <SubmitAuthenticatedButton
+                        :enable-modal="enableModal"
+                        :button-text="$t('bids.offer')"
                       />
                     </div>
                   </div>
+                  <div class="lg:hidden text-center mt-5 w-full">
+                    <SubmitAuthenticatedButton
+                      :enable-modal="enableModal"
+                      :button-text="$t('bids.offer')"
+                    />
+                  </div>
+                </form>
+                <div v-else-if="!isUserAuthenticated" class="py-5">
+                  <nuxt-link :to="loginPath" class="text-blue-500 font-bold" >
+                    {{ $t('auction.notLoggedInMsg') }}
+                  </nuxt-link>
                 </div>
-                <div v-if="bidStatus == 'BIDDING' && horseStatus == 'BIDDING'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
-                  <p class="text-black font-bold text-2xl pt-8 px-10">
-                    {{ $t('auction.horseAuctionIsLive') }}
-                  </p>
-                  <p v-if="hasPreBid" class="text-center text-xs text-custom-gold">
-                    {{ $t('bids.youHaveDiscountMsg') }}
-                  </p>
-                  <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xs text-custom-gold">
-                    {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
-
-                  </p>
-                  <p class="text-black font-bold text-xl pt-5">
-                    <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
-                      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                        {{ $t('auction.goToAuction') }}
-                      </button>
-                    </NuxtLink>
-                  </p>
+                <div v-else-if="!isUserAbleToBid" class="my-5 py-5 text-center w-full text-red-600 border-1 border-dashed border-red-700">
+                  {{ $t('auction.notAuthorizedMsg') }} {{ adminPhone?.replace(/\s/gi, '') }}
                 </div>
-                <div v-if="horseStatus == 'CLOSED PREBID'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
-                  <p class="text-black font-bold text-2xl pt-8 px-10">
-                    {{ $t('auction.horseAuctionIsComming') }}
-                  </p>
-                  <p v-if="hasPreBid" class="text-center text-xs text-custom-gold">
-                    {{ $t('bids.youHaveDiscountMsg') }}
-                  </p>
-                  <p v-if="winnerEmail == $store.state.user?.user && horseStatus == 'CLOSED PREBID'" class="text-center text-xl text-green-800 font-bold">
-                    {{ $t('bids.youAreTheDPrebidWinner') }}
-                  </p>
-                  <p v-if="winnerEmail == $store.state.user?.user && horseStatus == 'CLOSED PREBID'" class="text-center text-xs text-custom-gold">
-                    {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
-                  </p>
-                  <p v-if="bidStatus == 'BIDDING'" class="text-black font-bold text-xl pt-5">
-                    <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
-                    <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                      {{ $t('auction.goToAuction') }}
-                    </button>
-                  </NuxtLink>
-                  </p>
-                  <div v-else class="flex flex-col text-black font-bold text-xl pt-5">
-                    {{ $t('auction.stayTuned') }}
-                    <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
-                      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                        {{ $t('auction.goToAuction') }}
-                      </button>
-                    </NuxtLink>
+                <div>
+                  <div
+                    v-if="successMessage"
+                    class="bg-green-100 text-green-800 p-4 my-4 rounded-lg shadow-md"
+                  >
+                    {{ successMessage }}
+                  </div>
+                  <div
+                    v-if="errorMessage"
+                    class="bg-red-100 text-red-800 p-4 my-4 rounded-lg shadow-md"
+                  >
+                  {{ $t(`backMessages.${errorMessage}`,{"lastOffer": lastOffer}) }}
                   </div>
                 </div>
-                <div v-if="bidStatus == 'BIDDING' && (horseStatus == 'CLOSED' || horseStatus == 'COMMING')" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
-                  <div class="flex flex-col text-black font-bold text-xl pt-5">
-                    {{ $t('auction.stayTuned') }}
-                    <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
-                      <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                        {{ $t('auction.goToAuction') }}
-                      </button>
-                    </NuxtLink>
-                  </div>
+              </div>
+              <div v-if="winnerEmail === this.$store.state.user?.user" class="flex flex-row font-bold text-green-800 items-center justify-center" >
+                <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                  width="25px" height="25px" viewBox="0 0 121.352 121.352"
+                  xml:space="preserve">
+                <g>
+                  <g>
+                    <g>
+                      <path d="M14.058,112.273c-2.671,0-5.174-1.659-6.123-4.319c-1.206-3.381,0.558-7.1,3.939-8.305
+                        c8.797-3.145,18.032-8.08,19.576-10.444c2.219-7.225,9.508-23.93,9.82-24.645c1.437-3.29,5.27-4.792,8.559-3.354
+                        c3.29,1.438,4.791,5.269,3.354,8.559c-2.062,4.719-7.76,18.121-9.35,23.401c-2.609,8.664-18.407,15.452-27.592,18.727
+                        C15.52,112.151,14.783,112.273,14.058,112.273z"/>
+                      <path d="M65.87,121.352c-0.763,0-1.538-0.136-2.294-0.421c-3.358-1.268-5.054-5.018-3.787-8.376
+                        c2.805-7.434,5.827-16.579,6.66-20.561c-2.797-2.67-9.536-8.242-15.298-12.741c-2.83-2.21-3.332-6.294-1.123-9.124
+                        c2.21-2.828,6.295-3.33,9.124-1.122c17.609,13.751,19.027,16.47,19.633,17.63c1.21,2.32,2.716,5.208-6.833,30.508
+                        C70.969,119.747,68.497,121.352,65.87,121.352z"/>
+                      <circle cx="76.713" cy="14.166" r="14.166"/>
+                      <g>
+                        <path d="M68.121,26.851c0,0,1.546,0.19,2.986,0.859c1.375,0.64,2.783,1.641,2.783,1.641l0.036,0.024
+                          c3.896,2.979,6.987,8.574,4.649,13.91L66.033,71.93c-2.727,6.223-10.594,7.369-16.32,4.86c-0.975-0.427-1.907-0.958-2.773-1.583
+                          c-4.06-2.921-7.093-8.293-4.722-13.708l12.545-28.645C57.09,27.538,63.32,26.015,68.121,26.851z"/>
+                      </g>
+                      <path d="M28.649,50.542c-1.12,0-2.25-0.34-3.225-1.048c-2.458-1.783-3.006-5.22-1.224-7.679
+                        c2.7-3.724,9.596-12.598,15.307-14.555c5.321-1.824,21.093-0.901,25.8-0.575c3.03,0.21,5.316,2.836,5.106,5.867
+                        c-0.209,3.029-2.805,5.313-5.866,5.107c-8.536-0.589-19.204-0.728-21.479,0.009c-1.657,0.663-6.417,5.722-9.963,10.605
+                        C32.029,49.755,30.351,50.542,28.649,50.542z"/>
+                      <path d="M85.548,44.799c-5.263,0-10.754-0.317-13.907-0.536c-3.03-0.21-5.316-2.836-5.106-5.867
+                        c0.209-3.029,2.8-5.319,5.866-5.107c8.536,0.591,19.204,0.728,21.478-0.009c1.666-0.666,6.426-5.725,9.964-10.604
+                        c1.784-2.458,5.222-3.007,7.682-1.224c2.459,1.783,3.007,5.222,1.225,7.681c-2.7,3.724-9.597,12.597-15.308,14.554
+                        C94.971,44.535,90.355,44.799,85.548,44.799z"/>
+                    </g>
+                  </g>
+                </g>
+                </svg>
+                {{ $t(`bids.yourAreWinningPreOffer`) }}
+              </div>
+              <div v-if="bids.length > 0">
+                <div class="mx-5">
+                  <div class="border-b border-gray-300 my-4"></div>
+                  <p class="text-sm font-bold uppercase">{{ $t('bids.prebidHistory')}}</p>
+                  <div class="border-b border-gray-300 my-4"></div>
                 </div>
-                <div v-if="horseStatus =='COMMING' && bidStatus == 'COMMING'" class="md:h1/2 md:w-1/2 bg-white rounded-xl font-roboto text-center">
-
-                  <p class="text-black font-bold text-2xl pt-8 px-10">
-                    {{ $t('auction.horsePrebidIsComming') }}
-                  </p>
-                  <div class="text-center w-full px-5 pt-8">
-                      <p class="font-bold text-sm">{{ $t('auction.startingPrice') }}</p>
-                      <span class="font-bold text-2xl"
-                        >${{ horseData.final_amount }} USD</span
-                      >
-                      <div class="border-b border-gray-300 my-4"></div>
-                    </div>
-                    <div class="w-full rounded-t-lg px-5">
-                      <p class="font-bold text-sm">{{ $t('auction.prebid') }}</p>
-                      <span class="font-bold text-sm"
-                        >{{ $t('auction.start') }} {{ PreBidDateFormat }}</span
-                      >
-                    </div>
-                    <div class="w-full rounded-t-lg px-5">
-                      <span class="font-bold text-sm"
-                        >{{ $t('auction.end') }} {{ EndPreBidDateFormat }}</span
-                      >
-                    </div>
-                    <div class="w-full rounded-t-lg px-5">
-                      <div class="border-b border-gray-300 my-4"></div>
-                      <p class="font-bold text-sm uppercase">{{ $t('home.auction.liveAuction') }}</p>
-                      <span class="font-bold text-sm">{{ BidDateFormat }}</span>
-                    </div>
-                    <div
-                      v-if="isUserAuthenticated"
-                      class="text-center texthidden md:block mt-1"
-                    >
-                      <nuxt-link :to="localePath(`/auth/sign-up`)">
-                        <button
-                          class="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow md:flex-grow-0"
-                        >
-                          {{ $t('auction.registerBefore') }} {{ BidDateFormat }}
-                        </button>
-                      </nuxt-link>
-                    </div>
+                <div class="px-4" style="flex: 5">
+                  <Bids
+                    ref="detailsBid"
+                    :bidId="bidId"
+                    :horseID="horseID"
+                    :bids="this.bids"
+                    :hasBid="this.hasBid"
+                    :privateInformation="this.privateInformation"
+                  />
                 </div>
-
+              </div>
             </div>
-        </div>
-    </div>
-            <!-- END NEW DESIGN-->
 
+            <!-- Estado: BIDDING -->
+            <div v-if="bidStatus == 'BIDDING' && horseStatus == 'BIDDING'">
+              <p class="text-black font-bold text-2xl pt-8 px-10">
+                {{ $t('auction.horseAuctionIsLive') }}
+              </p>
+              <p v-if="hasPreBid" class="text-center text-xs text-custom-gold">
+                {{ $t('bids.youHaveDiscountMsg') }}
+              </p>
+              <p v-if="winnerEmail == $store.state.user?.user" class="text-center text-xs text-custom-gold">
+                {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
+              </p>
+              <p class="text-black font-bold text-xl pt-5">
+                <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
+                  <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
+                    {{ $t('auction.goToAuction') }} 1
+                  </button>
+                </NuxtLink>
+              </p>
+              <div v-if="bids.length > 0" class="px-4" style="flex: 5">
+                <div class="mx-5">
+                  <div class="border-b border-gray-300 my-4"></div>
+                  <p class="text-sm font-bold uppercase">{{ $t('bids.prebidHistory')}}</p>
+                  <div class="border-b border-gray-300 my-4"></div>
+                </div>
+                <div class="px-4" style="flex: 5">
+                  <Bids
+                    ref="detailsBid"
+                    :bidId="bidId"
+                    :horseID="horseID"
+                    :bids="this.bids"
+                    :hasBid="this.hasBid"
+                    :privateInformation="this.privateInformation"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Estado: CLOSED PREBID -->
+            <div v-if="horseStatus == 'CLOSED PREBID'">
+              <p class="text-black font-bold text-2xl pt-8 px-10">
+                {{ $t('auction.horseAuctionIsComming') }}
+              </p>
+              <p v-if="hasPreBid" class="text-center text-xs text-custom-gold">
+                {{ $t('bids.youHaveDiscountMsg') }}
+              </p>
+              <p v-if="winnerEmail == $store.state.user?.user && horseStatus == 'CLOSED PREBID'" class="text-center text-xl text-green-800 font-bold">
+                {{ $t('bids.youAreTheDPrebidWinner') }}
+              </p>
+              <p v-if="winnerEmail == $store.state.user?.user && horseStatus == 'CLOSED PREBID'" class="text-center text-xs text-custom-gold">
+                {{ $t('bids.youAreTheDiscountWinnerMsg', {'prebidWinnerDiscount': prebidWinnerDiscount}) }}
+              </p>
+              <p v-if="bidStatus == 'BIDDING'" class="text-black font-bold text-xl pt-5">
+                <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
+                <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
+                  {{ $t('auction.goToAuction') }} 2
+                </button>
+              </NuxtLink>
+              </p>
+              <div v-else class="flex flex-col text-black font-bold text-xl pt-5">
+                {{ $t('auction.stayTuned') }}
+              </div>
+              <div v-if="bids.length > 0" class="px-4" style="flex: 5">
+                <div class="mx-5">
+                  <div class="border-b border-gray-300 my-4"></div>
+                  <p class="text-sm font-bold uppercase">{{ $t('bids.prebidHistory')}}</p>
+                  <div class="border-b border-gray-300 my-4"></div>
+                </div>
+                <div class="px-4" style="flex: 5">
+                  <Bids
+                    ref="detailsBid"
+                    :bidId="bidId"
+                    :horseID="horseID"
+                    :bids="this.bids"
+                    :hasBid="this.hasBid"
+                    :privateInformation="this.privateInformation"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Estado: CLOSED -->
+            <div v-if="horseStatus == 'CLOSED'">
+              <div v-if="bidStatus == 'BIDDING'" class="flex flex-col text-black font-bold text-xl pt-5">
+                {{ $t('auction.stayTuned') }}
+                <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
+                  <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
+                    {{ $t('auction.goToAuction') }} 4
+                  </button>
+                </NuxtLink>
+              </div>
+              <div v-if="bids.length > 0" class="px-4" style="flex: 5">
+                <div class="mx-5">
+                  <div class="border-b border-gray-300 my-4"></div>
+                  <p class="text-sm font-bold uppercase">{{ $t('bids.prebidHistory')}}</p>
+                  <div class="border-b border-gray-300 my-4"></div>
+                </div>
+                <div class="px-4" style="flex: 5">
+                  <Bids
+                    ref="detailsBid"
+                    :bidId="bidId"
+                    :horseID="horseID"
+                    :bids="this.bids"
+                    :hasBid="this.hasBid"
+                    :privateInformation="this.privateInformation"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs de información adicional -->
     <div class="md:hidden mx-5 border border-gray-300 rounded-t-md">
       <div class="flex">
         <button @click="openTab = 1" :class="{'bg-gray-200': openTab === 1, 'bg-gray-100': openTab !== 1}" class="flex-1 text-xs px-2 py-5 focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500">{{ $t('horse.tabs.horseData')}}</button>
@@ -728,8 +744,12 @@ export default {
   },
   methods: {
     handleHorseChange(horseId) {
-      this.horseId = horseId
-      this.init()
+      if (this.horseId !== horseId) {
+        this.horseId = horseId
+        this.init()
+      } else {
+        console.log('El ID del caballo no ha cambiado')
+      }
     },
     async finalize() {
       clearInterval(this.timer)
@@ -754,6 +774,8 @@ export default {
               Authorization: `Token ${token}`
             },
           }).then((response) => { this.subscribed = true }).catch((error) => { })
+
+
     },
 
     async fetchAdministratorPhone() {
@@ -1260,6 +1282,9 @@ export default {
       }
       const token = getUserTokenOrDefault()
 
+      this.winnerEmail = ''
+      this.winner = ''
+
       await axios
         .get(url, {
           headers: {
@@ -1360,7 +1385,7 @@ export default {
           this.horseStatus = horse.local_data.status
           //Bid Initial Amout
           this.horseData.final_amount = horse.local_data.final_amount
-          this.horseData.horseTelex = horse.local_data.horsetelex_url
+          this.horseData.horsetelex = horse.local_data.horsetelex_url
           this.EndPreBidDate = horse.local_data.end_pre_bid
           this.horseData.next = horse.local_data.next
           this.horseData.previous = horse.local_data.previous

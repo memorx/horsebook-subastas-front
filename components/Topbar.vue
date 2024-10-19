@@ -400,7 +400,7 @@ export default {
             },
 
             updateDraggableBubblesVisibility() {
-                this.showDraggableBubbles = this.currentAuctionId !== null && this.currentAuctionId !== 0 || auctionHorses;
+                this.showDraggableBubbles = this.currentAuctionId !== null && this.currentAuctionId !== 0 || this.auctionHorses;
             },
 
             async fetchAuctionDetails() {
