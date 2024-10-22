@@ -17,7 +17,7 @@ ContentTile component with only a title and paragraph (no button):
         <p :class="[classOverrides.paragraph || '']">{{ paragraph }}</p>
         <p v-if="paragraph2" :class="[classOverrides.paragraph || '']">{{ paragraph2 }}</p>
         <button v-if="buttonLabel" @click="buttonAction"
-            :class="['px-4 py-2 bg-black text-white rounded-3xl', classOverrides.button || '']">
+            :class="['px-4 py-2 bg-black text-white rounded-3xl metalic-button', classOverrides.button || '']">
             {{ buttonLabel }}
         </button>
     </div>
@@ -65,4 +65,36 @@ export default {
 
 <style scoped>
 /* You can add any specific styles for the ContentTile here */
+.metalic-text {
+  background: linear-gradient(
+    to right,
+    #efb810 0%,
+    #fff3c4 20%,
+    #efb810 40%,
+    #fff3c4 60%,
+    #efb810 80%,
+    #efb810 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.metalic-button {
+  background: linear-gradient(
+    to right,
+    #efb810 0%,
+    #fff3c4 20%,
+    #efb810 40%,
+    #fff3c4 60%,
+    #efb810 80%,
+    #efb810 100%
+  );
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
 </style>

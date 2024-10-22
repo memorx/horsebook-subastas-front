@@ -1,8 +1,10 @@
 <template>
    <div>
-      <div class="w-100 px-8 md:px-16 font-roboto pb-8 md:pb-16">
-         <img src="../public/Banner-promo-Subasta 2024.jpg" alt="logo" class="w-100">
-         <!-- <p class="text-gold-100 text-3xl md:text-6xl lg:text-7xl font-bold uppercase">
+      <div class="bg-banner ">
+
+         <!-- <img src="../public/Banner-promo-Subasta 2024.jpg" alt="logo" class="w-100"> -->
+         <!--
+         <p class="text-gold-100 text-3xl md:text-6xl lg:text-7xl font-bold uppercase">
             {{ $t('home.auction.auction') }}
          </p>
          <p class="text-gold-100 text-xl md:text-4xl lg:text-5xl font-bold uppercase">
@@ -150,7 +152,7 @@
                                  </div>
                               </div>
                            </div>
-                           <button class="bg-black py-3 px-5 text-white rounded-lg uppercase font-bold" type="button"
+                           <button class="bg-black py-3 px-5 text-white rounded-lg uppercase font-bold metalic-button" type="button"
                               @click="goToAuctionDetail(auction)">
                               {{ $t('home.auction.participateInTheAuction') }}
                            </button>
@@ -467,10 +469,14 @@ export default {
 
 .bg {
    background-image:
-      linear-gradient(to bottom, rgba(0, 0, 0, .4)160vh, rgb(0, 0, 0)190vh),
+   linear-gradient(to bottom,
+         rgba(0, 0, 0, 1) 0px,
+         rgba(0, 0, 0, 0) 150px,
+         rgba(0, 0, 0, 0) calc(100% - 150px),
+         rgba(0, 0, 0, 1) 100%),
       url('../public/landing-background.jpeg');
-   background-size: 150%;
-   background-position: center -35%;
+   background-size: 180%;
+   background-position: center top;
    background-repeat: no-repeat;
    position: relative
 }
@@ -478,11 +484,48 @@ export default {
 @media only screen and (max-width: 1024px) {
    .bg {
       background-image:
-         linear-gradient(to bottom, transparent 68em, rgb(0, 0, 0)78em),
+         linear-gradient(to bottom,
+         rgba(0, 0, 0, 1) 0px,
+         rgba(0, 0, 0, 0) 150px,
+         rgba(0, 0, 0, 0) calc(100% - 150px),
+         rgba(0, 0, 0, 1) 100%),
          url('../public/landing-bg.png');
       background-position: center top;
       background-size: 100%;
       position: relative
+   }
+}
+
+.bg-banner {
+   background-image:
+      linear-gradient(to bottom,
+         rgba(0, 0, 0, 1) 0px,
+         rgba(0, 0, 0, 0) 150px,
+         rgba(0, 0, 0, 0) calc(100% - 150px),
+         rgba(0, 0, 0, 1) 100%),
+      url('../public/Banner-promo-Subasta 2024.jpg');
+   background-size: cover;
+   background-position: center top;
+   background-repeat: no-repeat;
+   position: relative;
+   min-height: 100vh;
+   width: 100%;
+   display: block;
+}
+
+@media only screen and (max-width: 1024px) {
+   .bg-banner {
+      background-image:
+         linear-gradient(to bottom,
+            rgba(0, 0, 0, 1) 0px,
+            rgba(0, 0, 0, 0) 80px,
+            rgba(0, 0, 0, 0) calc(100% - 80px),
+            rgba(0, 0, 0, 1) 100%),
+         url('../public/Banner-promo-Subasta 2024-m.jpg');
+      min-height: auto;
+      height: 60vw;
+      max-height: 100vh;
+      aspect-ratio: 1/1;
    }
 }
 
@@ -542,4 +585,6 @@ export default {
    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 1));
    pointer-events: none;
 }
+
+
 </style>
