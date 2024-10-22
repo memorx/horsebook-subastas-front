@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-zinc-200">
     <modal
       v-show="showModal"
       :amount="confirmedAmount"
@@ -733,8 +733,6 @@ export default {
   },
   beforeDestroy() {
     this.finalize()
-    this.$store.commit('setLayoutMode', 'default'); // reset to default when leaving the page
-    this.$store.commit('setTextColorTopBar', 'text-white'); // reset to default when leaving the page
     EventBus.$off('horse-changed', this.handleHorseChange)
   },
   async mounted() {
@@ -762,8 +760,8 @@ export default {
       this.init()
       await this.loadIncrements()
       this.startAuctionSocket()
-      this.$store.commit('setLayoutMode', 'lightMode'); // set to 'lightMode' or 'default'
-      this.$store.commit('setTextColorTopBar', 'text-black'); // set to 'text-black' or 'text-white'
+      this.$store.commit('setLayoutMode', 'default'); // set to 'lightMode' or 'default'
+      this.$store.commit('setTextColorTopBar', 'text-white'); // set to 'text-black' or 'text-white'
       let subscribedEndpoint = "/horse/notifications/?horse=" + this.horseId
         let url = `${this.$config.baseURL}${subscribedEndpoint}`
         const token = getUserTokenOrDefault()

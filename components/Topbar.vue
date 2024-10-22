@@ -11,7 +11,7 @@
             <div class="flex items-center space-x-4">
                 <div class="flex justify-right">
                     <a @click="goToCurrenAuction()" v-if="currentAuctionId"
-                    :class="['hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer']">
+                    :class="['hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer', liveAuctionTextColor]">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                         class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
                         <circle cx="8" cy="8" r="7.5" stroke="red" :class="{ 'fill-pulse': currentAuctionId != 0 }" stroke-width="1"
@@ -29,7 +29,7 @@
                                 $t('topBar.bids') }}</nuxt-link>
                             <!-- <nuxt-link :class="activePageClass('/us')" to="/us">{{ $t('topBar.us') }}</nuxt-link> -->
                             <!-- <nuxt-link :class="activePageClass('/news')" :to="localePath('/news')">{{ $t('topBar.news') }}</nuxt-link> -->
-                            <button class="uppercase text-xs font-roboto" @click="handleScrollIntoContact">
+                            <button :class="`${textColor} uppercase text-xs font-roboto`" @click="handleScrollIntoContact">
                                 {{ $t('topBar.contact') }}
                             </button>
                         </div>
@@ -37,11 +37,11 @@
                         <!-- Sign Up / Log in-->
                         <div v-if="!isUserAuthenticated" class="flex flex-row mx-6 gap-6 w-[275px]">
                             <ReusableButton :buttonText="$t('topBar.signUp')"
-                                :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full ${textColor}`"
+                                :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full {textColor}`"
                                 containerClass="w-1/2" :onClick="navigateToSignUp" />
 
                             <ReusableButton :buttonText="$t('topBar.logIn')"
-                                buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
+                                buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full metalic-button"
                                 containerClass="w-1/2" :onClick="navigateToLogin" />
                         </div>
                         <div v-else class="flex flex-row mx-6 gap-6 w-[275px]">
@@ -49,7 +49,7 @@
                                 :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full ${textColor}`"
                                 containerClass="w-1/2" :onClick="navigateToProfile" />
                             <ReusableButton :buttonText="$t('topBar.logout')"
-                                buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
+                                buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full metalic-button"
                                 containerClass="w-1/2" :onClick="logout" />
                         </div>
                         <div class="relative w-16">
@@ -183,15 +183,20 @@ export default {
         },
         activePageClass() {
             return (route) => {
-                return this.$route.path === route ? 'text-custom-gold' : this.textColor;
+                return 'metalic-text';
             }
         },
         isMobile() {
             return this.windowWidth <= 768; // Your mobile breakpoint
         },
         textColor() {
+            return   this.isMobile ? 'text-white' : this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'metalic-text';
+        },
+
+        liveAuctionTextColor() {
             return   this.isMobile ? 'text-white' : this.$store.state.textColorTopBar ? this.$store.state.textColorTopBar : 'text-white';
         },
+
         gradientMobileColor() {
             return 'bg-gradient-to-b from-[#353535] to-[#000000]'
         },
@@ -474,4 +479,37 @@ export default {
         fill: red;
     }
 }
+
+.metalic-text {
+  background: linear-gradient(
+    to right,
+    #efb810 0%,
+    #fff3c4 20%,
+    #efb810 40%,
+    #fff3c4 60%,
+    #efb810 80%,
+    #efb810 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.metalic-button {
+  background: linear-gradient(
+    to right,
+    #efb810 0%,
+    #fff3c4 20%,
+    #efb810 40%,
+    #fff3c4 60%,
+    #efb810 80%,
+    #efb810 100%
+  );
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
 </style>
