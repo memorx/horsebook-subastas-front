@@ -12,7 +12,7 @@
         style="height: 100vh;"
       />
     </div>
-    <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
+    <div class="md:w-1/2 md:mx-auto p-8 bg-white">
       <div class="mb-6">
         <h1 class="text-4xl font-medium text-black">{{ $t('login.recoverPassword') }}</h1>
         <p class="font-normal text-base text-neutral-600 pt-2">

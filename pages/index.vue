@@ -498,34 +498,36 @@ export default {
 
 .bg-banner {
    background-image:
-      linear-gradient(to bottom,
-         rgba(0, 0, 0, 1) 0px,
-         rgba(0, 0, 0, 0) 150px,
-         rgba(0, 0, 0, 0) calc(100% - 150px),
-         rgba(0, 0, 0, 1) 100%),
-      url('../public/Banner-promo-Subasta 2024.jpg');
+     linear-gradient(to bottom,
+       rgba(0, 0, 0, 1) 0px,
+       rgba(0, 0, 0, 0) 80px,
+       rgba(0, 0, 0, 0) calc(100% - 80px),
+       rgba(0, 0, 0, 1) 100%),
+     url('../public/Banner-promo-Subasta 2024.jpg');
    background-size: cover;
-   background-position: center top;
+   background-position: center;
    background-repeat: no-repeat;
    position: relative;
-   min-height: 100vh;
    width: 100%;
-   display: block;
+   height: 100vh;
+   align-items: center;
+   justify-content: center;
 }
 
 @media only screen and (max-width: 1024px) {
    .bg-banner {
-      background-image:
-         linear-gradient(to bottom,
-            rgba(0, 0, 0, 1) 0px,
-            rgba(0, 0, 0, 0) 80px,
-            rgba(0, 0, 0, 0) calc(100% - 80px),
-            rgba(0, 0, 0, 1) 100%),
-         url('../public/Banner-promo-Subasta 2024-m.jpg');
-      min-height: auto;
-      height: 60vw;
-      max-height: 100vh;
-      aspect-ratio: 1/1;
+     background-image:
+     linear-gradient(to bottom,
+       rgba(0, 0, 0, 1) 0px,
+       rgba(0, 0, 0, 0) 25px,
+       rgba(0, 0, 0, 0) calc(100% - 25px),
+       rgba(0, 0, 0, 1) 100%),
+       url('../public/Banner-promo-Subasta 2024-m.jpg');
+     width: 100%;
+     height: 0;
+     padding-top: 67%;
+     background-size: 100% auto;
+     background-position: top center;
    }
 }
 

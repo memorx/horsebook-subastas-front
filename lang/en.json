@@ -39,7 +39,12 @@
         "codeNotReceived": "Didn't you receive the code?",
         "resendCode": "Resend code",
         "resendCodeNotice": "The code has been sent again, please check your email",
-        "codeVerified": "Your code has been verified"
+        "emailMissing": "Sorry, the page has lost the email due to a manual reload.",
+        "codeVerified": "The code has been successfully verified.",
+        "codeError": "Sorry, there was an error with the code.",
+        "checkCodeOrRequestNew": "Please check the code or request a new one.",
+        "errorMsg": "An error has occurred. Please try again.",
+        "emailMissingReload": "Sorry, the page has lost the email due to a manual reload."
     },
     "signup": {
         "showPassword": "Show Password",
@@ -310,6 +315,16 @@
         "Sorry, someone was faster than you": "Sorry, someone was faster than you",
         "The user is not allowed to bid": "The user is not allowed to bid",
         "The current bid amount is higher.": "The current bid amount is higher."
+    },
+    "youtubePlayer": {
+        "maximize": "Maximize",
+        "minimize": "Minimize",
+        "close": "Close",
+        "openVideo": "Open Live"
+    },
+    "cookieConsent": {
+        "message": "This site uses cookies to improve your experience. Do you accept the use of cookies?",
+        "accept": "Accept",
+        "reject": "Reject"
     }
-
 }

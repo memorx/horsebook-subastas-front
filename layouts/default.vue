@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div>
+        <div :style="{ display: showVideo ? 'none' : 'block' }">
             <div :class="[`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] `, bgLayoutMode]">
                 <!-- Your TopBar Component bg-[url('/home-bg.jpg')] -->
 

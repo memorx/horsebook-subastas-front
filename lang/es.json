@@ -37,8 +37,13 @@
         "verifyCode": "Verifica Código",
         "codeNotReceived": "¿No recibiste el código?",
         "resendCode": "Reenviar código",
-        "resendCodeNotice": "El código ha sido enviado nuevamente, por favor revise su correo",
-        "codeVerified": "Su codigo ha sido verificado"
+        "resendCodeNotice": "El código ha sido reenviado a tu correo.",
+        "emailMissing": "Lo sentimos, la página ha perdido el correo debido a que se ha recargado manualmente.",
+        "codeVerified": "El código ha sido verificado con éxito.",
+        "codeError": "Lo sentimos, ha ocurrido un error con el código.",
+        "checkCodeOrRequestNew": "Favor de revisar el código o solicitar un nuevo código.",
+        "errorMsg": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+        "emailMissingReload": "Lo sentimos, la página ha perdido el correo debido a que se ha recargado manualmente."
     },
     "signup": {
         "showPassword": "Mostrar Contraseña",
@@ -310,5 +315,16 @@
         "Sorry, someone was faster than you": "Lo siento, alguien fue más rápido que tú al ofertar",
         "The user is not allowed to bid": "Este usuario no está autorizado para ofertar",
         "The current bid amount is higher.": "La oferta actual supera tu oferta."
+    },
+    "youtubePlayer": {
+        "maximize": "Maximizar",
+        "minimize": "Minimizar",
+        "close": "Cerrar",
+        "openVideo": "Abrir En Vivo"
+    },
+    "cookieConsent": {
+        "message": "Este sitio utiliza cookies para mejorar tu experiencia. ¿Aceptas el uso de cookies?",
+        "accept": "Aceptar",
+        "reject": "Rechazar"
     }
 }
