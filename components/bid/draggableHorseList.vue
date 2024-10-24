@@ -2,7 +2,7 @@
   <div
     ref="container"
     class="fixed z-50"
-    :style="{ top: `${top}px`, left: `${left}px` }"
+    :style="{ top: `${top}px`, right: `${right}px` }"
     @mousedown="startDrag"
     @touchstart="startDrag"
   >
@@ -89,7 +89,7 @@ export default {
       isDragging: false,
       startX: 0,
       startY: 0,
-      left: 5,
+      right: 5,
       top: window.innerHeight - 600,
       isContextMenuOpen: false,
       contextMenuHorseId: null,
@@ -149,7 +149,7 @@ export default {
         event = event.touches[0]
       }
       this.isDragging = true
-      this.startX = event.clientX - this.left
+      this.startX = window.innerWidth - event.clientX - this.right
       this.startY = event.clientY - this.top
     },
     onDrag(event) {
@@ -157,7 +157,7 @@ export default {
         if (event.type === 'touchmove') {
           event = event.touches[0]
         }
-        this.left = event.clientX - this.startX
+        this.right = window.innerWidth - event.clientX - this.startX
         this.top = event.clientY - this.startY
       }
     },
@@ -200,7 +200,7 @@ export default {
     },
     savePositionToCookie() {
       const position = {
-        left: this.left,
+        right: this.right,
         top: this.top,
         isExpanded: this.isExpanded
       }
@@ -210,7 +210,7 @@ export default {
       const savedPosition = Cookie.get(`horseBubblePosition_${this.bidId}`)
       if (savedPosition) {
         const position = JSON.parse(savedPosition)
-        this.left = position.left
+        this.right = position.right
         this.top = position.top
         this.isExpanded = position.isExpanded
       }

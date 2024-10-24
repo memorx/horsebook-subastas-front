@@ -1,12 +1,14 @@
 <template>
-  <div v-if="!consentGiven" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4">
-    <p>Este sitio utiliza cookies para mejorar tu experiencia. ¿Aceptas el uso de cookies?</p>
-    <button @click="acceptCookies" class="bg-custom-gold hover:bg-gold-100 text-black font-bold py-2 px-4 rounded">
-      Aceptar
-    </button>
-    <button @click="rejectCookies" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
-      Rechazar
-    </button>
+  <div v-if="!consentGiven" class="fixed bottom-4 right-4 bg-gray-800 text-white p-4 rounded-lg shadow-lg z-[1001] max-w-sm">
+    <p class="mb-4">{{ $t('cookieConsent.message') }}</p>
+    <div class="flex justify-end space-x-2">
+      <button @click="acceptCookies" class="bg-custom-gold hover:bg-gold-100 text-black font-bold py-2 px-4 rounded">
+        {{ $t('cookieConsent.accept') }}
+      </button>
+      <button @click="rejectCookies" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        {{ $t('cookieConsent.reject') }}
+      </button>
+    </div>
   </div>
 </template>
 

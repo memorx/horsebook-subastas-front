@@ -1,5 +1,8 @@
 <template>
     <nav :class="['p-4 lg:from-transparent', textColor, gradientMobileColor]">
+        <client-only v-if="currentAuctionId && youtubeId">
+            <youtube-player :video-id="youtubeId" :initial-minimized="true"/>
+        </client-only>
         <!-- Web Navigation -->
         <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent" >
             <!-- Logo or brand -->
@@ -9,8 +12,8 @@
 
             <!-- Navigation items -->
             <div class="flex items-center space-x-4">
-                <div class="flex justify-right">
-                    <a @click="goToCurrenAuction()" v-if="currentAuctionId"
+                <div  v-if="currentAuctionId" class="flex justify-right">
+                    <a @click="goToCurrenAuction()"
                     :class="['hover:text-red-600 group flex items-center px-2 py-2 font-bold rounded-md gap-2 cursor-pointer', liveAuctionTextColor]">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                         class="bi bi-people mr-3 flex-shrink-0 h-6 w-6 text-indigo-300" viewBox="0 0 16 16">
@@ -117,6 +120,7 @@ import Cookies from "js-cookie";
 import ReusableButton from "~/components/ReusableButton.vue";
 import DraggableHorseList from "~/components/bid/draggableHorseList.vue";
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import { extractYouTubeId } from '~/utils/youtubeUtils'
 
 export default {
     components: {
@@ -148,6 +152,7 @@ export default {
             auctionsSocket: null,
             auctionSocket: null,
             bidStatus: '',
+            youtubeId: null,
         }
     },
 
@@ -427,8 +432,10 @@ export default {
         updateAuctionData(data) {
             this.bidStatus = data.status;
             this.bidId = data.id;
+            this.youtubeId = extractYouTubeId(data.video_url);
             this.auctionHorses = data.horses || [];
             this.currentHorseId = data.currentHorseId;
+            console.log("youtubeId", this.youtubeId);
 
             // Actualizar showDraggableBubbles basado en el estado de la subasta
             this.updateDraggableBubblesVisibility();

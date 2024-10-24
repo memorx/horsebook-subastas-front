@@ -39,7 +39,12 @@
         "codeNotReceived": "Vous n'avez pas reçu le code?",
         "resendCode": "Renvoyer le code",
         "resendCodeNotice": "Le code a été renvoyé, veuillez vérifier votre email",
-        "codeVerified": "Votre code a été vérifié"
+        "emailMissing": "Désolé, la page a perdu l'email en raison d'un rechargement manuel.",
+        "codeVerified": "Le code a été vérifié avec succès.",
+        "codeError": "Désolé, une erreur s'est produite avec le code.",
+        "checkCodeOrRequestNew": "Veuillez vérifier le code ou demander un nouveau code.",
+        "errorMsg": "Une erreur s'est produite. Veuillez réessayer.",
+        "emailMissingReload": "Désolé, la page a perdu l'email en raison d'un rechargement manuel."
     },
     "signup": {
         "showPassword": "Afficher le mot de passe",
@@ -207,7 +212,7 @@
         "noAvailableMsg": "L'ENCHÈRE N'EST PAS DISPONIBLE",
         "stayWithUsMsg": "RESTEZ AVEC NOUS NOUS CONTINUONS AVEC L'ENCHÈRE EN DIRECT",
         "winnerCongratsMsg": "FÉLICITATIONS VOUS AVEZ REMPORTÉ L'ENCHÈRE POUR {wonHorse} POUR {lastOffer} USD",
-        "winnerMsg": "{winnerName} A REMPORTÉ L'ENCHÈRE POUR {wonHorse} POUR {lastOffer} USD",
+        "winnerMsg": "{winnerName} A REMPORT�� L'ENCHÈRE POUR {wonHorse} POUR {lastOffer} USD",
         "preBidWinnerMsg": "{winnerName} A REMPORTÉ LA PRÉ-ENCHÈRE POUR CE CHEVAL",
         "horseAuctionIsComming": "L'ENCHÈRE DE CE CHEVAL VA BIENTÔT COMMENCER",
         "horsePrebidIsComming": "LA PRÉ-ENCHÈRE SUR CE CHEVAL VA BIENTÔT COMMENCER",
@@ -301,7 +306,7 @@
     "backMessages": {
         "Invalid credentials or user not activated": "Identifiants invalides ou utilisateur non activé",
         "You cannot bid after yourself": "Vous ne pouvez pas enchérir après vous-même.",
-        "The offer must be greater than lastOffer USD": "L'offre doit être supérieure à {lastOffer} USD",
+        "The offer must be greater than lastOffer USD": "L'offre doit être supérieure  {lastOffer} USD",
         "Offer closed": "Offre fermée",
         "On-site offer": "Offre sur place",
         "On Call Offer": "Offre sur appel",
@@ -310,5 +315,16 @@
         "Sorry, someone was faster than you": "Désolé, quelqu'un a été plus rapide que vous",
         "The user is not allowed to bid": "L'utilisateur n'est pas autorisé à enchérir",
         "The current bid amount is higher.": "Le montant de l'enchère actuelle est plus élevé."
+    },
+    "youtubePlayer": {
+        "maximize": "Agrandir",
+        "minimize": "Réduire",
+        "close": "Fermer",
+        "openVideo": "Ouvrir En Direct"
+    },
+    "cookieConsent": {
+        "message": "Ce site utilise des cookies pour améliorer votre expérience. Acceptez-vous l'utilisation de cookies ?",
+        "accept": "Accepter",
+        "reject": "Refuser"
     }
 }
