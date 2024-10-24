@@ -1,23 +1,24 @@
 <template>
    <div>
-      <div class="bg-banner ">
-
-         <!-- <img src="../public/Banner-promo-Subasta 2024.jpg" alt="logo" class="w-100"> -->
-         <!--
-         <p class="text-gold-100 text-3xl md:text-6xl lg:text-7xl font-bold uppercase">
-            {{ $t('home.auction.auction') }}
-         </p>
-         <p class="text-gold-100 text-xl md:text-4xl lg:text-5xl font-bold uppercase">
-            STUDBOOK LA SILLA
-         </p>
-         <p class="text-gold-100 text-2xl md:text-5xl lg:text-6xl font-bold uppercase">
-            NOV. 2024
-         </p>
-         <div class="flex items-center">
-            <img src="../public/image_la_silla.png" alt="logo" class="w-20 h-20 md:w-36 md:h-36 lg:w-48 lg:h-48">
-            <p class="text-red-600 text-3xl md:text-6xl lg:text-7xl font-medium uppercase text-center ml-8"
-               style="white-space: pre-line">{{ $t('home.youngHorses') }}</p>
-         </div> -->
+      <div class="bg-banner-container">
+         <div class="bg-banner">
+            <!-- <img src="../public/Banner-promo-Subasta 2024.jpg" alt="logo" class="w-100"> -->
+            <!--
+            <p class="text-gold-100 text-3xl md:text-6xl lg:text-7xl font-bold uppercase">
+               {{ $t('home.auction.auction') }}
+            </p>
+            <p class="text-gold-100 text-xl md:text-4xl lg:text-5xl font-bold uppercase">
+               STUDBOOK LA SILLA
+            </p>
+            <p class="text-gold-100 text-2xl md:text-5xl lg:text-6xl font-bold uppercase">
+               NOV. 2024
+            </p>
+            <div class="flex items-center">
+               <img src="../public/image_la_silla.png" alt="logo" class="w-20 h-20 md:w-36 md:h-36 lg:w-48 lg:h-48">
+               <p class="text-red-600 text-3xl md:text-6xl lg:text-7xl font-medium uppercase text-center ml-8"
+                  style="white-space: pre-line">{{ $t('home.youngHorses') }}</p>
+            </div> -->
+         </div>
       </div>
       <div class="h-auto flex justify-center md:px-4 bg">
          <div class="w-11/12 flex flex-col items-center sm:space-x-4 bg-transparent">
@@ -496,39 +497,39 @@ export default {
    }
 }
 
-.bg-banner {
-   background-image:
-     linear-gradient(to bottom,
-       rgba(0, 0, 0, 1) 0px,
-       rgba(0, 0, 0, 0) 80px,
-       rgba(0, 0, 0, 0) calc(100% - 80px),
-       rgba(0, 0, 0, 1) 100%),
-     url('../public/Banner-promo-Subasta 2024.jpg');
-   background-size: cover;
-   background-position: center;
-   background-repeat: no-repeat;
-   position: relative;
-   width: 100%;
-   height: 100vh;
-   align-items: center;
-   justify-content: center;
+.bg-banner-container {
+  width: 100%;
+  height: 0;
+  padding-top: 56.25%;
+  position: relative;
+  overflow: hidden;
 }
 
-@media only screen and (max-width: 1024px) {
-   .bg-banner {
-     background-image:
-     linear-gradient(to bottom,
-       rgba(0, 0, 0, 1) 0px,
-       rgba(0, 0, 0, 0) 25px,
-       rgba(0, 0, 0, 0) calc(100% - 25px),
-       rgba(0, 0, 0, 1) 100%),
-       url('../public/Banner-promo-Subasta 2024-m.jpg');
-     width: 100%;
-     height: 0;
-     padding-top: 67%;
-     background-size: 100% auto;
-     background-position: top center;
-   }
+.bg-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(to right,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0) 5%,
+      rgba(0, 0, 0, 0) 95%,
+      rgba(0, 0, 0, 1) 100%),
+    linear-gradient(to bottom,
+      rgba(0, 0, 0, 1) 0px,
+      rgba(0, 0, 0, 0) 80px,
+      rgba(0, 0, 0, 0) calc(100% - 80px),
+      rgba(0, 0, 0, 1) 100%),
+    url('../public/Banner-promo-Subasta 2024.jpg');
+  background-size: contain;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-color: black;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 @keyframes blink {
