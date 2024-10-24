@@ -35,6 +35,7 @@ export default {
   plugins: [
     '~/plugins/vuetoastnotification.js',
     { src: '~/plugins/vue-confetti.js', mode: 'client' },
+    { src: '~/plugins/youtube-persistence.js', mode: 'client' }
   ],
 
   // router middleware

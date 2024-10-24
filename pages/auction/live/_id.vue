@@ -31,6 +31,8 @@
         <div class="w-full sm:w-1/2 md:flex md:flex-col">
           <div v-if="videoUrl" class="w-full md:flex md:flex-col">
             <div class="mb-4 sm:mb-0 p-0 mx-5 pb-5">
+
+            <!--
             <iframe
               class="aspect-content rounded-lg h-96 w-full"
               :src="`https://www.youtube.com/embed/${extractYouTubeId(videoUrl)}?rel=0`"
@@ -38,6 +40,7 @@
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
             ></iframe>
+            -->
             </div>
             <transition name="fade">
               <div v-if="horseID" class="fade">
@@ -454,7 +457,6 @@ import Swal from 'sweetalert2'
 import { extractYouTubeId } from '~/utils/youtubeUtils'
 import DraggableHorseList from '~/components/bid/draggableHorseList.vue'
 
-
 export default {
   components: {
     Loading,
@@ -468,7 +470,6 @@ export default {
     SubmitAuthenticatedButton,
     modal,
     DraggableHorseList,
-
    },
   data() {
     return {
