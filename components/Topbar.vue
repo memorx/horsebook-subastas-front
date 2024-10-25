@@ -400,7 +400,6 @@ export default {
                 this.currentAuctionId = 0;
                 }
 
-                this.$root.$emit('update-auctions', message.status);
             } else {
                 await this.fetchAuctionDetails();
             }
