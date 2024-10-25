@@ -245,7 +245,7 @@
         "notAuthorizedMsg": "You are not authorized to bid. Contact the administrator at the number:"
     },
     "bids": {
-        "offer": "Offer",
+        "offer": "Bid",
         "name": "name",
         "nationality": "nationality",
         "bid": "bid",
@@ -270,7 +270,8 @@
         "yourAreWinningAuction": "You are winning the auction",
         "prebidDiscountApplied": "Pre-bid participation discount applied:",
         "prebidWinnerDiscountApplied": "Pre-bid winner discount applied:",
-        "priceExcludesCommission": "This price does not include commissions"
+        "priceExcludesCommission": "This price does not include commissions",
+        "winner": "Winner"
     },
     "horse": {
         "dateOfBirth": "Date of birth",

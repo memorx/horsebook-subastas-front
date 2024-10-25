@@ -112,31 +112,27 @@ export default {
   methods: {
     async getAuctions() {
       const listSubastasEndpoint = "/subastas/list-subastas/"
-      const currentDate = new Date()
       const url = `${this.$config.baseURL}${listSubastasEndpoint}?only_subasta_data=true`
-      //I want to stop to make a hardcode and do it using logic
+
       this.loading = true
-      await this.$axios
-        .get(url)
-        .then((response) => {
-          response.data.results.map((auction) => {
-              if (
-                ["PREBID", "BIDDING", "COMING", "CLOSED PREBID", "CLOSED"].includes(
-                  auction.status
-                )
-              ) {
-                this.currentAuctions.push(auction)
-              } else {
-                this.nextAuctions.push(auction)
-              }
+      // Reiniciamos los arreglos
+      this.currentAuctions = []
+      this.nextAuctions = []
 
-          })
-
-          this.loading = false
+      try {
+        const response = await this.$axios.get(url)
+        response.data.results.forEach((auction) => {
+          if (["PREBID", "BIDDING", "COMING", "CLOSED PREBID", "CLOSED"].includes(auction.status)) {
+            this.currentAuctions.push(auction)
+          } else {
+            this.nextAuctions.push(auction)
+          }
         })
-        .catch((error) => {
-          this.loading = false
-        })
+      } catch (error) {
+        console.error('Error al obtener las subastas:', error)
+      } finally {
+        this.loading = false
+      }
     },
 
     goToDetails(id) {

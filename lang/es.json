@@ -269,7 +269,8 @@
         "yourAreWinningAuction": "Estás ganando la subasta",
         "prebidDiscountApplied": "Descuento por participar en la preoferta aplicado:",
         "prebidWinnerDiscountApplied": "Descuento por ganar la preoferta aplicado:",
-        "priceExcludesCommission": "Este precio no incluye comisiones"
+        "priceExcludesCommission": "Este precio no incluye comisiones",
+        "winner": "Ganador"
     },
     "horse": {
         "dateOfBirth": "Fecha de nacimiento",
