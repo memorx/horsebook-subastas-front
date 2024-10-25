@@ -212,7 +212,7 @@
         "noAvailableMsg": "L'ENCHÈRE N'EST PAS DISPONIBLE",
         "stayWithUsMsg": "RESTEZ AVEC NOUS NOUS CONTINUONS AVEC L'ENCHÈRE EN DIRECT",
         "winnerCongratsMsg": "FÉLICITATIONS VOUS AVEZ REMPORTÉ L'ENCHÈRE POUR {wonHorse} POUR {lastOffer} USD",
-        "winnerMsg": "{winnerName} A REMPORT�� L'ENCHÈRE POUR {wonHorse} POUR {lastOffer} USD",
+        "winnerMsg": "{winnerName} A REMPORT L'ENCHÈRE POUR {wonHorse} POUR {lastOffer} USD",
         "preBidWinnerMsg": "{winnerName} A REMPORTÉ LA PRÉ-ENCHÈRE POUR CE CHEVAL",
         "horseAuctionIsComming": "L'ENCHÈRE DE CE CHEVAL VA BIENTÔT COMMENCER",
         "horsePrebidIsComming": "LA PRÉ-ENCHÈRE SUR CE CHEVAL VA BIENTÔT COMMENCER",
@@ -270,7 +270,8 @@
         "yourAreWinningAuction": "Vous remportez l'enchère",
         "prebidDiscountApplied": "Remise de participation à la pré-enchère appliquée :",
         "prebidWinnerDiscountApplied": "Remise du gagnant de la pré-enchère appliquée :",
-        "priceExcludesCommission": "Ce prix n'inclut pas les commissions"
+        "priceExcludesCommission": "Ce prix n'inclut pas les commissions",
+        "winner": "Gagnant"
     },
     "horse": {
         "dateOfBirth": "Date de naissance",

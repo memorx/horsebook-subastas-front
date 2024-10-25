@@ -16,6 +16,7 @@
               <tr v-if="index < 20" v-for="(bid, index) in bids" :key="bid?.id">
                 <td v-if="!privateInformation" class="table-cell border-y text-center">
                   {{ parsedName(bid) }}
+                  <span v-if="index === 0" class="winner-badge">🏆 {{ $t('bids.winner') }}</span>
                 </td>
                 <td class="table-cell border-y text-center">
                   {{ bid?.user_profile.country }}
@@ -136,3 +137,15 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.winner-badge {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 2px 5px;
+  background-color: #ffd700;
+  color: #000;
+  border-radius: 3px;
+  font-size: 0.8em;
+}
+</style>
