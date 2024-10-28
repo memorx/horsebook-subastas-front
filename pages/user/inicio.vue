@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <div>
+  <div class="w-full md:px-[10%]">
     <div
       v-for="item in auctions"
       :key="item.id"
@@ -28,12 +28,12 @@
           v-if="item.image"
           :src="item.image"
           alt="foto_portada"
-          class="w-full md:w-1/2 object-cover md:rounded-3xl shadow-xl m-3"
+          class="w-full md:w-1/2 object-cover rounded-3xl shadow-xl md:m-3"
           style="height: 400px"
           loading="lazy"
         />
         <div
-          class="w-full md:w-1/2 bg-gray-300 h-[400px] flex justify-center items-center md:rounded-l-lg"
+          class="w-full md:w-1/2 object-cover rounded-3xl shadow-xl md:m-3 bg-gray-300 h-[400px] flex justify-center items-center"
           v-else
         >
           <img
