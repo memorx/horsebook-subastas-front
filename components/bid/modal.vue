@@ -12,7 +12,7 @@
         Total: $ {{ formattedTotal }}
       </h2>
       <div v-if="hasPreBid" class="text-xs text-green-600">
-        {{ $t('bids.prebidDiscountApplied') }} 5%
+        {{ $t('bids.prebidDiscountApplied') }} 3%
       </div>
       <div v-if="prebidWinner && prebidWinnerDiscount > 0" class="text-xs text-green-600">
         {{ $t('bids.prebidWinnerDiscountApplied') }} {{ prebidWinnerDiscount }}%
@@ -77,7 +77,7 @@ export default {
     totalAfterAllDiscounts() {
       let total = this.parseAmount(this.amount);
       if (this.hasPreBid) {
-        total *= 0.95;
+        total *= 0.97;
       }
       if (this.prebidWinner && this.prebidWinnerDiscount > 0) {
         total *= (1 - (this.prebidWinnerDiscount / 100));

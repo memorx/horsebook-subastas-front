@@ -122,7 +122,8 @@
             "auction": "Subasta",
             "lots": "lotes",
             "prebids": "Preofertas",
-            "participateInTheAuction": "Participar en la subasta"
+            "participateInTheAuction": "Participar en la subasta",
+            "goToLiveAuction": "¡Ve a la subasta En Vivo!"
         },
         "news": {
             "title": "Novedades",
@@ -253,8 +254,8 @@
         "commission": "de comisión",
         "prebidConfirmQuestion": "¿Estás seguro que quieres preofertar?",
         "bidConfirmQuestion": "¿Estás seguro que quieres ofertar?",
-        "prebidDiscountMsg": "Todo participante de la preoferta obtiene un 5% de descuento",
-        "youHaveDiscountMsg": "Ya tienes un 5% de descuento en este caballo por haber participado en la preoferta",
+        "prebidDiscountMsg": "Todo participante de la preoferta obtiene un 3% de descuento",
+        "youHaveDiscountMsg": "Ya tienes un 3% de descuento en este caballo por haber participado en la preoferta",
         "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
         "youAreTheDiscountWinnerMsg": "Has ganado {prebidWinnerDiscount}% de descuento extra",
         "youAreTheDPrebidWinner": "Eres el ganador de la preoferta de este caballo",
