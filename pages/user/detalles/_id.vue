@@ -180,20 +180,20 @@
       >
         <!-- Card content -->
         <div class="relative bg-white rounded-tl-3xl w-full">
-          <div class="absolute z-50 m-2">
+          <div class="absolute z-30 m-2">
             <horseStatus
               :status="horse.local_data.status"
               :bid-status="bidStatus"
             />
           </div>
           <img
-            v-if="getImageUrl(horse.local_data.horse_id)"
-            :src="getImageUrl(horse.local_data.horse_id)"
-            class="w-full flex-1 object-cover rounded-tl-3xl rounded-br-3xl opacity-90 hover:opacity-100 transition-opacity h-40 lg:h-64"
+            v-if="horse.external_data.image_path_thumbnail"
+            :src="`${apiImg}${horse.external_data.image_path_thumbnail}`"
+            class="w-full flex-1 object-cover rounded-tl-3xl rounded-br-3xl hover:brightness-110 transition-opacity h-40 lg:h-80"
           />
           <div
             v-else
-            class="flex justify-center items-center bg-gray-400 w-full h-40 lg:h-64 rounded-tl-3xl rounded-br-3xl"
+            class="flex justify-center items-center bg-gray-400 w-full h-40 lg:h-80 rounded-tl-3xl rounded-br-3xl"
           >
             <img
               class="m-auto opacity-70 h-1/2"
@@ -307,12 +307,15 @@
           <div
             class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
           >
-            <button
-              @click="goToDetail(horse, index)"
-              class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105 text-xs md:text-xl xl:text-xl"
+            <a
+              :href="localePath(`/bids/bid/?id=${id}&horsePositionList=${index}&horseId=${horse.local_data.id}`)"
+              rel="noopener noreferrer"
+              class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
             >
-              {{ $t('auction.enter') }}
-            </button>
+              <span class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105 text-xs md:text-xl xl:text-xl flex items-center justify-center">
+                {{ $t('auction.enter') }}
+              </span>
+            </a>
           </div>
         </div>
       </div>
@@ -357,7 +360,8 @@ export default {
       countdownSubasta: false,
       countdownPre: false,
       bidStatus: "",
-      bidImage: ""
+      bidImage: "",
+      apiImg: "https://storage.googleapis.com/horsebook/",
     }
   },
   async created() {

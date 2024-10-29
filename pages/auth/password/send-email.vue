@@ -12,7 +12,7 @@
         style="height: 100vh;"
       />
     </div>
-    <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
+    <div class="md:w-1/2 md:mx-auto p-8 bg-white">
       <div class="mb-6">
         <h1 class="text-4xl font-medium text-black">{{ $t('login.recoverPassword') }}</h1>
         <p class="font-normal text-base text-neutral-600 pt-2">
@@ -81,18 +81,18 @@ export default {
           email: this.email,
           resend: false
         };
-        console.log(data, "DATA")
+        // console.log(data, "DATA")
         const response = await axios.post(this.$config.baseURL + "/users/send-code-reset-password/", data, {
           headers: {
             'Content-Type': 'application/json'
           }
         });
-        console.log(response, "RESPONSE")
+        // console.log(response, "RESPONSE")
         this.$store.commit('setUser', data);
         this.$router.push(this.localePath('/auth/password/forgot-password'))
-        console.log(response, "RESPONSE")
+        // console.log(response, "RESPONSE")
       } catch (error) {
-        console.log(error, "ERROR")
+        // console.log(error, "ERROR")
         this.$toast.error("Usuario no encontrado");
       }
     },

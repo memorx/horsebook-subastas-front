@@ -1,18 +1,27 @@
 <template>
     <div>
-        <div id="google_translate_element" class="w-full overflow-x-hidden"></div>
-        <!-- Parent div with black background -->
-        <div v-if="showVideo" :class="['fixed z-30 inset-0 w-screen h-screen', bgLayoutMode]">
-            <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
-                <source src="/video-home.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <ReusableButton containerClass="mb-12 fixed z-50 bottom-5 w-auto text-white left-1/2 transform -translate-x-1/2"
-                buttonClass="uppercase text-sm md:text-base lg:text-lg" :onClick="closeVideo"
-                :buttonText="$t('home.video.button')" />
+        <!-- Contenedor del video y botón -->
+        <div :style="{ display: showVideo ? 'block' : 'none' }" class="fixed z-30 inset-0 w-screen h-screen">
+            <div :class="['w-full h-full', bgLayoutMode]">
+                <video ref="videoPlayer" class="w-full h-full object-fit" autoplay muted playsinline loop>
+                    <source src="/video-home.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <nuxt-link
+                    to="#"
+                    @click.native.prevent="closeVideo"
+                    :class="[
+                        'mb-12 fixed z-50 bottom-5 w-auto rounded-full text-white left-1/2 transform -translate-x-1/2',
+                        'uppercase text-sm md:text-base lg:text-lg font-bold bg-black bg-opacity-50 backdrop-blur-sm',
+                        'px-4 py-2 inline-block transition-all duration-300 hover:bg-opacity-70'
+                    ]"
+                >
+                    {{ $t('home.video.button') }}
+                </nuxt-link>
+            </div>
         </div>
 
-        <div v-else>
+        <div :style="{ display: showVideo ? 'none' : 'block' }">
             <div :class="[`bg-contain bg-start bg-no-repeat bg-[url('/${bgImage}')] `, bgLayoutMode]">
                 <!-- Your TopBar Component bg-[url('/home-bg.jpg')] -->
 
@@ -28,6 +37,7 @@
             </div>
             <Footer @handle-close-menu="hanldeCloseMenu"/>
         </div>
+        <cookie-consent />
     </div>
 </template>
 
@@ -38,35 +48,13 @@ import MobileMenu from '~/components/MobileMenu.vue';
 import JWTDecode from "jwt-decode"
 import Cookie from "js-cookie"
 import Swal from 'sweetalert2';
+import CookieConsent from '~/components/CookieConsent.vue';
 
 export default {
     beforeMount() {
-        this.showVideo = false
-        /*
-        if (!Cookie.get('videoPlayed')) {
-            this.showVideo = true;
-        } else {
-            this.showVideo = false;
-        }
-        */
+        this.showVideo = this.shouldShowVideo();
     },
     async mounted() {
-        /* comment google translate option
-        window.googleTranslateElementInit = () => {
-            new window.google.translate.TranslateElement({
-            pageLanguage: 'es', // Idioma predeterminado
-            includedLanguages: 'es,fr,de', // Idiomas disponibles
-            layout: window.google.translate.TranslateElement.InlineLayout.HORIZONTAL,
-            autoDisplay: false
-            }, 'google_translate_element');
-        };
-
-        // Cargar el script del widget de Google Translate
-        const script = document.createElement('script');
-        script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-        script.async = true;
-        document.head.appendChild(script);
-        */
         await this.getUserInfo()
         this.checkAndInitializeWebSocket();
         if (!window.WebSocket) {
@@ -96,7 +84,8 @@ export default {
     components: {
         Topbar,
         Footer,
-        MobileMenu
+        MobileMenu,
+        CookieConsent
     },
     data() {
         return {
@@ -150,7 +139,7 @@ export default {
             }
         },
         displayToast() {
-            if (this.$store.state.websocket) {
+            if (this.$store.state.websocket && this.$store.state.showToast) {
                 if (this.$store.state.isUserAbleToBid) {
                     this.$toast.success(this.$t('bids.aprrovedToOffer'));
                 } else {
@@ -214,11 +203,17 @@ export default {
             }
         },
         closeVideo() {
-            this.showVideo = false; // hides the video and close button
-            this.$refs.videoPlayer.pause(); // stops the video playback
+            console.log('Cerrando video');
+            this.showVideo = false;
 
-            // Set the cookie to remember the video has been played
-            Cookie.set('videoPlayed', 'true', { expires: 365 }); // set it to expire in 365 days. Adjust as needed.
+            if (this.$refs.videoPlayer) {
+                this.$refs.videoPlayer.pause();
+                this.$refs.videoPlayer.currentTime = 0;
+            }
+
+            Cookie.set('videoPlayed', '1', { expires: 365 });
+
+            console.log('Estado de videoPlayed:', Cookie.get('videoPlayed'));
         },
         playVideo() {
             this.$refs.videoPlayer.play();
@@ -244,40 +239,21 @@ export default {
         },
         hanldeCloseMenu() {
             this.isMobileMenuOpen = false;
-        }
+        },
+        shouldShowVideo() {
+            const videoPlayed = Cookie.get('videoPlayed');
+            return videoPlayed === undefined || parseInt(videoPlayed) !== 1;
+        },
     },
 };
 
 </script>
-<style>
-#google_translate_element {
-    width: 100%; /* Ancho máximo para que no sobrepase la pantalla */
-    margin: 0 auto; /* Centrar el widget horizontalmente */
-    overflow-x: hidden; /* Ocultar cualquier desbordamiento horizontal */
-}
-#google_translate_element .goog-te-gadget {
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-}
 
-#google_translate_element .goog-te-gadget select {
-    margin-right: 10px;
+<style scoped>
+.invisible {
+    visibility: hidden;
 }
-
-#google_translate_element .goog-te-gadget a {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    margin-left: 10px;
-}
-
-#google_translate_element .goog-te-gadget a img {
-    margin-right: 5px;
-}
-
-.skiptranslate {
-    display: none;
-
+.opacity-0 {
+    opacity: 0;
 }
 </style>

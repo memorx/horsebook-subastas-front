@@ -1,17 +1,22 @@
 <template>
   <div class="flex-grow tool-tip-container">
-    <button class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full mb-3"
-      v-bind:class="{ disabled: !isAuthenticated || !isAbleToBid }" type="button" @click="enableModal">
+    <button
+      class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-100 flex-grow w-full mb-3"
+      :class="{ 'opacity-30 cursor-not-allowed': !isAuthenticated || !isAbleToBid }"
+      type="button"
+      @click="handleClick"
+      :disabled="!isAuthenticated || !isAbleToBid"
+    >
       {{ buttonText }}
     </button>
-    <span v-bind:class="{ show: !isAuthenticated || !isAbleToBid }" class="hidden md:visible tool-tip-text">
+    <span :class="{ show: !isAuthenticated || !isAbleToBid }" class="hidden md:visible tool-tip-text">
       <p>{{ hoverText }}</p>
     </span>
-    <span v-if="!isAuthenticated" class="md:hidden">
+    <div v-if="!isAuthenticated || !isAbleToBid" class="md:hidden pb-5">
       <NuxtLink :to="localePath('/auth/login')" class="font-bold border-1 border-gray-500 px-3 py-2">
         {{ hoverText }}
       </NuxtLink>
-    </span>
+    </div>
   </div>
 </template>
 
@@ -30,51 +35,47 @@ export default {
     return {
       hoverMessage: {
         notLoggedIn: this.$t('auction.notLoggedInMsg'),
-        notAuthorized:
-          this.$t('auction.notAuthorizedMsg')
+        notAuthorized: this.$t('auction.notAuthorizedMsg')
       },
-      isAuthenticated: null,
-      isAbleToBid: null,
+      isAuthenticated: false,
+      isAbleToBid: false,
       hoverText: "",
       userId: "",
       adminPhone: "",
     }
   },
-  async created() {},
   async mounted() {
-    // call the admin phone in the mounted hook, so just one call is made
-    const adminPhone = await this.fetchAdministratorPhone()
-    // update the admin phone
-    this.$data.adminPhone = adminPhone
-    // update the user status
-    this.updateStatusUser()
+    await this.initializeComponent()
   },
   watch: {
-    // watch for changes in the user state
     '$store.state.isAuthenticated': 'updateStatusUser',
     '$store.state.isUserAbleToBid': 'updateStatusUser'
   },
   methods: {
-    isUserAuthenticated() {
-      const userState = this.$store.state.isAuthenticated
-      if (userState) {
-        return userState
+    async initializeComponent() {
+      this.adminPhone = await this.fetchAdministratorPhone()
+      this.updateStatusUser()
+    },
+    handleClick() {
+      if (this.isAuthenticated && this.isAbleToBid) {
+        this.enableModal()
       } else {
-        return false
+        console.log('Button is disabled')
       }
     },
-    isUserAbleToBid(update) {
-      return this.$store.state.isUserAbleToBid
+    isUserAuthenticated() {
+      return !!this.$store.state.isAuthenticated
+    },
+    isUserAbleToBid() {
+      return !!this.$store.state.isUserAbleToBid
     },
     getToolTipMessage(isAuthenticated, isAbleToBid, adminPhone) {
       if (!isAuthenticated) {
         return this.hoverMessage.notLoggedIn
       }
-
       if (!isAbleToBid) {
         return this.getNotAuthorizedUserMessage(adminPhone)
       }
-
       return this.hoverMessage.notLoggedIn
     },
     getNotAuthorizedUserMessage(administratorPhone) {
@@ -85,35 +86,25 @@ export default {
       const token = getUserTokenOrDefault()
 
       if (token) {
-        const administratorPhone = await axios
-          .get(url, {
-            headers: {
-              Authorization: `Token ${token}`
-            }
+        try {
+          const response = await axios.get(url, {
+            headers: { Authorization: `Token ${token}` }
           })
-          .then((response) => {
-            return response.data.app_user_profile.phone.replace("T. ", "")
-          })
-          .catch((error) => {
-            console.error("Error retrieving administrator phone: ", error)
-            return ""
-          })
-
-        return administratorPhone
-      } else {
-        return ""
+          return response.data.app_user_profile.phone.replace("T. ", "")
+        } catch (error) {
+          console.error("Error retrieving administrator phone: ", error)
+          return ""
+        }
       }
+      return ""
     },
     updateStatusUser() {
-      // update the user data
-      this.$data.isAuthenticated = this.isUserAuthenticated()
-      this.$data.isAbleToBid = this.isUserAbleToBid()
-
-      // changes the hover text
-      this.$data.hoverText = this.getToolTipMessage(
-        this.$data.isAuthenticated,
-        this.$data.isAbleToBid,
-        this.$data.adminPhone
+      this.isAuthenticated = this.isUserAuthenticated()
+      this.isAbleToBid = this.isUserAbleToBid()
+      this.hoverText = this.getToolTipMessage(
+        this.isAuthenticated,
+        this.isAbleToBid,
+        this.adminPhone
       )
     },
   }

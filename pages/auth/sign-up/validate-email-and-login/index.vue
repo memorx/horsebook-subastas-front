@@ -94,7 +94,7 @@ export default {
 
       await this.$axios.$get(url, { params })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           this.$toast.success(this.$t('signup.emailAccountHasBeenVerified'));
           this.verifying = false;
           this.validate = true;
@@ -149,7 +149,7 @@ export default {
               id: `${response.data.id}`,
             })
             this.$store.commit(
-              "setIsUserAbleToBid",
+              "set",
               response.data.app_user_profile.bid
             )
             this.$store.dispatch('initializeWebSocketUserStatus')

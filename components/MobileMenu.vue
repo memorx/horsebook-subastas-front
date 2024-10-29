@@ -14,21 +14,21 @@
                             <!-- Sign Up / Log in-->
                             <div class="flex flex-col gap-6 w-auto">
                                 <ReusableButton :buttonText="$t('topBar.signUp')"
-                                    :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full bg-white text-black`"
+                                    :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full bg-white metalic-text`"
                                     containerClass="" :onClick="navigateToSignUp" />
 
                                 <ReusableButton :buttonText="$t('topBar.logIn')"
-                                    buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
+                                    buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full metalic-button"
                                     containerClass="" :onClick="navigateToLogin" />
                             </div>
                         </div>
                         <div v-else class=" flex flex-col justify-space-between">
                             <div class="flex flex-col gap-6 w-auto">
                                 <ReusableButton :buttonText="$t('topBar.profile')"
-                                    :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full text-black bg-white`"
+                                    :buttonClass="`text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 w-full text-black bg-white metalic-text`"
                                     containerClass="" :onClick="navigateToProfile" />
                                 <ReusableButton :buttonText="$t('topBar.logout')"
-                                    buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full"
+                                    buttonClass="text-xs md:text-xs lg:text-xs uppercase lg:px-4 md:px-4 bg-custom-gold w-full metalic-button"
                                     containerClass="" :onClick="logout" />
                             </div>
                         </div>
@@ -105,7 +105,7 @@ export default {
         },
         activePageClass() {
             return (route) => {
-                return this.$route.path === route ? 'text-custom-gold' : this.$store.state.textColorTopBar ?  `text-white lg:${this.$store.state.textColorTopBar}` : 'text-white';
+                return this.$route.path === route ? 'metalic-text' : this.$store.state.textColorTopBar ?  `text-white lg:${this.$store.state.textColorTopBar}` : 'text-white';
             }
         },
         locales() {
@@ -133,6 +133,7 @@ export default {
             this.$store.commit('authenticate', false);
             this.$store.commit('clearUserData');
             this.$store.commit("closeWebSocket");
+            this.$store.commit("setUser", null);
             Cookies.remove('access_token');
             localStorage.removeItem("setUser");
             this.$router.push(this.localePath('/'))
@@ -157,3 +158,37 @@ export default {
     }
 };
 </script>
+<style scoped>
+.metalic-text {
+  background: linear-gradient(
+    to right,
+    #efb810 0%,
+    #fff3c4 20%,
+    #efb810 40%,
+    #fff3c4 60%,
+    #efb810 80%,
+    #efb810 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.metalic-button {
+  background: linear-gradient(
+    to right,
+    #efb810 0%,
+    #fff3c4 20%,
+    #efb810 40%,
+    #fff3c4 60%,
+    #efb810 80%,
+    #efb810 100%
+  );
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+</style>

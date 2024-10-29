@@ -22,6 +22,7 @@
     "cookieparser": "^0.1.0",
     "core-js": "^3.19.3",
     "crypto-js": "^4.1.1",
+    "detectincognitojs": "^1.3.5",
     "dotenv": "^16.0.3",
     "file-saver": "^2.0.5",
     "fs": "^0.0.1-security",
@@ -45,6 +46,7 @@
     "vue2-datepicker": "^3.10.4",
     "vue2-daterange-picker": "^0.6.8",
     "vue2-simple-carousel": "^0.3.22",
+    "vuedraggable": "^2.24.3",
     "webpack": "^4.46.0"
   },
   "devDependencies": {

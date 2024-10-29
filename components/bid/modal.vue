@@ -7,12 +7,19 @@
       <h2 v-else class="text-lg font-bold">
         {{ $t('bids.prebidConfirmQuestion') }}
       </h2>
-      <p class="text-3xl font-bold">$ {{ parseFloat(amount.replace(/,/g, "")).toLocaleString('en-US', { maximumFractionDigits: 0 }) }} USD</p>
-      <h2 class="text-sm text-gray-500">$ {{ parseFloat(amount.replace(/,/g, "")).toLocaleString('en-US', { maximumFractionDigits: 0 }) }} + {{ commission }}% {{ $t('bids.commission') }}</h2>
-      <h2 class="text-sm text-gray-500">
-        Total: $
-        {{ (parseFloat(amount.replace(/,/g, "")) * (1 + (commission/100))).toLocaleString('en-US', { maximumFractionDigits: 0 }) }}
+      <p class="text-3xl font-bold">$ {{ formattedAmount }} USD</p>
+      <h2 v-if="hasPreBid || prebidWinner" class="text-2xl font-bold text-gray-600">
+        Total: $ {{ formattedTotal }}
       </h2>
+      <div v-if="hasPreBid" class="text-xs text-green-600">
+        {{ $t('bids.prebidDiscountApplied') }} 3%
+      </div>
+      <div v-if="prebidWinner && prebidWinnerDiscount > 0" class="text-xs text-green-600">
+        {{ $t('bids.prebidWinnerDiscountApplied') }} {{ prebidWinnerDiscount }}%
+      </div>
+      <div class="text-xs text-gray-400">
+        {{ $t('bids.priceExcludesCommission') }}
+      </div>
       <div class="mt-4 flex justify-center">
         <button
           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg mr-4 transition duration-300 ease-in-out"
@@ -34,35 +41,72 @@
 <script>
 export default {
   props: {
-    amount: "",
-    submitForm: { type: Function },
-    disableModal: { type: Function },
-    status: "",
-    commission: 0,
-    taxes: 0,
+    amount: {
+      type: String,
+      required: true
+    },
+    submitForm: {
+      type: Function,
+      required: true
+    },
+    disableModal: {
+      type: Function,
+      required: true
+    },
+    status: {
+      type: String,
+      required: true
+    },
+    prebidWinner: {
+      type: Boolean,
+      default: false
+    },
+    prebidWinnerDiscount: {
+      type: Number,
+      default: 0
+    },
+    hasPreBid: {
+      type: Boolean,
+      default: false
+    },
   },
-  data() {
-    return {}
+  computed: {
+    formattedAmount() {
+      return this.formatNumber(this.parseAmount(this.amount));
+    },
+    totalAfterAllDiscounts() {
+      let total = this.parseAmount(this.amount);
+      if (this.hasPreBid) {
+        total *= 0.97;
+      }
+      if (this.prebidWinner && this.prebidWinnerDiscount > 0) {
+        total *= (1 - (this.prebidWinnerDiscount / 100));
+      }
+      return total;
+    },
+    formattedTotal() {
+      return this.formatNumber(this.totalAfterAllDiscounts);
+    }
   },
   methods: {
-    open() {
-      this.showModal = true
+    parseAmount(value) {
+      return parseFloat(value.replace(/,/g, ""));
     },
-    close() {
-      this.showModal = false
+    formatNumber(value) {
+      return value.toLocaleString('en-US', { maximumFractionDigits: 0 });
     },
     confirm(event) {
-      this.submitForm(event)
-      this.disableModal()
+      this.submitForm(event);
+      this.disableModal();
     }
   }
 }
 </script>
 
 <style scoped>
-/* Add your modal styling here */
 .modal {
   background-color: rgba(128, 128, 128, 0.546);
+  z-index: 1001;
 }
 
 .modal-content {

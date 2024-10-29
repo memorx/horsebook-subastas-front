@@ -113,9 +113,14 @@ export default {
       },
       errorMsg: "",
       show: false,
+      redirectPath: '/',
     }
   },
-
+  mounted() {
+    if (this.$route.query.redirect) {
+      this.redirectPath = decodeURIComponent(this.$route.query.redirect)
+    }
+  },
   methods: {
     async userLogin() {
       const url = this.$config.baseURL + "/users/login-app/"
@@ -126,7 +131,7 @@ export default {
       await this.$axios
         .$post(url, formData, { headers })
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.token) {
             const HMACSHA256 = (stringToSign, secret) => {
               const crypto = require("crypto")
@@ -164,11 +169,12 @@ export default {
               "setIsUserAbleToBid",
               response.data.app_user_profile.bid
             )
-            this.$router.push(this.localePath("/"))
+            this.$router.push(this.localePath(this.redirectPath))
+
           }
         })
         .catch((error) => {
-          console.log(error)
+          // console.log(error)
           if (error.response.status === 400) {
             const msg = error.response.data.detail
             this.$toast.error(this.$t(`backMessages.${msg}`))

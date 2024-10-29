@@ -12,7 +12,7 @@
         style="height: 100vh;"
       />
     </div>
-    <div class="md:w-1/2 md:mx-auto mt-10 p-8 bg-white">
+    <div class="md:w-1/2 md:mx-auto p-8 bg-white">
       <div class="mb-6">
         <h1 class="text-4xl font-medium text-black">
           {{ $t('login.verifyYourAccount') }}
@@ -24,43 +24,48 @@
       </div>
       <form
         class="w-full mt-2 space-y-4"
-        @submit.prevent=handleSubmit
+        @submit.prevent="handleSubmit"
       >
         <div class="flex flex-col w-full gap-6">
           <div class="flex items-center">
             <div class="grid grid-cols-5 gap-9">
               <input
-                type="number"
+                type="text"
                 maxlength="1"
                 class="border border-gray-300 rounded-md h-16 w-12 text-2xl text-center focus:outline-none focus:ring focus:border-blue-300"
+                @input="validateInput($event, 0)"
                 @keyup="focusNext($event, 1)"
                 @paste="pasteText($event, 1)"
               />
               <input
-                type="number"
+                type="text"
                 maxlength="1"
                 class="border border-gray-300 rounded-md h-16 w-12 text-2xl text-center focus:outline-none focus:ring focus:border-blue-300"
+                @input="validateInput($event, 1)"
                 @keyup="focusNext($event, 2)"
                 @paste="pasteText($event, 2)"
               />
               <input
-                type="number"
+                type="text"
                 maxlength="1"
                 class="border border-gray-300 rounded-md h-16 w-12 text-2xl text-center focus:outline-none focus:ring focus:border-blue-300"
+                @input="validateInput($event, 2)"
                 @keyup="focusNext($event, 3)"
                 @paste="pasteText($event, 3)"
               />
               <input
-                type="number"
+                type="text"
                 maxlength="1"
                 class="border border-gray-300 rounded-md h-16 w-12 text-2xl text-center focus:outline-none focus:ring focus:border-blue-300"
+                @input="validateInput($event, 3)"
                 @keyup="focusNext($event, 4)"
                 @paste="pasteText($event, 4)"
               />
               <input
-                type="number"
+                type="text"
                 maxlength="1"
                 class="border border-gray-300 rounded-md h-16 w-12 text-2xl text-center focus:outline-none focus:ring focus:border-blue-300"
+                @input="validateInput($event, 4)"
                 @keyup="focusNext($event, 5)"
                 @paste="pasteText($event, 5)"
               />
@@ -155,65 +160,65 @@ export default {
         }
       }
     },
+    validateInput(event, index) {
+      const value = event.target.value;
+      if (!/^\d$/.test(value)) {
+        event.target.value = '';
+        this.form.code[index] = '';
+      } else {
+        this.form.code[index] = value;
+      }
+    },
     async reSendCode() {
-      this.loading = true
+      if (!this.setUser || !this.setUser?.email) {
+        this.$toast.error(this.$t('login.emailMissing'));
+        this.$router.push(this.localePath('/auth/password/send-email'));
+        return;
+      }
+      this.loading = true;
       const url = this.$config.baseURL + "/users/re-send-email/";
       const body = {
         "email": this.setUser.email
-      }
-      console.log(body, "BODY")
+      };
       await this.$axios.$post(url, body, {})
         .then((response) => {
-          console.log(response);
           this.$toast.success(this.$t('login.resendCodeNotice'));
-          this.loading = false
+          this.loading = false;
         })
         .catch((error) => {
-          this.loading = false
-          this.$toast.error(this.$t('general.errorMsg'));
-          // if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'El usuario ya ha sido activado') {
-          //   this.$toast.error("El usuario ya se encuentra activado");
-          //   this.$router.push('/auth/login/')
-          // } else {
-          //   this.$toast.error("Lo sentimos, ha ocurrido un error");
-          // }
-          console.log(error);
+          this.loading = false;
+          this.$toast.error(this.$t('login.errorMsg'));
         });
     },
     handleSubmit() {
-      // Check the data
+      if (!this.setUser || !this.setUser?.email) {
+        this.$toast.error(this.$t('login.emailMissingReload'));
+        this.$router.push(this.localePath('/auth/password/send-email'));
+        return;
+      }
       const verification_code = this.form.code.join("")
       const data = {
         "email": this.setUser.email,
         "code": verification_code
       }
-      console.log(data, "DATA")
+      // console.log(data, "DATA")
       // call the request to create App User
       this.verificationCode(data);
     },
     async verificationCode(data) {
-      this.loading = true
+      this.loading = true;
       const url = this.$config.baseURL + "/users/password-code-verification/";
-      const token = "Token 0119158e9e647cc58e9c895fa08316b2a5b03df4"
-      // const token = "Token " + process.env.TOKEN;
-
-      const body = data
+      const body = data;
       await this.$axios.$post(url, body)
         .then((response) => {
-          console.log(response);
           this.$toast.success(this.$t('login.codeVerified'));
-          this.$router.push(this.localePath('/auth/password/reset-password'))
-          this.loading = false
+          this.$router.push(this.localePath('/auth/password/reset-password'));
+          this.loading = false;
         })
         .catch((error) => {
-          this.loading = false
-          // if (error.response && error.response.data && error.response.data.error && error.response.data.error[0] == 'El usuario ya ha sido activado') {
-          //   this.$toast.error("El usuario ya se encuentra activado");
-          //   this.$router.push('/auth/login/')
-          // } else {
-          //   this.$toast.error("Lo sentimos, ha ocurrido un error");
-          // }
-          console.log(error);
+          this.loading = false;
+          this.$toast.error(this.$t('login.codeError'));
+          this.$toast.warn(this.$t('login.checkCodeOrRequestNew'));
         });
     }
 

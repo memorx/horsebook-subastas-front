@@ -14,7 +14,8 @@
         "download": "descargar",
         "next": "Lote Siguiente",
         "previous": "Lote Anterior",
-        "close": "Cerrar"
+        "close": "Cerrar",
+        "privateModeNotice": "No se recomienda el uso de la plataforma en modo incógnito o privado"
     },
     "login": {
         "login": "Iniciar Sesión",
@@ -36,8 +37,13 @@
         "verifyCode": "Verifica Código",
         "codeNotReceived": "¿No recibiste el código?",
         "resendCode": "Reenviar código",
-        "resendCodeNotice": "El código ha sido enviado nuevamente, por favor revise su correo",
-        "codeVerified": "Su codigo ha sido verificado"
+        "resendCodeNotice": "El código ha sido reenviado a tu correo.",
+        "emailMissing": "Lo sentimos, la página ha perdido el correo debido a que se ha recargado manualmente.",
+        "codeVerified": "El código ha sido verificado con éxito.",
+        "codeError": "Lo sentimos, ha ocurrido un error con el código.",
+        "checkCodeOrRequestNew": "Favor de revisar el código o solicitar un nuevo código.",
+        "errorMsg": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+        "emailMissingReload": "Lo sentimos, la página ha perdido el correo debido a que se ha recargado manualmente."
     },
     "signup": {
         "showPassword": "Mostrar Contraseña",
@@ -99,7 +105,8 @@
         },
         "mustLoginMsg": "Debes iniciar sesión para poder ver tus datos, se te redirigirá al inicio",
         "changePasswordConfirm": "¿Estás seguro que deseas cambiar tu contraseña?",
-        "redirectToHome": "Se te redirigirá hacia el inicio"
+        "redirectToHome": "Se te redirigirá hacia el inicio",
+        "unsubscribedMsg": "Ahora tu correo ha sido dado de baja para recibir correos"
     },
     "home": {
         "main": {
@@ -115,7 +122,8 @@
             "auction": "Subasta",
             "lots": "lotes",
             "prebids": "Preofertas",
-            "participateInTheAuction": "Participar en la subasta"
+            "participateInTheAuction": "Participar en la subasta",
+            "goToLiveAuction": "¡Ve a la subasta En Vivo!"
         },
         "news": {
             "title": "Novedades",
@@ -144,11 +152,12 @@
         },
         "video": {
             "button": "saltar video",
-            "title": "Bienvenido a Subasata La Silla"
+            "title": "Bienvenido a Subasta La Silla"
         },
         "exampleTitle": "Título de ejemplo",
         "exampleParagraph":  "Este es un párrafo de ejemplo para el div",
-        "exampleButton": "Botón de ejemplo"
+        "exampleButton": "Botón de ejemplo",
+        "youngHorses": "caballos\njóvenes"
     },
     "topBar": {
         "home": "inicio",
@@ -245,18 +254,24 @@
         "commission": "de comisión",
         "prebidConfirmQuestion": "¿Estás seguro que quieres preofertar?",
         "bidConfirmQuestion": "¿Estás seguro que quieres ofertar?",
-        "prebidDiscountMsg": "Todo participante de la preoferta obtiene un 5% de descuento",
-        "youHaveDiscountMsg": "Ya tienes un 5% de descuento en este caballo por haber participado en la preoferta",
+        "prebidDiscountMsg": "Todo participante de la preoferta obtiene un 3% de descuento",
+        "youHaveDiscountMsg": "Ya tienes un 3% de descuento en este caballo por haber participado en la preoferta",
         "prebidWinnerDiscountMsg": "*El ganador de la preoferta obtiene un descuento de {prebidWinnerDiscount}% extra",
         "youAreTheDiscountWinnerMsg": "Has ganado {prebidWinnerDiscount}% de descuento extra",
-        "youAreTheDPrebidWinner": "Eres el ganador de la preoferta este caballo",
+        "youAreTheDPrebidWinner": "Eres el ganador de la preoferta de este caballo",
         "discountByHorseMsg": "**Los descuentos aplican por cada caballo, es necesario ganar el caballo para recibir el descuento.",
         "IN PERSON": "EN PERSONA",
         "Call": "EN LLAMADA",
         "aprrovedToOffer": "¡Has sido aprobado para ofertar!",
         "rejectedToOffer": "¡Has sido rechazado para ofertar!",
         "incrementValidationErrorTitle": "Oferta no permitida",
-        "incrementValidationError": "¿Deseas subirla a {suggestedAmount}?"
+        "incrementValidationError": "¿Deseas subirla a {suggestedAmount}?",
+        "yourAreWinningPreOffer": "Estás ganando la preoferta",
+        "yourAreWinningAuction": "Estás ganando la subasta",
+        "prebidDiscountApplied": "Descuento por participar en la preoferta aplicado:",
+        "prebidWinnerDiscountApplied": "Descuento por ganar la preoferta aplicado:",
+        "priceExcludesCommission": "Este precio no incluye comisiones",
+        "winner": "Ganador"
     },
     "horse": {
         "dateOfBirth": "Fecha de nacimiento",
@@ -302,5 +317,16 @@
         "Sorry, someone was faster than you": "Lo siento, alguien fue más rápido que tú al ofertar",
         "The user is not allowed to bid": "Este usuario no está autorizado para ofertar",
         "The current bid amount is higher.": "La oferta actual supera tu oferta."
+    },
+    "youtubePlayer": {
+        "maximize": "Maximizar",
+        "minimize": "Minimizar",
+        "close": "Cerrar",
+        "openVideo": "Abrir En Vivo"
+    },
+    "cookieConsent": {
+        "message": "Este sitio utiliza cookies para mejorar tu experiencia. ¿Aceptas el uso de cookies?",
+        "accept": "Aceptar",
+        "reject": "Rechazar"
     }
 }

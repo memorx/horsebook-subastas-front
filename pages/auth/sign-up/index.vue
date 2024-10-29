@@ -411,7 +411,7 @@ export default {
       if (data.official_document_back) {
         formData.append("official_document_back", data.official_document_back)
       }
-      console.log(formData)
+      // console.log(formData)
       await this.$axios
         .$post(url, formData, { headers })
         .then((response) => {
@@ -463,7 +463,7 @@ export default {
           this.form.states = states
         })
         .catch((error) => {
-          console.log(error)
+          // console.log(error)
         })
     },
     async fetchCities() {
@@ -481,7 +481,7 @@ export default {
           this.form.cities = cities
         })
         .catch((error) => {
-          console.log(error)
+          // console.log(error)
         })
     }
   }

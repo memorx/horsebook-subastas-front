@@ -14,7 +14,9 @@
         "download": "Télécharger",
         "next": "Lot Suivant",
         "previous": "Lot Précédent",
-        "close": "Fermer"
+        "close": "Fermer",
+        "privateModeNotice": "L'utilisation de la plateforme en mode incognito ou privé n'est pas recommandée"
+
     },
     "login": {
         "login": "Connexion",
@@ -37,7 +39,12 @@
         "codeNotReceived": "Vous n'avez pas reçu le code?",
         "resendCode": "Renvoyer le code",
         "resendCodeNotice": "Le code a été renvoyé, veuillez vérifier votre email",
-        "codeVerified": "Votre code a été vérifié"
+        "emailMissing": "Désolé, la page a perdu l'email en raison d'un rechargement manuel.",
+        "codeVerified": "Le code a été vérifié avec succès.",
+        "codeError": "Désolé, une erreur s'est produite avec le code.",
+        "checkCodeOrRequestNew": "Veuillez vérifier le code ou demander un nouveau code.",
+        "errorMsg": "Une erreur s'est produite. Veuillez réessayer.",
+        "emailMissingReload": "Désolé, la page a perdu l'email en raison d'un rechargement manuel."
     },
     "signup": {
         "showPassword": "Afficher le mot de passe",
@@ -99,7 +106,8 @@
         },
         "mustLoginMsg": "Vous devez vous connecter pour voir vos données, vous serez redirigé vers l'accueil",
         "changePasswordConfirm": "Êtes-vous sûr de vouloir changer votre mot de passe?",
-        "redirectToHome": "Vous serez redirigé vers le début"
+        "redirectToHome": "Vous serez redirigé vers le début",
+        "unsubscribedMsg": "Votre e-mail a maintenant été désabonné de la réception d'e-mails"
     },
     "home": {
         "main": {
@@ -115,7 +123,8 @@
             "auction": "Enchère",
             "lots": "lots",
             "prebids": "Pré-enchères",
-            "participateInTheAuction": "Participer à l'enchère"
+            "participateInTheAuction": "Participer à l'enchère",
+            "goToLiveAuction": "Voir l'enchère live !"
         },
         "news": {
             "title": "Actualités",
@@ -148,7 +157,8 @@
         },
         "exampleTitle": "Titre d'exemple",
         "exampleParagraph": "Ceci est un exemple de paragraphe pour div",
-        "exampleButton": "Bouton d'exemple"
+        "exampleButton": "Bouton d'exemple",
+        "youngHorses": "jeunes\nchevaux"
     },
     "topBar": {
         "home": "Accueil",
@@ -203,7 +213,7 @@
         "noAvailableMsg": "L'ENCHÈRE N'EST PAS DISPONIBLE",
         "stayWithUsMsg": "RESTEZ AVEC NOUS NOUS CONTINUONS AVEC L'ENCHÈRE EN DIRECT",
         "winnerCongratsMsg": "FÉLICITATIONS VOUS AVEZ REMPORTÉ L'ENCHÈRE POUR {wonHorse} POUR {lastOffer} USD",
-        "winnerMsg": "{winnerName} A REMPORTÉ L'ENCHÈRE POUR {wonHorse} POUR {lastOffer} USD",
+        "winnerMsg": "{winnerName} A REMPORT L'ENCHÈRE POUR {wonHorse} POUR {lastOffer} USD",
         "preBidWinnerMsg": "{winnerName} A REMPORTÉ LA PRÉ-ENCHÈRE POUR CE CHEVAL",
         "horseAuctionIsComming": "L'ENCHÈRE DE CE CHEVAL VA BIENTÔT COMMENCER",
         "horsePrebidIsComming": "LA PRÉ-ENCHÈRE SUR CE CHEVAL VA BIENTÔT COMMENCER",
@@ -245,8 +255,8 @@
         "commission": "commission",
         "prebidConfirmQuestion": "Êtes-vous sûr de vouloir faire une pré-enchère?",
         "bidConfirmQuestion": "Êtes-vous sûr de vouloir enchérir?",
-        "prebidDiscountMsg": "Chaque participant à la pré-enchère bénéficie d'une remise de 5%",
-        "youHaveDiscountMsg": "Vous avez déjà une remise de 5% sur ce cheval pour avoir participé à la pré-offre",
+        "prebidDiscountMsg": "Chaque participant à la pré-enchère bénéficie d'une remise de 3%",
+        "youHaveDiscountMsg": "Vous avez déjà une remise de 3% sur ce cheval pour avoir participé à la pré-offre",
         "prebidWinnerDiscountMsg": "*Le gagnant de la pré-enchère obtient une remise supplémentaire de {prebidWinnerDiscount}%",
         "youAreTheDiscountWinnerMsg": "Vous avez gagné {prebidWinnerDiscount}% de remise supplémentaire",
         "youAreTheDPrebidWinner": "Vous êtes le gagnant de la pré-enchère pour ce cheval",
@@ -256,7 +266,13 @@
         "aprrovedToOffer": "Vous avez été approuvé pour enchérir!",
         "rejectedToOffer": "Vous avez été rejeté pour enchérir!",
         "incrementValidationErrorTitle": "Offre non autorisée",
-        "incrementValidationError": "voulez-vous l'augmenter à {suggestedAmount}?"
+        "incrementValidationError": "voulez-vous l'augmenter à {suggestedAmount}?",
+        "yourAreWinningPreOffer": "Vous gagnez la pré-offre",
+        "yourAreWinningAuction": "Vous remportez l'enchère",
+        "prebidDiscountApplied": "Remise de participation à la pré-enchère appliquée :",
+        "prebidWinnerDiscountApplied": "Remise du gagnant de la pré-enchère appliquée :",
+        "priceExcludesCommission": "Ce prix n'inclut pas les commissions",
+        "winner": "Gagnant"
     },
     "horse": {
         "dateOfBirth": "Date de naissance",
@@ -292,7 +308,7 @@
     "backMessages": {
         "Invalid credentials or user not activated": "Identifiants invalides ou utilisateur non activé",
         "You cannot bid after yourself": "Vous ne pouvez pas enchérir après vous-même.",
-        "The offer must be greater than lastOffer USD": "L'offre doit être supérieure à {lastOffer} USD",
+        "The offer must be greater than lastOffer USD": "L'offre doit être supérieure  {lastOffer} USD",
         "Offer closed": "Offre fermée",
         "On-site offer": "Offre sur place",
         "On Call Offer": "Offre sur appel",
@@ -301,5 +317,16 @@
         "Sorry, someone was faster than you": "Désolé, quelqu'un a été plus rapide que vous",
         "The user is not allowed to bid": "L'utilisateur n'est pas autorisé à enchérir",
         "The current bid amount is higher.": "Le montant de l'enchère actuelle est plus élevé."
+    },
+    "youtubePlayer": {
+        "maximize": "Agrandir",
+        "minimize": "Réduire",
+        "close": "Fermer",
+        "openVideo": "Ouvrir En Direct"
+    },
+    "cookieConsent": {
+        "message": "Ce site utilise des cookies pour améliorer votre expérience. Acceptez-vous l'utilisation de cookies ?",
+        "accept": "Accepter",
+        "reject": "Refuser"
     }
 }

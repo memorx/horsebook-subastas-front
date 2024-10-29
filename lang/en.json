@@ -14,7 +14,9 @@
         "download": "download",
         "next": "Next Lot",
         "previous": "Previous Lot",
-        "close": "Close"
+        "close": "Close",
+        "privateModeNotice": "The use of the platform in incognito or private mode is not recommended"
+
     },
     "login": {
         "login": "Login",
@@ -37,7 +39,12 @@
         "codeNotReceived": "Didn't you receive the code?",
         "resendCode": "Resend code",
         "resendCodeNotice": "The code has been sent again, please check your email",
-        "codeVerified": "Your code has been verified"
+        "emailMissing": "Sorry, the page has lost the email due to a manual reload.",
+        "codeVerified": "The code has been successfully verified.",
+        "codeError": "Sorry, there was an error with the code.",
+        "checkCodeOrRequestNew": "Please check the code or request a new one.",
+        "errorMsg": "An error has occurred. Please try again.",
+        "emailMissingReload": "Sorry, the page has lost the email due to a manual reload."
     },
     "signup": {
         "showPassword": "Show Password",
@@ -99,7 +106,8 @@
         },
         "mustLoginMsg": "You must log in to see your data, you will be redirected to home",
         "changePasswordConfirm": "Are you sure you want to change your password?",
-        "redirectToHome": "You will be redirected to the beginning"
+        "redirectToHome": "You will be redirected to the beginning",
+        "unsubscribedMsg": "Now your email has been unsubscribed from receiving emails"
     },
     "home": {
         "main": {
@@ -115,7 +123,8 @@
             "auction": "Auction",
             "lots": "lots",
             "prebids": "Prebids",
-            "participateInTheAuction": "Participate in the Auction"
+            "participateInTheAuction": "Participate in the Auction",
+            "goToLiveAuction": "Go to Live Auction!"
         },
         "news": {
             "title": "News",
@@ -144,11 +153,12 @@
         },
         "video": {
             "button": "skip video",
-            "title": "Welcome to Subasata La Silla"
+            "title": "Welcome to Subasta La Silla"
         },
         "exampleTitle": "Example Title",
         "exampleParagraph": "This is an example paragraph for div",
-        "exampleButton": "Example Button"
+        "exampleButton": "Example Button",
+        "youngHorses": "young\nhorses"
     },
     "topBar": {
         "home": "Home",
@@ -236,7 +246,7 @@
         "notAuthorizedMsg": "You are not authorized to bid. Contact the administrator at the number:"
     },
     "bids": {
-        "offer": "Offer",
+        "offer": "Bid",
         "name": "name",
         "nationality": "nationality",
         "bid": "bid",
@@ -245,8 +255,8 @@
         "commission": "commision",
         "prebidConfirmQuestion": "Are you sure you want to prebid?",
         "bidConfirmQuestion": "Are you sure you want to bid?",
-        "prebidDiscountMsg": "Every prebid participant gets a 5% discount",
-        "youHaveDiscountMsg": "You already have a 5% discount on this horse for having participated in the pre-offer",
+        "prebidDiscountMsg": "Every prebid participant gets a 3% discount",
+        "youHaveDiscountMsg": "You already have a 3% discount on this horse for having participated in the pre-offer",
         "prebidWinnerDiscountMsg": "*Prebid winner gets an extra {prebidWinnerDiscount}% discount",
         "youAreTheDiscountWinnerMsg": "You have earned {prebidWinnerDiscount}% extra discount",
         "youAreTheDPrebidWinner": "You are the winner of the pre-bid for this horse",
@@ -256,7 +266,13 @@
         "aprrovedToOffer": "You have been approved to bid!",
         "rejectedToOffer": "You have been rejected to bid!",
         "incrementValidationErrorTitle": "Offer not allowed",
-        "incrementValidationError": "Do you want to raise it to {suggestedAmount}?"
+        "incrementValidationError": "Do you want to raise it to {suggestedAmount}?",
+        "yourAreWinningPreOffer": "You are winning the pre-offer",
+        "yourAreWinningAuction": "You are winning the auction",
+        "prebidDiscountApplied": "Pre-bid participation discount applied:",
+        "prebidWinnerDiscountApplied": "Pre-bid winner discount applied:",
+        "priceExcludesCommission": "This price does not include commissions",
+        "winner": "Winner"
     },
     "horse": {
         "dateOfBirth": "Date of birth",
@@ -301,6 +317,16 @@
         "Sorry, someone was faster than you": "Sorry, someone was faster than you",
         "The user is not allowed to bid": "The user is not allowed to bid",
         "The current bid amount is higher.": "The current bid amount is higher."
+    },
+    "youtubePlayer": {
+        "maximize": "Maximize",
+        "minimize": "Minimize",
+        "close": "Close",
+        "openVideo": "Open Live"
+    },
+    "cookieConsent": {
+        "message": "This site uses cookies to improve your experience. Do you accept the use of cookies?",
+        "accept": "Accept",
+        "reject": "Reject"
     }
-
 }
