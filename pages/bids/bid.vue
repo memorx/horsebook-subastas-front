@@ -648,7 +648,7 @@ export default {
       winnerEmail: "",
       hasBid: false,
       hasPreBid: false,
-      subscribed:false,
+      subscribed: false,
       prebidWinnerDiscount: 5,
       privateInformation: true,
       commission: 0,
@@ -959,6 +959,9 @@ export default {
     },
     async init() {
       this.bids = []
+      this.hasBid = false
+      this.hasPreBid = false
+      this.subscribe = false
       await this.fetchData()
       this.winnerConfetti()
       this.startBidSocket()
