@@ -286,7 +286,7 @@
               <p class="text-black font-bold text-xl pt-5">
                 <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
                   <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                    {{ $t('auction.goToAuction') }} 1
+                    {{ $t('auction.goToAuction') }}
                   </button>
                 </NuxtLink>
               </p>
@@ -326,7 +326,7 @@
               <p v-if="bidStatus == 'BIDDING'" class="text-black font-bold text-xl pt-5">
                 <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
                 <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                  {{ $t('auction.goToAuction') }} 2
+                  {{ $t('auction.goToAuction') }}
                 </button>
               </NuxtLink>
               </p>
@@ -358,7 +358,7 @@
                 {{ $t('auction.stayTuned') }}
                 <NuxtLink :to="localePath(`/auction/live/${bidId}`)">
                   <button class="bg-gray-500 text-white px-4 py-2 rounded-md mx-3 mb-5">
-                    {{ $t('auction.goToAuction') }} 4
+                    {{ $t('auction.goToAuction') }}
                   </button>
                 </NuxtLink>
               </div>
@@ -958,6 +958,7 @@ export default {
       this.isIntentionalReconnectAuction = false
     },
     async init() {
+      this.bids = []
       await this.fetchData()
       this.winnerConfetti()
       this.startBidSocket()
@@ -999,10 +1000,6 @@ export default {
           this.bidStatus = message.auction.status
         }
 
-        if (message.bids) {
-          this.bids = message.bids
-        }
-
         if (message.has_bid) {
           this.hasBid = message.has_bid
         }
@@ -1014,12 +1011,13 @@ export default {
         if (message.prebids && message.prebids.length > 0) {
           this.bids = message.prebids
         }
-
-        if (message.bid) {
-          if (this.bids.length > 20) {
-            this.bids.pop()
+        if(this.bidStatus == 'PREBID') {
+          if (message.bid) {
+            if (this.bids.length > 20) {
+              this.bids.pop()
+            }
+            this.bids.unshift(message.bid)
           }
-          this.bids.unshift(message.bid)
         }
 
         if(message.delete) {
