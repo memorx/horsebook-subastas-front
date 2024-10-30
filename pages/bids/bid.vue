@@ -273,7 +273,7 @@
             </div>
 
             <!-- Estado: BIDDING -->
-            <div v-if="bidStatus == 'BIDDING' && horseStatus == 'BIDDING'">
+            <div v-if="bidStatus == 'BIDDING' && horseStatus == 'BIDDING'" class="py-3">
               <p class="text-black font-bold text-2xl pt-8 px-10">
                 {{ $t('auction.horseAuctionIsLive') }}
               </p>
@@ -310,7 +310,7 @@
             </div>
 
             <!-- Estado: CLOSED PREBID -->
-            <div v-if="horseStatus == 'CLOSED PREBID'">
+            <div v-if="horseStatus == 'CLOSED PREBID'" class="py-3">
               <p class="text-black font-bold text-2xl pt-8 px-10">
                 {{ $t('auction.horseAuctionIsComming') }}
               </p>
@@ -1313,7 +1313,7 @@ export default {
           //horse Description
           //genre
           this.horseData.Genre =
-            this.genreMapping[horse.external_data.sex] || ""
+            this.genreMapping[horse.external_data.classification_sex] || ""
           //Birthdate
           this.horseData.BirthDate = this.formatted(
             horse.external_data.birth_date
