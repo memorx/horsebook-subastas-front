@@ -215,7 +215,7 @@ export default {
             return this.getFlag(this.currentLocale);
         },
         shouldShowDraggableBubbles() {
-            return this.bidStatus === 'BIDDING' && this.auctionHorses.length > 0;
+            return this.currentAuctionId && this.bidStatus === 'BIDDING' && this.auctionHorses.length > 0;
         }
     },
     methods: {
@@ -388,16 +388,16 @@ export default {
                     await this.fetchAuctionDetails();
                 }
                 } else if (this.currentAuctionId === newAuctionId) {
-                // La subasta actual cambió a un estado que no es BIDDING
-                this.showDraggableBubbles = false;
-                this.currentAuctionId = null;
-                this.auctionHorses = [];
-                this.currentHorseId = null;
+                    // La subasta actual cambió a un estado que no es BIDDING
+                    this.showDraggableBubbles = false;
+                    this.currentAuctionId = null;
+                    this.auctionHorses = [];
+                    this.currentHorseId = null;
                 }
 
                 // Si el estado cambia a algo que no es BIDDING, actualizar currentAuctionId
                 if (newStatus !== 'BIDDING' && this.currentAuctionId === newAuctionId) {
-                this.currentAuctionId = 0;
+                    this.currentAuctionId = 0;
                 }
 
             } else {
