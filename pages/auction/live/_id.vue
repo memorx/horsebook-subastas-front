@@ -1123,7 +1123,7 @@ export default {
             //horse Description
             //genre
             this.horseData.Genre =
-              this.genreMapping[horse.external_data.sex] || ""
+              this.genreMapping[horse.external_data.classification_sex] || ""
             //Birthdate
             this.horseData.BirthDate = this.formatted(
               horse.external_data.birth_date
