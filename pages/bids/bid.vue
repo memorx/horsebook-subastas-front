@@ -70,8 +70,8 @@
         <!-- Contenido principal -->
         <div class="flex flex-col md:flex-row md:w-full my-6">
           <!-- Columna izquierda (video) -->
-          <div class="md:h1/2 md:w-1/2 rounded-lg border border-white mr-5">
-            <div class="aspect-w-16 md:mr-5 mb-5 md:mb-0">
+          <div class="md:h1/2 md:w-1/2 rounded-lg border border-white md:mr-5 mb-5 md:mb-0">
+            <div class="aspect-w-16 md:mr-5">
               <Carousel :images="horseData.horseVideos" ref="carouselVideos"/>
             </div>
           </div>
