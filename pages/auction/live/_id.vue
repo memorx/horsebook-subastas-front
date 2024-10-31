@@ -280,9 +280,9 @@
                 <div v-if="bids.length > 0">
                   <div class="mx-5">
                     <div class="border-b border-gray-300 my-4"></div>
-                    <p class="text-sm font-bold uppercase"> {{ $t('auction.bids') }} </p>
+                    <p class="text-sm font-bold uppercase text-center"> {{ $t('auction.bids') }} </p>
                   </div>
-                  <div class="px-4" style="flex: 5">
+                  <div class="px-4 pb-4" style="flex: 5">
                     <Bids
                       ref="detailsBid"
                       :bidId="bidId"
