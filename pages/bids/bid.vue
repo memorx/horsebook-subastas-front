@@ -11,9 +11,9 @@
     />
 
     <!-- Encabezado común -->
-    <div class="w-full h-auto flex flex-col justify-start pt-4 px-6 text-white">
-      <div class="flex-grow rounded-lg mb-4 h-full ">
-        <div class="w full h-auto mx-6 my-4 md:my-8">
+    <div class="w-full h-auto flex flex-col justify-start pt-4 px-6">
+      <div class="flex-grow rounded-lg mb-4 h-full">
+        <div class="w full h-auto mx-6 my-4 md:my-8 text-white">
           <button
             class="uppercase border-1 border-white px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
             @click="() => backTo()"
@@ -23,7 +23,7 @@
             {{ $t('general.back') }}
           </button>
         </div>
-        <div class="flex flex-col md:flex-row-reverse h-auto mx-6 my-4 md:my-8">
+        <div class="flex flex-col md:flex-row-reverse h-auto mx-6 my-4 md:my-8 text-white">
           <div class="flex justify-end md:w-1/3">
             <div>
               <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
@@ -38,14 +38,14 @@
             </button>
           </h1>
         </div>
-        <div class="flex flex-col h-auto mx-6 my-4 md:my-8 relative">
+        <div class="flex flex-col h-auto mx-6 my-4 md:my-8 relative text-white">
           <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
             {{ $t('auction.lotNo') }} {{ horseData.Lot }}
           </p>
           <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
             Monterrey, Nuevo León</p>
         </div>
-        <div class="flex flex-row justify-between pb-3 px-6">
+        <div class="flex flex-row justify-between pb-3 px-6 text-white">
           <button v-if="horseData.previous" @click="goToHorse(horseData.previous)" class="uppercase border-0 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
             <span class="mr-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 25 25"><path style="fill:#232326" d="M24 12.001H2.914l5.294-5.295-.707-.707L1 12.501l6.5 6.5.707-.707-5.293-5.293H24v-1z" data-name="Left"/></svg>
