@@ -15,7 +15,7 @@
         > {{ $t('auction.auctionListButton') }}
       </button>
     </div>
-    <div class="flex flex-wrap lg:space-x-3">
+    <div v-if="loading == false" class="flex flex-wrap lg:space-x-3">
       <!-- First Column -->
       <div class="flex flex-wrap w-full lg:w-1/2">
         <div v-if="bidImage" class="w-full shadow-[0_0_15px_5px_rgba(255,255,255,0.1)] rounded-3xl">

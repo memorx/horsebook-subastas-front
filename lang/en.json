@@ -93,6 +93,7 @@
         "changeImage": "Change image",
         "chooseImage": "Chooose an image",
         "noDocumentUploaded": "There is no document uploaded",
+        "noAuctions": "No Auctions",
         "auctions": {
             "history": "Auction History",
             "all": "All",
