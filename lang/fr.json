@@ -93,6 +93,7 @@
         "changeImage": "Changer l'image",
         "chooseImage": "Choisissez une image",
         "noDocumentUploaded": "Aucun document téléchargé",
+        "noAuctions": "Pas de sous-produits du foin",
         "auctions": {
             "history": "Historique des enchères",
             "all": "Tout",

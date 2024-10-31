@@ -92,6 +92,7 @@
         "changeImage": "Cambiar imagen",
         "chooseImage": "Elige una imagen",
         "noDocumentUploaded": "No existe un documento cargado",
+        "noAuctions": "No hay subastas",
         "auctions": {
             "history": "Historial de Subastas",
             "all": "Todas",
