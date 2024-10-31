@@ -29,7 +29,7 @@
       <div class="flex flex-wrap">
         <!-- First Column -->
         <div class="w-full sm:w-1/2 md:flex md:flex-col">
-          <div v-if="videoUrl" class="w-full md:flex md:flex-col">
+          <div class="w-full md:flex md:flex-col">
             <div class="mb-4 sm:mb-0 p-0 mx-5 pb-5">
 
             <!--
@@ -46,7 +46,7 @@
               <div v-if="horseID" class="fade">
                 <div class="mb-4 sm:mb-0 p-0 mx-5 flex flex-col">
                   <h2 class="text-xl font-bold">
-                    Galería de: {{ HorseName }}
+                    {{ HorseName }}
                   </h2>
                   <div>
                     <div class="w-full">
@@ -64,7 +64,7 @@
           <!-- First Row in the second column -->
           <div class="mb-4 bg-white p-5 mx-5 rounded-lg">
             <div class="flex items-center">
-              <h2 class="text-2xl font-bold mb-1 mr-3">
+              <h2 class="text-2xl font-bold mb-1 mr-3 uppercase">
                 {{ $t('auction.auction') }}
               </h2>
               <statusBid :status="bidStatus" />
@@ -77,10 +77,14 @@
               <span>{{ $t('auction.' + (item.horses.length == 1 ? "horse" : "horses")) }}</span>
             </h4>
             <transition name="fade">
-              <div v-if="horseID" class="fade text-lg font-bold flex flex-col md:flex-row">
-                <span class="capitalize mr-2">{{  $t('auction.horseBeingAuctioned') }}: </span>
+              <div v-if="horseID" class="fade text-lg font-bold flex flex-col">
+                <div class="text-center uppercase mr-2">{{  $t('auction.horseBeingAuctioned') }}: </div>
                 <NuxtLink :to="`/bids/bid?id=${bidId}&horsePositionList=0&horseId=${horseID}&from=auction`" class="mb-2">
-                  <span class="text-2xl text-red-500">{{ HorseName }}</span>
+                  <div class="mx-auto bg-black py-3 px-5 text-white rounded-3xl flex justify-between items-center gap-4 w-fit">
+                    <p class="text-lg md:text-xl font-bold uppercase bg-gradient-to-r from-[#efb810] via-[#fff3c4] via-[#efb810] via-[#fff3c4] to-[#efb810] bg-clip-text text-transparent">
+                      {{ HorseName }}
+                    </p>
+                  </div>
                 </NuxtLink>
               </div>
             </transition>
@@ -160,16 +164,16 @@
 
               <div v-else class="w-full flex-col mt-4 md:mt-0 bg-white rounded-lg">
                 <div
-                  class="text-center w-full rounded-t-lg p-5"
-                  style="background-color: #b99d61"
+                  class="text-center w-full rounded-t-lg p-5 bg-gradient-to-r from-[#efb810] via-[#fff3c4] via-[#efb810] via-[#fff3c4] to-[#efb810]"
+
                 >
-                  <p class="text-white font-bold text-sm uppercase">
+                  <p class="text-black font-bold text-sm uppercase">
                     {{ $t('auction.highestOffer') }}
                   </p>
-                  <span v-if="lastOffer" class="text-white font-bold text-2xl"
+                  <span v-if="lastOffer" class="text-black font-bold text-2xl"
                     >${{ lastOffer }} USD</span
                   >
-                  <span v-else class="text-white font-bold text-2xl uppercase">
+                  <span v-else class="text-black font-bold text-2xl uppercase">
                     {{ $t('auction.beTheFirst') }}
                   </span>
                 </div>
@@ -212,7 +216,7 @@
                         +
                       </button>
 
-                      <div class="hidden lg:block">
+                      <div class="hidden lg:block pt-2">
                         <SubmitAuthenticatedButton
                           :enable-modal="enableModal"
                           :button-text="$t('bids.offer')"
