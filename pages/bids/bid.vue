@@ -71,7 +71,7 @@
         <div class="flex flex-col md:flex-row md:w-full my-6">
           <!-- Columna izquierda (video) -->
           <div class="md:h1/2 md:w-1/2 rounded-lg border border-white md:mr-5 mb-5 md:mb-0">
-            <div class="aspect-w-16 md:mr-5">
+            <div class="aspect-w-16">
               <Carousel :images="horseData.horseVideos" ref="carouselVideos"/>
             </div>
           </div>
@@ -386,7 +386,7 @@
     </div>
 
     <!-- Tabs de información adicional -->
-    <div class="md:hidden mx-5 border border-gray-300 text-black rounded-lg">
+    <div class="md:hidden mx-5 bg-transparent text-black">
       <div class="flex">
         <button @click="openTab = 1" :class="{'bg-gray-200': openTab === 1, 'bg-gray-100': openTab !== 1}" class="rounded-tl-lg flex-1 text-xs px-2 py-5 focus:ring-gray-500 uppercase font-bold">{{ $t('horse.tabs.horseData')}}</button>
         <div class="w-px bg-gray-300"></div> <!-- Separador vertical -->
