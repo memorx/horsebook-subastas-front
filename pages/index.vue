@@ -96,7 +96,7 @@
                         <div
                            v-if="auction.image"
                            :class="[
-                              'h-[250px] px-5 md:px-0 md:w-[80%] md:h-[80%] absolute rounded-3xl z-10',
+                              'h-[250px] px-5 md:px-0 md:w-[80%] md:h-[80%] absolute rounded-3xl z-10 shadow-[0_0_15px_5px_rgba(255,255,255,0.1)]',
                               index % 2 === 0 ? 'md:translate-x-24' : 'md:-translate-x-24'
                            ]"
                         >
@@ -110,7 +110,7 @@
                         <div
                            v-else
                            :class="[
-                              'h-[250px] w-[350px] px-5 md:px-0 md:w-[80%] md:h-[80%] rounded-3xl flex justify-center items-center md:rounded-3xl absolute z-10 bg-slate-200',
+                              'h-[250px] w-[350px] px-5 md:px-0 md:w-[80%] md:h-[80%] rounded-3xl flex justify-center items-center md:rounded-3xl absolute z-10 bg-slate-200 shadow-[0_0_15px_5px_rgba(255,255,255,0.1)]',
                               index % 2 === 0 ? 'md:translate-x-24' : 'md:-translate-x-24'
                            ]"
                         >

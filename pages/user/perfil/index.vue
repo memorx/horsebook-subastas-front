@@ -1,15 +1,15 @@
 <template>
-  <div class="p-5 bg-zinc-200">
+  <div class="p-5 bg-black">
     <Loading
       v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
     />
     <div>
-      <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
-        <p class="text-xl text-white font-bold">{{ $t('profile.title') }}</p>
+      <div class="bg-gradient-to-r from-[#efb810] via-[#fff3c4] via-[#efb810] via-[#fff3c4] to-[#efb810] flex items-center justify-between p-6 md:p-10 rounded-t-lg">
+        <p class="text-xl text-black font-bold uppercase">{{ $t('profile.title') }}</p>
         <NuxtLink :to="localePath('/user/perfil/editar')">
           <button class="bg-white text-black p-2 rounded-lg">
-            <i class="fas fa-pencil-alt mr-2 text-blue-500"></i> {{ $t('general.edit') }}
+            <i class="fas fa-pencil-alt mr-2 text-gold-100"></i> {{ $t('general.edit') }}
           </button>
         </NuxtLink>
       </div>
@@ -78,7 +78,7 @@
       </div>
     </div>
     <!-- <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
-      <p class="text-xl text-white font-bold">SEGURIDAD</p>
+      <p class="text-xl text-black font-bold">SEGURIDAD</p>
       <NuxtLink to="/user/perfil/editar">
         <button
           @click="clearUserData"
@@ -91,63 +91,123 @@
     <!-- <div class="bg-white rounded-b-lg p-6 md:p-10 mb-5">
       <p class="text-md font-bold mb-5">Contraseña: <span class="font-light">**********</span></p>
     </div> -->
-    <div class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg">
-      <p class="text-xl text-white font-bold">{{ $t('profile.auctions.history') }}</p>
-      <div>
+    <div class="bg-gradient-to-r from-[#efb810] via-[#fff3c4] via-[#efb810] via-[#fff3c4] to-[#efb810] flex flex-col md:flex-row md:items-center md:justify-between p-4 md:p-10 rounded-t-lg space-y-4 md:space-y-0">
+  <p class="text-xl text-black font-bold uppercase">{{ $t('profile.auctions.history') }}</p>
+
+      <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
         <button
-          :class="selectedStatus == 'all' ? 'bg-white text-black py-1 px-8 rounded-lg font-bold' : 'bg-gray-400 text-white py-1 px-8 rounded-lg'"
+          :class="[
+            'w-full md:w-auto py-2 md:py-1 px-8 transition-colors',
+            selectedStatus == 'all'
+              ? 'bg-white text-black font-bold border-2 border-black'
+              : 'bg-white text-black border-2 border-custom-gold'
+          ]"
           @click="selectedStatus = 'all'"
         >
           {{ $t('profile.auctions.all') }}
         </button>
+
         <button
-          :class="selectedStatus == 'won' ? 'bg-white text-black py-1 px-8 rounded-lg font-bold' : 'bg-gray-400 text-white py-1 px-8 rounded-lg'"
+          :class="[
+            'w-full md:w-auto py-2 md:py-1 px-8 transition-colors',
+            selectedStatus == 'won'
+              ? 'bg-white text-black font-bold border-2 border-black'
+              : 'bg-white text-black border-2 border-custom-gold'
+          ]"
           @click="selectedStatus = 'won'"
         >
           {{ $t('profile.auctions.won') }}
         </button>
+
         <button
-          :class="selectedStatus == 'lost' ? 'bg-white text-black py-1 px-8 rounded-lg font-bold' : 'bg-gray-400 text-white py-1 px-8 rounded-lg'"
+          :class="[
+            'w-full md:w-auto py-2 md:py-1 px-8 transition-colors',
+            selectedStatus == 'lost'
+              ? 'bg-white text-black font-bold border-2 border-black'
+              : 'bg-white text-black border-2 border-custom-gold'
+          ]"
           @click="selectedStatus = 'lost'"
         >
           {{ $t('profile.auctions.lost') }}
         </button>
       </div>
     </div>
-    <div class="bg-white rounded-b-lg p-6 md:p-10 mb-5">
-      <div class="overflow-x-auto rounded-lg">
-        <table class="min-w-full rounded-lg bg-gray-300">
-          <thead>
-            <tr class="bg-gray-700 text-white">
-              <th class="table-header capitalize">{{ $t('auction.auction') }}</th>
-              <th class="table-header capitalize">{{ $t('auction.horse') }}</th>
-              <th class="table-header capitalize">{{ $t('auction.auctionDate') }}</th>
-              <th class="table-header capitalize">{{ $t('auction.total') }}</th>
-              <th class="table-header capitalize">{{ $t('auction.status') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="record in filteredRecords"
-              :key="record.bid_date"
-            >
-              <td class="table-cell border-y text-center text-sm font-bold">{{ record.subasta.id }}</td>
-              <td class="table-cell border-y text-center text-sm">{{ record.horse.external_data.name }}</td>
-              <td class="table-cell border-y text-center text-sm">{{ new Date(record.bid_date).toLocaleString() }}</td>
-              <td class="table-cell border-y text-center text-sm font-bold">$ {{ record.highest_bid }} USD</td>
-              <td
-                class="table-cell border-y text-center"
-                :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }"
-              >
+    <div class="bg-white rounded-b-lg p-4 md:p-10 mb-5">
+  <div class="hidden md:block overflow-x-auto rounded-lg">
+    <table v-if="filteredRecords?.length > 0" class="min-w-full rounded-lg bg-gray-100">
+      <thead>
+        <tr class="bg-[#EFB919] text-black text-sm">
+          <th class="py-3 table-header uppercase">{{ $t('auction.horse') }}</th>
+          <th class="table-header uppercase">{{ $t('auction.auctionDate') }}</th>
+          <th class="table-header uppercase">{{ $t('auction.total') }}</th>
+          <th class="table-header uppercase">{{ $t('auction.status') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="record in filteredRecords" :key="record.bid_date" class="hover:bg-gold-100 transition-colors duration-200" :title="record.subasta.id">
+          <td class="py-3 table-cell border-y text-center text-sm">{{ record.horse.external_data.name }}</td>
+          <td class="table-cell border-y text-center text-sm">{{ new Date(record.bid_date).toLocaleString() }}</td>
+          <td class="table-cell border-y text-center text-sm font-bold">$ {{ record.highest_bid }} USD</td>
+          <td class="table-cell border-y text-center"
+              :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }">
+            {{ $t(`profile.auctions.status.${record.status}`) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-                {{ $t(`profile.auctions.status.${record.status}`) }}
+    <div v-else class="flex flex-col items-center justify-center py-16 bg-gray-100 rounded-lg">
+      <div class="mb-4">
+        <svg class="w-16 h-16 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+        </svg>
+      </div>
+      <p class="text-gray-500 text-lg font-medium">{{ $t('profile.noAuctions') }}</p>
+    </div>
+  </div>
 
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <div class="md:hidden">
+    <div v-if="filteredRecords?.length > 0" class="space-y-4">
+      <div v-for="record in filteredRecords"
+           :key="record.bid_date"
+           class="bg-gray-100 rounded-lg p-4 space-y-3">
+
+        <div class="flex justify-between items-center">
+          <span class="text-sm font-semibold text-gray-600">{{ $t('auction.horse') }}</span>
+          <span class="text-sm">{{ record.horse.external_data.name }}</span>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <span class="text-sm font-semibold text-gray-600">{{ $t('auction.auctionDate') }}</span>
+          <span class="text-sm">{{ new Date(record.bid_date).toLocaleString() }}</span>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <span class="text-sm font-semibold text-gray-600">{{ $t('auction.total') }}</span>
+          <span class="text-sm font-bold">$ {{ record.highest_bid }} USD</span>
+        </div>
+
+        <div class="flex justify-between items-center">
+          <span class="text-sm font-semibold text-gray-600">{{ $t('auction.status') }}</span>
+          <span class="text-sm"
+                :style="{ color: record.status === 'won' ? '#027A48' : (record.status === 'lost' ? '#B42318' : '') }">
+            {{ $t(`profile.auctions.status.${record.status}`) }}
+          </span>
+        </div>
       </div>
     </div>
+
+    <div v-else class="flex flex-col items-center justify-center py-12 bg-gray-100 rounded-lg">
+      <div class="mb-3">
+        <svg class="w-12 h-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+        </svg>
+      </div>
+      <p class="text-gray-500 text-base font-medium">{{ $t('profile.noAuctions') }}</p>
+    </div>
+  </div>
+</div>
+
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-zinc-200">
+  <div class="bg-black">
     <modal
       v-show="showModal"
       :amount="confirmedAmount"
@@ -12,10 +12,10 @@
 
     <!-- Encabezado común -->
     <div class="w-full h-auto flex flex-col justify-start pt-4 px-6">
-      <div class="flex-grow bg-[#EDEDED] rounded-lg mb-4 h-full ">
-        <div class="w full h-auto mx-6 my-4 md:my-8">
+      <div class="flex-grow rounded-lg mb-4 h-full">
+        <div class="w full h-auto mx-6 my-4 md:my-8 text-white">
           <button
-            class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
+            class="uppercase border-1 border-white px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
             @click="() => backTo()"
           >
             <span class="mr-2 w-1 md:w-3 md:mr-3 lg:w-2 lg:mr-2 xl:w-3 xl:mr-3 lg:mb-1"><img
@@ -23,7 +23,7 @@
             {{ $t('general.back') }}
           </button>
         </div>
-        <div class="flex flex-col md:flex-row-reverse h-auto mx-6 my-4 md:my-8">
+        <div class="flex flex-col md:flex-row-reverse h-auto mx-6 my-4 md:my-8 text-white">
           <div class="flex justify-end md:w-1/3">
             <div>
               <horseStatus :status="horseStatus" :bidStatus="bidStatus" />
@@ -33,19 +33,19 @@
             <span class="text-base md:text-2xl lg:text-3xl xl:text-4xl font-roboto font-extrabold">
               {{ HorseName }}
             </span>
-            <button v-if="isUserAuthenticated" class="text-lg text-left ml-3" :class="subscribed? 'text-yellow-500' : 'text-black'">
-              <i class="icon fas fa-bell" v-on:click="() => {subscribe()}" :title="!subscribed? 'Activar notificaciones' : 'Desactivar notificaciones'"></i>
+            <button v-if="isUserAuthenticated" class="text-lg text-left ml-3" :class="subscribed? 'text-yellow-500' : 'text-white'">
+              <i class="icon fas fa-bell" v-on:click="() => {subscribeMe()}" :title="!subscribed? 'Activar notificaciones' : 'Desactivar notificaciones'"></i>
             </button>
           </h1>
         </div>
-        <div class="flex flex-col h-auto mx-6 my-4 md:my-8 relative">
+        <div class="flex flex-col h-auto mx-6 my-4 md:my-8 relative text-white">
           <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
             {{ $t('auction.lotNo') }} {{ horseData.Lot }}
           </p>
           <p class="text-xs md:text-lg lg:text-xl xl:text-2xl font-roboto font-semibold lg:font-bold uppercase">
             Monterrey, Nuevo León</p>
         </div>
-        <div class="flex flex-row justify-between pb-3 px-6">
+        <div class="flex flex-row justify-between pb-3 px-6 text-white">
           <button v-if="horseData.previous" @click="goToHorse(horseData.previous)" class="uppercase border-0 px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base">
             <span class="mr-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 25 25"><path style="fill:#232326" d="M24 12.001H2.914l5.294-5.295-.707-.707L1 12.501l6.5 6.5.707-.707-5.293-5.293H24v-1z" data-name="Left"/></svg>
@@ -68,10 +68,10 @@
         </div>
 
         <!-- Contenido principal -->
-        <div class="flex flex-col md:flex-row md:w-full md:px-6 my-6">
+        <div class="flex flex-col md:flex-row md:w-full my-6">
           <!-- Columna izquierda (video) -->
-          <div class="md:h1/2 md:w-1/2">
-            <div class="aspect-w-16 md:mr-5 mb-5 md:mb-0">
+          <div class="md:h1/2 md:w-1/2 rounded-lg border border-white md:mr-5 mb-5 md:mb-0">
+            <div class="aspect-w-16">
               <Carousel :images="horseData.horseVideos" ref="carouselVideos"/>
             </div>
           </div>
@@ -265,7 +265,7 @@
                     :bidId="bidId"
                     :horseID="horseID"
                     :bids="this.bids"
-                    :hasBid="this.hasBid"
+                    :hasBid="this.hasPreBid"
                     :privateInformation="this.privateInformation"
                   />
                 </div>
@@ -273,7 +273,7 @@
             </div>
 
             <!-- Estado: BIDDING -->
-            <div v-if="bidStatus == 'BIDDING' && horseStatus == 'BIDDING'">
+            <div v-if="bidStatus == 'BIDDING' && horseStatus == 'BIDDING'" class="py-3">
               <p class="text-black font-bold text-2xl pt-8 px-10">
                 {{ $t('auction.horseAuctionIsLive') }}
               </p>
@@ -310,7 +310,7 @@
             </div>
 
             <!-- Estado: CLOSED PREBID -->
-            <div v-if="horseStatus == 'CLOSED PREBID'">
+            <div v-if="horseStatus == 'CLOSED PREBID'" class="py-3">
               <p class="text-black font-bold text-2xl pt-8 px-10">
                 {{ $t('auction.horseAuctionIsComming') }}
               </p>
@@ -345,7 +345,7 @@
                     :bidId="bidId"
                     :horseID="horseID"
                     :bids="this.bids"
-                    :hasBid="this.hasBid"
+                    :hasBid="this.hasPreBid"
                     :privateInformation="this.privateInformation"
                   />
                 </div>
@@ -386,19 +386,19 @@
     </div>
 
     <!-- Tabs de información adicional -->
-    <div class="md:hidden mx-5 border border-gray-300 rounded-t-md">
+    <div class="md:hidden mx-5 bg-transparent text-black">
       <div class="flex">
-        <button @click="openTab = 1" :class="{'bg-gray-200': openTab === 1, 'bg-gray-100': openTab !== 1}" class="flex-1 text-xs px-2 py-5 focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500">{{ $t('horse.tabs.horseData')}}</button>
+        <button @click="openTab = 1" :class="{'bg-gray-200': openTab === 1, 'bg-gray-100': openTab !== 1}" class="rounded-tl-lg flex-1 text-xs px-2 py-5 focus:ring-gray-500 uppercase font-bold">{{ $t('horse.tabs.horseData')}}</button>
         <div class="w-px bg-gray-300"></div> <!-- Separador vertical -->
-        <button @click="openTab = 2" :class="{'bg-gray-200': openTab === 2, 'bg-gray-100': openTab !== 2}" class="flex-1 text-xs px-2 py-5 focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500">{{ $t('horse.tabs.pedigree')}}</button>
+        <button @click="openTab = 2" :class="{'bg-gray-200': openTab === 2, 'bg-gray-100': openTab !== 2}" class="flex-1 text-xs px-2 py-5 focus:ring-gray-500 uppercase font-bold">{{ $t('horse.tabs.pedigree')}}</button>
         <div class="w-px bg-gray-300"></div> <!-- Separador vertical -->
-        <button @click="openTab = 3" :class="{'bg-gray-200': openTab === 3, 'bg-gray-100': openTab !== 3}" class="flex-1 text-xs px-2 py-5 focus:outline-none focus:border-none focus:ring-1 focus:ring-gray-500">{{ $t('horse.tabs.xRays')}}</button>
+        <button @click="openTab = 3" :class="{'bg-gray-200': openTab === 3, 'bg-gray-100': openTab !== 3}" class="rounded-tr-lg flex-1 text-xs px-2 py-5 focus:ring-gray-500 uppercase font-bold">{{ $t('horse.tabs.xRays')}}</button>
       </div>
     </div>
 
-    <div class="hidden md:show md:flex md:flex-row h-16 p-0 mx-5 bg-[#D9D9D9]">
+    <div class="hidden md:show md:flex md:flex-row h-16 p-0 mx-5 rounded-lg">
       <button
-        class="w-48 h-16 font-bold"
+        class="rounded-tl-lg w-48 h-16 font-bold"
         type="button"
         v-on:click="toggleTabs(1)"
         v-bind:class="{
@@ -420,7 +420,7 @@
         {{ $t('horse.tabs.pedigree')}}
       </button>
       <button
-        class="w-48 h-16 font-bold"
+        class="rounded-tr-lg w-48 h-16 font-bold"
         type="button"
         v-on:click="toggleTabs(3)"
         v-bind:class="{
@@ -442,7 +442,7 @@
               <div class="flex-auto">
                 <div class="tab-content tab-space">
                   <div
-                    class="mb-4 bg-white p-5 mx-5"
+                    class="mb-4 bg-white p-5 mx-5 rounded-b-lg"
                     v-bind:class="{
                       hidden: openTab !== 1,
                       block: openTab === 1
@@ -481,7 +481,7 @@
 
                   </div>
                   <div
-                    class="mb-4 bg-white p-5 mx-5"
+                    class="mb-4 bg-white p-5 mx-5 rounded-b-lg"
                     v-bind:class="{
                       hidden: openTab !== 2,
                       block: openTab === 2
@@ -497,7 +497,7 @@
 
                   </div>
                   <div
-                    class="mb-4 bg-white p-5 mx-5"
+                    class="mb-4 bg-white p-5 mx-5 rounded-b-lg"
                     v-bind:class="{
                       hidden: openTab !== 3,
                       block: openTab === 3
@@ -650,7 +650,7 @@ export default {
       hasPreBid: false,
       subscribed: false,
       prebidWinnerDiscount: 5,
-      privateInformation: true,
+      privateInformation: null,
       commission: 0,
       taxes: 0,
       confirmedAmount: "",
@@ -1313,7 +1313,7 @@ export default {
           //horse Description
           //genre
           this.horseData.Genre =
-            this.genreMapping[horse.external_data.sex] || ""
+            this.genreMapping[horse.external_data.classification_sex] || ""
           //Birthdate
           this.horseData.BirthDate = this.formatted(
             horse.external_data.birth_date
@@ -1437,7 +1437,7 @@ export default {
       this.formattedManualInputAmount = ""
     },
 
-    async subscribe() {
+    async subscribeMe() {
       let subscribeEndpoint = "/horse/notifications/?horse=" + this.horseId
       let url = `${this.$config.baseURL}${subscribeEndpoint}`
       const token = getUserTokenOrDefault()
