@@ -265,7 +265,7 @@
                     :bidId="bidId"
                     :horseID="horseID"
                     :bids="this.bids"
-                    :hasBid="this.hasBid"
+                    :hasBid="this.hasPreBid"
                     :privateInformation="this.privateInformation"
                   />
                 </div>
@@ -345,7 +345,7 @@
                     :bidId="bidId"
                     :horseID="horseID"
                     :bids="this.bids"
-                    :hasBid="this.hasBid"
+                    :hasBid="this.hasPreBid"
                     :privateInformation="this.privateInformation"
                   />
                 </div>
@@ -650,7 +650,7 @@ export default {
       hasPreBid: false,
       subscribed: false,
       prebidWinnerDiscount: 5,
-      privateInformation: true,
+      privateInformation: null,
       commission: 0,
       taxes: 0,
       confirmedAmount: "",

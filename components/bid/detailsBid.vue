@@ -60,6 +60,7 @@ export default {
     },
     privateInformation: {
       type: Boolean,
+      default: false
     }
   },
   data() {
