@@ -302,7 +302,7 @@
                     :bidId="bidId"
                     :horseID="horseID"
                     :bids="this.bids"
-                    :hasBid="this.hasBid"
+                    :hasBid="this.hasPreBid"
                     :privateInformation="this.privateInformation"
                   />
                 </div>
@@ -374,7 +374,7 @@
                     :bidId="bidId"
                     :horseID="horseID"
                     :bids="this.bids"
-                    :hasBid="this.hasBid"
+                    :hasBid="this.hasPreBid"
                     :privateInformation="this.privateInformation"
                   />
                 </div>
@@ -646,8 +646,8 @@ export default {
       formattedManualInputAmount: "",
       horseExternalId: "",
       winnerEmail: "",
-      hasBid: false,
-      hasPreBid: false,
+      hasBid: null,
+      hasPreBid: null,
       subscribed: false,
       prebidWinnerDiscount: 5,
       privateInformation: null,
@@ -820,7 +820,16 @@ export default {
       if (!manualInputAmount)
         return false
 
-      let minAmount = this.addIncrement(lastOffer)
+      // Asegurar que el incremento sea al menos 1000
+      let minIncrement = 1000
+      let minAmount = lastOffer + minIncrement
+
+      // Si hay incrementos configurados, usar el que corresponda
+      if (this.increments && this.increments.length > 0) {
+        const configuredIncrement = this.calculateIncrement(lastOffer)
+        minIncrement = Math.max(configuredIncrement, 1000)
+        minAmount = lastOffer + minIncrement
+      }
 
       if (manualInputAmount >= minAmount) {
         return true
@@ -880,7 +889,7 @@ export default {
     },
     calculateCountdown() {
       if(!this.EndPreBidDate)
-       return
+        return
       const now = new Date()
       const targetDate = new Date(this.EndPreBidDate)
       const timeDifference = targetDate - now
@@ -891,12 +900,11 @@ export default {
       } else {
         const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
         const hours = Math.floor(
-          (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        )
+          (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
         const minutes = Math.floor(
-          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-        )
+          (timeDifference % (1000 * 60 * 60)) / (1000 * 60))
         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000)
+
         this.bidTime.days = days
         this.bidTime.hours = hours
         this.bidTime.minutes = minutes
@@ -959,8 +967,8 @@ export default {
     },
     async init() {
       this.bids = []
-      this.hasBid = false
-      this.hasPreBid = false
+      this.hasBid = null
+      this.hasPreBid = null
       this.subscribe = false
       await this.fetchData()
       this.winnerConfetti()
@@ -985,8 +993,34 @@ export default {
       const token = getUserTokenOrDefault()
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}/?token=${token}`
       this.socket = new ReconnectingWebSocket(url)
+
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
+
+        if ('has_prebid' in message) {
+          this.hasPreBid = message.has_prebid
+          console.log('hasPreBid actualizado via socket:', this.hasPreBid)
+
+          if (this.$refs.detailsBid) {
+            this.$refs.detailsBid.$forceUpdate()
+          }
+        }
+
+        // Validar si el bid es del usuario actual y actualizar hasPreBid
+        if (message.bid) {
+          const currentUserEmail = this.$store.state.user?.user
+          const bidUserEmail = message.bid.user_profile?.email
+
+          if (currentUserEmail && bidUserEmail && currentUserEmail === bidUserEmail) {
+            console.log('Bid del usuario actual detectado - actualizando hasPreBid')
+            this.hasPreBid = true
+
+            if (this.$refs.detailsBid) {
+              this.$refs.detailsBid.$forceUpdate()
+            }
+          }
+        }
+
         if (message.error) {
           let msg = message.error
           msg = msg.replace(/\./, '')
@@ -1005,10 +1039,6 @@ export default {
 
         if (message.has_bid) {
           this.hasBid = message.has_bid
-        }
-
-        if (message.has_prebid) {
-          this.hasPreBid = message.has_prebid
         }
 
         if (message.prebids && message.prebids.length > 0) {
@@ -1496,6 +1526,32 @@ export default {
       }
 
     },
+  },
+  watch: {
+    hasPreBid: {
+      handler(newValue, oldValue) {
+        console.log('Watch - hasPreBid cambió:', {
+          anterior: oldValue,
+          nuevo: newValue
+        })
+
+        if (this.$refs.detailsBid) {
+          this.$refs.detailsBid.$forceUpdate()
+        }
+
+        this.$emit('prebid-status-changed', newValue)
+      },
+      immediate: true
+    },
+
+    '$route.query.horseId': {
+      handler(newHorseId) {
+        if (newHorseId && newHorseId !== this.horseId) {
+          console.log('Horse ID cambió - reiniciando hasPreBid')
+          this.hasPreBid = false
+        }
+      }
+    }
   }
 }
 </script>

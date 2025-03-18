@@ -543,8 +543,8 @@ export default {
       inputAmount: "",
       wonHorse: "",
       yourAreTheWinner: false,
-      hasBid: false,
-      hasPreBid: false,
+      hasBid: null,
+      hasPreBid: null,
       commission: 0,
       taxes: 0,
       confirmedAmount: "",
@@ -748,11 +748,48 @@ export default {
     },
 
     async startBidSocket() {
+      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+        this.socket.close()
+      }
       const token = getUserTokenOrDefault()
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseID}/?token=${token}`
       this.socket = new ReconnectingWebSocket(url)
+
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
+
+        // Manejar has_bid inmediatamente cuando se recibe
+        if ('has_bid' in message) {
+          this.hasBid = message.has_bid
+          console.log('hasBid actualizado via socket:', this.hasBid)
+
+          // Forzar la actualización del componente Bids
+          if (this.$refs.detailsBid) {
+            this.$refs.detailsBid.$forceUpdate()
+          }
+        }
+
+        // Validar si el bid es del usuario actual y actualizar hasBid
+        if (message.bid) {
+          const currentUserEmail = this.$store.state.user?.user
+          const bidUserEmail = message.bid.user_profile?.email
+
+          if (currentUserEmail && bidUserEmail && currentUserEmail === bidUserEmail) {
+            console.log('Bid del usuario actual detectado - actualizando hasBid')
+            this.hasBid = true
+
+            // Forzar actualización del componente
+            if (this.$refs.detailsBid) {
+              this.$refs.detailsBid.$forceUpdate()
+            }
+          }
+
+          if (this.bids.length > 20) {
+            this.bids.pop()
+          }
+          this.bids.unshift(message.bid)
+        }
+
         if (message.error) {
 
           let msg = message.error
@@ -769,22 +806,11 @@ export default {
           this.bids = message.bids.slice(0, 20)
         }
 
-        if (message.has_bid) {
-          this.hasBid = message.has_bid
-        }
-
         if (message.has_prebid) {
           this.hasPreBid = message.has_prebid
         }
 
-        if (message.bid) {
-          if (this.bids.length > 20) {
-            this.bids.pop()
-          }
-          this.bids.unshift(message.bid)
-        }
-
-        if(message.delete) {
+        if (message.delete) {
           const idToDelete = message.delete.id
           const key = this.bids.findIndex(bid => bid.id === idToDelete)
           if(key !== -1) {
@@ -837,6 +863,14 @@ export default {
         }
       })
 
+      // Agregar manejador de conexión exitosa
+      this.socket.addEventListener("open", () => {
+        console.log('Socket conectado - solicitando estado actual')
+        // Solicitar estado actual al conectar
+        this.socket.send(JSON.stringify({
+          action: 'get_status'
+        }))
+      })
     },
 
     async startAuctionSocket() {
