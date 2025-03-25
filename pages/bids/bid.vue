@@ -468,10 +468,12 @@
                           <span class="text-gray-600">{{ horseData.Height || "NA" }}</span>
                           <span class="text-gray-600">m</span>
                         </div>
+                        <!--
                         <div v-if="horseData.Genre" class="mr-4">
                           <span class="font-bold text-gray-700">{{ $t('horse.gender') }}:</span>
                           <span class="text-gray-600">{{ horseData.Genre || "NA" }}</span>
                         </div>
+                        -->
                         <div v-if="horseData.Hatchery" class="mr-4">
                           <span class="font-bold text-gray-700">{{ $t('horse.birthLocation') }}:</span>
                           <span class="text-gray-600">{{ horseData.Hatchery || "NA" }}</span>
@@ -1240,11 +1242,9 @@ export default {
     toggleTabs: function (tabNumber) {
       this.openTab = tabNumber
     },
-    calculateAge() {
+    calculateAge(birthDateMoment) {
       const today = moment()
-      const birthDate = moment(this.birthDate)
-      const yearsDiff = today.year() - birthDate.year()
-
+      const yearsDiff = today.year() - birthDateMoment.year()
       return yearsDiff ? yearsDiff : 1
     },
 
@@ -1363,8 +1363,8 @@ export default {
           //Hatchery
           this.horseData.Hatchery = horse.external_data.birth_location
           const birthDateMoment = moment(this.horseData.BirthDate, "DD/MM/YYYY")
-          const today = moment()
-          this.horseData.Age = today.diff(birthDateMoment, "years")
+
+          this.horseData.Age = this.calculateAge(birthDateMoment)
           //xRays
           this.horseData.xRayGallery = horse.local_data.xrays.map(
             (xray) => xray.image
@@ -1377,8 +1377,6 @@ export default {
           this.liveURL = this.extractYouTubeId(horse.video_url)
           //Horse Images
           this.fetchHorseImages()
-          //Horse Age
-          this.age = this.calculateAge()
           //Bid Status
           this.horseStatus = horse.local_data.status
           //Bid Initial Amout
