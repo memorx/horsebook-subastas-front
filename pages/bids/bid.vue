@@ -1039,6 +1039,10 @@ export default {
           this.bidStatus = message.auction.status
         }
 
+        if (message.bids) {
+          this.bids = message.bids
+        }
+
         if (message.has_bid) {
           this.hasBid = message.has_bid
         }
@@ -1046,13 +1050,12 @@ export default {
         if (message.prebids && message.prebids.length > 0) {
           this.bids = message.prebids
         }
-        if(this.bidStatus == 'PREBID') {
-          if (message.bid) {
-            if (this.bids.length > 20) {
-              this.bids.pop()
-            }
-            this.bids.unshift(message.bid)
+
+        if (message.bid) {
+          if (this.bids.length > 20) {
+            this.bids.pop()
           }
+          this.bids.unshift(message.bid)
         }
 
         if(message.delete) {
@@ -1105,6 +1108,7 @@ export default {
         }
       })
     },
+
     async startAuctionSocket() {
       if (
         this.auctionSocket &&
