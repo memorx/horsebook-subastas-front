@@ -416,13 +416,17 @@ export default {
         }
 
         if (message.horses && message.horses.length > 0) {
-          // console.log('trae horses')
           this.item.horses.forEach((horse, key) => {
-            const status = message.horses.find(
+            const matchingHorse = message.horses.find(
               (item) => item.id === horse.local_data.id
             )
-            if (status)
-              this.item.horses[key].local_data.status = status.status
+            if (matchingHorse) {
+              this.item.horses[key].local_data.status = matchingHorse.status
+              if (matchingHorse.bids && matchingHorse.bids.length > 0) {
+                const latestBid = matchingHorse.bids[0]
+                this.item.horses[key].local_data.final_amount = latestBid.amount.toFixed(2)
+              }
+            }
           })
         }
 

@@ -1,7 +1,10 @@
 <template>
     <nav :class="['p-4 lg:from-transparent', textColor, gradientMobileColor]">
         <client-only v-if="currentAuctionId && youtubeId">
-            <youtube-player :video-id="youtubeId" :initial-minimized="true"/>
+            <youtube-loader
+                :video-id="youtubeId"
+                :initial-minimized="true"
+            />
         </client-only>
         <!-- Web Navigation -->
         <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent" >
@@ -121,10 +124,13 @@ import ReusableButton from "~/components/ReusableButton.vue";
 import DraggableHorseList from "~/components/bid/draggableHorseList.vue";
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { extractYouTubeId } from '~/utils/youtubeUtils'
+import YoutubeLoader from '~/components/YoutubeLoader.vue'
+
 
 export default {
     components: {
-        DraggableHorseList
+        DraggableHorseList,
+        YoutubeLoader
     },
     props: {
         toggleMenu: {
@@ -424,7 +430,6 @@ export default {
                 this.updateAuctionData(data);
             } catch (error) {
                 console.error('Error al obtener detalles de la subasta:', error);
-                this.$toast.error('Error al obtener detalles de la subasta');
             }
         },
 

@@ -948,6 +948,7 @@ export default {
             this.winnerConfetti();
             this.horseID = null;
             this.closeBidSocket();
+            this.HorseName = "";
           } else if (horse.id !== this.horseID && horse.status === 'BIDDING') {
             // El caballo actual está en proceso de subasta, actualizar horseID, fetch data y reiniciar el socket.
             this.horseID = horse.id;

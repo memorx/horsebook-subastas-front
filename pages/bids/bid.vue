@@ -995,34 +995,8 @@ export default {
       const token = getUserTokenOrDefault()
       const url = `${this.$config.baseURLWS}/bids/${this.bidId}/horses/${this.horseId}/?token=${token}`
       this.socket = new ReconnectingWebSocket(url)
-
       this.socket.addEventListener("message", (event) => {
         const message = JSON.parse(event.data)
-
-        if ('has_prebid' in message) {
-          this.hasPreBid = message.has_prebid
-          console.log('hasPreBid actualizado via socket:', this.hasPreBid)
-
-          if (this.$refs.detailsBid) {
-            this.$refs.detailsBid.$forceUpdate()
-          }
-        }
-
-        // Validar si el bid es del usuario actual y actualizar hasPreBid
-        if (message.bid) {
-          const currentUserEmail = this.$store.state.user?.user
-          const bidUserEmail = message.bid.user_profile?.email
-
-          if (currentUserEmail && bidUserEmail && currentUserEmail === bidUserEmail) {
-            console.log('Bid del usuario actual detectado - actualizando hasPreBid')
-            this.hasPreBid = true
-
-            if (this.$refs.detailsBid) {
-              this.$refs.detailsBid.$forceUpdate()
-            }
-          }
-        }
-
         if (message.error) {
           let msg = message.error
           msg = msg.replace(/\./, '')
@@ -1045,6 +1019,10 @@ export default {
 
         if (message.has_bid) {
           this.hasBid = message.has_bid
+        }
+
+        if (message.has_prebid) {
+          this.hasPreBid = message.has_prebid
         }
 
         if (message.prebids && message.prebids.length > 0) {
