@@ -1,7 +1,10 @@
 <template>
     <nav :class="['p-4 lg:from-transparent', textColor, gradientMobileColor]">
         <client-only v-if="currentAuctionId && youtubeId">
-            <youtube-player :video-id="youtubeId" :initial-minimized="true"/>
+            <youtube-loader
+                :video-id="youtubeId"
+                :initial-minimized="true"
+            />
         </client-only>
         <!-- Web Navigation -->
         <div class="hidden lg:flex container mx-auto justify-between items-center bg-transparent" >
@@ -121,10 +124,13 @@ import ReusableButton from "~/components/ReusableButton.vue";
 import DraggableHorseList from "~/components/bid/draggableHorseList.vue";
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { extractYouTubeId } from '~/utils/youtubeUtils'
+import YoutubeLoader from '~/components/YoutubeLoader.vue'
+
 
 export default {
     components: {
-        DraggableHorseList
+        DraggableHorseList,
+        YoutubeLoader
     },
     props: {
         toggleMenu: {
@@ -215,7 +221,7 @@ export default {
             return this.getFlag(this.currentLocale);
         },
         shouldShowDraggableBubbles() {
-            return this.bidStatus === 'BIDDING' && this.auctionHorses.length > 0;
+            return this.currentAuctionId && this.bidStatus === 'BIDDING' && this.auctionHorses.length > 0;
         }
     },
     methods: {
@@ -388,16 +394,16 @@ export default {
                     await this.fetchAuctionDetails();
                 }
                 } else if (this.currentAuctionId === newAuctionId) {
-                // La subasta actual cambió a un estado que no es BIDDING
-                this.showDraggableBubbles = false;
-                this.currentAuctionId = null;
-                this.auctionHorses = [];
-                this.currentHorseId = null;
+                    // La subasta actual cambió a un estado que no es BIDDING
+                    this.showDraggableBubbles = false;
+                    this.currentAuctionId = null;
+                    this.auctionHorses = [];
+                    this.currentHorseId = null;
                 }
 
                 // Si el estado cambia a algo que no es BIDDING, actualizar currentAuctionId
                 if (newStatus !== 'BIDDING' && this.currentAuctionId === newAuctionId) {
-                this.currentAuctionId = 0;
+                    this.currentAuctionId = 0;
                 }
 
             } else {
@@ -424,7 +430,6 @@ export default {
                 this.updateAuctionData(data);
             } catch (error) {
                 console.error('Error al obtener detalles de la subasta:', error);
-                this.$toast.error('Error al obtener detalles de la subasta');
             }
         },
 

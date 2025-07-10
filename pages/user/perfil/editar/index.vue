@@ -1,13 +1,13 @@
 <template>
-  <div class="p-5 bg-zinc-200">
+  <div class="p-5 bg-black">
     <Loading
       v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
     />
     <div
-      class="bg-gray-400 flex items-center justify-between p-6 md:p-10 rounded-t-lg"
+      class="bg-gold-100 flex items-center justify-between p-6 md:p-10 rounded-t-lg"
     >
-      <p class="text-xl text-white font-bold">{{ $t('profile.editProfile') }}</p>
+      <p class="text-xl text-black font-bold">{{ $t('profile.editProfile') }}</p>
       <div class="text-center">
         <NuxtLink :to="localePath('/user/perfil')">
           <button class="bg-white text-black p-2 rounded-lg">
@@ -23,7 +23,7 @@
         </button>
       </div>
     </div>
-    <div class="bg-white rounded-lg p-6 md:p-10 mb-4">
+    <div class="bg-white rounded-b-lg p-6 md:p-10 mb-4">
       <div class="grid md:grid-cols-3 grid-cols-1 gap-4 my-5">
         <div class="flex flex-col">
           <label class="text-black-600 font-medium">{{ $t('profile.name') }}:</label>

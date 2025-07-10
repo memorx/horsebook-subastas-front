@@ -1,12 +1,12 @@
 <template>
-  <div class="bg-zinc-200 py-5 lg:px-20 px-5">
+  <div class="bg-black py-5 lg:px-20 px-5">
     <Loading
       v-if="loading"
       class="fixed w-full h-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
     />
     <div class="w full h-auto my-4">
       <button
-        class="uppercase border-1 border-black px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
+        class="uppercase border-1 border-white text-white px-4 py-2 flex flex-row items-center font-roboto font-bold text-[9px] md:text-lg lg:text-sm xl:text-base"
         @click="() => this.$router.push(localePath('/user/inicio'))"
       >
         <span
@@ -15,18 +15,18 @@
         > {{ $t('auction.auctionListButton') }}
       </button>
     </div>
-    <div class="flex flex-wrap lg:space-x-3">
+    <div v-if="loading == false" class="flex flex-wrap lg:space-x-3">
       <!-- First Column -->
       <div class="flex flex-wrap w-full lg:w-1/2">
-        <div v-if="bidImage" class="w-full">
+        <div v-if="bidImage" class="w-full shadow-[0_0_15px_5px_rgba(255,255,255,0.1)] rounded-3xl">
           <img
             :src="bidImage"
             alt="logo"
-            class="flex-1 flex-grow hidden md:block w-full max-w-full object-cover rounded-lg md:flex-grow"
+            class="flex-1 flex-grow hidden md:block w-full max-w-full object-cover md:flex-grow rounded-3xl"
           />
         </div>
         <div
-          class="flex-1 flex-grow lg:mx-0 bg-gray-400 flex justify-center items-center rounded-tl-3xl rounded-br-3xl"
+          class="flex-1 flex-grow lg:mx-0 bg-gray-400 flex justify-center items-center rounded-3xl"
           v-else
         >
           <img
@@ -39,16 +39,16 @@
       <!-- Second Column -->
       <div class="lg:px-0 lg:flex-1 w-full lg:w-1/2">
         <!-- First Row in the second column -->
-        <div class="mb-4 bg-white p-5 rounded-lg">
+        <div class="mb-4 bg-transparent text-white p-5 rounded-lg">
           <div class="flex items-center">
-            <h2 class="text-2xl font-bold mb-1 pr-3">{{ $t('auction.auction') }}</h2>
+            <h2 class="text-2xl font-bold mb-1 pr-3 uppercase">{{ $t('auction.auction') }}</h2>
             <statusBid :status="bidStatus" />
           </div>
           <span class="text-xl font-bold mb-2">{{ item.horses.length }}</span>
           <span>{{ $t('auction.' + (item.horses.length == 1 ? "horse" : "horses")) }}</span>
         </div>
         <!-- Second Row in the second column -->
-        <div v-if="!loading" class="bg-white p-5 rounded-lg md:flex-grow">
+        <div v-if="!loading" class="bg-transparent text-white p-5 rounded-lg md:flex-grow">
           <!-- PREOFERTA -->
           <h1
             v-if="bidStatus == 'COMING'"
@@ -170,7 +170,7 @@
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 my-5">
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 my-5 mt-10">
       <!-- Dynamic Cards -->
       <div
         v-for="(horse, index) in item.horses"
@@ -201,6 +201,7 @@
               alt="Default Horse"
             />
           </div>
+          <div class="absolute bottom-0 left-0 right-0 h-[25px] bg-white/60 rounded-br-3xl"></div>
         </div>
         <div class="w-full">
           <div
@@ -305,12 +306,12 @@
             </div>
           </div>
           <div
-            class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
+            class="w-full h-1/5 bg-[#323232] text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
           >
             <a
               :href="localePath(`/bids/bid/?id=${id}&horsePositionList=${index}&horseId=${horse.local_data.id}`)"
               rel="noopener noreferrer"
-              class="w-full h-1/5 bg-black text-white flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
+              class="w-full h-1/5 text-white font-bold flex items-center justify-center opacity-90 hover:opacity-100 transition-opacity"
             >
               <span class="w-full h-full uppercase transition duration-300 transform scale-100 hover:scale-105 text-xs md:text-xl xl:text-xl flex items-center justify-center">
                 {{ $t('auction.enter') }}
