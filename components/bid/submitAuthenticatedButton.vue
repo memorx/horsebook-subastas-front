@@ -82,21 +82,7 @@ export default {
       return `${this.hoverMessage.notAuthorized} ${administratorPhone}`
     },
     async fetchAdministratorPhone() {
-      const url = `${this.$config.baseURL}/contact/info/`
-      const token = getUserTokenOrDefault()
-
-      if (token) {
-        try {
-          const response = await axios.get(url, {
-            headers: { Authorization: `Token ${token}` }
-          })
-          return response.data.app_user_profile.phone.replace("T. ", "")
-        } catch (error) {
-          console.error("Error retrieving administrator phone: ", error)
-          return ""
-        }
-      }
-      return ""
+      return "811 631 2490"
     },
     updateStatusUser() {
       this.isAuthenticated = this.isUserAuthenticated()

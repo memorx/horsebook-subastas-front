@@ -1,5 +1,8 @@
 <template>
    <div>
+      <!-- Popup de subasta -->
+      <AuctionPopup />
+
       <div class="bg-banner-container">
          <div class="bg-banner">
             <!-- <img src="../public/Banner-promo-Subasta 2024.jpg" alt="logo" class="w-100"> -->

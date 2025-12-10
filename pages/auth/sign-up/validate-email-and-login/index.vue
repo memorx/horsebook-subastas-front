@@ -141,7 +141,7 @@ export default {
             )
             const encodedSignature = btoa(signature)
             const jwt = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
-            Cookie.set("access_token", jwt)
+            Cookie.set("access_token", jwt, { expires: 1 })
             this.$store.commit("authenticate", true)
             this.$store.commit("setUser", {
               email: this.email,

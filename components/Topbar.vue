@@ -424,7 +424,7 @@ export default {
                 this.updateAuctionData(data);
             } catch (error) {
                 console.error('Error al obtener detalles de la subasta:', error);
-                this.$toast.error('Error al obtener detalles de la subasta');
+//                 this.$toast.error('Error al obtener detalles de la subasta');
             }
         },
 

@@ -7,7 +7,7 @@
             <div>
                 <nuxt-link :to="localePath('/')">
                     <img src="../public/image_la_silla.png" alt="logo" style="width: 60px;">
-                    <p class="text-xs">© 2023 STUDBOOK LA SILLA. A.C.</p>
+                    <p class="text-xs">© 2025 STUDBOOK LA SILLA. A.C.</p>
                 </nuxt-link>
             </div>
 
@@ -46,7 +46,7 @@
                     <!--
                     <p><span class="normal-case">{{ contactInfo.email }}</span></p>
                     -->
-                    <p>{{ contactInfo?.app_user_profile?.phone }}</p>
+                    <p>T. +52 81 2201 0100</p>
                 </div>
 
                 <!-- <h3 :class="[classTittleSection, 'mt-6']">Policies</h3>
@@ -81,7 +81,7 @@
             <div class="w-full mb-6 text-center">
                 <nuxt-link :to="localePath('/')">
                     <img src="../public/image_la_silla.png" alt="logo" class="mx-auto" style="width: 60px;">
-                    <p class="text-xs">© 2023 STUDBOOK LA SILLA. A.C.</p>
+                    <p class="text-xs">© 2025 STUDBOOK LA SILLA. A.C.</p>
                 </nuxt-link>
             </div>
 
@@ -119,7 +119,7 @@
                 <div class="font-roboto capitalize">
                     <!--
                     <p><span class="normal-case">{{ contactInfo.email }}</span></p>
-                    <p>{{ contactInfo?.app_user_profile?.phone }}</p>
+                    <p>T. +52 81 2201 0100</p>
                     -->
                 </div>
             </div>

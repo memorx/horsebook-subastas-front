@@ -112,7 +112,7 @@ export const actions = {
           )
           const encodedSignature = btoa(signature)
           const jwt = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
-          Cookie.set("access_token", jwt)
+          Cookie.set("access_token", jwt, { expires: 1 })
 
           // update the store
           commit("setIsUserAbleToBid", data.user.status)

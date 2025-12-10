@@ -1168,6 +1168,7 @@ export default {
               ).toLocaleString("en-US")
             this.horseData.horseTelex = horse.local_data.horsetelex_url
             this.startBidSocket()
+            this.trackHorseView() 
             // console.log('se abre de nuevo el socket')
       }catch(e) {
         // console.log(e)
@@ -1269,21 +1270,29 @@ export default {
     },
 
     async fetchAdministratorPhone() {
-      const url = `${this.$config.baseURL}/contact/info/`
-      const token = getUserTokenOrDefault()
+      return "811 631 2490"
+    },
 
-      if (token) {
-        try {
-          const response = await axios.get(url, {
-            headers: { Authorization: `Token ${token}` }
-          })
-          return response.data.app_user_profile.phone.replace("T. ", "")
-        } catch (error) {
-          console.error("Error retrieving administrator phone: ", error)
-          return ""
-        }
+async trackHorseView() {
+      if (!this.horseID) return;
+      
+      const url = `${this.$config.baseURL}/horse-view/`;
+      const token = getUserTokenOrDefault();
+      
+      try {
+        await this.$axios.post(url, {
+          horse: this.horseID
+        }, {
+          headers: {
+            Authorization: token ? `Token ${token}` : undefined,
+            'Content-Type': 'application/json'
+          }
+        });
+        console.log('Horse view tracked successfully');
+      } catch (error) {
+        console.error('Error tracking horse view:', error);
+        // Fail silently - tracking shouldn't break the user experience
       }
-      return ""
     },
 
   }

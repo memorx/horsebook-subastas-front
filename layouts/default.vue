@@ -1,5 +1,19 @@
 <template>
     <div>
+        <!-- Image Popup -->
+<!-- <div :style="{ display: showPromoPopup ? 'block' : 'none' }" class="fixed z-30 inset-0 w-screen h-screen bg-black bg-opacity-75 flex items-center justify-center">
+    <div class="relative p-4 flex items-center justify-center">
+        <a href="https://www.findelmundoremates.com" target="_blank" class="block">
+            <img src="/promo-agosto.jpg" alt="Subasta Online 18 Agosto" class="max-w-[90vw] max-h-[90vh] object-contain cursor-pointer hover:opacity-90 transition-opacity">
+        </a>
+        <button
+            @click.stop="closePromoPopup"
+            class="absolute top-2 right-2 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center font-bold hover:bg-gray-200 z-10"
+        >
+            ×
+        </button>
+    </div>
+</div> -->
         <!-- Contenedor del video y botón -->
         <div :style="{ display: showVideo ? 'block' : 'none' }" class="fixed z-30 inset-0 w-screen h-screen">
             <div :class="['w-full h-full', bgLayoutMode]">
@@ -89,7 +103,8 @@ export default {
     },
     data() {
         return {
-            showVideo: true,
+            showVideo: false,
+            // showPromoPopup:true,
             isMobileMenuOpen: false,
             showWelcomeModal: !Cookie.get('videoPlayed')
         }
@@ -187,7 +202,7 @@ export default {
                     )
                     const encodedSignature = btoa(signature)
                     const jwt = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
-                    Cookie.set("access_token", jwt)
+                    Cookie.set("access_token", jwt, { expires: 1 })
                     // update the store
                     this.$store.commit("authenticate", true)
                     this.$store.commit("setUser", {
@@ -240,9 +255,12 @@ export default {
         hanldeCloseMenu() {
             this.isMobileMenuOpen = false;
         },
+        //closePromoPopup() {
+           // this.showPromoPopup = false;
+        //},
         shouldShowVideo() {
-            const videoPlayed = Cookie.get('videoPlayed');
-            return videoPlayed === undefined || parseInt(videoPlayed) !== 1;
+            //const videoPlayed = Cookie.get('videoPlayed');
+            return false;//videoPlayed === undefined || parseInt(videoPlayed) !== 1;
         },
     },
 };

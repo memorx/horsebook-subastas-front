@@ -20,15 +20,15 @@
 
         <!-- Left Arrow -->
         <button @click="manualNavigate('prev')"
-            class="z-100 font-black text-white absolute top-1/2 left-0 transform -translate-y-1/2 p-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+            class="z-100 font-black text-white absolute top-1/3 md:top-1/2 left-0 transform -translate-y-1/2 p-2 md:p-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 md:w-6 md:h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
         </button>
         <!-- Right Arrow -->
         <button @click="manualNavigate('next')"
-            class="z-101 font-black text-white absolute top-1/2 right-0 transform -translate-y-1/2 p-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+            class="z-101 font-black text-white absolute top-1/3 md:top-1/2 right-0 transform -translate-y-1/2 p-2 md:p-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 md:w-6 md:h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
         </button>
