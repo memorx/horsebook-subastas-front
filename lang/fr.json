@@ -15,8 +15,8 @@
         "next": "Lot Suivant",
         "previous": "Lot Précédent",
         "close": "Fermer",
-        "privateModeNotice": "L'utilisation de la plateforme en mode incognito ou privé n'est pas recommandée"
-
+        "privateModeNotice": "L'utilisation de la plateforme en mode incognito ou privé n'est pas recommandée",
+        "applePrivateModeWarning": "Il n'est pas recommandé de faire des offres en mode incognito/privé sur les appareils Apple"
     },
     "login": {
         "login": "Connexion",
@@ -64,8 +64,8 @@
         "verifyAccountInstruction": "Entrez votre compte email et accédez au lien que vous trouverez dans l'email que nous vous avons envoyé",
         "emailNotReceived": "Vous n'avez pas reçu l'email?",
         "resendVerifyAccountEmail": "Renvoyer l'email de vérification",
-        "verificationEmailSendMsg" : "L'email a été renvoyé, veuillez vérifier votre email",
-        "userHasBeenActivated" : "L'utilisateur est déjà activé",
+        "verificationEmailSendMsg": "L'email a été renvoyé, veuillez vérifier votre email",
+        "userHasBeenActivated": "L'utilisateur est déjà activé",
         "waitAMoment": "ATTENDEZ UN MOMENT",
         "emailIsBeingVerified": "Votre compte email est en cours de vérification",
         "emailAccountVerified": "Votre compte email a été vérifié et vous vous connectez à l'application...",
@@ -174,8 +174,8 @@
     },
     "footer": {
         "navigate": "Naviguer",
-        "email":"Email",
-        "phone":"Téléphone",
+        "email": "Email",
+        "phone": "Téléphone",
         "followUs": "Suivez-nous"
     },
     "cron": {

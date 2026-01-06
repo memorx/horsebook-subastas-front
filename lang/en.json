@@ -15,8 +15,8 @@
         "next": "Next Lot",
         "previous": "Previous Lot",
         "close": "Close",
-        "privateModeNotice": "The use of the platform in incognito or private mode is not recommended"
-
+        "privateModeNotice": "The use of the platform in incognito or private mode is not recommended",
+        "applePrivateModeWarning": "Making bids in incognito/private mode is not recommended on Apple devices"
     },
     "login": {
         "login": "Login",
@@ -64,8 +64,8 @@
         "verifyAccountInstruction": "Enter your email account and access the link that you will find in the email we have sent you",
         "emailNotReceived": "Didn't you receive the email?",
         "resendVerifyAccountEmail": "Resend verification email",
-        "verificationEmailSendMsg" : "The email has been sent again, please check your email",
-        "userHasBeenActivated" : "User is already activated",
+        "verificationEmailSendMsg": "The email has been sent again, please check your email",
+        "userHasBeenActivated": "User is already activated",
         "waitAMoment": "WAIT A MOMENT",
         "emailIsBeingVerified": "Your email account is being verified",
         "emailAccountVerified": "Your email account has been verified and you are logging into the app...",
@@ -174,8 +174,8 @@
     },
     "footer": {
         "navigate": "Navigate",
-        "email":"Email",
-        "phone":"Phone",
+        "email": "Email",
+        "phone": "Phone",
         "followUs": "Follow Us"
     },
     "cron": {

@@ -15,7 +15,8 @@
         "next": "Lote Siguiente",
         "previous": "Lote Anterior",
         "close": "Cerrar",
-        "privateModeNotice": "No se recomienda el uso de la plataforma en modo incógnito o privado"
+        "privateModeNotice": "No se recomienda el uso de la plataforma en modo incógnito o privado",
+        "applePrivateModeWarning": "No es recomendable hacer ofertas en modo incógnito/privado en dispositivos Apple"
     },
     "login": {
         "login": "Iniciar Sesión",
@@ -63,8 +64,8 @@
         "verifyAccountInstruction": "Ingresa a tu cuenta de correo y accede al enlace que encontrarás en el correo que te hemos enviado",
         "emailNotReceived": "¿No recibiste el correo?",
         "resendVerifyAccountEmail": "Reenviar correo de verificación",
-        "verificationEmailSendMsg" : "El correo ha sido enviado nuevamente, porfavor revise su correo",
-        "userHasBeenActivated" : "El usuario ya se encuentra activado",
+        "verificationEmailSendMsg": "El correo ha sido enviado nuevamente, porfavor revise su correo",
+        "userHasBeenActivated": "El usuario ya se encuentra activado",
         "waitAMoment": "ESPERA UN MOMENTO",
         "emailIsBeingVerified": "Tu cuenta de correo está siendo verificada",
         "emailAccountVerified": "Tu cuenta de correo ha sido verificada y estás iniciando sesión en la aplicación...",
@@ -155,7 +156,7 @@
             "title": "Bienvenido a Subasta La Silla"
         },
         "exampleTitle": "Título de ejemplo",
-        "exampleParagraph":  "Este es un párrafo de ejemplo para el div",
+        "exampleParagraph": "Este es un párrafo de ejemplo para el div",
         "exampleButton": "Botón de ejemplo",
         "youngHorses": "caballos\njóvenes"
     },
@@ -303,7 +304,6 @@
         "start": "incio",
         "end": "fin",
         "years": "años"
-
     },
     "backMessages": {
         "Invalid credentials or user not activated": "Las credenciales son inválidas o el usuario no ha sido activado",

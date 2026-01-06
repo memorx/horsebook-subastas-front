@@ -1,6 +1,25 @@
 import JWTDecode from "jwt-decode"
 import Cookie from "js-cookie"
 
+// Safe localStorage helper to handle incognito/private mode
+const safeLocalStorage = {
+  setItem(key, value) {
+    try {
+      localStorage.setItem(key, value)
+    } catch (e) {
+      console.warn('localStorage not available (incognito mode?):', e.message)
+    }
+  },
+  getItem(key) {
+    try {
+      return localStorage.getItem(key)
+    } catch (e) {
+      console.warn('localStorage not available (incognito mode?):', e.message)
+      return null
+    }
+  }
+}
+
 export const state = () => ({
   isAuthenticated: false,
   isUserAbleToBid: false,
@@ -23,27 +42,27 @@ export const mutations = {
   setIsUserAbleToBid(state, isAbleToBid) {
     if(state.isUserAbleToBid != isAbleToBid) {
       state.isUserAbleToBid = isAbleToBid
-      localStorage.setItem("isUserAbleToBid", isAbleToBid)
+      safeLocalStorage.setItem("isUserAbleToBid", isAbleToBid)
     }
   },
   setShowToast(state) {
       state.showToast = true
-      localStorage.setItem("showToast", true)
+      safeLocalStorage.setItem("showToast", true)
   },
   setSingUpData(state, value) {
     state.singUpData = value
-    localStorage.setItem("singUpData", JSON.stringify(value))
+    safeLocalStorage.setItem("singUpData", JSON.stringify(value))
   },
   setHorseDetails(state, data) {
     state.horseDetails = data
   },
   setUser(state, user) {
     state.user = user
-    localStorage.setItem("setUser", JSON.stringify(user))
+    safeLocalStorage.setItem("setUser", JSON.stringify(user))
   },
   setInformation(state, info) {
     state.info = info
-    localStorage.setItem("setInfo", JSON.stringify(info))
+    safeLocalStorage.setItem("setInfo", JSON.stringify(info))
   },
   clearUserData(state) {
     state.setUser = "";

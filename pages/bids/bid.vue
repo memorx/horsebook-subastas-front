@@ -8,6 +8,10 @@
       :status="horseStatus"
       :commission="commission"
       :taxes="taxes"
+      :prebidWinner="prebidWinner?.email && prebidWinner?.email === this.$store.state.user?.user"
+      :prebidWinnerDiscount="prebidWinnerDiscount"
+      :hasPreBid="hasPreBid"
+      :prebidParticipantDiscount="prebidParticipantDiscount"
     />
 
     <!-- Encabezado común -->
@@ -533,6 +537,7 @@ import ReconnectingWebSocket from "reconnecting-websocket"
 import Swal from 'sweetalert2'
 import { extractYouTubeId } from '~/utils/youtubeUtils'
 import { EventBus } from '../../utils/eventBus'
+import { detectIncognito } from 'detectincognitojs'
 
 export default {
   components: {
@@ -650,6 +655,7 @@ export default {
       hasPreBid: false,
       subscribed: false,
       prebidWinnerDiscount: 5,
+      prebidParticipantDiscount: 2,
       privateInformation: true,
       commission: 0,
       taxes: 0,
@@ -708,8 +714,38 @@ export default {
     this.horseId = this.$route.query.horseId
     this.initilize()
     EventBus.$on('horse-changed', this.handleHorseChange)
+
+    // Check for incognito/private mode on Apple devices
+    detectIncognito().then((result) => {
+      if (result.isPrivate) {
+        const isApple = /iPhone|iPad|iPod|Mac/i.test(navigator.userAgent) ||
+                        (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome'))
+        if (isApple) {
+          this.$toast.error(this.$t('general.applePrivateModeWarning'))
+        } else {
+          this.$toast.error(this.$t('general.privateModeNotice'))
+        }
+      }
+    })
   },
   methods: {
+    // Resuelve el g�nero del caballo seg�n los campos disponibles de Horsebook
+    getHorseGender(horse) {
+      const data = horse.external_data;
+      // Prioridad 1: classification_sex (0-11) - mapeo detallado
+      if (data.classification_sex \!== null && data.classification_sex \!== undefined) {
+        return this.genreMapping[data.classification_sex] || "";
+      }
+      // Prioridad 2: sex_alt (0=Macho, 1=Hembra) - mapeo simple
+      if (data.sex_alt \!== null && data.sex_alt \!== undefined) {
+        return data.sex_alt === 0 ? "Macho" : "Yegua";
+      }
+      // Prioridad 3: sex (fallback legacy)
+      if (data.sex \!== null && data.sex \!== undefined) {
+        return data.sex === 1 ? "Macho" : "Yegua";
+      }
+      return "";
+    },
     handleHorseChange(horseId) {
       if (this.horseId !== horseId) {
         this.horseId = horseId
@@ -1298,8 +1334,7 @@ export default {
           this.horseIDForm = horse.local_data.id
           //horse Description
           //genre
-          this.horseData.Genre =
-            this.genreMapping[horse.external_data.sex] || ""
+          this.horseData.Genre = this.getHorseGender(horse)
           //Birthdate
           this.horseData.BirthDate = this.formatted(
             horse.external_data.birth_date
@@ -1370,6 +1405,7 @@ export default {
           this.timer = setInterval(this.calculateCountdown, 1000)
           this.timer = setInterval(this.calculatePreBidCountdown, 1000)
           this.prebidWinnerDiscount = auction.prebid_winner_discount
+          this.prebidParticipantDiscount = auction.prebid_participant_discount || 2
           this.privateInformation = auction.private_information
           this.commission = auction.commission
           this.taxes = auction.taxes

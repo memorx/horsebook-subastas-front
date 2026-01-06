@@ -1,11 +1,17 @@
 <template>
   <div v-if="images.length > 0" class="gallery">
     <div class="flex flex-wrap justify-center">
-      <div v-for="(image, index) in images" :key="index" class="m-2">
+      <div v-for="(image, index) in images" :key="index" class="m-2 relative">
+        <div v-if="!loadedImages[index]" class="absolute inset-0 bg-gray-200 animate-pulse rounded w-30 h-20"></div>
         <img
           :src="image"
+          :data-src="image"
           alt="Gallery Image"
-          class="rounded shadow-lg w-30 h-20 object-cover"
+          loading="lazy"
+          class="rounded shadow-lg w-30 h-20 object-cover transition-opacity duration-300"
+          :class="{ 'opacity-0': !loadedImages[index], 'opacity-100': loadedImages[index] }"
+          @load="onImageLoad(index)"
+          @error="onImageError(index)"
         />
       </div>
     </div>
@@ -36,12 +42,33 @@ export default {
     horse_id: [String, Number],
     horse_name: String
   },
+  data() {
+    return {
+      loadedImages: {}
+    }
+  },
   computed: {
     isUserAuthenticated() {
         return this.$store.state.isAuthenticated;
     },
   },
+  watch: {
+    images: {
+      immediate: true,
+      handler(newImages) {
+        // Reset loadedImages when images change
+        this.loadedImages = {}
+      }
+    }
+  },
   methods: {
+    onImageLoad(index) {
+      this.$set(this.loadedImages, index, true)
+    },
+    onImageError(index) {
+      // Mark as loaded even on error to remove the placeholder
+      this.$set(this.loadedImages, index, true)
+    },
     async downloadImage() {
       // Generate the zip and trigger the download
       const decoded = JWTDecode(this.$cookies.get("access_token"))
